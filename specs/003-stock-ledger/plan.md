@@ -1,8 +1,8 @@
 # Implementation Plan: Stock, ingresos y ajustes
 
-**Branch**: sin crear | **Date**: 2026-09-17 | **Spec**: [spec.md](spec.md)
+**Branch**: feature/desktop-catalog | **Date**: 2026-09-17 | **Spec**: [spec.md](spec.md)
 **Input**: `specs/003-stock-ledger/spec.md`
-**Estado**: borrador de diseño, no se ejecutaron tareas de aplicación.
+**Estado**: implementación de operaciones de inventario verificada; integración con ventas pendiente. [Evidencia](../../docs/entrega-02-stock.md).
 
 ## Summary
 

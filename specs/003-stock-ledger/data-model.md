@@ -2,6 +2,11 @@
 
 inventory_balances y stock_movements. quantity_base firmado. OPENING parte de un estado desconocido; recount produce ADJUSTMENT con diferencia. Tracking no elimina ledger.
 
+La migración 003 agrega saldo, revisión, secuencia de movimientos, resultado por
+operationKey/hash y fecha comercial argentina. OPENING/ADJUSTMENT admiten delta
+cero para conservar evidencia del conteo. Las referencias FK a ventas se agregan
+cuando existan sales/sale_items en 006. Hasta entonces no se generan SALE/VOID.
+
 ## Common invariants
 
 [Modelo de datos completo](../../docs/modelo-datos.md). Precio y pagos en centavos

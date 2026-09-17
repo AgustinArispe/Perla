@@ -1,7 +1,9 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import { api, unwrap, errorMessage } from './api';
 import { Icon } from './components/Icon';
 import { ProductList } from './features/products/ProductList';
+import { StockList } from './features/stock/StockList';
 
 const sections = [
   ['cash', 'Caja'],
@@ -13,6 +15,7 @@ const sections = [
 ] as const;
 
 export function App() {
+  const [section, setSection] = useState<'Productos' | 'Stock'>('Productos');
   const desktop = Boolean(window.bocha);
   const client = useQueryClient();
   const status = useQuery({
@@ -42,13 +45,16 @@ export function App() {
           {sections.map(([icon, title]) => (
             <button
               key={title}
-              className={title === 'Productos' ? 'nav-item selected' : 'nav-item'}
-              disabled={title !== 'Productos'}
-              aria-current={title === 'Productos' ? 'page' : undefined}
+              className={title === section ? 'nav-item selected' : 'nav-item'}
+              disabled={title !== 'Productos' && title !== 'Stock'}
+              aria-current={title === section ? 'page' : undefined}
+              onClick={() => {
+                if (title === 'Productos' || title === 'Stock') setSection(title);
+              }}
             >
               <Icon name={icon} />
               <span>{title}</span>
-              {title !== 'Productos' && (
+              {title !== 'Productos' && title !== 'Stock' && (
                 <span className="pending-dot" title="Pendiente de desarrollo" />
               )}
             </button>
@@ -64,7 +70,7 @@ export function App() {
       </aside>
       <div className="workspace">
         <header className="topbar">
-          <span>EL BOCHA / PRODUCTOS</span>
+          <span>EL BOCHA / {section.toUpperCase()}</span>
           <div className={`connection ${status.isError ? 'connection-error' : ''}`}>
             <i />
             {!desktop
@@ -85,7 +91,7 @@ export function App() {
               </button>
             </div>
           )}
-          <ProductList />
+          {section === 'Productos' ? <ProductList /> : <StockList />}
         </main>
         <footer className="app-footer">
           <span>El Bocha · Control del almacén</span>

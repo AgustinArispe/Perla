@@ -324,8 +324,8 @@ export function ProductList() {
             sku;barcode;nombre;precio_ars;unidad;activo;categoria;stock_inicial;stock_minimo
           </code>
           <p>
-            Unidad: UNIT o KG. Activo: si o no. Dejá stock_inicial vacío; para mínimos por kilo usá
-            0,500 para medio kilo.
+            Unidad: UNIT o KG. Activo: si o no. Completá stock_inicial sólo con un conteo real, o
+            dejalo vacío. Para cantidades por kilo usá 0,500 para medio kilo.
           </p>
         </div>
       )}
@@ -355,6 +355,7 @@ export function ProductList() {
               `${result.rowsApplied.toLocaleString('es-AR')} productos cargados${result.alreadyApplied ? ' anteriormente' : ''}.`,
             );
             void client.invalidateQueries({ queryKey: ['products'] });
+            void client.invalidateQueries({ queryKey: ['stock'] });
             closePreview();
           }}
         />

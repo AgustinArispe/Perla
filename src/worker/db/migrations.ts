@@ -1,6 +1,7 @@
 import type Database from 'better-sqlite3';
 import { createHash } from 'node:crypto';
 import productsSql from './migrations/002_products.sql?raw';
+import inventorySql from './migrations/003_inventory.sql?raw';
 import { DomainError } from '../../shared/errors';
 
 export interface Migration {
@@ -16,6 +17,7 @@ export const MIGRATIONS: Migration[] = [
     ) STRICT;`,
   },
   { version: 2, sql: productsSql },
+  { version: 3, sql: inventorySql },
 ];
 export const SCHEMA_VERSION = MIGRATIONS.at(-1)!.version;
 const checksum = (sql: string) => createHash('sha256').update(sql).digest('hex');

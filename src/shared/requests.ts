@@ -1,6 +1,12 @@
 import { z } from 'zod';
 import { DomainError } from './errors';
 import {
+  StockCountSchema,
+  StockRecordSchema,
+  StockSearchSchema,
+  StockMovementsSchema,
+} from './stock';
+import {
   ApplyImportSchema,
   ProductSearchSchema,
   ProductSaveSchema,
@@ -19,6 +25,17 @@ export const RequestSchemas = {
   'products.applyImport': ApplyImportSchema,
   'checkout.getDraft': z.null(),
   'checkout.saveDraft': SaveDraftSchema,
+  'stock.get': z.strictObject({ productId: z.uuid() }),
+  'stock.operation': z.strictObject({ operationKey: z.uuid() }),
+  'stock.search': StockSearchSchema,
+  'stock.opening': StockCountSchema,
+  'stock.count': StockCountSchema,
+  'stock.record': StockRecordSchema,
+  'stock.listLow': z.strictObject({
+    limit: z.number().int().min(1).max(100),
+    cursor: z.string().max(1200).optional(),
+  }),
+  'stock.movements': StockMovementsSchema,
 } as const;
 export type Operation = keyof typeof RequestSchemas;
 export function validateRequest(input: unknown): { operation: Operation; payload: unknown } {

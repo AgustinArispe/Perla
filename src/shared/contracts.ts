@@ -1,5 +1,14 @@
 import { z } from 'zod';
 import type {
+  StockBalance,
+  StockCountInput,
+  StockRecordInput,
+  StockSearchInput,
+  StockPage,
+  StockMovementsInput,
+  MovementPage,
+} from './stock';
+import type {
   Product,
   ProductSaveInput,
   ProductSearchInput,
@@ -56,6 +65,16 @@ export interface BochaApi {
   checkout: {
     getDraft(): Promise<Result<DraftRecord | null>>;
     saveDraft(input: SaveDraftInput): Promise<Result<DraftRecord>>;
+  };
+  stock: {
+    operation(operationKey: string): Promise<Result<StockBalance | null>>;
+    get(productId: string): Promise<Result<StockBalance>>;
+    search(input: StockSearchInput): Promise<Result<StockPage>>;
+    opening(input: StockCountInput): Promise<Result<StockBalance>>;
+    count(input: StockCountInput): Promise<Result<StockBalance>>;
+    record(input: StockRecordInput): Promise<Result<StockBalance>>;
+    listLow(input: { limit: number; cursor?: string }): Promise<Result<StockPage>>;
+    movements(input: StockMovementsInput): Promise<Result<MovementPage>>;
   };
 }
 export const IPC = { systemHealth: 'bocha:system-health' } as const;

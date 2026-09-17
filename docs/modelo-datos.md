@@ -1,6 +1,7 @@
 # Modelo de datos y reglas comunes
 
-SQL / SQLite. Diseño, no migración ejecutada. Importes en centavos y cantidades
+SQL / SQLite. Catálogo e inventario implementados hasta migración 003; ventas,
+informes y backups de usuario permanecen como diseño. Importes en centavos y cantidades
 base enteras; validar `Number.isSafeInteger` en contratos. Intermedios de cálculo
 con BigInt para evitar desbordamiento; DTOs JSON entregan number seguros.
 
@@ -11,7 +12,7 @@ con BigInt para evitar desbordamiento; DTOs JSON entregan number seguros.
 | schema_migrations | version PK, checksum, applied_at_utc |
 | products | id PK, sku TEXT UNIQUE NOT NULL, barcode TEXT UNIQUE nullable, name, category nullable, sale_unit UNIT/KG, price_cents > 0, active, track_stock, stock_initialized, min_stock_base >= 0, revision, created_at_utc, updated_at_utc |
 | inventory_balances | product_id PK/FK, quantity_base signed INTEGER, revision |
-| stock_movements | id PK, product_id FK, delta_base signed != 0, kind OPENING/RECEIPT/SALE/WASTE/ADJUSTMENT/VOID, reason, sale_id nullable FK, sale_item_id nullable FK, operation_key UNIQUE, created_at_utc |
+| stock_movements | sequence PK, id UNIQUE, product_id FK, delta_base signed, balance_after_base, kind OPENING/RECEIPT/SALE/WASTE/ADJUSTMENT/VOID, reason, operation_key UNIQUE, payload_hash, result_json, business_date, created_at_utc; referencias a venta/item se agregarán en 006 |
 | sales | id UUID PK, number INTEGER UNIQUE NOT NULL, checkout_key UNIQUE, payload_hash, completed_at_utc, business_date TEXT YYYY-MM-DD, local_month TEXT YYYY-MM, status COMPLETED/VOIDED, subtotal_cents, discount_type NONE/PERCENT/FIXED, discount_value INTEGER, discount_cents, total_cents, voided_at_utc nullable, void_reason nullable |
 | sale_items | id PK, sale_id FK, line_no, product_id FK, barcode_snapshot nullable, sku_snapshot, name_snapshot, unit_snapshot UNIT/KG, unit_price_cents, quantity_base > 0, gross_cents, allocated_discount_cents, net_cents; UNIQUE(sale_id,line_no) |
 | sale_payments | id PK, sale_id FK, method CASH/DEBIT/CREDIT/TRANSFER/OTHER, amount_cents > 0, tendered_cents nullable, change_cents nullable |
@@ -25,6 +26,10 @@ FKs RESTRICT para products/sales/sale_items: no borrar catálogo vendido; inacti
 El número visible de venta se asigna dentro de la misma transacción de cierre;
 UUID y checkout_key identifican el reintento sin consumir dos números de venta.
 Stock no tiene cantidades decimales. UNIT: 1 base = 1 artículo; KG: 1 base = 1 g.
+OPENING y ADJUSTMENT permiten delta cero para registrar un estante vacío o un
+conteo que confirma el mismo saldo. RECEIPT y WASTE nunca admiten cero. Cada
+conteo incrementa la revisión del balance y conserva su motivo. `result_json`
+guarda el resultado original para que un reintento no dependa del balance actual.
 Precio KG expresa el valor de 1 kg, no el de 1 g. sku permite fiambres sin barcode.
 Productos físicos nuevos: track_stock=true y stock_initialized=false. Importar
 catálogo sin cantidades nunca marca existencias como cero confirmado. Sin conteo

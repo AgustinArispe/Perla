@@ -1,6 +1,6 @@
 # Plan de desarrollo - El Bocha POS
 
-**Fecha**: 2026-09-17. **Estado**: borrador para revisión de Agus.
+**Fecha**: 2026-09-17. **Estado**: desarrollo en curso; aceptación final pendiente.
 **Responsable**: Luis Agustín Arispe. **Horizonte propuesto**: ocho semanas.
 
 ## Propuesta
@@ -9,7 +9,8 @@ Aplicación de escritorio offline, orientada a una PC de caja, con React,
 TypeScript, Vite, Electron y SQLite. La velocidad se prioriza en escaneo, búsqueda,
 confirmación y recuperación. La UI será blanca, con verde como acento, texto y
 números grandes y navegación por secciones. El entorno y un scaffold mínimo ya
-están preparados; los módulos de negocio siguen pendientes. [Guía de desarrollo](entorno-desarrollo.md).
+están preparados; Catálogo y Stock están implementados. Caja, peso, ventas,
+histórico, dashboard y backup de usuario siguen pendientes. [Guía de desarrollo](entorno-desarrollo.md).
 
 La elección de Electron favorece instalación y desarrollo con TypeScript; el
 instalador ocupa más que Tauri. Si el hardware objetivo no alcanza las metas,
@@ -32,8 +33,8 @@ quickstart.md, tasks.md y checklists/requirements.md, con formato Spec Kit.
 | 7 | [007 Dashboard mensual](../specs/007-monthly-dashboard/spec.md) | Totales, pagos, rankings y stock bajo actual | 002, 003, 006 |
 | 8 | [008 Instalación/backup](../specs/008-backup-installation/spec.md) | Instalador, snapshot, restore y mantenimiento | 001, 002, 003, 006, 007 |
 
-Los números son identificadores de specs, no ramas creadas. Repositorio Git local
-inicializado en main. No se creó/publicó un repositorio remoto de GitHub.
+Los números son identificadores de specs. La implementación local está en
+`feature/desktop-catalog`. No se creó/publicó un repositorio remoto de GitHub.
 
 ## Reglas que afectan todos los módulos
 

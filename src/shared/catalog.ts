@@ -61,6 +61,7 @@ export interface ImportPreview {
   newCount: number;
   updateCount: number;
   priceChanges: number;
+  stockOpenings: number;
   errors: { row: number; message: string }[];
   rows: {
     row: number;
@@ -69,6 +70,8 @@ export interface ImportPreview {
     barcode: string | null;
     priceCents: number;
     previousPriceCents: number | null;
+    countedBase: number | null;
+    unit: 'UNIT' | 'KG';
     action: 'CREATE' | 'UPDATE';
   }[];
   alreadyApplied: boolean;
@@ -77,6 +80,7 @@ export const ApplyImportSchema = z.strictObject({
   previewToken: IdSchema,
   operationKey: IdSchema,
   confirmPriceChanges: z.boolean(),
+  confirmStockCounts: z.boolean().optional(),
 });
 export type ApplyImportInput = z.infer<typeof ApplyImportSchema>;
 export interface ImportResult {

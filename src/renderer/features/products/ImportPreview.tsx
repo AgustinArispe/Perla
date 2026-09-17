@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { ImportPreview as Preview, ImportResult } from '../../../shared/catalog';
 import { formatMoney } from '../../../domain/values';
+import { formatStock } from '../../../domain/inventory';
 import { api, errorMessage, unwrap } from '../../api';
 import { Dialog } from '../../components/Dialog';
 
@@ -15,6 +16,7 @@ export function ImportPreview({
 }) {
   const [operationKey] = useState(() => crypto.randomUUID());
   const [confirmed, setConfirmed] = useState(false);
+  const [countsConfirmed, setCountsConfirmed] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [shown, setShown] = useState(50);
@@ -22,7 +24,8 @@ export function ImportPreview({
     busy ||
     preview.alreadyApplied ||
     preview.errors.length > 0 ||
-    (preview.priceChanges > 0 && !confirmed);
+    (preview.priceChanges > 0 && !confirmed) ||
+    (preview.stockOpenings > 0 && !countsConfirmed);
   async function apply() {
     if (disabled) return;
     setBusy(true);
@@ -34,6 +37,7 @@ export function ImportPreview({
             previewToken: preview.previewToken,
             operationKey,
             confirmPriceChanges: confirmed,
+            confirmStockCounts: countsConfirmed,
           }),
         ),
       );
@@ -94,6 +98,7 @@ export function ImportPreview({
                   <th>Producto</th>
                   <th>Código de barras</th>
                   <th className="numeric">Precio</th>
+                  {preview.stockOpenings > 0 && <th className="numeric">Conteo inicial</th>}
                 </tr>
               </thead>
               <tbody>
@@ -116,6 +121,9 @@ export function ImportPreview({
                         )}
                       {formatMoney(row.priceCents)}
                     </td>
+                    {preview.stockOpenings > 0 && (
+                      <td className="numeric">{formatStock(row.countedBase, row.unit)}</td>
+                    )}
                   </tr>
                 ))}
               </tbody>
@@ -138,9 +146,24 @@ export function ImportPreview({
             <span>Confirmo los cambios de precio de {preview.priceChanges} productos.</span>
           </label>
         )}
+        {preview.stockOpenings > 0 && !preview.alreadyApplied && (
+          <label className="checkbox-row confirm-prices">
+            <input
+              type="checkbox"
+              checked={countsConfirmed}
+              onChange={(event) => setCountsConfirmed(event.target.checked)}
+              disabled={busy}
+              aria-label="Confirmar conteo físico del CSV"
+            />
+            <span>
+              Confirmo que las cantidades de {preview.stockOpenings} productos provienen de un
+              conteo físico real.
+            </span>
+          </label>
+        )}
         <p className="subtle-note">
-          El catálogo se carga completo o no se carga. Las existencias quedarán sin conteo hasta
-          iniciar el control de stock.
+          La carga se guarda completa o no se guarda. Sin conteo inicial, las existencias quedan
+          desconocidas.
         </p>
       </div>
       <div className="dialog-footer">

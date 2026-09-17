@@ -1,12 +1,11 @@
 # Quickstart Validation: Stock, ingresos y ajustes
 
-**Estado**: estos comandos son de la futura implementación. Hoy no existe
-package.json ni los tests; no se reportan como ejecutados.
+**Estado**: pruebas de inventario implementadas y ejecutadas. [Evidencia](../../docs/entrega-02-stock.md).
 
 ## Prerequisites
 
-001 implementada, Node 24 LTS, npm install según lockfile y dependencias de esta
-feature entregadas. Usar DB temporal de pruebas, nunca la DB real del comercio.
+Base y catálogo disponibles, Node 24 LTS y `npm run setup` según lockfile.
+Usar DB temporal de pruebas, nunca la DB real del comercio.
 Para desktop/scanner: instalador buildado y Windows 11 con scanner configurado.
 
 ## Commands and expected behavior
@@ -28,6 +27,10 @@ npx playwright test tests/e2e/stock-count.spec.ts
 Resultado esperado: el escenario termina con las invariantes y el resultado definidos, sin datos parciales. Test file: `tests/e2e/stock-count.spec.ts`.
 
 ## Manual acceptance
+
+Ejecutar `npm run build` antes de Playwright, o `npm run test:e2e` para build y suite.
+Las ventas y anulaciones aún no están implementadas; sus movimientos se validarán
+con 006, sin marcar la aceptación completa de Stock antes de esa integración.
 
 1. Comenzar con un conteo real: Se muestra balance 10 y queda un movimiento de apertura.
 2. Registrar mercadería y correcciones: El balance pasa a 4.900 g con ambos motivos visibles.

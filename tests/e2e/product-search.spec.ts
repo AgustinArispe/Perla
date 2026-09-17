@@ -72,7 +72,7 @@ test('elegir CSV, revisar errores y aplicar una carga sin duplicarla', async () 
   const file = join(directory, 'productos.csv');
   writeFileSync(
     file,
-    'sku;barcode;nombre;precio_ars;unidad;activo;categoria;stock_inicial;stock_minimo\nFIAM-01;;Jamón cocido;12.000,50;KG;si;Fiambres;;0,500',
+    'sku;barcode;nombre;precio_ars;unidad;activo;categoria;stock_inicial;stock_minimo\nFIAM-01;;Jamón cocido;12.000,50;KG;si;Fiambres;2,500;0,500',
   );
   const application = await electron.launch({
     ...(process.env.BOCHA_E2E_EXECUTABLE
@@ -98,9 +98,21 @@ test('elegir CSV, revisar errores y aplicar una carga sin duplicarla', async () 
     const preview = page.getByRole('dialog');
     await expect(preview.getByRole('heading', { name: 'Revisar carga' })).toBeVisible();
     await expect(preview.getByText('Jamón cocido', { exact: true })).toBeVisible();
+    await expect(preview.getByRole('button', { name: 'Aplicar carga' })).toBeDisabled();
+    await preview.getByLabel('Confirmar conteo físico del CSV', { exact: true }).check();
     await preview.getByRole('button', { name: 'Aplicar carga' }).click();
     await expect(preview).not.toBeVisible();
     await expect(page.getByRole('button', { name: 'Editar Jamón cocido' })).toBeVisible();
+    const stock = await page.evaluate(async () => {
+      const products = await window.bocha!.products.search({
+        query: 'Jamón',
+        activeOnly: true,
+        limit: 20,
+      });
+      if (!products.ok || !products.value.items[0]) throw new Error('No se cargó el producto');
+      return window.bocha!.stock.get(products.value.items[0].id);
+    });
+    expect(stock.ok && stock.value.quantityBase).toBe(2500);
     await page.getByRole('button', { name: 'Importar productos' }).click();
     await expect(preview.getByText('Este archivo ya fue aplicado.', { exact: true })).toBeVisible();
     await page.keyboard.press('Escape');

@@ -4,6 +4,13 @@ import { openDatabase } from './db/connection';
 import { CatalogRepository } from './products/repository';
 import { CatalogImporter } from './products/import';
 import { DraftRepository } from './drafts';
+import { StockService } from './stock/service';
+import {
+  StockCountSchema,
+  StockRecordSchema,
+  StockSearchSchema,
+  StockMovementsSchema,
+} from '../shared/stock';
 import { validateRequest } from '../shared/requests';
 import { failure, DomainError } from '../shared/errors';
 import {
@@ -20,7 +27,8 @@ const data = z.strictObject({ databasePath: z.string() }).parse(workerData);
 try {
   const database = openDatabase(data.databasePath);
   const catalog = new CatalogRepository(database);
-  const importer = new CatalogImporter(database, catalog);
+  const stock = new StockService(database, catalog);
+  const importer = new CatalogImporter(database, catalog, stock);
   const drafts = new DraftRepository(database);
   const schema = database
     .prepare('SELECT MAX(version) AS version FROM schema_migrations')
@@ -82,6 +90,39 @@ try {
             break;
           case 'checkout.saveDraft':
             value = drafts.save(SaveDraftSchema.parse(request.payload));
+            break;
+          case 'stock.get':
+            value = stock.get(z.object({ productId: z.uuid() }).parse(request.payload).productId);
+            break;
+          case 'stock.operation':
+            value = stock.operation(
+              z.object({ operationKey: z.uuid() }).parse(request.payload).operationKey,
+            );
+            break;
+          case 'stock.search':
+            value = stock.search(StockSearchSchema.parse(request.payload));
+            break;
+          case 'stock.opening':
+            value = stock.opening(StockCountSchema.parse(request.payload));
+            break;
+          case 'stock.count':
+            value = stock.count(StockCountSchema.parse(request.payload));
+            break;
+          case 'stock.record':
+            value = stock.record(StockRecordSchema.parse(request.payload));
+            break;
+          case 'stock.listLow': {
+            const input = z
+              .object({ limit: z.number(), cursor: z.string().optional() })
+              .parse(request.payload);
+            value = stock.listLow({
+              limit: input.limit,
+              ...(input.cursor ? { cursor: input.cursor } : {}),
+            });
+            break;
+          }
+          case 'stock.movements':
+            value = stock.movements(StockMovementsSchema.parse(request.payload));
             break;
           default:
             throw new DomainError('VALIDATION', 'La operación SQL no está disponible.');

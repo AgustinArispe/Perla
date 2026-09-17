@@ -1,11 +1,12 @@
 # El Bocha POS
 
 Aplicación de escritorio de control interno para un almacén en Argentina.
-Estado: primera entrega de desarrollo disponible. Catálogo conectado a SQLite,
-alta/edición/inactivación, búsqueda e importación CSV con revisión previa.
-Caja, movimientos de stock, ventas, histórico y dashboard siguen pendientes.
+Estado: catálogo y control de stock disponibles. Alta/edición/inactivación,
+búsqueda, importación CSV, conteos, ingresos, mermas e historial de movimientos.
+Caja, ventas, histórico de ventas y dashboard siguen pendientes.
 
 [Entrega, pruebas y próximos pasos](docs/entrega-01-catalogo.md).
+[Entrega de Stock y pruebas de recuperación](docs/entrega-02-stock.md).
 
 ## Desarrollo
 

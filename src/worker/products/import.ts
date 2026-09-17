@@ -11,6 +11,13 @@ import type {
 } from '../../shared/catalog';
 import { DomainError, normalizeError } from '../../shared/errors';
 import { CatalogRepository } from './repository';
+import type { StockService } from '../stock/service';
+
+type ImportEntry = ProductSaveInput & {
+  openingBase?: number;
+  stockRevision?: number;
+  openingKey?: string;
+};
 
 const columns = [
   'sku',
@@ -26,7 +33,7 @@ const columns = [
 export const CSV_TEMPLATE = `${columns.join(';')}\nALM-001;0123456789012;Leche entera 1 L;1.500,00;UNIT;si;Lácteos;;5\nFIAM-001;;Jamón cocido;12.000,00;KG;si;Fiambres;;0,500\n`;
 interface Pending {
   preview: ImportPreview;
-  entries: ProductSaveInput[];
+  entries: ImportEntry[];
   expires: number;
 }
 interface Batch {
@@ -42,6 +49,7 @@ export class CatalogImporter {
   constructor(
     private readonly db: Database.Database,
     private readonly catalog: CatalogRepository,
+    private readonly stock?: StockService,
   ) {}
   preview(content: string, sourceName: string): ImportPreview {
     for (const [key, pending] of this.pending)
@@ -61,13 +69,14 @@ export class CatalogImporter {
       newCount: 0,
       updateCount: 0,
       priceChanges: 0,
+      stockOpenings: 0,
       errors: [],
       rows: [],
       alreadyApplied: Boolean(
         this.db.prepare('SELECT id FROM import_batches WHERE source_hash=?').get(hash),
       ),
     };
-    const entries: ProductSaveInput[] = [];
+    const entries: ImportEntry[] = [];
     const delimiter = content
       .replace(/^\uFEFF/, '')
       .split(/\r?\n/)[0]
@@ -134,7 +143,7 @@ export class CatalogImporter {
         const saleUnit = unit.toUpperCase();
         if (saleUnit !== 'KG' && saleUnit !== 'UNIT')
           throw new DomainError('VALIDATION', 'La unidad debe ser UNIT o KG.');
-        if (opening.trim() !== '')
+        if (opening.trim() !== '' && !this.stock)
           throw new DomainError(
             'VALIDATION',
             'La carga de stock inicial estará disponible con el módulo de stock. Dejá stock_inicial vacío para cargar sólo el catálogo.',
@@ -163,6 +172,16 @@ export class CatalogImporter {
           );
         if (input.barcode) barcodes.add(input.barcode);
         const current = this.catalog.findBySku(input.sku);
+        const openingBase = opening.trim() === '' ? undefined : parseQuantity(opening, saleUnit);
+        if (
+          openingBase !== undefined &&
+          current &&
+          (!current.trackStock || current.stockInitialized)
+        )
+          throw new DomainError(
+            'VALIDATION',
+            'El producto ya tiene conteo o no controla stock. Usá Stock para corregirlo.',
+          );
         if (input.barcode) {
           const owner = this.db
             .prepare('SELECT id,sku FROM products WHERE barcode=?')
@@ -175,16 +194,24 @@ export class CatalogImporter {
             'VALIDATION',
             'La unidad no puede cambiar: el producto tiene ventas o movimientos.',
           );
-        entries.push(
-          current
+        entries.push({
+          ...(current
             ? {
                 ...input,
                 trackStock: current.trackStock,
                 id: current.id,
                 expectedRevision: current.revision,
               }
-            : input,
-        );
+            : input),
+          ...(openingBase === undefined
+            ? {}
+            : {
+                openingBase,
+                stockRevision: current ? this.stock!.get(current.id).revision : 0,
+                openingKey: randomUUID(),
+              }),
+        });
+        if (openingBase !== undefined) preview.stockOpenings++;
         if (current) {
           preview.updateCount++;
           if (current.priceCents !== input.priceCents) preview.priceChanges++;
@@ -196,6 +223,8 @@ export class CatalogImporter {
           barcode: input.barcode,
           priceCents: input.priceCents,
           previousPriceCents: current?.priceCents ?? null,
+          countedBase: openingBase ?? null,
+          unit: input.saleUnit,
           action: current ? 'UPDATE' : 'CREATE',
         });
       } catch (error) {
@@ -256,6 +285,11 @@ export class CatalogImporter {
         'VALIDATION',
         'Confirmá los cambios de precio antes de aplicar la carga.',
       );
+    if (pending.preview.stockOpenings > 0 && !input.confirmStockCounts)
+      throw new DomainError(
+        'VALIDATION',
+        'Confirmá que las cantidades corresponden a un conteo físico real.',
+      );
     return this.db
       .transaction(() => {
         for (const entry of pending.entries) {
@@ -264,7 +298,17 @@ export class CatalogImporter {
               'REVISION_CONFLICT',
               'El catálogo cambió. Revisá el archivo nuevamente.',
             );
-          this.catalog.save(entry);
+          const { openingBase, stockRevision, openingKey, ...productInput } = entry;
+          const product = this.catalog.save(productInput);
+          if (openingBase !== undefined)
+            this.stock!.opening({
+              productId: product.id,
+              countedBase: openingBase,
+              reason: `Conteo inicial CSV: ${pending.preview.sourceName}`.slice(0, 240),
+              operationKey: openingKey!,
+              expectedRevision: stockRevision!,
+              expectedProductRevision: product.revision,
+            });
         }
         const id = randomUUID();
         this.db

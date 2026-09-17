@@ -19,5 +19,15 @@ const api: BochaApi = {
     getDraft: () => invoke('checkout.getDraft'),
     saveDraft: (input) => invoke('checkout.saveDraft', input),
   },
+  stock: {
+    operation: (operationKey) => invoke('stock.operation', { operationKey }),
+    get: (productId) => invoke('stock.get', { productId }),
+    search: (input) => invoke('stock.search', input),
+    opening: (input) => invoke('stock.opening', input),
+    count: (input) => invoke('stock.count', input),
+    record: (input) => invoke('stock.record', input),
+    listLow: (input) => invoke('stock.listLow', input),
+    movements: (input) => invoke('stock.movements', input),
+  },
 };
 contextBridge.exposeInMainWorld('bocha', api);

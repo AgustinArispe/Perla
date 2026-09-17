@@ -1,10 +1,10 @@
 # Feature Specification: Stock, ingresos y ajustes
 
-**Feature Branch**: no creada; identificador `003-stock-ledger` independiente de Git.
+**Feature Branch**: `feature/desktop-catalog` (incremento de Stock sobre el catálogo).
 
 **Created**: 2026-09-17
 
-**Status**: Draft - para revisión de Agus; no implementado.
+**Status**: conteos, ingresos, mermas, reposición e historial implementados. Descuento por venta y reversión por anulación pendientes de 006.
 
 **Input**: Conocer existencias por unidad o gramos, registrar reposición, mermas y conteos, y señalar productos con poco stock.
 

@@ -36,6 +36,9 @@ Contrato `window.bocha` propuesto:
 | products.previewImport | file elegido en main | filas validadas, errores, previewToken |
 | products.applyImport | previewToken, operationKey | ImportResult |
 | stock.opening | productId, countedBase, operationKey, reason | StockBalance |
+| stock.get | productId | StockBalance, incluyendo UNKNOWN/DISABLED |
+| stock.search | query, filter, includeInactive, PageInput | página StockBalance |
+| stock.operation | operationKey | resultado original guardado o null |
 | stock.record | productId, deltaBase, kind, reason, operationKey, expectedRevision | StockBalance |
 | stock.count | productId, countedBase, reason, operationKey, expectedRevision | StockBalance |
 | stock.listLow | PageInput | balances inicializados bajos, unidad y mínimo |
@@ -55,6 +58,13 @@ Contrato `window.bocha` propuesto:
 ProductInput: sku, barcode nullable, name, category nullable, saleUnit, priceCents,
 active, trackStock, minStockBase. Cantidad actual nunca se edita vía products.save.
 StockBalance: productId, quantityBase, initialized, unit, minStockBase, revision.
+Las mutaciones de Stock también exigen `expectedProductRevision` y
+`expectedRevision` (cero antes del primer balance). `quantityBase` es null si no
+se contó o el control está desactivado. Incluye nombre, SKU, barcode, active,
+trackStock, productRevision y state para la interfaz. `stock.record` sólo expone
+RECEIPT/WASTE; para saldo negativo exige `allowNegative:true` y motivo.
+Los movimientos se filtran por fecha comercial argentina y se paginan por secuencia.
+La importación exige `confirmStockCounts:true` cuando incluye conteos iniciales.
 SaleDetail: timestamps, status, snapshots de líneas y totales, pagos y vuelto,
 eventos y motivo de anulación. MonthlyReport: rango, totals, paymentAmounts,
 paymentSaleCounts, dailyTotals, topByRevenue, topByUnits, topByKg, cancellations,
