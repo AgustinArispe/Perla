@@ -1,3 +1,4 @@
+import { signIn } from './auth-helper';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -25,6 +26,7 @@ test('recupera un ingreso guardado sin confirmación después de reiniciar y no 
   let application = await launch(directory);
   try {
     const first = await application.firstWindow();
+    await signIn(first);
     await expect(first.getByText('Base de datos conectada', { exact: true })).toBeVisible();
     const productId = await first.evaluate(async () => {
       const saved = await window.bocha!.products.save({
@@ -70,6 +72,7 @@ test('recupera un ingreso guardado sin confirmación después de reiniciar y no 
     await application.close();
     application = await launch(directory);
     const page = await application.firstWindow();
+    await signIn(page);
     await page.getByRole('button', { name: 'Stock', exact: true }).click();
     await expect(
       page.getByText('Registro pendiente de confirmar · Arroz', { exact: true }),
@@ -112,6 +115,7 @@ test('contar, ingresar, registrar merma y revisar movimientos desde Stock', asyn
   });
   try {
     const page = await application.firstWindow();
+    await signIn(page);
     await expect(page.getByText('Base de datos conectada', { exact: true })).toBeVisible();
     await page.evaluate(async () => {
       for (const [sku, name, unit, min] of [

@@ -1,3 +1,4 @@
+import { signIn } from './auth-helper';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
@@ -22,6 +23,7 @@ test('backend IPC confirma, recupera tras reiniciar y anula una venta offline', 
   try {
     await application.context().setOffline(true);
     let page = await application.firstWindow();
+    await signIn(page);
     await expect(page.getByText('Base de datos conectada', { exact: true })).toBeVisible();
     const saved = await page.evaluate(async () => {
       const api = window.bocha!;
@@ -75,6 +77,7 @@ test('backend IPC confirma, recupera tras reiniciar y anula una venta offline', 
     application = await launch();
     await application.context().setOffline(true);
     page = await application.firstWindow();
+    await signIn(page);
     await expect(page.getByText('Base de datos conectada', { exact: true })).toBeVisible();
     const recovered = await page.evaluate(
       async ({ input, productId }) => ({

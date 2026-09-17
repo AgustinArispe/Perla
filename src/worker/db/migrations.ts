@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import productsSql from './migrations/002_products.sql?raw';
 import inventorySql from './migrations/003_inventory.sql?raw';
 import salesSql from './migrations/004_sales.sql?raw';
+import usersSql from './migrations/005_users.sql?raw';
 import { DomainError } from '../../shared/errors';
 
 export interface Migration {
@@ -20,6 +21,7 @@ export const MIGRATIONS: Migration[] = [
   { version: 2, sql: productsSql },
   { version: 3, sql: inventorySql },
   { version: 4, sql: salesSql },
+  { version: 5, sql: usersSql },
 ];
 export const SCHEMA_VERSION = MIGRATIONS.at(-1)!.version;
 const checksum = (sql: string) => createHash('sha256').update(sql).digest('hex');

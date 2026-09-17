@@ -94,6 +94,8 @@ No nuevas tablas de totales inicialmente; derivar de sales COMPLETED, items net_
 
 ## Assumptions
 
+- Acceso exclusivo del jefe (OWNER), según ampliación de usuarios 009; supervisor y vendedor no consultan métricas mensuales.
+
 - Ayuda de reposición sin lead time/costos/proveedores: no órdenes de compra automáticas.
 
 - Exportación Excel y cierre diario son posteriores; dashboard no sustituye arqueo.

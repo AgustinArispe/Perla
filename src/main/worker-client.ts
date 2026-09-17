@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { Worker } from 'node:worker_threads';
 import { z } from 'zod';
+import { UserSchema } from '../shared/auth';
 import { AppErrorSchema } from '../shared/contracts';
 import type { Result, SystemStatus } from '../shared/contracts';
 import { DomainError, failure } from '../shared/errors';
@@ -25,6 +26,8 @@ interface Pending {
 }
 
 export class WorkerClient {
+  private authChanging = false;
+  private sessionToken: string | null = null;
   private worker: Worker | undefined;
   private status: DatabaseStatus | undefined;
   private starting: Promise<DatabaseStatus> | undefined;
@@ -130,6 +133,25 @@ export class WorkerClient {
     }
   }
   async call(operation: string, payload: unknown): Promise<Result<unknown>> {
+    if (this.authChanging && operation !== 'auth.status')
+      return failure(
+        new DomainError('DB_BUSY', 'Se está cambiando la sesión. Esperá un momento.', true),
+      );
+    const changing = [
+      'auth.login',
+      'auth.bootstrap',
+      'auth.logout',
+      'auth.changePassword',
+    ].includes(operation);
+    if (!changing) return this.send(operation, payload);
+    this.authChanging = true;
+    try {
+      return await this.send(operation, payload);
+    } finally {
+      this.authChanging = false;
+    }
+  }
+  private async send(operation: string, payload: unknown): Promise<Result<unknown>> {
     if (this.reconnecting)
       return failure(
         new DomainError('DB_BUSY', 'Se está reconectando la base. Reintentá en un momento.', true),
@@ -137,7 +159,8 @@ export class WorkerClient {
     const health = await this.health();
     if (!health.ok) return health;
     const id = randomUUID();
-    return new Promise((resolve) => {
+    const sentToken = this.sessionToken;
+    const result = await new Promise<Result<unknown>>((resolve) => {
       const timer = setTimeout(() => {
         this.pending.delete(id);
         resolve(
@@ -152,13 +175,36 @@ export class WorkerClient {
       }, 15000);
       this.pending.set(id, { resolve, timer });
       try {
-        this.worker!.postMessage({ id, request: { operation, payload } });
+        this.worker!.postMessage({
+          id,
+          sessionToken: sentToken,
+          request: { operation, payload },
+        });
       } catch (error) {
         clearTimeout(timer);
         this.pending.delete(id);
         resolve(failure(error));
       }
     });
+    if (result.ok && (operation === 'auth.login' || operation === 'auth.bootstrap')) {
+      try {
+        const grant = z
+          .strictObject({ user: UserSchema, sessionToken: z.string().regex(/^[a-f0-9]{64}$/) })
+          .parse(result.value);
+        this.sessionToken = grant.sessionToken;
+        return { ok: true, value: grant.user };
+      } catch (error) {
+        return failure(error);
+      }
+    }
+    if (
+      (result.ok && (operation === 'auth.logout' || operation === 'auth.changePassword')) ||
+      (!result.ok &&
+        result.error.code === 'UNAUTHENTICATED' &&
+        !['auth.login', 'auth.bootstrap', 'auth.changePassword'].includes(operation))
+    )
+      if (this.sessionToken === sentToken) this.sessionToken = null;
+    return result;
   }
   reconnect(): Promise<Result<SystemStatus>> {
     if (this.reconnecting) return this.reconnecting;

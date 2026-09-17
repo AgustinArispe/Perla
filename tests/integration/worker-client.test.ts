@@ -3,6 +3,29 @@ import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { expect, it } from 'vitest';
 import { WorkerClient } from '../../src/main/worker-client';
+it('token permanece en main y un error de contraseña no destruye la sesión', async () => {
+  const directory = mkdtempSync(join(tmpdir(), 'bocha-worker-auth-'));
+  const script = join(directory, 'worker.cjs');
+  writeFileSync(
+    script,
+    `const {parentPort}=require('node:worker_threads');parentPort.postMessage({type:'ready',result:{ok:true,value:{database:'ready',schemaVersion:5,sqliteVersion:'test'}}});parentPort.on('message',m=>{if(m==='close'){parentPort.close();return;}const op=m.request.operation;let result=op==='auth.login'?{ok:true,value:{sessionToken:'a'.repeat(64),user:{id:'123e4567-e89b-42d3-a456-426614174000',username:'jefe',name:'Jefe',role:'OWNER',active:true,revision:1,createdAt:'now',updatedAt:'now'}}}:op==='auth.changePassword'?{ok:false,error:{code:'UNAUTHENTICATED',message:'Contraseña actual incorrecta',retryable:false}}:{ok:true,value:{authenticated:m.sessionToken==='a'.repeat(64)}};setTimeout(()=>parentPort.postMessage({type:'response',id:m.id,result}),20);});`,
+  );
+  const client = new WorkerClient(script, 'unused', 'test', 'test');
+  try {
+    await client.start();
+    const login = await client.call('auth.login', null);
+    expect(login).toMatchObject({ ok: true, value: { name: 'Jefe' } });
+    expect(JSON.stringify(login)).not.toContain('sessionToken');
+    await client.call('auth.changePassword', null);
+    expect(await client.call('auth.status', null)).toEqual({
+      ok: true,
+      value: { authenticated: true },
+    });
+  } finally {
+    await client.stop();
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
 
 it('agrupa reconexiones concurrentes en un único worker y rechaza operaciones durante el cambio', async () => {
   const directory = mkdtempSync(join(tmpdir(), 'bocha-worker-client-'));

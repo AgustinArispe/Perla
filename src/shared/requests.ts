@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { BootstrapSchema, LoginSchema, UserSaveSchema, ChangePasswordSchema } from './auth';
 import { CheckoutSchema, VoidSchema, SalesSearchSchema } from './sales';
 import { DomainError } from './errors';
 import {
@@ -16,6 +17,14 @@ import {
 } from './catalog';
 
 export const RequestSchemas = {
+  'auth.status': z.null(),
+  'auth.bootstrap': BootstrapSchema,
+  'auth.login': LoginSchema,
+  'auth.logout': z.null(),
+  'auth.changePassword': ChangePasswordSchema,
+  'users.list': z.null(),
+  'users.save': UserSaveSchema,
+  'checkout.cancelDraft': z.strictObject({ expectedRevision: z.number().int().min(0) }),
   'sales.complete': CheckoutSchema,
   'sales.findByCheckoutKey': z.strictObject({ checkoutKey: z.uuid() }),
   'sales.detail': z.strictObject({ saleId: z.uuid() }),

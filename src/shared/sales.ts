@@ -51,6 +51,8 @@ export interface SaleSummary {
   totalCents: number;
 }
 export interface SaleDetail extends SaleSummary {
+  actorUserId: string | null;
+  actorName: string | null;
   discount: z.infer<typeof DraftBodySchema>['discount'];
   items: {
     id: string;

@@ -37,11 +37,17 @@ export class SalesService {
     const id = IdSchema.parse(rawId);
     const sale = this.db.prepare(`${summarySql} WHERE id=?`).get(id) as SaleSummary | undefined;
     if (!sale) throw new DomainError('NOT_FOUND', 'La venta no existe.');
-    const discount = this.db.prepare('SELECT discount_json FROM sales WHERE id=?').get(id) as {
+    const discount = this.db
+      .prepare('SELECT discount_json,actor_user_id,actor_name FROM sales WHERE id=?')
+      .get(id) as {
       discount_json: string;
+      actor_user_id: string | null;
+      actor_name: string | null;
     };
     return {
       ...sale,
+      actorUserId: discount.actor_user_id,
+      actorName: discount.actor_name,
       discount: DraftBodySchema.shape.discount.parse(JSON.parse(discount.discount_json)),
       items: this.db
         .prepare(
@@ -72,7 +78,7 @@ export class SalesService {
       .get(IdSchema.parse(key)) as { id: string } | undefined;
     return row ? this.detail(row.id) : null;
   }
-  complete(raw: CheckoutInput): SaleDetail {
+  complete(raw: CheckoutInput, userId?: string): SaleDetail {
     const input = CheckoutSchema.parse(raw);
     const payloadHash = hash(input);
     return this.db
@@ -88,7 +94,7 @@ export class SalesService {
             );
           return this.detail(old.id);
         }
-        const draft = this.drafts.get();
+        const draft = this.drafts.get(userId);
         const body = DraftBodySchema.parse({
           checkoutKey: input.checkoutKey,
           lines: input.lines,
@@ -138,7 +144,9 @@ export class SalesService {
           this.db.prepare('SELECT COALESCE(MAX(number),0)+1 AS n FROM sales').get() as { n: number }
         ).n;
         this.db
-          .prepare('INSERT INTO sales VALUES (?,?,?,?,?,?,?,?,?,?,?,?)')
+          .prepare(
+            'INSERT INTO sales (id,number,checkout_key,payload_hash,status,created_at_utc,business_date,local_month,subtotal_cents,discount_cents,total_cents,discount_json) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',
+          )
           .run(
             id,
             number,
@@ -208,7 +216,7 @@ export class SalesService {
           input.negativeStockOverride?.reason ?? 'Venta finalizada',
           now,
         );
-        if (draft) this.db.prepare("DELETE FROM checkout_drafts WHERE id='main'").run();
+        if (draft) this.db.prepare('DELETE FROM checkout_drafts WHERE id=?').run(userId ?? 'main');
         return this.detail(id);
       })
       .immediate();
@@ -267,7 +275,9 @@ export class SalesService {
         ? 'El reloj de la PC retrocedió respecto del último registro. Revisá la fecha y hora.'
         : null;
     this.db
-      .prepare('INSERT INTO sale_events VALUES (?,?,?,?,?,?,?,?)')
+      .prepare(
+        'INSERT INTO sale_events (id,sale_id,kind,reason,operation_key,payload_hash,created_at_utc,clock_warning) VALUES (?,?,?,?,?,?,?,?)',
+      )
       .run(randomUUID(), saleId, kind, reason, key, payloadHash, now, warning);
   }
   previewVoid(saleId: string): VoidPreview {

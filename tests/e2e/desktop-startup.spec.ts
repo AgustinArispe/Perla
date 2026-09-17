@@ -1,3 +1,4 @@
+import { signIn } from './auth-helper';
 import { mkdtempSync, rmSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
@@ -24,6 +25,7 @@ test('abre el escritorio con SQLite en worker y renderer aislado', async () => {
       try {
         await application.context().setOffline(true);
         const page = await application.firstWindow();
+        await signIn(page);
         await expect(page.getByText('Base de datos conectada', { exact: true })).toBeVisible();
         expect(
           await page.evaluate(() => typeof (globalThis as { require?: unknown }).require),
@@ -33,7 +35,7 @@ test('abre el escritorio con SQLite en worker y renderer aislado', async () => {
         if (!result.ok) throw new Error(result.error.message);
         expect(result.value.database).toBe('ready');
         expect(result.value.environment).toBe('test');
-        expect(result.value.schemaVersion).toBe(4);
+        expect(result.value.schemaVersion).toBe(5);
         if (attempt === 0) {
           const saved = await page.evaluate(() =>
             window.bocha!.products.save({
@@ -60,6 +62,8 @@ test('abre el escritorio con SQLite en worker y renderer aislado', async () => {
           if (found.ok) expect(found.value.priceCents).toBe(250050);
         }
         expect(await page.evaluate(() => Object.keys(window.bocha!))).toEqual([
+          'auth',
+          'users',
           'system',
           'products',
           'checkout',

@@ -1,5 +1,13 @@
 import { z } from 'zod';
 import type {
+  User,
+  AuthStatus,
+  BootstrapInput,
+  LoginInput,
+  UserSaveInput,
+  ChangePasswordInput,
+} from './auth';
+import type {
   CheckoutInput,
   VoidInput,
   SalesSearchInput,
@@ -40,6 +48,9 @@ export type SystemStatus = z.infer<typeof SystemStatusSchema>;
 export const AppErrorSchema = z.object({
   code: z.enum([
     'VALIDATION',
+    'UNAUTHENTICATED',
+    'FORBIDDEN',
+    'AUTH_THROTTLED',
     'NOT_FOUND',
     'INACTIVE',
     'REVISION_CONFLICT',
@@ -61,6 +72,14 @@ export const SystemHealthResultSchema = z.discriminatedUnion('ok', [
   z.object({ ok: z.literal(false), error: AppErrorSchema }),
 ]);
 export interface BochaApi {
+  auth: {
+    status(): Promise<Result<AuthStatus>>;
+    bootstrap(input: BootstrapInput): Promise<Result<User>>;
+    login(input: LoginInput): Promise<Result<User>>;
+    logout(): Promise<Result<null>>;
+    changePassword(input: ChangePasswordInput): Promise<Result<null>>;
+  };
+  users: { list(): Promise<Result<User[]>>; save(input: UserSaveInput): Promise<Result<User>> };
   sales: {
     complete(input: CheckoutInput): Promise<Result<SaleDetail>>;
     findByCheckoutKey(checkoutKey: string): Promise<Result<SaleDetail | null>>;
@@ -79,6 +98,7 @@ export interface BochaApi {
     applyImport(input: ApplyImportInput): Promise<Result<ImportResult>>;
   };
   checkout: {
+    cancelDraft(expectedRevision: number): Promise<Result<null>>;
     getDraft(): Promise<Result<DraftRecord | null>>;
     saveDraft(input: SaveDraftInput): Promise<Result<DraftRecord>>;
   };

@@ -1,3 +1,4 @@
+import { signIn } from './auth-helper';
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -20,6 +21,7 @@ test('crear, editar, buscar y desactivar con datos persistidos y teclado', async
   });
   try {
     const page = await application.firstWindow();
+    await signIn(page);
     await expect(page.getByRole('heading', { name: 'Productos', exact: true })).toBeVisible();
     await page.keyboard.press('F3');
     const form = page.getByRole('dialog');
@@ -94,6 +96,7 @@ test('elegir CSV, revisar errores y aplicar una carga sin duplicarla', async () 
       });
     }, file);
     const page = await application.firstWindow();
+    await signIn(page);
     await page.getByRole('button', { name: 'Importar productos' }).click();
     const preview = page.getByRole('dialog');
     await expect(preview.getByRole('heading', { name: 'Revisar carga' })).toBeVisible();

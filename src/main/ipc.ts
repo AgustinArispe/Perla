@@ -30,6 +30,10 @@ export function registerIpc(
         if (request.operation === 'system.health') return client.health();
         if (request.operation === 'system.reconnect') return client.reconnect();
         if (request.operation === 'products.previewImport') {
+          const permission = await client.call('internal.authorize', {
+            operation: request.operation,
+          });
+          if (!permission.ok) return permission;
           const window = BrowserWindow.fromWebContents(event.sender);
           if (!window)
             throw new DomainError('VALIDATION', 'No se encontró la ventana de productos.');

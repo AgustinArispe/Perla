@@ -6,6 +6,14 @@ function invoke<T>(operation: Operation, payload: unknown = null): Promise<Resul
   return ipcRenderer.invoke('bocha:request', { operation, payload });
 }
 const api: BochaApi = {
+  auth: {
+    status: () => invoke('auth.status'),
+    bootstrap: (input) => invoke('auth.bootstrap', input),
+    login: (input) => invoke('auth.login', input),
+    logout: () => invoke('auth.logout'),
+    changePassword: (input) => invoke('auth.changePassword', input),
+  },
+  users: { list: () => invoke('users.list'), save: (input) => invoke('users.save', input) },
   system: { health: () => invoke('system.health'), reconnect: () => invoke('system.reconnect') },
   products: {
     search: (input) => invoke('products.search', input),
@@ -16,6 +24,7 @@ const api: BochaApi = {
     applyImport: (input) => invoke('products.applyImport', input),
   },
   checkout: {
+    cancelDraft: (expectedRevision) => invoke('checkout.cancelDraft', { expectedRevision }),
     getDraft: () => invoke('checkout.getDraft'),
     saveDraft: (input) => invoke('checkout.saveDraft', input),
   },

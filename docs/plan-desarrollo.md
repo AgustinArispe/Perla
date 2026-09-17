@@ -33,12 +33,18 @@ quickstart.md, tasks.md y checklists/requirements.md, con formato Spec Kit.
 | 6 | [006 Ventas y pagos](../specs/006-sales-payments-history/spec.md) | Commit atómico, efectivo/tarjetas, histórico y anulación | 001..005 |
 | 7 | [007 Dashboard mensual](../specs/007-monthly-dashboard/spec.md) | Totales, pagos, rankings y stock bajo actual | 002, 003, 006 |
 | 8 | [008 Instalación/backup](../specs/008-backup-installation/spec.md) | Instalador, snapshot, restore y mantenimiento | 001, 002, 003, 006, 007 |
+| 9 | [009 Usuarios/permisos](../specs/009-users-roles/spec.md) | Ingreso, perfiles, administración por jefe y trazabilidad | 001, 002, 003, 006 |
 
 Los números son identificadores de specs. La implementación local está en
-`feature/desktop-catalog`. No se creó/publicó un repositorio remoto de GitHub.
+`feature/users-roles` (incrementos previos en `feature/desktop-catalog`). No se creó/publicó un repositorio remoto de GitHub.
 
 Se adelanta el backend 006 por pedido de Agus, reutilizando borrador y cantidades
 base antes de desarrollar las pantallas 004/005. [Entrega y límites](entrega-03-backend-ventas.md).
+
+Ampliación pedida: usuarios vendedor/supervisor/jefe, creación de cuentas por jefe,
+restricción de dashboard a jefe y posible despliegue web. Se implementa 009 antes
+de conectar Caja e Histórico. Se conserva escritorio/SQLite y se desacopla la
+autorización del transporte; esta etapa no incluye publicación web.
 
 ## Reglas que afectan todos los módulos
 

@@ -22,8 +22,8 @@ describe('migraciones trazables', () => {
       expect(() =>
         migrate(db, [
           ...MIGRATIONS,
-          { version: 5, sql: 'CREATE TABLE probe (id INTEGER)' },
-          { version: 6, sql: 'INSERT INTO does_not_exist VALUES (1)' },
+          { version: 6, sql: 'CREATE TABLE probe (id INTEGER)' },
+          { version: 7, sql: 'INSERT INTO does_not_exist VALUES (1)' },
         ]),
       ).toThrow();
       expect(db.prepare("SELECT name FROM sqlite_master WHERE name='probe'").get()).toBeUndefined();

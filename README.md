@@ -9,6 +9,10 @@ con stock atómico. Pantallas de Caja e Histórico y dashboard siguen pendientes
 [Entrega, pruebas y próximos pasos](docs/entrega-01-catalogo.md).
 [Entrega de Stock y pruebas de recuperación](docs/entrega-02-stock.md).
 [Entrega del backend de Ventas](docs/entrega-03-backend-ventas.md).
+[Usuarios, permisos y sesiones](docs/entrega-04-usuarios.md).
+
+Primer arranque: configurar cuenta de jefe. El jefe crea vendedores y supervisores
+desde Usuarios. Los permisos se verifican en backend; no hay contraseña predeterminada.
 
 ## Desarrollo
 

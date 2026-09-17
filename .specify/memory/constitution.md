@@ -39,10 +39,20 @@ No se declara compatible un hardware que solamente fue simulado.
 
 ## Restricciones del proyecto
 
+### VI. Identidad y permisos verificables
+
+Operaciones de negocio requieren sesión activa y autorización en backend.
+Vendedor sólo Caja; supervisor gestiona Productos/Stock/Histórico sin dashboard;
+jefe administra todos los módulos y usuarios. Cancelar un carrito no anula una
+venta cobrada. Responsables y cambios se conservan sin credenciales ni tokens.
+Revocar cuentas/roles invalida sesiones; debe permanecer un jefe activo.
+
 - Windows 11 x64 como objetivo inicial; PC con SSD y 8 GB RAM como referencia a validar.
 - React, TypeScript strict, Vite, Electron; SQLite y consultas SQL parametrizadas.
 - Sin ARCA, emisión fiscal, procesamiento de tarjetas ni conexión a POS bancario.
-- Un comercio, una caja, una PC, un depósito lógico. Sin nube ni sincronización.
+- Un comercio, una caja, una PC, un depósito lógico en el despliegue actual.
+  Posible web futura: mantener reglas y permisos independientes de Electron;
+  servidor, transporte, hosting y concurrencia multiusuario requieren otra entrega.
 - Paquetes de aplicación resueltos y fijados en lockfile al comenzar implementación.
 - Node.js 24 LTS para herramientas de desarrollo; el cliente no instala Node ni Python.
 
@@ -61,4 +71,4 @@ dinero, stock o esquema requieren adaptar contratos, pruebas y migraciones.
 Versionar esta constitución: major para reglas incompatibles, minor para nuevas
 reglas, patch para aclaraciones. Revisar cumplimiento en cada entrega.
 
-**Version**: 1.0.0 | **Ratified**: 2026-09-17 | **Last Amended**: 2026-09-17
+**Version**: 1.1.0 | **Ratified**: 2026-09-17 | **Last Amended**: 2026-09-17
