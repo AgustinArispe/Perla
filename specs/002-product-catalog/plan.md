@@ -1,14 +1,16 @@
 # Implementation Plan: Catálogo y carga inicial de productos
 
-**Branch**: sin crear | **Date**: 2026-09-17 | **Spec**: [spec.md](spec.md)
+**Branch**: feature/desktop-catalog | **Date**: 2026-09-17 | **Spec**: [spec.md](spec.md)
 **Input**: `specs/002-product-catalog/spec.md`
-**Estado**: borrador de diseño, no se ejecutaron tareas de aplicación.
+**Estado**: catálogo operativo; aceptación cruzada pendiente. [Evidencia y pendientes](../../docs/entrega-01-catalogo.md).
 
 ## Summary
 
 Administrar productos unitarios y por kilo, con búsqueda rápida y una carga inicial revisable de aproximadamente 2.000 artículos.
 
-Repositorio SQL con normalización de búsqueda y caché invalidada tras guardar/importar. PreviewImport usa token asociado al archivo validado y su hash.
+Repositorio SQL con búsqueda normalizada y paginación por cursor. TanStack Query
+invalida los resultados después de guardar/importar; no se mantiene una segunda
+copia del catálogo en el worker. PreviewImport usa token asociado al archivo validado y su hash.
 
 ## Technical Context
 

@@ -1,0 +1,3 @@
+sku;barcode;nombre;precio_ars;unidad;activo;categoria;stock_inicial;stock_minimo
+ALM-001;0123456789012;Leche entera 1 L;1.500,00;UNIT;si;Lácteos;;5
+FIAM-001;;Jamón cocido;12.000,00;KG;si;Fiambres;;0,500

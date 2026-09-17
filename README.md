@@ -1,8 +1,11 @@
 # El Bocha POS
 
 Aplicación de escritorio de control interno para un almacén en Argentina.
-Estado: entorno de desarrollo y scaffold de escritorio preparados. Los módulos de
-negocio siguen pendientes en las specs.
+Estado: primera entrega de desarrollo disponible. Catálogo conectado a SQLite,
+alta/edición/inactivación, búsqueda e importación CSV con revisión previa.
+Caja, movimientos de stock, ventas, histórico y dashboard siguen pendientes.
+
+[Entrega, pruebas y próximos pasos](docs/entrega-01-catalogo.md).
 
 ## Desarrollo
 
@@ -12,6 +15,12 @@ npm run docker:up   # React en http://localhost:5173
 npm run check       # tipos, lint, tests y compilación
 npm run test:e2e    # prueba de escritorio
 ```
+
+En Productos: **F2** busca, **F3** crea, **Ctrl + S** guarda y **Esc** vuelve.
+La app arranca con el catálogo vacío; los productos se cargan manualmente o desde
+un CSV UTF-8. [Ejemplo de formato](resources/productos-ejemplo.csv).
+La vista Docker sirve para desarrollar la interfaz; los datos se guardan desde
+la aplicación de escritorio.
 
 [Instalación, Docker, comandos y empaquetado](docs/entorno-desarrollo.md).
 

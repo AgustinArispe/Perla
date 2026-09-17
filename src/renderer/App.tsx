@@ -1,83 +1,101 @@
-import { useQuery } from '@tanstack/react-query';
-import { SystemHealthResultSchema } from '../shared/contracts';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { api, unwrap, errorMessage } from './api';
+import { Icon } from './components/Icon';
+import { ProductList } from './features/products/ProductList';
 
-const modules = [
-  ['01', 'Caja', 'Escaneo, cantidades, descuentos y cobro.'],
-  ['02', 'Productos', 'Catálogo, precios y ventas por peso.'],
-  ['03', 'Stock', 'Ingresos, ajustes y alertas de reposición.'],
-  ['04', 'Ventas', 'Histórico y detalle de cada operación.'],
-  ['05', 'Resumen', 'Ventas del mes, productos y medios de pago.'],
-  ['06', 'Configuración', 'Datos del comercio y copias de seguridad.'],
-];
+const sections = [
+  ['cash', 'Caja'],
+  ['box', 'Productos'],
+  ['stock', 'Stock'],
+  ['history', 'Histórico'],
+  ['chart', 'Resumen mensual'],
+  ['settings', 'Configuración'],
+] as const;
 
 export function App() {
   const desktop = Boolean(window.bocha);
+  const client = useQueryClient();
   const status = useQuery({
     queryKey: ['system-status'],
-    queryFn: async () => {
-      const result = SystemHealthResultSchema.parse(await window.bocha!.system.health());
-      if (!result.ok) throw new Error(result.error.message);
-      return result.value;
-    },
+    queryFn: async () => unwrap(await api().system.health()),
     enabled: desktop,
     retry: false,
+    refetchInterval: 5000,
   });
+  async function reconnect() {
+    const result = await api().system.reconnect();
+    if (result.ok) await client.invalidateQueries();
+    else void status.refetch();
+  }
   return (
-    <div className="shell">
-      <header className="header">
+    <div className="app-shell">
+      <aside className="sidebar">
         <div className="brand">
           <span className="brand-mark">B.</span>
           <div>
             <strong>El Bocha</strong>
-            <span>Control del almacén</span>
+            <span>Almacén</span>
           </div>
         </div>
-        <span className="tag">Entorno de desarrollo</span>
-      </header>
-      <main>
-        <div className="intro">
-          <span className="eyebrow">EL BOCHA POS / 0.1</span>
-          <h1>Todo listo para empezar.</h1>
-          <p>Base del sistema preparada. Los módulos se desarrollarán por etapas.</p>
-        </div>
-        <section className="status" aria-label="Estado del entorno">
-          <div className="status-dot" />
-          <div>
-            <strong>
-              {!desktop
-                ? 'Vista previa en navegador'
-                : status.isError
-                  ? 'No se pudo verificar la base de datos'
-                  : status.isPending
-                    ? 'Verificando los datos…'
-                    : 'Base de datos conectada'}
-            </strong>
-            <p>
-              {!desktop
-                ? 'La conexión a los datos está disponible en la aplicación de escritorio.'
-                : status.data
-                  ? `SQLite ${status.data.sqliteVersion} · Esquema ${status.data.schemaVersion} · Datos locales`
-                  : status.isError
-                    ? 'Reiniciá la aplicación para verificar la conexión.'
-                    : 'Preparando la aplicación local.'}
-            </p>
-          </div>
-          <span className="tag">{desktop ? 'Escritorio' : 'Web'}</span>
-        </section>
-        <section className="modules" aria-label="Módulos planificados">
-          {modules.map(([number, title, description]) => (
-            <article key={number}>
-              <span className="module-number">{number}</span>
-              <h2>{title}</h2>
-              <p>{description}</p>
-              <span className="planned">Pendiente de desarrollo</span>
-            </article>
+        <span className="nav-label">MI NEGOCIO</span>
+        <nav aria-label="Módulos">
+          {sections.map(([icon, title]) => (
+            <button
+              key={title}
+              className={title === 'Productos' ? 'nav-item selected' : 'nav-item'}
+              disabled={title !== 'Productos'}
+              aria-current={title === 'Productos' ? 'page' : undefined}
+            >
+              <Icon name={icon} />
+              <span>{title}</span>
+              {title !== 'Productos' && (
+                <span className="pending-dot" title="Pendiente de desarrollo" />
+              )}
+            </button>
           ))}
-        </section>
-      </main>
-      <footer>
-        El Bocha · Sistema de control interno<span>Desarrollado por Agustín Arispe</span>
-      </footer>
+        </nav>
+        <div className="sidebar-bottom">
+          <div className="offline-badge">
+            <span />
+            Datos en esta PC
+          </div>
+          <small>Control interno · v0.1.0</small>
+        </div>
+      </aside>
+      <div className="workspace">
+        <header className="topbar">
+          <span>EL BOCHA / PRODUCTOS</span>
+          <div className={`connection ${status.isError ? 'connection-error' : ''}`}>
+            <i />
+            {!desktop
+              ? 'Vista previa en navegador'
+              : status.isError
+                ? 'Conexión no disponible'
+                : status.isPending
+                  ? 'Conectando datos…'
+                  : 'Base de datos conectada'}
+          </div>
+        </header>
+        <main className="page-content">
+          {status.isError && (
+            <div className="alert error" role="alert">
+              {errorMessage(status.error)}{' '}
+              <button className="button secondary small" onClick={() => void reconnect()}>
+                Reintentar conexión
+              </button>
+            </div>
+          )}
+          <ProductList />
+        </main>
+        <footer className="app-footer">
+          <span>El Bocha · Control del almacén</span>
+          <span>
+            {desktop && status.data
+              ? `SQLite ${status.data.sqliteVersion} · Datos locales`
+              : 'Aplicación de escritorio'}
+          </span>
+        </footer>
+      </div>
     </div>
   );
 }

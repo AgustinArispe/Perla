@@ -1,4 +1,16 @@
 import { z } from 'zod';
+import type {
+  Product,
+  ProductSaveInput,
+  ProductSearchInput,
+  ProductPage,
+  SetActiveInput,
+  ImportPreview,
+  ImportResult,
+  ApplyImportInput,
+  SaveDraftInput,
+  DraftRecord,
+} from './catalog';
 
 export const SystemStatusSchema = z.object({
   applicationVersion: z.string(),
@@ -32,6 +44,18 @@ export const SystemHealthResultSchema = z.discriminatedUnion('ok', [
   z.object({ ok: z.literal(false), error: AppErrorSchema }),
 ]);
 export interface BochaApi {
-  system: { health(): Promise<Result<SystemStatus>> };
+  system: { health(): Promise<Result<SystemStatus>>; reconnect(): Promise<Result<SystemStatus>> };
+  products: {
+    search(input: ProductSearchInput): Promise<Result<ProductPage>>;
+    save(input: ProductSaveInput): Promise<Result<Product>>;
+    setActive(input: SetActiveInput): Promise<Result<Product>>;
+    findByBarcode(barcode: string): Promise<Result<Product>>;
+    previewImport(): Promise<Result<ImportPreview | null>>;
+    applyImport(input: ApplyImportInput): Promise<Result<ImportResult>>;
+  };
+  checkout: {
+    getDraft(): Promise<Result<DraftRecord | null>>;
+    saveDraft(input: SaveDraftInput): Promise<Result<DraftRecord>>;
+  };
 }
 export const IPC = { systemHealth: 'bocha:system-health' } as const;

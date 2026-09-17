@@ -1,8 +1,8 @@
 # Implementation Plan: Base de escritorio y persistencia
 
-**Branch**: sin crear | **Date**: 2026-09-17 | **Spec**: [spec.md](spec.md)
+**Branch**: feature/desktop-catalog | **Date**: 2026-09-17 | **Spec**: [spec.md](spec.md)
 **Input**: `specs/001-desktop-core/spec.md`
-**Estado**: borrador de diseño, no se ejecutaron tareas de aplicación.
+**Estado**: implementación parcial verificada. [Evidencia y pendientes](../../docs/entrega-01-catalogo.md).
 
 ## Summary
 

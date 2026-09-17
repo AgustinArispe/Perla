@@ -37,6 +37,7 @@
   "dependencies": {
     "@tanstack/react-query": "5.103.1",
     "better-sqlite3": "13.0.3",
+    "csv-parse": "7.0.2",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "zod": "4.6.5",

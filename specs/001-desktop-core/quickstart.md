@@ -1,12 +1,11 @@
 # Quickstart Validation: Base de escritorio y persistencia
 
-**Estado**: estos comandos son de la futura implementación. Hoy no existe
-package.json ni los tests; no se reportan como ejecutados.
+**Estado**: comandos disponibles y pruebas ejecutadas en desarrollo. La aceptación
+de Caja y recuperación de una venta pendiente sigue abierta. [Evidencia](../../docs/entrega-01-catalogo.md).
 
 ## Prerequisites
 
-001 implementada, Node 24 LTS, npm install según lockfile y dependencias de esta
-feature entregadas. Usar DB temporal de pruebas, nunca la DB real del comercio.
+Node 24 LTS y `npm run setup` según lockfile. Usar DB temporal de pruebas, nunca la DB real del comercio.
 Para desktop/scanner: instalador buildado y Windows 11 con scanner configurado.
 
 ## Commands and expected behavior
@@ -21,13 +20,17 @@ Resultado esperado: el escenario termina con las invariantes y el resultado defi
 npx vitest run tests/integration/migrations.test.ts
 ```
 Resultado esperado: el escenario termina con las invariantes y el resultado definidos, sin datos parciales. Test file: `tests/integration/migrations.test.ts`.
-### Abrir offline dos veces y verificar una ventana; render sigue respondiendo con worker ocupado.
+### Abrir offline dos veces con persistencia y renderer aislado.
 ```powershell
+npm run build
 npx playwright test tests/e2e/desktop-startup.spec.ts
 ```
 Resultado esperado: el escenario termina con las invariantes y el resultado definidos, sin datos parciales. Test file: `tests/e2e/desktop-startup.spec.ts`.
 
 ## Manual acceptance
+
+El escritorio abre Productos en esta entrega. El escenario original de abrir
+Caja y las pruebas de respuesta con worker ocupado se completarán en las siguientes entregas.
 
 1. Abrir la caja sin internet: Caja aparece sin navegador, terminal ni configuración manual.
 2. Mantener los datos entre sesiones: Los datos siguen disponibles y el esquema tiene una migración trazable.

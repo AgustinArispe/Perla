@@ -1,12 +1,10 @@
 # Quickstart Validation: Catálogo y carga inicial de productos
 
-**Estado**: estos comandos son de la futura implementación. Hoy no existe
-package.json ni los tests; no se reportan como ejecutados.
+**Estado**: comandos disponibles y pruebas ejecutadas para el catálogo. [Evidencia](../../docs/entrega-01-catalogo.md).
 
 ## Prerequisites
 
-001 implementada, Node 24 LTS, npm install según lockfile y dependencias de esta
-feature entregadas. Usar DB temporal de pruebas, nunca la DB real del comercio.
+Base 001 disponible, Node 24 LTS y `npm run setup` según lockfile. Usar DB temporal de pruebas, nunca la DB real del comercio.
 Para desktop/scanner: instalador buildado y Windows 11 con scanner configurado.
 
 ## Commands and expected behavior
@@ -21,13 +19,17 @@ Resultado esperado: el escenario termina con las invariantes y el resultado defi
 npx vitest run tests/integration/catalog-import.test.ts
 ```
 Resultado esperado: el escenario termina con las invariantes y el resultado definidos, sin datos parciales. Test file: `tests/integration/catalog-import.test.ts`.
-### Editar precio, desactivar y buscar código/nombre con teclado; comprobar que el inactivo desaparece de Caja.
+### Editar precio, desactivar y buscar con teclado; comprobar que la consulta de activos excluye el inactivo.
 ```powershell
+npm run build
 npx playwright test tests/e2e/product-search.spec.ts
 ```
 Resultado esperado: el escenario termina con las invariantes y el resultado definidos, sin datos parciales. Test file: `tests/e2e/product-search.spec.ts`.
 
 ## Manual acceptance
+
+Las ventas históricas, el carrito de Caja y los movimientos de stock todavía no
+están implementados. La aceptación que cruza esos módulos queda pendiente.
 
 1. Administrar un producto: El catálogo cambia, las ventas anteriores conservan sus datos y el inactivo no se agrega a nuevas ventas.
 2. Encontrar productos rápidamente: Se encuentra el artículo correcto con su precio y presentación.

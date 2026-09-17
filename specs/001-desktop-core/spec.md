@@ -1,10 +1,10 @@
 # Feature Specification: Base de escritorio y persistencia
 
-**Feature Branch**: no creada; identificador `001-desktop-core` independiente de Git.
+**Feature Branch**: `feature/desktop-catalog`; incluye base 001 y catálogo 002.
 
 **Created**: 2026-09-17
 
-**Status**: Draft - para revisión de Agus; no implementado.
+**Status**: En desarrollo. Persistencia y aislamiento implementados; aceptación completa pendiente de Caja y pruebas de recuperación/rendimiento en PC de referencia.
 
 **Input**: Abrir la aplicación local, mantener datos entre reinicios y preparar operaciones de negocio sin bloquear Caja.
 

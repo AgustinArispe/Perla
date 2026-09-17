@@ -14,9 +14,8 @@ for feature in features:
         if heading not in spec:errors.append(f'{feature.name}: {heading}')
     if len(re.findall(r'### User Story',spec))!=3:errors.append(f'{feature.name}: stories')
     tasks=(feature/'tasks.md').read_text(encoding='utf-8')
-    ids=re.findall(r'- \[ \] (T\d+) ',tasks)
+    ids=re.findall(r'- \[[ xX]\] (T\d+) ',tasks)
     if len(ids)!=len(set(ids)):errors.append(f'{feature.name}: duplicate task ids')
-    if '- [x]' in tasks:errors.append(f'{feature.name}: application task marked done')
 for path in [root/'README.md']+list((root/'docs').glob('*.md'))+list((root/'specs').rglob('*.md')):
     body=path.read_text(encoding='utf-8');checked+=1
     for token in ['[NEEDS CLARIFICATION','TODO(','[FEATURE NAME]','[###-']:
@@ -26,4 +25,4 @@ for path in [root/'README.md']+list((root/'docs').glob('*.md'))+list((root/'spec
         target=(path.parent/link.split('#')[0]).resolve()
         if not target.exists():errors.append(f'{path.relative_to(root)}: broken link {link}')
 assert not errors,'\n'.join(errors)
-print(f'PASS: {len(features)} features; 8 artifacts each; {checked} documents; links, headings, task IDs and draft states checked.')
+print(f'PASS: {len(features)} features; 8 artifacts each; {checked} documents; links, headings and task IDs checked.')

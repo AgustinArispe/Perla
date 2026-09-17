@@ -1,0 +1,11 @@
+node_modules/
+out/
+dist/
+release/
+coverage/
+tmp/
+.tools/
+.agents/
+.specify/
+package-lock.json
+output/

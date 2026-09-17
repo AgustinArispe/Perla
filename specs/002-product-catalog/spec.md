@@ -1,10 +1,10 @@
 # Feature Specification: Catálogo y carga inicial de productos
 
-**Feature Branch**: no creada; identificador `002-product-catalog` independiente de Git.
+**Feature Branch**: `feature/desktop-catalog`; incluye base 001 y catálogo 002.
 
 **Created**: 2026-09-17
 
-**Status**: Draft - para revisión de Agus; no implementado.
+**Status**: Catálogo implementado y probado; aceptación con Caja, stock e histórico pendiente de sus features dependientes.
 
 **Input**: Administrar productos unitarios y por kilo, con búsqueda rápida y una carga inicial revisable de aproximadamente 2.000 artículos.
 
