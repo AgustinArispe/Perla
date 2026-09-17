@@ -1,0 +1,25 @@
+name: Development checks
+on:
+  push:
+  pull_request:
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run postinstall
+      - run: npm run check
+      - run: npm run test:e2e
+      - run: npm run pack:win
+      - run: npm run test:packaged
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker compose build check
+      - run: docker compose --profile tools run --rm check
