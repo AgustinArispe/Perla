@@ -9,8 +9,9 @@ Aplicación de escritorio offline, orientada a una PC de caja, con React,
 TypeScript, Vite, Electron y SQLite. La velocidad se prioriza en escaneo, búsqueda,
 confirmación y recuperación. La UI será blanca, con verde como acento, texto y
 números grandes y navegación por secciones. El entorno y un scaffold mínimo ya
-están preparados; Catálogo y Stock están implementados. Caja, peso, ventas,
-histórico, dashboard y backup de usuario siguen pendientes. [Guía de desarrollo](entorno-desarrollo.md).
+están preparados; Catálogo y Stock están implementados. Backend de ventas, pagos
+y anulación implementado; pantallas de Caja/peso e Histórico, dashboard y backup
+de usuario pendientes. [Guía de desarrollo](entorno-desarrollo.md).
 
 La elección de Electron favorece instalación y desarrollo con TypeScript; el
 instalador ocupa más que Tauri. Si el hardware objetivo no alcanza las metas,
@@ -35,6 +36,9 @@ quickstart.md, tasks.md y checklists/requirements.md, con formato Spec Kit.
 
 Los números son identificadores de specs. La implementación local está en
 `feature/desktop-catalog`. No se creó/publicó un repositorio remoto de GitHub.
+
+Se adelanta el backend 006 por pedido de Agus, reutilizando borrador y cantidades
+base antes de desarrollar las pantallas 004/005. [Entrega y límites](entrega-03-backend-ventas.md).
 
 ## Reglas que afectan todos los módulos
 

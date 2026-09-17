@@ -74,6 +74,9 @@ esta PC. Excluye interfaz, IPC y PC del cliente; no es una medición física en 
 
 ## Pendiente
 
+Estado al momento de esta entrega. El backend de venta/anulación y sus
+movimientos SALE/VOID se agregó después en la [entrega 03](entrega-03-backend-ventas.md).
+
 Caja todavía no cobra ventas. El descuento de stock al confirmar y su reversión
 al anular se implementarán en la misma transacción de Ventas (006). Stock no
 reserva mercadería por productos agregados a un carrito.

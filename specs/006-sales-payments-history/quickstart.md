@@ -11,6 +11,18 @@ Para desktop/scanner: instalador buildado y Windows 11 con scanner configurado.
 
 ## Commands and expected behavior
 
+Estado actual: backend disponible; el recorrido UI/F8 siguiente permanece pendiente.
+Pruebas del backend (incluyen selección de binding nativo compatible):
+
+```powershell
+npm test
+npm run build
+npx playwright test tests/e2e/sales-backend.spec.ts
+```
+
+El test de IPC comprueba cierre, pagos mixtos, stock, reinicio, recuperación y
+anulación offline. No sustituye el recorrido de aceptación visual.
+
 ### Mixto 600000 tarjeta + 400000 efectivo recibido 500000 da change=100000; repartir descuento deja suma exacta.
 ```powershell
 npx vitest run tests/unit/payment-discount.test.ts

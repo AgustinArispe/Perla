@@ -1,5 +1,13 @@
 import { z } from 'zod';
 import type {
+  CheckoutInput,
+  VoidInput,
+  SalesSearchInput,
+  SaleDetail,
+  SalePage,
+  VoidPreview,
+} from './sales';
+import type {
   StockBalance,
   StockCountInput,
   StockRecordInput,
@@ -53,6 +61,14 @@ export const SystemHealthResultSchema = z.discriminatedUnion('ok', [
   z.object({ ok: z.literal(false), error: AppErrorSchema }),
 ]);
 export interface BochaApi {
+  sales: {
+    complete(input: CheckoutInput): Promise<Result<SaleDetail>>;
+    findByCheckoutKey(checkoutKey: string): Promise<Result<SaleDetail | null>>;
+    detail(saleId: string): Promise<Result<SaleDetail>>;
+    list(input: SalesSearchInput): Promise<Result<SalePage>>;
+    previewVoid(saleId: string): Promise<Result<VoidPreview>>;
+    void(input: VoidInput): Promise<Result<SaleDetail>>;
+  };
   system: { health(): Promise<Result<SystemStatus>>; reconnect(): Promise<Result<SystemStatus>> };
   products: {
     search(input: ProductSearchInput): Promise<Result<ProductPage>>;

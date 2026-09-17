@@ -5,6 +5,8 @@ import { CatalogRepository } from './products/repository';
 import { CatalogImporter } from './products/import';
 import { DraftRepository } from './drafts';
 import { StockService } from './stock/service';
+import { SalesService } from './sales/service';
+import { CheckoutSchema, VoidSchema, SalesSearchSchema } from '../shared/sales';
 import {
   StockCountSchema,
   StockRecordSchema,
@@ -30,6 +32,7 @@ try {
   const stock = new StockService(database, catalog);
   const importer = new CatalogImporter(database, catalog, stock);
   const drafts = new DraftRepository(database);
+  const sales = new SalesService(database, catalog, stock, drafts);
   const schema = database
     .prepare('SELECT MAX(version) AS version FROM schema_migrations')
     .get() as { version: number };
@@ -68,6 +71,26 @@ try {
       } else {
         const request = validateRequest(raw);
         switch (request.operation) {
+          case 'sales.complete':
+            value = sales.complete(CheckoutSchema.parse(request.payload));
+            break;
+          case 'sales.findByCheckoutKey':
+            value = sales.findByCheckoutKey(
+              z.object({ checkoutKey: z.uuid() }).parse(request.payload).checkoutKey,
+            );
+            break;
+          case 'sales.detail':
+            value = sales.detail(z.object({ saleId: z.uuid() }).parse(request.payload).saleId);
+            break;
+          case 'sales.list':
+            value = sales.list(SalesSearchSchema.parse(request.payload));
+            break;
+          case 'sales.previewVoid':
+            value = sales.previewVoid(z.object({ saleId: z.uuid() }).parse(request.payload).saleId);
+            break;
+          case 'sales.void':
+            value = sales.void(VoidSchema.parse(request.payload));
+            break;
           case 'products.search':
             value = catalog.search(ProductSearchSchema.parse(request.payload));
             break;

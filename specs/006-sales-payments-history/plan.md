@@ -1,8 +1,13 @@
 # Implementation Plan: Ventas, medios de pago e histórico
 
-**Branch**: sin crear | **Date**: 2026-09-17 | **Spec**: [spec.md](spec.md)
+**Branch**: feature/desktop-catalog | **Date**: 2026-09-17 | **Spec**: [spec.md](spec.md)
 **Input**: `specs/006-sales-payments-history/spec.md`
-**Estado**: borrador de diseño, no se ejecutaron tareas de aplicación.
+**Estado**: backend implementado y probado; pantallas y aceptación completa pendientes.
+
+Por instrucción de Agus se adelanta el backend 006 a las pantallas 004/005.
+Se usan sus contratos de borrador y cantidades base; cálculo por peso implementado
+en dominio compartido. La entrega no declara esas features completas.
+Evidencia: [entrega 03](../../docs/entrega-03-backend-ventas.md).
 
 ## Summary
 
@@ -43,17 +48,19 @@ quickstart.md, tasks.md y checklists/requirements.md.
 - `src/domain/sale.ts`
 - `src/domain/payment.ts`
 - `src/worker/sales/service.ts`
-- `src/worker/sales/repository.ts`
+- `src/shared/sales.ts` (DTOs; SQL parametrizado encapsulado en el servicio del worker)
 - `src/renderer/features/checkout/PaymentDialog.tsx`
 - `src/renderer/features/history/SalesList.tsx`
 - `src/renderer/features/history/SaleDetail.tsx`
-- `src/worker/db/migrations/006_sales.sql`
+- `src/worker/db/migrations/004_sales.sql` (secuencia real de migraciones)
 
 ### Verification files
 
 - `tests/unit/payment-discount.test.ts`
 - `tests/integration/sale-atomicity.test.ts`
 - `tests/e2e/sales-history.spec.ts`
+- `tests/integration/sales-edge-cases.test.ts`
+- `tests/e2e/sales-backend.spec.ts` (IPC offline/reinicio; no sustituye aceptación UI)
 
 ## Phase 0: Research
 

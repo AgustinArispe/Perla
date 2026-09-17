@@ -33,6 +33,9 @@ export class StockRepository {
     operationKey: string;
     hash: string;
     result: StockBalance;
+    saleId?: string;
+    saleItemId?: string;
+    timestamp?: string;
   }): void {
     if (!this.db.inTransaction) throw new Error('El movimiento requiere una transacción activa.');
     this.db
@@ -40,7 +43,7 @@ export class StockRepository {
         'INSERT INTO inventory_balances (product_id,quantity_base,revision) VALUES (?,?,?) ON CONFLICT(product_id) DO UPDATE SET quantity_base=excluded.quantity_base, revision=excluded.revision',
       )
       .run(input.productId, input.nextBase, input.revision);
-    const timestamp = new Date().toISOString();
+    const timestamp = input.timestamp ?? new Date().toISOString();
     const businessDate = new Intl.DateTimeFormat('sv-SE', {
       timeZone: 'America/Argentina/Buenos_Aires',
       year: 'numeric',
@@ -49,7 +52,7 @@ export class StockRepository {
     }).format(new Date(timestamp));
     this.db
       .prepare(
-        'INSERT INTO stock_movements (id,product_id,delta_base,balance_after_base,kind,reason,operation_key,payload_hash,result_json,created_at_utc,business_date) VALUES (?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT INTO stock_movements (id,product_id,delta_base,balance_after_base,kind,reason,operation_key,payload_hash,result_json,created_at_utc,business_date,sale_id,sale_item_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
       )
       .run(
         randomUUID(),
@@ -63,6 +66,8 @@ export class StockRepository {
         JSON.stringify(input.result),
         timestamp,
         businessDate,
+        input.saleId ?? null,
+        input.saleItemId ?? null,
       );
   }
 }

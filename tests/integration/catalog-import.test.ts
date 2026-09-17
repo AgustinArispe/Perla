@@ -5,6 +5,8 @@ import { openDatabase } from '../../src/worker/db/connection';
 import { CatalogRepository } from '../../src/worker/products/repository';
 import { CatalogImporter } from '../../src/worker/products/import';
 import { DraftRepository } from '../../src/worker/drafts';
+import { SalesService } from '../../src/worker/sales/service';
+import { StockService } from '../../src/worker/stock/service';
 
 const input = {
   sku: 'FIAM-01',
@@ -170,8 +172,21 @@ describe('catálogo e importación atómica', () => {
         cursor: first.nextCursor!,
       });
       expect(new Set([...first.items, ...second.items].map((product) => product.id)).size).toBe(4);
-      db.exec('CREATE TABLE sale_items (product_id TEXT REFERENCES products(id))');
-      db.prepare('INSERT INTO sale_items VALUES (?)').run(products[0]!.id);
+      const sales = new SalesService(db, repo, new StockService(db, repo), new DraftRepository(db));
+      sales.complete({
+        checkoutKey: randomUUID(),
+        lines: [
+          {
+            lineId: randomUUID(),
+            productId: products[0]!.id,
+            quantityBase: 1000,
+            expectedProductRevision: 1,
+            expectedPriceCents: input.priceCents,
+          },
+        ],
+        discount: { type: 'NONE' },
+        payments: [{ method: 'DEBIT', amountCents: input.priceCents }],
+      });
       expect(() =>
         repo.save({
           ...input,

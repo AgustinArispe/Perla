@@ -3,10 +3,12 @@
 Aplicación de escritorio de control interno para un almacén en Argentina.
 Estado: catálogo y control de stock disponibles. Alta/edición/inactivación,
 búsqueda, importación CSV, conteos, ingresos, mermas e historial de movimientos.
-Caja, ventas, histórico de ventas y dashboard siguen pendientes.
+Backend de ventas disponible: pagos, descuentos, persistencia, consulta y anulación
+con stock atómico. Pantallas de Caja e Histórico y dashboard siguen pendientes.
 
 [Entrega, pruebas y próximos pasos](docs/entrega-01-catalogo.md).
 [Entrega de Stock y pruebas de recuperación](docs/entrega-02-stock.md).
+[Entrega del backend de Ventas](docs/entrega-03-backend-ventas.md).
 
 ## Desarrollo
 

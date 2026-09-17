@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { CheckoutSchema, VoidSchema, SalesSearchSchema } from './sales';
 import { DomainError } from './errors';
 import {
   StockCountSchema,
@@ -15,6 +16,12 @@ import {
 } from './catalog';
 
 export const RequestSchemas = {
+  'sales.complete': CheckoutSchema,
+  'sales.findByCheckoutKey': z.strictObject({ checkoutKey: z.uuid() }),
+  'sales.detail': z.strictObject({ saleId: z.uuid() }),
+  'sales.list': SalesSearchSchema,
+  'sales.previewVoid': z.strictObject({ saleId: z.uuid() }),
+  'sales.void': VoidSchema,
   'system.health': z.null(),
   'system.reconnect': z.null(),
   'products.search': ProductSearchSchema,
