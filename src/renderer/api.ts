@@ -1,9 +1,8 @@
 import type { BochaApi, Result } from '../shared/contracts';
+import { webApi } from './web-client';
 
 export function api(): BochaApi {
-  if (!window.bocha)
-    throw new Error('Abrí la aplicación de escritorio para trabajar con los datos del almacén.');
-  return window.bocha;
+  return window.bocha ?? webApi;
 }
 export function unwrap<T>(result: Result<T>): T {
   if (!result.ok) throw new Error(result.error.message);

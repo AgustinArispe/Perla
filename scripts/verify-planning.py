@@ -3,7 +3,7 @@ import re
 
 root=Path(__file__).resolve().parents[1]
 features=sorted((root/'specs').glob('[0-9][0-9][0-9]-*'))
-assert len(features)==12,f'Expected 12 features, got {len(features)}'
+assert len(features)==13,f'Expected 13 features, got {len(features)}'
 required=['spec.md','plan.md','research.md','data-model.md','quickstart.md','tasks.md','contracts/interface.md','checklists/requirements.md']
 errors=[];checked=0
 for feature in features:

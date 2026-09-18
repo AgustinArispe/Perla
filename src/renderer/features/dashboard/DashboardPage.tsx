@@ -24,7 +24,6 @@ export function DashboardPage() {
     <>
       <div className="page-heading">
         <div>
-          <span className="eyebrow">INFORMACIÓN DEL NEGOCIO</span>
           <h1>Resumen mensual</h1>
           <p>Ventas completadas y existencias para revisar.</p>
         </div>
@@ -141,13 +140,12 @@ export function DashboardPage() {
           </section>
           <LowStock report={data} />
           <p className="dashboard-note">
-            Las anulaciones actualizan el mes original. Último cambio registrado:{' '}
+            Actualizado:{' '}
             {data.lastChangedAt
               ? new Date(data.lastChangedAt).toLocaleString('es-AR', {
                   timeZone: 'America/Argentina/Buenos_Aires',
                 })
               : 'sin ventas'}
-            . Estos importes no son una conciliación bancaria.
           </p>
         </>
       )}

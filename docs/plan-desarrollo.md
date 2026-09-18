@@ -1,6 +1,6 @@
 # Plan de desarrollo - El Bocha POS
 
-**Fecha**: 2026-09-18. **Estado**: backend web cerrado; frontend web y publicación siguientes.
+**Fecha**: 2026-09-18. **Estado**: backend y frontend web implementados; publicación de producción siguiente.
 **Responsable**: Luis Agustín Arispe. **Horizonte propuesto**: ocho semanas.
 
 ## Propuesta
@@ -9,7 +9,7 @@ Agus confirmó el despliegue web. Backend TypeScript/Fastify, SQL en SQLite cent
 del servidor, worker y conexión HTTPS del mismo origen. Se entregaron productos,
 stock, ventas/pagos, histórico, dashboard, usuarios/roles, configuración, terminales,
 cierres, auditoría, exportaciones y recuperación con backups cifrados. La interfaz
-web React es la próxima etapa. [Contrato y operación](backend-web.md).
+web React está implementada. [Contrato y operación](backend-web.md).
 
 La constitución cambia de 1.1.0 a **2.0.0** por reemplazar operación offline/local
 por servidor web central. Una API activa y conexión para confirmar ventas;

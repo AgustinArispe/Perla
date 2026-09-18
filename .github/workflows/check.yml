@@ -14,6 +14,8 @@ jobs:
       - run: npm ci
       - run: npm run postinstall
       - run: npm run check
+      - run: npx playwright install chromium
+      - run: npm run test:web
       - run: npm run test:e2e
       - run: npm run pack:win
       - run: npm run test:packaged

@@ -30,7 +30,6 @@ export function SalesList({ userId }: { userId: string }) {
     <>
       <div className="page-heading">
         <div>
-          <span className="eyebrow">VENTAS DEL NEGOCIO</span>
           <h1>Histórico</h1>
           <p>Ventas guardadas y anulaciones</p>
         </div>

@@ -4,10 +4,7 @@ export function LowStock({ report }: { report: MonthlyReport }) {
   return (
     <section className="dashboard-panel">
       <h2>Stock bajo · actual</h2>
-      <p>
-        Existencias de hoy, independiente del mes elegido. {report.lowStock.length} productos para
-        revisar.
-      </p>
+      <p>{report.lowStock.length} productos para reponer.</p>
       <div className="dashboard-table-scroll">
         <table>
           <thead>

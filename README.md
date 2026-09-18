@@ -3,7 +3,9 @@
 Sistema de control interno para un almacén en Argentina, con backend web centralizado.
 API, base de datos, roles, stock, ventas, cierres y backups cifrados implementados.
 [Contrato web, seguridad, despliegue y recuperación](docs/backend-web.md).
-La interfaz web es la siguiente etapa; el frontend de escritorio existente se conserva como referencia.
+Frontend web conectado: Caja, Productos, Stock, Histórico, Resumen mensual, Usuarios,
+Turnos, Actividad, Configuración y Copias de seguridad.
+[Uso, desarrollo y verificación del frontend](docs/frontend-web.md).
 
 ## Versión de escritorio previa
 

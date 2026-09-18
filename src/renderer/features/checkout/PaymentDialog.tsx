@@ -14,6 +14,7 @@ export const paymentLabels: Record<PaymentInput['method'], string> = {
 };
 export function PaymentDialog({
   totalCents,
+  paymentMethods,
   role,
   busy,
   backendError,
@@ -21,6 +22,7 @@ export function PaymentDialog({
   onConfirm,
 }: {
   totalCents: number;
+  paymentMethods: PaymentInput['method'][];
   role: Role;
   busy: boolean;
   backendError: string;
@@ -32,7 +34,7 @@ export function PaymentDialog({
         ? [
             {
               id: crypto.randomUUID(),
-              method: 'CASH' as PaymentInput['method'],
+              method: paymentMethods[0]!,
               amount: moneyInput(totalCents),
               received: moneyInput(totalCents),
             },
@@ -69,6 +71,8 @@ export function PaymentDialog({
     if (busy) return;
     try {
       const parsed = payments();
+      if (parsed.some((payment) => !paymentMethods.includes(payment.method)))
+        throw new Error('Elegí un medio de pago habilitado.');
       validatePayments(parsed, totalCents);
       if (negative && reason.trim().length < 3)
         throw new Error('Ingresá un motivo para autorizar stock negativo.');
@@ -127,9 +131,9 @@ export function PaymentDialog({
                     update(row.id, { method: event.target.value as PaymentInput['method'] })
                   }
                 >
-                  {Object.entries(paymentLabels).map(([value, label]) => (
+                  {paymentMethods.map((value) => (
                     <option key={value} value={value}>
-                      {label}
+                      {paymentLabels[value]}
                     </option>
                   ))}
                 </select>
@@ -175,7 +179,12 @@ export function PaymentDialog({
               onClick={() =>
                 setRows((current) => [
                   ...current,
-                  { id: crypto.randomUUID(), method: 'DEBIT', amount: '0', received: '' },
+                  {
+                    id: crypto.randomUUID(),
+                    method: paymentMethods[0]!,
+                    amount: '0',
+                    received: '',
+                  },
                 ])
               }
             >

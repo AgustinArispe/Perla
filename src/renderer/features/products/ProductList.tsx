@@ -8,7 +8,7 @@ import { ProductForm } from './ProductForm';
 import { ImportPreview } from './ImportPreview';
 
 export function ProductList() {
-  const desktop = Boolean(window.bocha);
+  const connected = true;
   const client = useQueryClient();
   const searchRef = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState('');
@@ -37,7 +37,7 @@ export function ProductList() {
           ...(cursor ? { cursor } : {}),
         }),
       ),
-    enabled: desktop,
+    enabled: connected,
     placeholderData: keepPreviousData,
     retry: false,
   });
@@ -74,14 +74,14 @@ export function ProductList() {
         searchRef.current?.focus();
         searchRef.current?.select();
       }
-      if (event.key === 'F3' && desktop) {
+      if (event.key === 'F3' && connected) {
         event.preventDefault();
         setEditor(null);
       }
     }
     window.addEventListener('keydown', keyboard);
     return () => window.removeEventListener('keydown', keyboard);
-  }, [modalOpen, desktop]);
+  }, [modalOpen, connected]);
   function restoreFocus() {
     requestAnimationFrame(() => searchRef.current?.focus());
   }
@@ -97,27 +97,26 @@ export function ProductList() {
     <>
       <div className="page-heading">
         <div>
-          <span className="eyebrow">CATÁLOGO DEL ALMACÉN</span>
           <h1>Productos</h1>
           <p>Precios, códigos y formas de venta.</p>
         </div>
         <div className="heading-actions">
           <button
             className="button secondary"
-            disabled={!desktop || importFile.isPending}
+            disabled={!connected || importFile.isPending}
             onClick={() => importFile.mutate()}
             aria-label="Importar productos"
           >
             <Icon name="upload" />
             {importFile.isPending ? 'Leyendo archivo…' : 'Importar productos'}
           </button>
-          <button className="button primary" disabled={!desktop} onClick={() => setEditor(null)}>
+          <button className="button primary" disabled={!connected} onClick={() => setEditor(null)}>
             <Icon name="plus" />
             Nuevo producto<kbd>F3</kbd>
           </button>
         </div>
       </div>
-      {!desktop && (
+      {!connected && (
         <div className="alert info">
           Vista previa. Abrí la aplicación de escritorio para cargar y consultar los datos del
           almacén.
@@ -261,7 +260,7 @@ export function ProductList() {
               {!query && status === 'ALL' && (
                 <button
                   className="button primary"
-                  disabled={!desktop}
+                  disabled={!connected}
                   onClick={() => setEditor(null)}
                 >
                   <Icon name="plus" />
@@ -270,7 +269,7 @@ export function ProductList() {
               )}
             </div>
           )}
-          {!desktop && (
+          {!connected && (
             <div className="empty-state">
               <div className="empty-icon">
                 <Icon name="box" size={34} />
@@ -279,7 +278,7 @@ export function ProductList() {
               <p>Los productos se guardan en la base local de la PC.</p>
             </div>
           )}
-          {desktop && products.isPending && (
+          {connected && products.isPending && (
             <div className="loading-state" role="status">
               Cargando catálogo…
             </div>

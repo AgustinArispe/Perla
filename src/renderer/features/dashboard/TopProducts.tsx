@@ -22,7 +22,6 @@ export function TopProducts({ report }: { report: MonthlyReport }) {
           </select>
         </label>
       </div>
-      <p>Primeros 10 · nombres guardados al vender.</p>
       <table>
         <thead>
           <tr>

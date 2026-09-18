@@ -2,6 +2,7 @@ import { join } from 'node:path';
 import { readServerConfig } from './config';
 import { WebWorkerClient } from './rpc';
 import { createServer } from './app';
+import { registerFrontend } from './frontend';
 async function main() {
   const config = readServerConfig();
   const executor = new WebWorkerClient(join(__dirname, 'worker.cjs'), config);
@@ -9,6 +10,7 @@ async function main() {
   try {
     await executor.ready;
     app = await createServer(config, executor);
+    registerFrontend(app, join(__dirname, '..', 'web'));
     await app.listen({ host: config.host, port: config.port });
   } catch (error) {
     await executor.close();

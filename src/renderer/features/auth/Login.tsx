@@ -2,12 +2,13 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { api, errorMessage, unwrap } from '../../api';
 export function Login({
-  initialized,
+  initialized: accountInitialized,
   onSignedIn,
 }: {
   initialized: boolean;
   onSignedIn: () => Promise<void>;
 }) {
+  const initialized = window.bocha ? accountInitialized : true;
   const [busy, setBusy] = useState(false),
     [error, setError] = useState('');
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -44,11 +45,6 @@ export function Login({
           </div>
         </div>
         <h1>{initialized ? 'Ingresar' : 'Configurar primer jefe'}</h1>
-        <p>
-          {initialized
-            ? 'Usá tu cuenta para comenzar.'
-            : 'Creá la cuenta que administrará el negocio.'}
-        </p>
         <form onSubmit={(event) => void submit(event)}>
           {!initialized && (
             <label className="field">

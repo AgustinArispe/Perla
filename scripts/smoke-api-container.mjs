@@ -96,6 +96,17 @@ try {
     await new Promise((r) => setTimeout(r, 500));
   }
   if (!ready) throw new Error('API no está lista.');
+  const frontend = await fetch(url + '/', { headers: { host: 'pos.test' } });
+  const html = await frontend.text();
+  if (
+    !frontend.ok ||
+    !html.includes('id="root"') ||
+    !frontend.headers.get('content-security-policy')
+  )
+    throw new Error('Frontend o protección CSP no disponibles.');
+  const script = html.match(/src="([^"]+\.js)"/);
+  if (!script || !(await fetch(url + script[1], { headers: { host: 'pos.test' } })).ok)
+    throw new Error('Archivos web no disponibles.');
   if (docker(['exec', name, 'node', '-e', 'console.log(process.getuid())']) === '0')
     throw new Error('El servicio no debe correr como root.');
   const unsafe = spawnSync(

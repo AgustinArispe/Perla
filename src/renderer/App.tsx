@@ -12,6 +12,12 @@ import { roleLabel } from '../domain/permissions';
 import { Checkout, type LeaveGuard } from './features/checkout/Checkout';
 import { SalesList } from './features/history/SalesList';
 import { DashboardPage } from './features/dashboard/DashboardPage';
+import { RegisterGate } from './features/register/RegisterGate';
+import { ShiftHistory } from './features/register/ShiftHistory';
+import { AuditPage } from './features/audit/AuditPage';
+import { SettingsPage } from './features/settings/SettingsPage';
+import { BackupsPage } from './features/backups/BackupsPage';
+import { useEffect } from 'react';
 
 const sections = [
   ['cash', 'Caja'],
@@ -21,6 +27,9 @@ const sections = [
   ['chart', 'Resumen mensual'],
   ['settings', 'Configuración'],
   ['settings', 'Usuarios'],
+  ['history', 'Turnos'],
+  ['history', 'Actividad'],
+  ['upload', 'Backups'],
 ] as const;
 
 export function App() {
@@ -28,10 +37,15 @@ export function App() {
   const auth = useQuery({
     queryKey: ['auth-status'],
     queryFn: async () => unwrap(await api().auth.status()),
-    enabled: Boolean(window.bocha),
+    enabled: true,
     retry: false,
-    refetchInterval: 5000,
+    refetchInterval: 30000,
   });
+  useEffect(() => {
+    const expired = () => void client.invalidateQueries({ queryKey: ['auth-status'] });
+    window.addEventListener('bocha-session-expired', expired);
+    return () => window.removeEventListener('bocha-session-expired', expired);
+  }, [client]);
   async function refresh() {
     client.removeQueries({ predicate: (query) => query.queryKey[0] !== 'auth-status' });
     await client.invalidateQueries({ queryKey: ['auth-status'] });
@@ -40,15 +54,6 @@ export function App() {
     unwrap(await api().auth.logout());
     await refresh();
   }
-  if (!window.bocha)
-    return (
-      <div className="auth-screen">
-        <div className="auth-card">
-          <h1>El Bocha</h1>
-          <p>Abrí la aplicación de escritorio para ingresar y trabajar con los datos.</p>
-        </div>
-      </div>
-    );
   if (auth.isPending) return <div className="auth-screen">Conectando datos…</div>;
   if (auth.isError && !auth.data?.user)
     return (
@@ -84,8 +89,17 @@ function Workspace({
   onPasswordChanged: () => Promise<void>;
 }) {
   const [section, setSection] = useState<
-    'Productos' | 'Stock' | 'Usuarios' | 'Caja' | 'Histórico' | 'Resumen mensual'
-  >(user.role === 'SELLER' ? 'Caja' : 'Productos');
+    | 'Productos'
+    | 'Stock'
+    | 'Usuarios'
+    | 'Caja'
+    | 'Histórico'
+    | 'Resumen mensual'
+    | 'Configuración'
+    | 'Backups'
+    | 'Turnos'
+    | 'Actividad'
+  >(window.bocha && user.role !== 'SELLER' ? 'Productos' : 'Caja');
   const [passwordOpen, setPasswordOpen] = useState(false),
     [sessionError, setSessionError] = useState('');
   const desktop = Boolean(window.bocha);
@@ -114,9 +128,9 @@ function Workspace({
   const status = useQuery({
     queryKey: ['system-status'],
     queryFn: async () => unwrap(await api().system.health()),
-    enabled: desktop,
+    enabled: true,
     retry: false,
-    refetchInterval: 5000,
+    refetchInterval: 30000,
   });
   async function reconnect() {
     const result = await api().system.reconnect();
@@ -136,52 +150,28 @@ function Workspace({
         <span className="nav-label">MI NEGOCIO</span>
         <nav aria-label="Módulos">
           {sections
+            .filter(
+              ([, title]) =>
+                !desktop || !['Configuración', 'Backups', 'Turnos', 'Actividad'].includes(title),
+            )
             .filter(([, title]) =>
               user.role === 'SELLER'
                 ? title === 'Caja'
                 : user.role === 'SUPERVISOR'
-                  ? ['Caja', 'Productos', 'Stock', 'Histórico'].includes(title)
+                  ? ['Caja', 'Productos', 'Stock', 'Histórico', 'Turnos', 'Actividad'].includes(
+                      title,
+                    )
                   : true,
             )
             .map(([icon, title]) => (
               <button
                 key={title}
                 className={title === section ? 'nav-item selected' : 'nav-item'}
-                disabled={
-                  ![
-                    'Caja',
-                    'Productos',
-                    'Stock',
-                    'Histórico',
-                    'Usuarios',
-                    'Resumen mensual',
-                  ].includes(title)
-                }
                 aria-current={title === section ? 'page' : undefined}
-                onClick={() => {
-                  if (
-                    title === 'Productos' ||
-                    title === 'Stock' ||
-                    title === 'Usuarios' ||
-                    title === 'Caja' ||
-                    title === 'Histórico' ||
-                    title === 'Resumen mensual'
-                  )
-                    void navigate(title);
-                }}
+                onClick={() => void navigate(title)}
               >
                 <Icon name={icon} />
                 <span>{title}</span>
-                {![
-                  'Caja',
-                  'Productos',
-                  'Stock',
-                  'Histórico',
-                  'Usuarios',
-                  'Resumen mensual',
-                ].includes(title) && (
-                  <span className="pending-dot" title="Pendiente de desarrollo" />
-                )}
               </button>
             ))}
         </nav>
@@ -199,7 +189,7 @@ function Workspace({
           </button>
           <div className="offline-badge">
             <span />
-            Datos en esta PC
+            El Bocha
           </div>
           <small>Control interno · v0.1.0</small>
         </div>
@@ -209,13 +199,13 @@ function Workspace({
           <span>EL BOCHA / {section.toUpperCase()}</span>
           <div className={`connection ${status.isError ? 'connection-error' : ''}`}>
             <i />
-            {!desktop
-              ? 'Vista previa en navegador'
-              : status.isError
-                ? 'Conexión no disponible'
-                : status.isPending
-                  ? 'Conectando datos…'
-                  : 'Base de datos conectada'}
+            {status.isError
+              ? 'Conexión no disponible'
+              : status.isPending
+                ? 'Conectando datos…'
+                : desktop
+                  ? 'Base de datos conectada'
+                  : 'Conectado'}
           </div>
         </header>
         <main className="page-content">
@@ -242,8 +232,24 @@ function Workspace({
             <SalesList userId={user.id} />
           ) : section === 'Resumen mensual' ? (
             <DashboardPage />
-          ) : (
+          ) : section === 'Configuración' ? (
+            <SettingsPage />
+          ) : section === 'Backups' ? (
+            <BackupsPage onRestored={onPasswordChanged} />
+          ) : section === 'Turnos' ? (
+            <ShiftHistory />
+          ) : section === 'Actividad' ? (
+            <AuditPage />
+          ) : desktop ? (
             <Checkout user={user} registerLeaveGuard={registerLeaveGuard} />
+          ) : (
+            <RegisterGate
+              beforeClose={async () => {
+                await leaveGuard.current?.();
+              }}
+            >
+              <Checkout user={user} registerLeaveGuard={registerLeaveGuard} />
+            </RegisterGate>
           )}
           {passwordOpen && (
             <ChangePassword onClose={() => setPasswordOpen(false)} onChanged={onPasswordChanged} />
@@ -254,7 +260,7 @@ function Workspace({
           <span>
             {desktop && status.data
               ? `SQLite ${status.data.sqliteVersion} · Datos locales`
-              : 'Aplicación de escritorio'}
+              : 'Control interno'}
           </span>
         </footer>
       </div>

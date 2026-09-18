@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import type { User } from '../../../shared/auth';
 import { parseQuantity, formatMoney } from '../../../domain/values';
 import { formatStock } from '../../../domain/inventory';
@@ -10,6 +10,10 @@ import { PaymentDialog } from './PaymentDialog';
 import { ProductSearch } from './ProductSearch';
 import { Dialog } from '../../components/Dialog';
 import { api, errorMessage } from '../../api';
+import { webValue } from '../../web-client';
+import { scannerMayCapture } from './scanner-focus';
+import { paymentLabels } from './PaymentDialog';
+import type { PaymentInput } from '../../../shared/sales';
 export type LeaveGuard = (() => Promise<void>) | null;
 export function Checkout({
   user,
@@ -19,6 +23,15 @@ export function Checkout({
   registerLeaveGuard: (guard: LeaveGuard) => void;
 }) {
   const client = useQueryClient();
+  const settings = useQuery({
+    queryKey: ['settings'],
+    queryFn: () => webValue<{ paymentMethods: PaymentInput['method'][] }>('/settings'),
+    enabled: !window.bocha,
+    retry: false,
+  });
+  const paymentMethods = window.bocha
+    ? (Object.keys(paymentLabels) as PaymentInput['method'][])
+    : settings.data?.paymentMethods;
   const [controller] = useState(
     () =>
       new CheckoutController(api(), user.id, localStorage, () => void client.invalidateQueries()),
@@ -41,13 +54,26 @@ export function Checkout({
     };
   }, [controller, registerLeaveGuard]);
   useEffect(() => {
-    if (state.mode === 'SCAN') scanner.current?.focus();
+    if (state.mode === 'SCAN' && scannerMayCapture(document, scanner.current))
+      scanner.current?.focus();
   }, [state.mode, state.body, state.error, state.pendingScans]);
+  useEffect(() => {
+    function focusScanner() {
+      if (controller.getSnapshot().mode === 'SCAN' && scannerMayCapture(document, scanner.current))
+        scanner.current?.focus();
+    }
+    window.addEventListener('focus', focusScanner);
+    window.addEventListener('click', focusScanner);
+    return () => {
+      window.removeEventListener('focus', focusScanner);
+      window.removeEventListener('click', focusScanner);
+    };
+  }, [controller]);
   useEffect(() => {
     function keyboard(event: KeyboardEvent) {
       if (event.defaultPrevented || event.ctrlKey || event.metaKey || event.altKey) return;
       const mode = controller.getSnapshot().mode;
-      if (mode !== 'SCAN') return;
+      if (mode !== 'SCAN' || !scannerMayCapture(document, scanner.current)) return;
       if (event.key === 'F2') {
         event.preventDefault();
         scanner.current?.focus();
@@ -83,7 +109,6 @@ export function Checkout({
     <>
       <div className="page-heading checkout-heading">
         <div>
-          <span className="eyebrow">PUNTO DE VENTA</span>
           <h1>Caja</h1>
         </div>
         <span className="checkout-save-state">
@@ -384,8 +409,9 @@ export function Checkout({
           }}
         />
       )}
-      {paymentOpen && totals && (
+      {paymentOpen && totals && paymentMethods && (
         <PaymentDialog
+          paymentMethods={paymentMethods}
           totalCents={totals.totalCents}
           role={user.role}
           busy={state.mode === 'BUSY'}
@@ -393,6 +419,22 @@ export function Checkout({
           onClose={() => controller.closeModal()}
           onConfirm={(payments, override) => controller.pay(payments, override)}
         />
+      )}
+      {paymentOpen && !paymentMethods && (
+        <Dialog title="Cobrar venta" onClose={() => controller.closeModal()}>
+          <div className="checkout-modal">
+            {settings.error ? (
+              <>
+                <p role="alert">{errorMessage(settings.error)}</p>
+                <button className="button primary" onClick={() => void settings.refetch()}>
+                  Reintentar
+                </button>
+              </>
+            ) : (
+              <p role="status">Cargando medios de pago…</p>
+            )}
+          </div>
+        </Dialog>
       )}
       {state.mode === 'RECOVER' && (
         <Dialog title="Carrito guardado" onClose={() => {}}>

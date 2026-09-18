@@ -9,7 +9,7 @@ import { Icon } from '../../components/Icon';
 import { PendingMovement } from './PendingMovement';
 
 export function StockList() {
-  const desktop = Boolean(window.bocha);
+  const connected = true;
   const client = useQueryClient();
   const searchRef = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState('');
@@ -34,7 +34,7 @@ export function StockList() {
           ...(cursor ? { cursor } : {}),
         }),
       ),
-    enabled: desktop,
+    enabled: connected,
     retry: false,
     placeholderData: keepPreviousData,
   });
@@ -66,7 +66,7 @@ export function StockList() {
   }
   return (
     <>
-      {desktop && (
+      {connected && (
         <PendingMovement
           onBlocked={setBlocked}
           onResolved={() => {
@@ -78,13 +78,12 @@ export function StockList() {
       )}
       <div className="page-heading">
         <div>
-          <span className="eyebrow">INVENTARIO DEL ALMACÉN</span>
           <h1>Stock</h1>
           <p>Existencias, ingresos y reposición.</p>
         </div>
         <span className="stock-current-tag">Existencias actuales</span>
       </div>
-      {!desktop && (
+      {!connected && (
         <div className="alert info">
           Abrí la aplicación de escritorio para registrar existencias.
         </div>
@@ -214,7 +213,7 @@ export function StockList() {
               {!stock.data?.items.length && !stock.isError && (
                 <tr>
                   <td colSpan={5} className="empty-table">
-                    {desktop && stock.isPending
+                    {connected && stock.isPending
                       ? 'Cargando existencias…'
                       : query || filter !== 'ALL'
                         ? 'No hay productos con este filtro.'

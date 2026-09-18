@@ -5,7 +5,6 @@ export function PaymentBreakdown({ report }: { report: MonthlyReport }) {
   return (
     <section className="dashboard-panel">
       <h2>Medios de pago</h2>
-      <p>Importes aplicados a ventas completadas. Sin vuelto.</p>
       {report.payments.map((p) => (
         <div className="payment-metric" key={p.method}>
           <div>
@@ -21,7 +20,6 @@ export function PaymentBreakdown({ report }: { report: MonthlyReport }) {
           </small>
         </div>
       ))}
-      <p className="dashboard-note">Una venta mixta participa en más de un medio.</p>
     </section>
   );
 }

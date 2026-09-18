@@ -35,7 +35,8 @@
     "docker:check": "docker compose --profile tools run --rm check",
     "build:api": "node scripts/build-api.mjs",
     "start:api": "node dist/api/index.cjs",
-    "admin:api": "node dist/api/cli.cjs"
+    "admin:api": "node dist/api/cli.cjs",
+    "test:web": "npm run build:web && npm run build:api && playwright test --config playwright.web.config.ts"
   },
   "dependencies": {
     "@fastify/cookie": "11.1.2",

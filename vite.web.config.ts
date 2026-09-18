@@ -9,6 +9,9 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5173,
     strictPort: true,
+    proxy: {
+      '/api': { target: process.env.BOCHA_API_URL ?? 'http://127.0.0.1:3000', changeOrigin: false },
+    },
     watch: { usePolling: process.env.BOCHA_USE_POLLING === '1' },
   },
   build: { outDir: '../../dist/web', emptyOutDir: true },

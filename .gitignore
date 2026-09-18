@@ -24,3 +24,6 @@ backups/
 
 !src/server/backups/
 !src/server/backups/*.ts
+!src/renderer/features/backups/
+!src/renderer/features/backups/*.tsx
+.impeccable/
