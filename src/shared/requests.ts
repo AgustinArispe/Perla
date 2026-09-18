@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { BootstrapSchema, LoginSchema, UserSaveSchema, ChangePasswordSchema } from './auth';
 import { CheckoutSchema, VoidSchema, SalesSearchSchema } from './sales';
 import { DomainError } from './errors';
+import { MonthlyRequestSchema } from './reports';
 import {
   StockCountSchema,
   StockRecordSchema,
@@ -17,6 +18,7 @@ import {
 } from './catalog';
 
 export const RequestSchemas = {
+  'dashboard.monthly': MonthlyRequestSchema,
   'auth.status': z.null(),
   'auth.bootstrap': BootstrapSchema,
   'auth.login': LoginSchema,

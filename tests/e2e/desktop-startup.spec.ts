@@ -62,6 +62,7 @@ test('abre el escritorio con SQLite en worker y renderer aislado', async () => {
           if (found.ok) expect(found.value.priceCents).toBe(250050);
         }
         expect(await page.evaluate(() => Object.keys(window.bocha!))).toEqual([
+          'dashboard',
           'auth',
           'users',
           'system',

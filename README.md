@@ -4,13 +4,14 @@ Aplicación de escritorio de control interno para un almacén en Argentina.
 Estado: catálogo y control de stock disponibles. Alta/edición/inactivación,
 búsqueda, importación CSV, conteos, ingresos, mermas e historial de movimientos.
 Backend de ventas disponible: pagos, descuentos, persistencia, consulta y anulación
-con stock atómico. Caja e Histórico conectados, con usuarios y roles. Dashboard y pantalla de backup siguen pendientes.
+con stock atómico. Caja e Histórico conectados, con usuarios y roles. Resumen mensual disponible para el jefe; pantalla de backup pendiente.
 
 [Entrega, pruebas y próximos pasos](docs/entrega-01-catalogo.md).
 [Entrega de Stock y pruebas de recuperación](docs/entrega-02-stock.md).
 [Entrega del backend de Ventas](docs/entrega-03-backend-ventas.md).
 [Usuarios, permisos y sesiones](docs/entrega-04-usuarios.md).
 [Caja e Histórico conectados](docs/entrega-05-caja-historico.md).
+[Resumen mensual y medición SQL](docs/entrega-06-resumen-mensual.md).
 
 Primer arranque: configurar cuenta de jefe. El jefe crea vendedores y supervisores
 desde Usuarios. Los permisos se verifican en backend; no hay contraseña predeterminada.

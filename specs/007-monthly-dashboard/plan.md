@@ -1,8 +1,8 @@
 # Implementation Plan: Dashboard mensual y ayuda para reposición
 
-**Branch**: sin crear | **Date**: 2026-09-17 | **Spec**: [spec.md](spec.md)
+**Branch**: feature/users-roles | **Date**: 2026-09-17 | **Spec**: [spec.md](spec.md)
 **Input**: `specs/007-monthly-dashboard/spec.md`
-**Estado**: borrador de diseño, no se ejecutaron tareas de aplicación.
+**Estado**: ejecutado. API pública dashboard.monthly y DTO src/shared/reports.ts. Ver entrega-06.
 
 ## Summary
 

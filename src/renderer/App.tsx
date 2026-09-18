@@ -11,6 +11,7 @@ import type { User } from '../shared/auth';
 import { roleLabel } from '../domain/permissions';
 import { Checkout, type LeaveGuard } from './features/checkout/Checkout';
 import { SalesList } from './features/history/SalesList';
+import { DashboardPage } from './features/dashboard/DashboardPage';
 
 const sections = [
   ['cash', 'Caja'],
@@ -82,9 +83,9 @@ function Workspace({
   onLogout: () => Promise<void>;
   onPasswordChanged: () => Promise<void>;
 }) {
-  const [section, setSection] = useState<'Productos' | 'Stock' | 'Usuarios' | 'Caja' | 'Histórico'>(
-    user.role === 'SELLER' ? 'Caja' : 'Productos',
-  );
+  const [section, setSection] = useState<
+    'Productos' | 'Stock' | 'Usuarios' | 'Caja' | 'Histórico' | 'Resumen mensual'
+  >(user.role === 'SELLER' ? 'Caja' : 'Productos');
   const [passwordOpen, setPasswordOpen] = useState(false),
     [sessionError, setSessionError] = useState('');
   const desktop = Boolean(window.bocha);
@@ -146,7 +147,16 @@ function Workspace({
               <button
                 key={title}
                 className={title === section ? 'nav-item selected' : 'nav-item'}
-                disabled={!['Caja', 'Productos', 'Stock', 'Histórico', 'Usuarios'].includes(title)}
+                disabled={
+                  ![
+                    'Caja',
+                    'Productos',
+                    'Stock',
+                    'Histórico',
+                    'Usuarios',
+                    'Resumen mensual',
+                  ].includes(title)
+                }
                 aria-current={title === section ? 'page' : undefined}
                 onClick={() => {
                   if (
@@ -154,14 +164,22 @@ function Workspace({
                     title === 'Stock' ||
                     title === 'Usuarios' ||
                     title === 'Caja' ||
-                    title === 'Histórico'
+                    title === 'Histórico' ||
+                    title === 'Resumen mensual'
                   )
                     void navigate(title);
                 }}
               >
                 <Icon name={icon} />
                 <span>{title}</span>
-                {!['Caja', 'Productos', 'Stock', 'Histórico', 'Usuarios'].includes(title) && (
+                {![
+                  'Caja',
+                  'Productos',
+                  'Stock',
+                  'Histórico',
+                  'Usuarios',
+                  'Resumen mensual',
+                ].includes(title) && (
                   <span className="pending-dot" title="Pendiente de desarrollo" />
                 )}
               </button>
@@ -222,6 +240,8 @@ function Workspace({
             <UserList />
           ) : section === 'Histórico' ? (
             <SalesList userId={user.id} />
+          ) : section === 'Resumen mensual' ? (
+            <DashboardPage />
           ) : (
             <Checkout user={user} registerLeaveGuard={registerLeaveGuard} />
           )}

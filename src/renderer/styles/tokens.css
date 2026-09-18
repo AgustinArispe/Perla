@@ -1504,3 +1504,130 @@ h1 {
 .sale-detail h3 {
   margin: 24px 0 12px;
 }
+.dashboard-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.dashboard-metrics article,
+.dashboard-panel {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+}
+.dashboard-metrics article > span,
+.dashboard-metrics small {
+  display: block;
+  color: var(--muted);
+}
+.dashboard-metrics article > strong {
+  display: block;
+  font-size: 30px;
+  margin: 14px 0;
+  overflow-wrap: anywhere;
+}
+.dashboard-metrics article:first-child {
+  border-top: 4px solid var(--accent);
+}
+.dashboard-period,
+.dashboard-panel-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 24px 0;
+}
+.dashboard-period p,
+.dashboard-panel > p,
+.dashboard-note {
+  color: var(--muted);
+  font-size: 14px;
+}
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.dashboard-panel {
+  margin-bottom: 20px;
+}
+.dashboard-panel h2 {
+  margin: 0 0 16px;
+  font-size: 22px;
+}
+.dashboard-panel table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.dashboard-panel td,
+.dashboard-panel th {
+  padding: 14px 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.dashboard-panel td {
+  font-size: 16px;
+}
+.dashboard-panel small {
+  display: block;
+  color: var(--muted);
+  margin-top: 6px;
+}
+.payment-metric {
+  margin: 20px 0;
+}
+.payment-metric > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.metric-track {
+  height: 8px;
+  background: #edf1ec;
+  border-radius: 6px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+.metric-track span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+.daily-chart {
+  display: flex;
+  gap: 6px;
+  padding: 16px 0;
+}
+.daily-chart > div {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+}
+.daily-chart > div > div {
+  height: 130px;
+  display: flex;
+  align-items: end;
+  background: #f4f7f2;
+  border-radius: 4px;
+}
+.daily-chart span {
+  display: block;
+  width: 100%;
+  background: var(--accent);
+  border-radius: 4px;
+}
+.daily-chart small {
+  font-size: 11px;
+}
+.dashboard-table-scroll {
+  overflow-x: auto;
+}
+@media (max-width: 1200px) {
+  .dashboard-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}

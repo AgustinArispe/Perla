@@ -1,7 +1,6 @@
 # Quickstart Validation: Dashboard mensual y ayuda para reposición
 
-**Estado**: estos comandos son de la futura implementación. Hoy no existe
-package.json ni los tests; no se reportan como ejecutados.
+**Estado**: implementación y pruebas disponibles; ver entrega-06 para evidencia y límites.
 
 ## Prerequisites
 
@@ -13,12 +12,12 @@ Para desktop/scanner: instalador buildado y Windows 11 con scanner configurado.
 
 ### Mes actual compara mismos días del mes anterior; febrero trunca último día y base cero responde sin porcentaje.
 ```powershell
-npx vitest run tests/unit/month-boundaries.test.ts
+npm test -- tests/unit/month-boundaries.test.ts
 ```
 Resultado esperado: el escenario termina con las invariantes y el resultado definidos, sin datos parciales. Test file: `tests/unit/month-boundaries.test.ts`.
 ### Fixture mixto y anulado: métodos y netos de productos concilian; KG y UNIT van separados.
 ```powershell
-npx vitest run tests/integration/monthly-reconciliation.test.ts
+npm test -- tests/integration/monthly-reconciliation.test.ts
 ```
 Resultado esperado: el escenario termina con las invariantes y el resultado definidos, sin datos parciales. Test file: `tests/integration/monthly-reconciliation.test.ts`.
 ### Cambiar mes, abrir vacío y revisar rótulo Stock actual; completar/anular una venta invalida el resumen.

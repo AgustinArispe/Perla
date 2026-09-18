@@ -50,7 +50,7 @@ Contrato `window.bocha` propuesto:
 | sales.list | DateRange, status, PageInput | página SaleSummary |
 | sales.detail | saleId | SaleDetail |
 | sales.void | saleId, reason, operationKey | SaleDetail |
-| reports.month | month:YYYY-MM | MonthlyReport |
+| dashboard.monthly | month:YYYY-MM | MonthlyReport |
 | backups.create | destination elegido en main | BackupResult |
 | backups.inspectRestore | archivo elegido en main | previewToken, fecha, schema |
 | backups.restore | previewToken, confirm:true | RestoreResult y reinicio controlado |
@@ -73,3 +73,7 @@ previousComparison, currentLowStock y reglas visibles.
 La especificación de cada método se completa en la spec responsable; estos tipos
 son documentación de diseño, no una API ya implementada. IDs UUID internos;
 número de venta correlativo visible independiente del UUID para uso en caja.
+
+## Reporte mensual implementado
+
+`dashboard.monthly(month)` retorna `Result<MonthlyReport>`; requiere OWNER. Definición exacta en `src/shared/reports.ts`: period, totals, comparison, payments, cardCents, daily, rankings y lowStock. LowStock siempre representa existencias actuales. Los importes enteros se validan como seguros antes de salir del worker.

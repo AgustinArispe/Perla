@@ -1,10 +1,10 @@
 # Feature Specification: Dashboard mensual y ayuda para reposición
 
-**Feature Branch**: no creada; identificador `007-monthly-dashboard` independiente de Git.
+**Feature Branch**: `feature/users-roles`; incremento `007-monthly-dashboard`.
 
 **Created**: 2026-09-17
 
-**Status**: Draft - para revisión de Agus; no implementado.
+**Status**: Implementado; aceptación del cliente y PC de referencia pendiente.
 
 **Input**: Mostrar cuánto se vendió, productos destacados, efectivo frente a tarjeta y existencias bajas con recomendaciones comprensibles.
 
@@ -12,7 +12,7 @@
 
 ### User Story 1 - Ver cómo fue el mes (Priority: P1)
 
-El encargado selecciona un mes y revisa total, cantidad de ventas y evolución.
+El jefe selecciona un mes y revisa total, cantidad de ventas y evolución.
 
 **Why this priority**: Es necesario para operar y preservar datos.
 
@@ -24,7 +24,7 @@ El encargado selecciona un mes y revisa total, cantidad de ventas y evolución.
 
 ### User Story 2 - Comparar formas de pago y productos (Priority: P1)
 
-El encargado identifica medios de pago y artículos destacados.
+El jefe identifica medios de pago y artículos destacados.
 
 **Why this priority**: Es necesario para operar y preservar datos.
 
@@ -36,7 +36,7 @@ El encargado identifica medios de pago y artículos destacados.
 
 ### User Story 3 - Decidir qué reponer (Priority: P2)
 
-El encargado ve lo que está bajo mínimo y sugerencias basadas en ventas.
+El jefe ve lo que está bajo mínimo y sugerencias basadas en ventas.
 
 **Why this priority**: Mejora el control y la adopción sin bloquear la operación base.
 

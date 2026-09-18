@@ -1,6 +1,6 @@
 # Interface Contract: Dashboard mensual y ayuda para reposición
 
-reports.month(month:string): MonthlyReport según docs/contratos.md. Búsqueda sobre business_date/local_month, no fechas UTC truncadas.
+API implementada: `dashboard.monthly(month:string): Promise<Result<MonthlyReport>>`. IPC `dashboard.monthly` con objeto estricto `{month}`; requiere OWNER. DTO definido en `src/shared/reports.ts`. Búsqueda sobre business_date/local_month, no fechas UTC truncadas.
 
 ## Payloads and errors
 

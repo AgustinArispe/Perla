@@ -6,6 +6,7 @@ function invoke<T>(operation: Operation, payload: unknown = null): Promise<Resul
   return ipcRenderer.invoke('bocha:request', { operation, payload });
 }
 const api: BochaApi = {
+  dashboard: { monthly: (month) => invoke('dashboard.monthly', { month }) },
   auth: {
     status: () => invoke('auth.status'),
     bootstrap: (input) => invoke('auth.bootstrap', input),

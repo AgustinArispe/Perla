@@ -25,6 +25,8 @@ import {
   StockMovementsSchema,
 } from '../shared/stock';
 import { DomainError } from '../shared/errors';
+import { MonthlyReports } from './reports/queries';
+import { MonthlyRequestSchema } from '../shared/reports';
 const mutations = new Set([
   'products.save',
   'products.setActive',
@@ -45,6 +47,7 @@ export class Application {
   private readonly importer: CatalogImporter;
   private readonly drafts: DraftRepository;
   private readonly sales: SalesService;
+  private readonly reports: MonthlyReports;
   constructor(
     private readonly db: Database.Database,
     private readonly auth: AuthService,
@@ -54,6 +57,7 @@ export class Application {
     this.importer = new CatalogImporter(db, this.catalog, this.stock);
     this.drafts = new DraftRepository(db);
     this.sales = new SalesService(db, this.catalog, this.stock, this.drafts);
+    this.reports = new MonthlyReports(db);
   }
   dispatch(operation: string, payload: unknown, token: string | null): unknown {
     if (operation === 'internal.authorize') {
@@ -105,6 +109,8 @@ export class Application {
             throw new DomainError('INACTIVE', 'Este producto está inactivo.');
           return product;
         }
+        case 'dashboard.monthly':
+          return this.reports.month(MonthlyRequestSchema.parse(payload).month);
         case 'products.search': {
           const input = ProductSearchSchema.parse(payload);
           return this.catalog.search(

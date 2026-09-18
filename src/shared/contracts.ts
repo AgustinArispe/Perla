@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import type { MonthlyReport } from './reports';
 import type {
   User,
   AuthStatus,
@@ -72,6 +73,7 @@ export const SystemHealthResultSchema = z.discriminatedUnion('ok', [
   z.object({ ok: z.literal(false), error: AppErrorSchema }),
 ]);
 export interface BochaApi {
+  dashboard: { monthly(month: string): Promise<Result<MonthlyReport>> };
   auth: {
     status(): Promise<Result<AuthStatus>>;
     bootstrap(input: BootstrapInput): Promise<Result<User>>;

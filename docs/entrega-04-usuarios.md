@@ -57,8 +57,7 @@ Siete recorridos Playwright correctos, incluido bootstrap, creación de perfiles
 logout/login y rechazos de vendedor/supervisor por IPC. Verificación visual de
 ingreso y Usuarios realizada. Docker: 63 pruebas y builds correctos en Linux.
 Revisión independiente: corregidos límite de intentos y conservación de sesión
-ante contraseña actual incorrecta. El instalador se regenerará con la conexión
-de módulos siguiente; el paquete previo aún corresponde a la entrega 03.
+ante contraseña actual incorrecta. El instalador se actualizó en la entrega 06 e incluye perfiles y módulos conectados.
 
 La autenticación no depende de Electron; todavía no hay servidor HTTP, hosting,
 cookies web ni protección CSRF/TLS. El bootstrap se usa localmente durante la
