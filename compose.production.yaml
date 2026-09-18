@@ -1,0 +1,45 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    restart: unless-stopped
+    init: true
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    tmpfs: [/tmp:size=128m, mode=1777]
+    environment:
+      BOCHA_PUBLIC_ORIGIN: https://${BOCHA_DOMAIN:?Configurá BOCHA_DOMAIN}
+      BOCHA_BACKUP_KEY: ${BOCHA_BACKUP_KEY:?Configurá una clave aleatoria de 32 bytes}
+      BOCHA_TRUST_PROXY: 172.29.70.2/32
+    volumes:
+      - bocha_data:/data
+    networks: [backend]
+    mem_limit: 768m
+    cpus: 2
+  gateway:
+    image: caddy:2.11.2-alpine@sha256:834468128c7696cec0ceea6172f7d692daf645ae51983ca76e39da54a97c570d
+    restart: unless-stopped
+    ports: ['80:80', '443:443']
+    environment:
+      BOCHA_DOMAIN: ${BOCHA_DOMAIN:?Configurá BOCHA_DOMAIN}
+    volumes:
+      - ./docker/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      backend:
+        ipv4_address: 172.29.70.2
+    depends_on:
+      api:
+        condition: service_healthy
+networks:
+  backend:
+    ipam:
+      config:
+        - subnet: 172.29.70.0/24
+volumes:
+  bocha_data:
+  caddy_data:
+  caddy_config:

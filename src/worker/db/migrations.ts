@@ -4,6 +4,7 @@ import productsSql from './migrations/002_products.sql?raw';
 import inventorySql from './migrations/003_inventory.sql?raw';
 import salesSql from './migrations/004_sales.sql?raw';
 import usersSql from './migrations/005_users.sql?raw';
+import webSql from './migrations/006_web_operations.sql?raw';
 import { DomainError } from '../../shared/errors';
 
 export interface Migration {
@@ -22,9 +23,11 @@ export const MIGRATIONS: Migration[] = [
   { version: 3, sql: inventorySql },
   { version: 4, sql: salesSql },
   { version: 5, sql: usersSql },
+  { version: 6, sql: webSql },
 ];
 export const SCHEMA_VERSION = MIGRATIONS.at(-1)!.version;
-const checksum = (sql: string) => createHash('sha256').update(sql).digest('hex');
+const rawChecksum = (sql: string) => createHash('sha256').update(sql).digest('hex');
+const checksum = (sql: string) => rawChecksum(sql.replace(/\r\n/g, '\n'));
 
 export function migrate(database: Database.Database, migrations: Migration[] = MIGRATIONS): void {
   database
@@ -51,12 +54,17 @@ export function migrate(database: Database.Database, migrations: Migration[] = M
         .all() as { version: number; checksum: string | null }[];
       for (const row of applied) {
         const original = migrations.find((migration) => migration.version === row.version);
-        if (!original || (row.checksum && row.checksum !== checksum(original.sql)))
+        if (
+          !original ||
+          (row.checksum &&
+            row.checksum !== checksum(original.sql) &&
+            row.checksum !== rawChecksum(original.sql.replace(/\r?\n/g, '\r\n')))
+        )
           throw new DomainError(
             'BACKUP_INVALID',
             'El historial de migraciones no coincide con esta aplicación.',
           );
-        if (!row.checksum)
+        if (row.checksum !== checksum(original.sql))
           database
             .prepare('UPDATE schema_migrations SET checksum=? WHERE version=?')
             .run(checksum(original.sql), row.version);

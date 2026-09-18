@@ -4,7 +4,7 @@
 
 **Created**: 2026-09-17
 
-**Status**: Draft - para revisión de Agus; no implementado.
+**Status**: Plan de escritorio archivado tras decisión de migrar a web (2026-09-18). Backups/recuperación implementados en [011](../011-web-backup-recovery/spec.md); servidor/despliegue en [010](../010-web-api-security/spec.md).
 
 **Input**: Entregar una aplicación instalable, proteger datos con respaldos validados y mantenerla sin exigir conocimientos técnicos al comercio.
 

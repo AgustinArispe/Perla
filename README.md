@@ -1,6 +1,12 @@
 # El Bocha POS
 
-Aplicación de escritorio de control interno para un almacén en Argentina.
+Sistema de control interno para un almacén en Argentina, con backend web centralizado.
+API, base de datos, roles, stock, ventas, cierres y backups cifrados implementados.
+[Contrato web, seguridad, despliegue y recuperación](docs/backend-web.md).
+La interfaz web es la siguiente etapa; el frontend de escritorio existente se conserva como referencia.
+
+## Versión de escritorio previa
+
 Estado: catálogo y control de stock disponibles. Alta/edición/inactivación,
 búsqueda, importación CSV, conteos, ingresos, mermas e historial de movimientos.
 Backend de ventas disponible: pagos, descuentos, persistencia, consulta y anulación

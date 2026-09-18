@@ -1,4 +1,7 @@
-# Tasks: Backups, instalación y mantenimiento
+# Tasks
+
+Plan histórico de escritorio. Estas tareas no gobiernan la entrega web: backup y recuperación se cierran en [011](../011-web-backup-recovery/tasks.md), despliegue en [010](../010-web-api-security/tasks.md). Los checkboxes históricos no se completan sin evidencia de su implementación de escritorio.
+: Backups, instalación y mantenimiento
 
 **Spec**: [spec.md](spec.md) | **Plan**: [plan.md](plan.md)
 

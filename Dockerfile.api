@@ -1,0 +1,18 @@
+FROM node:24.13.0-bookworm-slim@sha256:4660b1ca8b28d6d1906fd644abe34b2ed81d15434d26d845ef0aced307cf4b6f AS build
+WORKDIR /app
+ENV ELECTRON_SKIP_BINARY_DOWNLOAD=1 BOCHA_SKIP_ELECTRON_CHECK=1
+COPY package.json package-lock.json ./
+RUN npm ci --ignore-scripts
+COPY scripts/build-api.mjs scripts/build-api.mjs
+COPY src src
+RUN npm run build:api && npm prune --omit=dev --ignore-scripts
+FROM node:24.13.0-bookworm-slim@sha256:4660b1ca8b28d6d1906fd644abe34b2ed81d15434d26d845ef0aced307cf4b6f
+WORKDIR /app
+ENV NODE_ENV=production BOCHA_HOST=0.0.0.0 BOCHA_DATABASE_PATH=/data/bocha.sqlite BOCHA_BACKUP_DIRECTORY=/data/backups
+COPY --from=build /app/node_modules node_modules
+COPY --from=build /app/dist/api dist/api
+RUN mkdir /data && chown node:node /data && chmod 700 /data
+USER node
+EXPOSE 3000
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s CMD node -e "fetch('http://127.0.0.1:3000/api/v1/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+CMD ["node","dist/api/index.cjs"]

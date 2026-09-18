@@ -18,5 +18,9 @@ backups/
 .env
 .env.*
 !.env.example
+!.env.production.example
 .agents/**/auth*
 .codex/auth.json
+
+!src/server/backups/
+!src/server/backups/*.ts

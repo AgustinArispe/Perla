@@ -4,7 +4,8 @@
 
 ### I. Caja rápida y comprensible
 
-La aplicación DEBE operar sin internet y priorizar scanner y teclado. Fondo blanco,
+La aplicación DEBE priorizar scanner y teclado en navegador. Confirmar ventas
+requiere conexión al servidor; un corte no se interpreta como confirmación. Fondo blanco,
 verde de acento, texto principal mínimo 18 px, controles de cantidad de 22 px y
 total mínimo 48 px en escritorio. No se mezcla el dashboard con el flujo de caja.
 Ningún cálculo de informes o backup puede bloquear el hilo de la interfaz.
@@ -23,18 +24,23 @@ Se usan aritmética entera y redondeo definido, nunca floats para resultados de
 venta. Una sola lógica de dominio valida cobro, descuentos y stock; la UI no
 decide qué se persiste. Código de barras es texto y conserva ceros iniciales.
 
-### IV. Datos locales recuperables
+### IV. Datos centrales recuperables
 
-SQLite DEBE permanecer fuera del instalador y del repositorio. Migraciones
+SQLite DEBE permanecer en volumen persistente del servidor, fuera del repositorio
+y del navegador. La instancia API activa es única. Migraciones
 versionadas, foreign keys, backups consistentes y recuperación probada. Antes de
 restaurar o migrar datos reales se genera un respaldo validado. Fallos de disco
-no pueden mostrarse como ventas exitosas. La instancia de escritura es única.
+no pueden mostrarse como ventas exitosas. Backups cifrados y clave externa;
+una copia descargada fuera del servidor permite recuperar una base dañada.
+La administración privada y recuperación DEBEN comprobar exclusión del servicio.
 
 ### V. Entregas verificadas por comportamiento
 
 Pruebas de dominio para importes y pesos; integración con SQLite real para
 transacciones, stock, anulación, informes y restore; recorridos de teclado con
-Playwright. Se prueba además el scanner físico y el instalador en Windows.
+Playwright. HTTP real, worker, permisos, restauración interrumpida y contenedor
+de producción se verifican antes de declarar backend terminado.
+El scanner físico se valida durante instalación/adopción del comercio.
 No se declara compatible un hardware que solamente fue simulado.
 
 ## Restricciones del proyecto
@@ -47,12 +53,20 @@ jefe administra todos los módulos y usuarios. Cancelar un carrito no anula una
 venta cobrada. Responsables y cambios se conservan sin credenciales ni tokens.
 Revocar cuentas/roles invalida sesiones; debe permanecer un jefe activo.
 
-- Windows 11 x64 como objetivo inicial; PC con SSD y 8 GB RAM como referencia a validar.
-- React, TypeScript strict, Vite, Electron; SQLite y consultas SQL parametrizadas.
+### VII. Seguridad web verificable
+
+HTTPS del mismo origen, cookies HttpOnly/Secure/SameSite, CSRF y Origin exacto.
+La API DEBE validar contratos, permisos y propietario; limitar abuso y redactar
+credenciales. Aprovisionamiento y recuperación de acceso sólo por CLI privada.
+La sesión vence a las 8 horas o 30 minutos de inactividad; cambios de cuenta
+y restauraciones revocan sesiones. No se exponen SQL ni RPC arbitrarios.
+
+- PC de caja con navegador moderno; operación local de teclado/scanner USB HID.
+- React, TypeScript strict y Vite; Node/Fastify, worker, SQLite y SQL parametrizado.
+- Electron se conserva como versión previa; la interfaz web es la siguiente etapa.
 - Sin ARCA, emisión fiscal, procesamiento de tarjetas ni conexión a POS bancario.
-- Un comercio, una caja, una PC, un depósito lógico en el despliegue actual.
-  Posible web futura: mantener reglas y permisos independientes de Electron;
-  servidor, transporte, hosting y concurrencia multiusuario requieren otra entrega.
+- Un comercio, un depósito lógico y varias terminales/usuarios con servidor central.
+  Escalar a varias API/comercios requiere revisar persistencia y aislamiento.
 - Paquetes de aplicación resueltos y fijados en lockfile al comenzar implementación.
 - Node.js 24 LTS para herramientas de desarrollo; el cliente no instala Node ni Python.
 
@@ -61,8 +75,9 @@ Revocar cuentas/roles invalida sesiones; debe permanecer un jefe activo.
 Constitution -> spec -> plan -> tasks -> implement -> converge por feature.
 Cada spec incluye escenarios, supuestos y resultados verificables. Mantener el
 modelo común de datos y contratos antes de extender módulos. La planificación
-actual es un borrador para revisión de Agus: no autoriza publicación o instalación
-en el cliente. No agregar dependencias ni automatismos innecesarios.
+web fue autorizada por Agus; backend se implementa antes del frontend. Preparar
+despliegue no equivale a publicar un dominio ni configurar hosting real.
+No agregar dependencias ni automatismos innecesarios.
 
 ## Governance
 
@@ -71,4 +86,4 @@ dinero, stock o esquema requieren adaptar contratos, pruebas y migraciones.
 Versionar esta constitución: major para reglas incompatibles, minor para nuevas
 reglas, patch para aclaraciones. Revisar cumplimiento en cada entrega.
 
-**Version**: 1.1.0 | **Ratified**: 2026-09-17 | **Last Amended**: 2026-09-17
+**Version**: 2.0.0 | **Ratified**: 2026-09-17 | **Last Amended**: 2026-09-18

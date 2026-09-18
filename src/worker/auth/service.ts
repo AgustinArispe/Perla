@@ -27,7 +27,10 @@ const publicColumns =
 const digest = (token: string) => createHash('sha256').update(token).digest('hex');
 export class AuthService {
   private readonly dummyHash = hashPassword(randomBytes(32).toString('hex'));
-  constructor(private readonly db: Database.Database) {}
+  constructor(
+    private readonly db: Database.Database,
+    private readonly options: { idleTimeoutMs?: number; singleSession?: boolean } = {},
+  ) {}
   private user(id: string): User {
     const row = this.db.prepare(`SELECT ${publicColumns} FROM users WHERE id=?`).get(id) as
       (Omit<User, 'active'> & { active: number }) | undefined;
@@ -47,14 +50,25 @@ export class AuthService {
     if (!token || !/^[a-f0-9]{64}$/.test(token))
       throw new DomainError('UNAUTHENTICATED', 'Iniciá sesión para continuar.');
     const row = this.db
-      .prepare('SELECT user_id,user_revision,expires_at_ms FROM auth_sessions WHERE token_hash=?')
+      .prepare(
+        'SELECT user_id,user_revision,expires_at_ms,last_seen_ms FROM auth_sessions WHERE token_hash=?',
+      )
       .get(digest(token)) as
-      { user_id: string; user_revision: number; expires_at_ms: number } | undefined;
-    if (!row || row.expires_at_ms <= Date.now())
+      | { user_id: string; user_revision: number; expires_at_ms: number; last_seen_ms: number }
+      | undefined;
+    if (
+      !row ||
+      row.expires_at_ms <= Date.now() ||
+      (this.options.idleTimeoutMs && row.last_seen_ms + this.options.idleTimeoutMs <= Date.now())
+    )
       throw new DomainError('UNAUTHENTICATED', 'La sesión venció. Volvé a ingresar.');
     const user = this.user(row.user_id);
     if (!user.active || user.revision !== row.user_revision)
       throw new DomainError('UNAUTHENTICATED', 'La cuenta cambió. Volvé a ingresar.');
+    if (this.options.idleTimeoutMs)
+      this.db
+        .prepare('UPDATE auth_sessions SET last_seen_ms=? WHERE token_hash=?')
+        .run(Date.now(), digest(token));
     return user;
   }
   authorize(token: string | null, operation: string): User {
@@ -64,11 +78,21 @@ export class AuthService {
     return user;
   }
   private grant(user: User): SessionGrant {
+    if (this.options.singleSession)
+      this.db.prepare('DELETE FROM auth_sessions WHERE user_id=?').run(user.id);
     const sessionToken = randomBytes(32).toString('hex');
     this.db.prepare('DELETE FROM auth_sessions WHERE expires_at_ms<=?').run(Date.now());
     this.db
-      .prepare('INSERT INTO auth_sessions VALUES (?,?,?,?)')
-      .run(digest(sessionToken), user.id, user.revision, Date.now() + 8 * 60 * 60 * 1000);
+      .prepare(
+        'INSERT INTO auth_sessions (token_hash,user_id,user_revision,expires_at_ms,last_seen_ms) VALUES (?,?,?,?,?)',
+      )
+      .run(
+        digest(sessionToken),
+        user.id,
+        user.revision,
+        Date.now() + 8 * 60 * 60 * 1000,
+        Date.now(),
+      );
     return { user, sessionToken };
   }
   bootstrap(raw: BootstrapInput): SessionGrant {

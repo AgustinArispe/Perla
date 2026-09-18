@@ -1,5 +1,12 @@
 import type { Role } from '../shared/auth';
 const common = [
+  'settings.get',
+  'terminals.active',
+  'cash.current',
+  'cash.open',
+  'cash.close',
+  'cash.movement',
+  'shifts.details',
   'auth.status',
   'auth.logout',
   'auth.changePassword',
@@ -14,6 +21,8 @@ const common = [
   'sales.detail',
 ];
 const management = [
+  'shifts.list',
+  'audit.list',
   'products.save',
   'products.setActive',
   'products.previewImport',
@@ -31,6 +40,11 @@ const management = [
   'sales.void',
 ];
 const owner = [
+  'terminals.list',
+  'terminals.save',
+  'exports.products',
+  'exports.sales',
+  'exports.stock',
   'users.list',
   'users.save',
   'dashboard.monthly',

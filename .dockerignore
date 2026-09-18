@@ -18,5 +18,7 @@ playwright-report
 *.sqlite*
 *.db*
 backups
+!src/server/backups/
+!src/server/backups/*.ts
 .env
 .env.*

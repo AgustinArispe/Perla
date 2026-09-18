@@ -1,9 +1,22 @@
 # Plan de desarrollo - El Bocha POS
 
-**Fecha**: 2026-09-17. **Estado**: desarrollo en curso; aceptación final pendiente.
+**Fecha**: 2026-09-18. **Estado**: backend web cerrado; frontend web y publicación siguientes.
 **Responsable**: Luis Agustín Arispe. **Horizonte propuesto**: ocho semanas.
 
 ## Propuesta
+
+Agus confirmó el despliegue web. Backend TypeScript/Fastify, SQL en SQLite central
+del servidor, worker y conexión HTTPS del mismo origen. Se entregaron productos,
+stock, ventas/pagos, histórico, dashboard, usuarios/roles, configuración, terminales,
+cierres, auditoría, exportaciones y recuperación con backups cifrados. La interfaz
+web React es la próxima etapa. [Contrato y operación](backend-web.md).
+
+La constitución cambia de 1.1.0 a **2.0.0** por reemplazar operación offline/local
+por servidor web central. Una API activa y conexión para confirmar ventas;
+datos persistentes fuera del contenedor de aplicación. El instalador y diálogos
+nativos del plan 008 se archivan; sus capacidades de backup se entregan en 011.
+
+## Plan inicial de escritorio (referencia histórica)
 
 Aplicación de escritorio offline, orientada a una PC de caja, con React,
 TypeScript, Vite, Electron y SQLite. La velocidad se prioriza en escaneo, búsqueda,
@@ -34,9 +47,12 @@ quickstart.md, tasks.md y checklists/requirements.md, con formato Spec Kit.
 | 7 | [007 Dashboard mensual](../specs/007-monthly-dashboard/spec.md) | Totales, pagos, rankings y stock bajo actual | 002, 003, 006 |
 | 8 | [008 Instalación/backup](../specs/008-backup-installation/spec.md) | Instalador, snapshot, restore y mantenimiento | 001, 002, 003, 006, 007 |
 | 9 | [009 Usuarios/permisos](../specs/009-users-roles/spec.md) | Ingreso, perfiles, administración por jefe y trazabilidad | 001, 002, 003, 006 |
+| 10 | [010 API y seguridad web](../specs/010-web-api-security/spec.md) | HTTP, worker, sesiones, permisos, CLI privada y despliegue preparado | Dominio 001..009 |
+| 11 | [011 Backup y recuperación web](../specs/011-web-backup-recovery/spec.md) | Copia cifrada, restauración y recuperación offline privada | 010 |
+| 12 | [012 Operación de caja](../specs/012-web-business-operations/spec.md) | Configuración, terminales, arqueo, auditoría y exportación | 010, 011 |
 
 Los números son identificadores de specs. La implementación local está en
-`feature/users-roles` (incrementos previos en `feature/desktop-catalog`). No se creó/publicó un repositorio remoto de GitHub.
+`feature/web-backend` (incrementos previos en `feature/users-roles` y `feature/desktop-catalog`). No se creó/publicó un repositorio remoto de GitHub.
 
 Se adelanta el backend 006 por pedido de Agus, reutilizando borrador y cantidades
 base antes de desarrollar las pantallas 004/005. [Entrega y límites](entrega-03-backend-ventas.md).

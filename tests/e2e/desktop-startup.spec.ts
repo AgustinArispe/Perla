@@ -35,7 +35,7 @@ test('abre el escritorio con SQLite en worker y renderer aislado', async () => {
         if (!result.ok) throw new Error(result.error.message);
         expect(result.value.database).toBe('ready');
         expect(result.value.environment).toBe('test');
-        expect(result.value.schemaVersion).toBe(5);
+        expect(result.value.schemaVersion).toBe(6);
         if (attempt === 0) {
           const saved = await page.evaluate(() =>
             window.bocha!.products.save({
