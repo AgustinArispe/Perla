@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { api, unwrap, errorMessage } from './api';
 import { Icon } from './components/Icon';
 import { ProductList } from './features/products/ProductList';
@@ -9,6 +9,8 @@ import { UserList } from './features/auth/UserList';
 import { ChangePassword } from './features/auth/ChangePassword';
 import type { User } from '../shared/auth';
 import { roleLabel } from '../domain/permissions';
+import { Checkout, type LeaveGuard } from './features/checkout/Checkout';
+import { SalesList } from './features/history/SalesList';
 
 const sections = [
   ['cash', 'Caja'],
@@ -47,7 +49,7 @@ export function App() {
       </div>
     );
   if (auth.isPending) return <div className="auth-screen">Conectando datos…</div>;
-  if (auth.isError)
+  if (auth.isError && !auth.data?.user)
     return (
       <div className="auth-screen">
         <div className="auth-card">
@@ -60,7 +62,8 @@ export function App() {
         </div>
       </div>
     );
-  if (!auth.data.user) return <Login initialized={auth.data.initialized} onSignedIn={refresh} />;
+  if (!auth.data?.user)
+    return <Login initialized={auth.data?.initialized ?? true} onSignedIn={refresh} />;
   return (
     <Workspace
       key={`${auth.data.user.id}:${auth.data.user.revision}`}
@@ -79,13 +82,34 @@ function Workspace({
   onLogout: () => Promise<void>;
   onPasswordChanged: () => Promise<void>;
 }) {
-  const [section, setSection] = useState<'Productos' | 'Stock' | 'Usuarios' | 'Caja'>(
+  const [section, setSection] = useState<'Productos' | 'Stock' | 'Usuarios' | 'Caja' | 'Histórico'>(
     user.role === 'SELLER' ? 'Caja' : 'Productos',
   );
   const [passwordOpen, setPasswordOpen] = useState(false),
     [sessionError, setSessionError] = useState('');
   const desktop = Boolean(window.bocha);
   const client = useQueryClient();
+  const leaveGuard = useRef<LeaveGuard>(null);
+  const registerLeaveGuard = useCallback((guard: LeaveGuard) => {
+    leaveGuard.current = guard;
+  }, []);
+  async function navigate(title: typeof section) {
+    try {
+      await leaveGuard.current?.();
+      setSessionError('');
+      setSection(title);
+    } catch (failure) {
+      setSessionError(errorMessage(failure));
+    }
+  }
+  async function leave(action: () => void | Promise<void>) {
+    try {
+      await leaveGuard.current?.();
+      await action();
+    } catch (failure) {
+      setSessionError(errorMessage(failure));
+    }
+  }
   const status = useQuery({
     queryKey: ['system-status'],
     queryFn: async () => unwrap(await api().system.health()),
@@ -122,16 +146,22 @@ function Workspace({
               <button
                 key={title}
                 className={title === section ? 'nav-item selected' : 'nav-item'}
-                disabled={!['Productos', 'Stock', 'Usuarios'].includes(title)}
+                disabled={!['Caja', 'Productos', 'Stock', 'Histórico', 'Usuarios'].includes(title)}
                 aria-current={title === section ? 'page' : undefined}
                 onClick={() => {
-                  if (title === 'Productos' || title === 'Stock' || title === 'Usuarios')
-                    setSection(title);
+                  if (
+                    title === 'Productos' ||
+                    title === 'Stock' ||
+                    title === 'Usuarios' ||
+                    title === 'Caja' ||
+                    title === 'Histórico'
+                  )
+                    void navigate(title);
                 }}
               >
                 <Icon name={icon} />
                 <span>{title}</span>
-                {!['Productos', 'Stock', 'Usuarios'].includes(title) && (
+                {!['Caja', 'Productos', 'Stock', 'Histórico', 'Usuarios'].includes(title) && (
                   <span className="pending-dot" title="Pendiente de desarrollo" />
                 )}
               </button>
@@ -140,15 +170,13 @@ function Workspace({
         <div className="sidebar-bottom">
           <strong>{user.name}</strong>
           <small>{roleLabel[user.role]}</small>
-          <button className="button secondary small" onClick={() => setPasswordOpen(true)}>
-            Cambiar contraseña
-          </button>
           <button
             className="button secondary small"
-            onClick={() =>
-              void onLogout().catch((failure) => setSessionError(errorMessage(failure)))
-            }
+            onClick={() => void leave(() => setPasswordOpen(true))}
           >
+            Cambiar contraseña
+          </button>
+          <button className="button secondary small" onClick={() => void leave(onLogout)}>
             Cerrar sesión
           </button>
           <div className="offline-badge">
@@ -192,20 +220,10 @@ function Workspace({
             <StockList />
           ) : section === 'Usuarios' ? (
             <UserList />
+          ) : section === 'Histórico' ? (
+            <SalesList userId={user.id} />
           ) : (
-            <>
-              <div className="page-heading">
-                <div>
-                  <h1>Caja</h1>
-                  <p>
-                    {user.name} · {roleLabel[user.role]}
-                  </p>
-                </div>
-              </div>
-              <div className="catalog-card empty-table">
-                La pantalla de venta está en desarrollo.
-              </div>
-            </>
+            <Checkout user={user} registerLeaveGuard={registerLeaveGuard} />
           )}
           {passwordOpen && (
             <ChangePassword onClose={() => setPasswordOpen(false)} onChanged={onPasswordChanged} />

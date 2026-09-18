@@ -18,7 +18,8 @@ export function calculateSale(
       line.priceCents > MAX_MONEY ||
       !Number.isSafeInteger(line.quantityBase) ||
       line.quantityBase < 1 ||
-      line.quantityBase > MAX_QUANTITY
+      line.quantityBase > MAX_QUANTITY ||
+      (line.unit === 'KG' && line.quantityBase > 99999)
     )
       throw new DomainError('VALIDATION', 'Precio o cantidad inválidos.');
     const value = BigInt(line.priceCents) * BigInt(line.quantityBase);

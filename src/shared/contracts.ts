@@ -90,6 +90,7 @@ export interface BochaApi {
   };
   system: { health(): Promise<Result<SystemStatus>>; reconnect(): Promise<Result<SystemStatus>> };
   products: {
+    get(productId: string): Promise<Result<Product>>;
     search(input: ProductSearchInput): Promise<Result<ProductPage>>;
     save(input: ProductSaveInput): Promise<Result<Product>>;
     setActive(input: SetActiveInput): Promise<Result<Product>>;

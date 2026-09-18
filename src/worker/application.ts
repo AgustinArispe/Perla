@@ -99,6 +99,12 @@ export class Application {
     };
     const execute = (): unknown => {
       switch (operation) {
+        case 'products.get': {
+          const product = this.catalog.get(productIdSchema.parse(payload).productId);
+          if (actor.role === 'SELLER' && !product.active)
+            throw new DomainError('INACTIVE', 'Este producto está inactivo.');
+          return product;
+        }
         case 'products.search': {
           const input = ProductSearchSchema.parse(payload);
           return this.catalog.search(

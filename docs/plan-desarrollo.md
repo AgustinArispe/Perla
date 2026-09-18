@@ -10,7 +10,7 @@ TypeScript, Vite, Electron y SQLite. La velocidad se prioriza en escaneo, búsqu
 confirmación y recuperación. La UI será blanca, con verde como acento, texto y
 números grandes y navegación por secciones. El entorno y un scaffold mínimo ya
 están preparados; Catálogo y Stock están implementados. Backend de ventas, pagos
-y anulación implementado; pantallas de Caja/peso e Histórico, dashboard y backup
+y anulación implementado; Caja/peso e Histórico conectados, usuarios implementados. Dashboard y backup
 de usuario pendientes. [Guía de desarrollo](entorno-desarrollo.md).
 
 La elección de Electron favorece instalación y desarrollo con TypeScript; el

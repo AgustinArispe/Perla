@@ -34,6 +34,7 @@ export const RequestSchemas = {
   'system.health': z.null(),
   'system.reconnect': z.null(),
   'products.search': ProductSearchSchema,
+  'products.get': z.strictObject({ productId: z.uuid() }),
   'products.save': ProductSaveSchema,
   'products.setActive': SetActiveSchema,
   'products.findByBarcode': z.strictObject({ barcode: z.string().trim().min(1).max(64) }),

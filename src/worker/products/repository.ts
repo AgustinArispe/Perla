@@ -48,6 +48,7 @@ function map(row: Row): Product {
   };
 }
 const CursorSchema = z.strictObject({
+  saleUnit: z.enum(['UNIT', 'KG']).optional(),
   name: z.string().max(200),
   id: z.uuid(),
   query: z.string(),
@@ -171,9 +172,10 @@ export class CatalogRepository {
     const query = normalizeSearch(input.query);
     const status = input.activeOnly ? 'ACTIVE' : input.status;
     const pattern = `%${query.replace(/[\\%_]/g, (character) => `\\${character}`)}%`;
-    const where = `(search_name LIKE ? ESCAPE '\\' OR bocha_search(sku) LIKE ? ESCAPE '\\' OR bocha_search(barcode) LIKE ? ESCAPE '\\')${status === 'ALL' ? '' : ' AND active=?'}`;
+    const where = `(search_name LIKE ? ESCAPE '\\' OR bocha_search(sku) LIKE ? ESCAPE '\\' OR bocha_search(barcode) LIKE ? ESCAPE '\\')${status === 'ALL' ? '' : ' AND active=?'}${input.saleUnit ? ' AND sale_unit=?' : ''}`;
     const parameters: (string | number)[] = [pattern, pattern, pattern];
     if (status !== 'ALL') parameters.push(status === 'ACTIVE' ? 1 : 0);
+    if (input.saleUnit) parameters.push(input.saleUnit);
     const total = (
       this.db
         .prepare(`SELECT COUNT(*) AS count FROM products WHERE ${where}`)
@@ -190,7 +192,7 @@ export class CatalogRepository {
       } catch {
         throw new DomainError('VALIDATION', 'La página solicitada no es válida.');
       }
-      if (cursor.query !== query || cursor.status !== status)
+      if (cursor.query !== query || cursor.status !== status || cursor.saleUnit !== input.saleUnit)
         throw new DomainError('VALIDATION', 'La búsqueda cambió; volvé a la primera página.');
       after = ' AND (search_name>? OR (search_name=? AND id>?))';
       pageParameters.push(cursor.name, cursor.name, cursor.id);
@@ -206,7 +208,13 @@ export class CatalogRepository {
       nextCursor:
         rows.length > input.limit && last
           ? Buffer.from(
-              JSON.stringify({ name: last.search_name, id: last.id, query, status }),
+              JSON.stringify({
+                name: last.search_name,
+                id: last.id,
+                query,
+                status,
+                saleUnit: input.saleUnit,
+              }),
             ).toString('base64url')
           : null,
     };

@@ -215,3 +215,33 @@ describe('catálogo e importación atómica', () => {
     }
   });
 });
+it('filtra los productos por kilo antes de paginar y ata el cursor al filtro', () => {
+  const db = openDatabase(':memory:');
+  try {
+    const repo = new CatalogRepository(db);
+    for (let i = 0; i < 25; i++)
+      repo.save({
+        ...input,
+        sku: `U${i}`,
+        barcode: null,
+        name: `A producto ${i}`,
+        saleUnit: 'UNIT',
+      });
+    for (let i = 0; i < 2; i++)
+      repo.save({ ...input, sku: `K${i}`, barcode: null, name: `Z fiambre ${i}` });
+    const page = repo.search({ query: '', activeOnly: true, limit: 1, saleUnit: 'KG' });
+    expect(page.total).toBe(2);
+    expect(page.items[0]?.saleUnit).toBe('KG');
+    expect(() =>
+      repo.search({
+        query: '',
+        activeOnly: true,
+        limit: 1,
+        cursor: page.nextCursor!,
+        saleUnit: 'UNIT',
+      }),
+    ).toThrow('búsqueda cambió');
+  } finally {
+    db.close();
+  }
+});

@@ -4,6 +4,7 @@ const common = [
   'auth.logout',
   'auth.changePassword',
   'products.search',
+  'products.get',
   'products.findByBarcode',
   'checkout.getDraft',
   'checkout.saveDraft',

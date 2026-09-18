@@ -35,6 +35,7 @@ export interface Product extends ProductInput {
   updatedAt: string;
 }
 export const ProductSearchSchema = z.strictObject({
+  saleUnit: z.enum(['UNIT', 'KG']).optional(),
   query: z.string().trim().max(120),
   activeOnly: z.boolean(),
   status: z.enum(['ALL', 'ACTIVE', 'INACTIVE']).default('ALL'),
@@ -99,6 +100,8 @@ export const DraftBodySchema = z.strictObject({
         quantityBase: z.number().int().min(1).max(MAX_QUANTITY),
         expectedProductRevision: z.number().int().min(1),
         expectedPriceCents: z.number().int().min(1).max(MAX_MONEY),
+        nameSnapshot: z.string().min(2).max(140).optional(),
+        unitSnapshot: z.enum(['UNIT', 'KG']).optional(),
       }),
     )
     .max(200),

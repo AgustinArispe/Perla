@@ -46,7 +46,7 @@ test('jefe crea perfiles, vendedor sólo ve Caja y supervisor gestiona sin dashb
       testPassword,
     );
     expect(created.ok).toBe(true);
-    await page.screenshot({ path: 'tmp/users-desktop.png' });
+    if (!process.env.BOCHA_E2E_EXECUTABLE) await page.screenshot({ path: 'tmp/users-desktop.png' });
     expect(await page.evaluate(() => Object.keys(window.bocha!.auth))).not.toContain(
       'sessionToken',
     );

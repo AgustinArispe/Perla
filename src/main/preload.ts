@@ -16,6 +16,7 @@ const api: BochaApi = {
   users: { list: () => invoke('users.list'), save: (input) => invoke('users.save', input) },
   system: { health: () => invoke('system.health'), reconnect: () => invoke('system.reconnect') },
   products: {
+    get: (productId) => invoke('products.get', { productId }),
     search: (input) => invoke('products.search', input),
     save: (input) => invoke('products.save', input),
     setActive: (input) => invoke('products.setActive', input),

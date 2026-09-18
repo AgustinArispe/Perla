@@ -2,7 +2,7 @@
 
 **Spec**: [spec.md](spec.md) | **Plan**: [plan.md](plan.md)
 
-**Estado**: backend implementado; UI y aceptación completa pendientes. [Evidencia](../../docs/entrega-03-backend-ventas.md).
+**Estado**: backend y pantallas conectados; aceptación completa en PC de referencia pendiente. [Evidencia](../../docs/entrega-03-backend-ventas.md).
 
 ## Global Constraints
 
@@ -30,9 +30,9 @@ Leer constitución, modelo y contratos comunes antes de modificar fuentes. No ca
 
 ## User Story 3: Anular sin duplicar reposición
 
-- [ ] T00610 [US3] Crear test `tests/e2e/sales-history.spec.ts` para: Cerrar con F8, confirmar mixto, cambiar precio, filtrar histórico y anular con motivo; stock vuelve una vez. Ejecutarlo antes de implementar y confirmar fallo por comportamiento faltante.
+- [x] T00610 [US3] Crear test `tests/e2e/sales-history.spec.ts` para: Cerrar con F8, confirmar mixto, cambiar precio, filtrar histórico y anular con motivo; stock vuelve una vez. Ejecutarlo antes de implementar y confirmar fallo por comportamiento faltante.
 
-- [ ] T00611 [US3] Implementar el comportamiento en los archivos de plan.md; contrato: sales.complete(CheckoutInput), findByCheckoutKey, list, detail y void. complete devuelve SaleDetail y errores recuperables; genera discount allocations y change en el worker.
+- [x] T00611 [US3] Implementar el comportamiento en los archivos de plan.md; contrato: sales.complete(CheckoutInput), findByCheckoutKey, list, detail y void. complete devuelve SaleDetail y errores recuperables; genera discount allocations y change en el worker.
 
 - [ ] T00612 [US3] Ejecutar comando de quickstart.md, comprobar escenario Given/When/Then de US3, y crear commit local por comportamiento probado.
 
@@ -52,5 +52,7 @@ Registrar versión, comando, resultado, fixture/PC y limitaciones. Completar un 
 
 Incremento backend: T00601/04/05/07/08/21 comprobadas con fixtures, RPC y revisión
 de migración/reintentos. Las tareas de aceptación por historia y T00611 permanecen
-abiertas hasta integrar las pantallas; su parte transaccional de anulación ya está
+con aceptación parcial; las pantallas están conectadas y su parte transaccional de anulación está
 probada en `sale-atomicity.test.ts` y `sales-backend.spec.ts`.
+
+Conexión de Caja/Histórico: ver entrega-05. El recorrido E2E comprueba cobro mixto, snapshots, filtro y anulación. No se da por aceptada toda la spec ni el rendimiento en hardware real.
