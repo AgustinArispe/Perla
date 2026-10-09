@@ -1,17 +1,25 @@
-# Plan de desarrollo - El Bocha POS
+# Plan de desarrollo — Perla Negra POS
 
 **Fecha**: 2026-09-18. **Estado**: backend y frontend web implementados; publicación de producción siguiente.
 **Responsable**: Luis Agustín Arispe. **Horizonte propuesto**: ocho semanas.
 
 ## Propuesta
 
+**Ampliación 2026-10-01**: la marca vigente es Perla Negra, pescados y mariscos.
+Agus aprobó evolución modular con funciones configurables y experiencia simple.
+El alcance, dependencias y división en nuevas specs se describen en
+[roadmap-modular.md](roadmap-modular.md). Las specs 014–023 están implementadas y
+verificadas; cada función opcional se activa desde Configuración sin borrar sus históricos.
+
 Agus confirmó el despliegue web. Backend TypeScript/Fastify, SQL en SQLite central
 del servidor, worker y conexión HTTPS del mismo origen. Se entregaron productos,
-stock, ventas/pagos, histórico, dashboard, usuarios/roles, configuración, terminales,
-cierres, auditoría, exportaciones y recuperación con backups cifrados. La interfaz
+stock por ubicación, ventas/pagos, promociones, compras, proveedores, clientes,
+histórico, dashboard, usuarios/roles, configuración, terminales, cierres, auditoría,
+exportaciones y recuperación con backups cifrados. La interfaz
 web React está implementada. [Contrato y operación](backend-web.md).
 
-La constitución cambia de 1.1.0 a **2.0.0** por reemplazar operación offline/local
+La constitución vigente es **2.2.0** y registra la operación web central y varias ubicaciones.
+La transición reemplazó operación offline/local
 por servidor web central. Una API activa y conexión para confirmar ventas;
 datos persistentes fuera del contenedor de aplicación. El instalador y diálogos
 nativos del plan 008 se archivan; sus capacidades de backup se entregan en 011.
@@ -74,8 +82,8 @@ autorización del transporte; esta etapa no incluye publicación web.
    desconocido, no agotado. La carga de catálogo no implica contar mercadería.
 5. Dashboard separa vendidos en unidades de vendidos en kg y factura neta por
    producto; no sumar unidades y gramos en un ranking engañoso.
-6. Base y recursos locales; sin internet para operar. Respaldo externo y restore
-   probado forman parte de la entrega. Sin ARCA ni comprobantes fiscales.
+6. El navegador requiere conexión con el servidor central para confirmar operaciones.
+   Respaldo externo y restore probado forman parte de la entrega. Sin ARCA ni comprobantes fiscales.
 
 ## Flujo de trabajo del negocio
 
@@ -150,3 +158,17 @@ Primero [arquitectura](arquitectura.md), [modelo de datos](modelo-datos.md) y
 [scanner/peso](scanner-y-peso.md). Después spec/plan/tasks de cada módulo en orden.
 [Spec Kit y selección de feature](spec-kit.md). Todos los supuestos tienen defaults
 explícitos; no se requiere responder preguntas para revisar este borrador.
+
+
+## Ampliación de control y UX — 7 de octubre de 2026
+
+Agus aprobó incorporar las diez herramientas de control y simplificar los recorridos de jefes y operadores. Diseño y alcance en [Control sencillo](control-sencillo.md). Estado: planificado, pendiente de implementación.
+
+- 027: Inicio por perfil, navegación a pendientes y vistas guardadas.
+- 028: Reposición sugerida, pedidos y recepción parcial.
+- 029: Productos sin movimiento y revisión de precios.
+- 030: Conteos guiados, vencimientos y revisión de diferencias de caja.
+- 031: Agenda de cobros/pagos con fechas pactadas.
+- 032: Resumen semanal e historial con antes/después.
+
+Cada carpeta de specs incluye spec.md, plan.md y tasks.md. Reutilizar los circuitos existentes; no duplicar cálculos de stock, ventas, deuda o margen. El inicio solo expone tareas cuyos módulos están habilitados e implementados.

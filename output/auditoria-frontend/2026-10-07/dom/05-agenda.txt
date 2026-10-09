@@ -1,0 +1,241 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda" [active]:
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Agenda de cobros y pagos" [level=1]
+  - paragraph: Fechas acordadas e importes pendientes de cada obligación.
+  - button "Volver"
+  - button "Mis vistas": Mis vistas
+  - text: Cuenta
+  - combobox "Cuenta":
+    - option "Cobros y pagos" [selected]
+    - option "Por cobrar"
+    - option "Por pagar"
+  - text: Fecha
+  - combobox "Fecha":
+    - option "Todos los pendientes" [selected]
+    - option "Vencidos"
+    - option "Esta semana"
+    - option "Próximos"
+    - option "Sin fecha"
+  - button "Exportar Excel"
+  - text: Por cobrar
+  - strong: $ 148.982,48
+  - text: Por pagar
+  - strong: $ 275.143.944,57
+  - article:
+    - strong: Héctor Navarro
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 1,08
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - article:
+    - strong: Claudia Acosta
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 7,37
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - article:
+    - strong: Claudia Medina
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 0,47
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - article:
+    - strong: Beatriz Acosta · Comercio
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 6,31
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - article:
+    - strong: Elena Martínez
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 40,54
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - article:
+    - strong: María López
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 0,02
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - article:
+    - strong: Marcelo Sosa
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 2.866,24
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - article:
+    - strong: Beatriz Vega
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 189,72
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - article:
+    - strong: Raúl Navarro
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 324,93
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - article:
+    - strong: Claudia Vega
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 583,70
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - article:
+    - strong: Silvia Navarro
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 2.676,20
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - article:
+    - strong: Marcelo Medina
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 56,04
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - article:
+    - strong: Carlos García
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 178,02
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - article:
+    - strong: Silvia Aguirre
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 0,20
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - article:
+    - strong: Héctor Medina
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 0,07
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - article:
+    - strong: Héctor Acosta
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 24.257,10
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - article:
+    - strong: Marcelo Benítez
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 69,41
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - article:
+    - strong: Silvia Acosta
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 4.441,85
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - article:
+    - strong: Patricia Benítez
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 0,40
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - article:
+    - strong: Carolina Suárez
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 712,27
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - article:
+    - strong: Héctor Sosa
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 9.268,07
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - article:
+    - strong: Patricia Aguirre
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 2.877,97
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - article:
+    - strong: Gustavo Vega
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 2.903,81
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - article:
+    - strong: Silvia Vega
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 315,12
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - article:
+    - strong: Beatriz Aguirre
+    - paragraph: Por cobrar · Sin fecha acordada
+    - strong: $ 273,18
+    - button "Acordar fecha"
+    - button "Registrar cobro"
+  - button "Anterior" [disabled]
+  - generic: Página 1 · 768 compromisos
+  - button "Siguiente"

@@ -2,6 +2,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import type Database from 'better-sqlite3';
 import type { User } from '../../shared/auth';
 import type { SaleDetail } from '../../shared/sales';
+import type { SaleReturnDetail } from '../../shared/returns';
 import { DomainError } from '../../shared/errors';
 import { recordAudit } from '../auth/audit';
 export interface RegisterShift {
@@ -224,6 +225,52 @@ export class CashService {
       })
       .immediate();
   }
+  supplierPayment(
+    input: {
+      supplierPaymentId: string;
+      shiftId: string;
+      amountCents: number;
+      supplierName: string;
+      operationKey: string;
+    },
+    a: User,
+  ): { id: string; shiftId: string } {
+    if (!this.db.inTransaction)
+      throw new Error('El pago a proveedor requiere una transacción activa.');
+    const existing = this.db
+      .prepare(
+        'SELECT id,shift_id AS shiftId FROM register_movements WHERE supplier_payment_id=?',
+      )
+      .get(input.supplierPaymentId) as { id: string; shiftId: string } | undefined;
+    if (existing) return existing;
+    const shift = this.openShift(input.shiftId, a);
+    const id = randomUUID();
+    this.db
+      .prepare(
+        "INSERT INTO register_movements(id,shift_id,kind,amount_cents,reason,actor_user_id,created_at_utc,operation_key,payload_hash,supplier_payment_id) VALUES (?,?,'OUT',?,?,?,?,?,?,?)",
+      )
+      .run(
+        id,
+        shift.id,
+        input.amountCents,
+        `Pago a ${input.supplierName}`,
+        a.id,
+        new Date().toISOString(),
+        input.operationKey,
+        operationHash(input),
+        input.supplierPaymentId,
+      );
+    recordAudit(this.db, a, 'cash.supplierPayment', id);
+    return { id, shiftId: shift.id };
+  }
+  customerCollection(input:{customerCollectionId:string;shiftId:string;amountCents:number;customerName:string;operationKey:string},a:User):{id:string;shiftId:string}{
+    if(!this.db.inTransaction)throw new Error('El cobro requiere una transacción activa.');
+    const existing=this.db.prepare('SELECT id,shift_id AS shiftId FROM register_movements WHERE customer_collection_id=?').get(input.customerCollectionId) as {id:string;shiftId:string}|undefined;
+    if(existing)return existing;
+    const shift=this.openShift(input.shiftId,a),id=randomUUID();
+    this.db.prepare("INSERT INTO register_movements(id,shift_id,kind,amount_cents,reason,actor_user_id,created_at_utc,operation_key,payload_hash,customer_collection_id) VALUES (?,?,'IN',?,?,?,?,?,?,?)").run(id,shift.id,input.amountCents,`Cobro de ${input.customerName}`,a.id,new Date().toISOString(),input.operationKey,operationHash(input),input.customerCollectionId);
+    recordAudit(this.db,a,'cash.customerCollection',id);return {id,shiftId:shift.id};
+  }
   refund(sale: SaleDetail, refundShiftId: string, a: User) {
     if (!this.db.inTransaction)
       throw new Error('El reintegro requiere la transacción de anulación.');
@@ -259,5 +306,40 @@ export class CashService {
       );
     recordAudit(this.db, a, 'cash.refund', id);
     return { id, shiftId: s.id };
+  }
+  partialRefund(saleReturn: SaleReturnDetail, refundShiftId: string, a: User) {
+    if (!this.db.inTransaction)
+      throw new Error('El reintegro requiere la transacción de devolución.');
+    if (saleReturn.refundMethod !== 'CASH' || saleReturn.refundCents === 0) return null;
+    const existing = this.db
+      .prepare(
+        "SELECT id,shift_id AS shiftId FROM register_movements WHERE return_id=? AND kind='REFUND'",
+      )
+      .get(saleReturn.id) as { id: string; shiftId: string } | undefined;
+    if (existing) return existing;
+    const shift = this.openShift(refundShiftId, a);
+    const id = randomUUID();
+    this.db
+      .prepare(
+        "INSERT INTO register_movements(id,shift_id,kind,amount_cents,reason,actor_user_id,created_at_utc,operation_key,payload_hash,return_id) VALUES (?,?,'REFUND',?,?,?,?,?,?,?)",
+      )
+      .run(
+        id,
+        shift.id,
+        saleReturn.refundCents,
+        `Devolución N.º ${saleReturn.number} · Venta N.º ${saleReturn.saleNumber}`,
+        a.id,
+        new Date().toISOString(),
+        saleReturn.input.operationKey,
+        operationHash({ returnId: saleReturn.id, shiftId: shift.id, amount: saleReturn.refundCents }),
+        saleReturn.id,
+      );
+    this.db
+      .prepare(
+        'UPDATE sale_return_refunds SET register_shift_id=?,register_movement_id=? WHERE return_id=?',
+      )
+      .run(shift.id, id, saleReturn.id);
+    recordAudit(this.db, a, 'cash.partialRefund', id);
+    return { id, shiftId: shift.id };
   }
 }

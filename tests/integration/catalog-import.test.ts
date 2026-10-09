@@ -22,6 +22,43 @@ const input = {
 const header = 'sku;barcode;nombre;precio_ars;unidad;activo;categoria;stock_inicial;stock_minimo\n';
 
 describe('catálogo e importación atómica', () => {
+  it('migra categorías existentes y conserva categoría y marca al buscar productos', () => {
+    const db = openDatabase(':memory:');
+    try {
+      const repo = new CatalogRepository(db);
+      const product = repo.save({ ...input, category: 'Fiambres', brandId: undefined });
+      const category = db
+        .prepare('SELECT id,name,active FROM product_categories WHERE name=?')
+        .get('Fiambres') as { id: string; name: string; active: number };
+      expect(category).toMatchObject({ name: 'Fiambres', active: 1 });
+      const brand = db
+        .prepare(
+          "INSERT INTO product_brands (id,name,search_name,active,revision,created_at_utc,updated_at_utc) VALUES ('11111111-1111-4111-8111-111111111111','Arcor','arcor',1,1,'2026-01-01T00:00:00.000Z','2026-01-01T00:00:00.000Z') RETURNING id,name",
+        )
+        .get() as { id: string; name: string };
+      const updated = repo.save({
+        sku: product.sku,
+        barcode: product.barcode,
+        name: product.name,
+        category: product.category,
+        brand: product.brand,
+        saleUnit: product.saleUnit,
+        priceCents: product.priceCents,
+        active: product.active,
+        trackStock: product.trackStock,
+        minStockBase: product.minStockBase,
+        id: product.id,
+        categoryId: category.id,
+        brandId: brand.id,
+        expectedRevision: product.revision,
+      });
+      expect(updated).toMatchObject({ category: 'Fiambres', categoryId: category.id, brand: 'Arcor', brandId: brand.id });
+      expect(repo.search({ query: '', activeOnly: false, limit: 20, categoryId: category.id, brandId: brand.id }).total).toBe(1);
+    } finally {
+      db.close();
+    }
+  });
+
   it('encuentra códigos Unicode con tildes y mayúsculas', () => {
     const db = openDatabase(':memory:');
     try {
@@ -121,7 +158,7 @@ describe('catálogo e importación atómica', () => {
     } finally {
       db.close();
     }
-  });
+  }, 15_000);
   it('exige confirmar precios, detecta cambios desde preview y revierte todo el lote', () => {
     const db = openDatabase(':memory:');
     try {

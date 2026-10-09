@@ -6,6 +6,7 @@ import {
   type CheckoutInput,
   type PaymentInput,
   type SaleDetail,
+  type SaleQuote,
 } from '../../../shared/sales';
 import { calculateSale } from '../../../domain/sale';
 import { ScanQueue } from '../../../domain/scan-queue';
@@ -30,6 +31,8 @@ const empty = (): Body => ({
   lines: [],
   discount: { type: 'NONE' },
 });
+const SCANNER_CACHE_MS = 2_000;
+const SCANNER_CACHE_LIMIT = 256;
 export interface CheckoutState {
   body: Body;
   products: Record<string, Product>;
@@ -44,6 +47,9 @@ export interface CheckoutState {
   lastSale: SaleDetail | null;
   pendingSale: CheckoutInput | null;
   busyOrigin: Mode | null;
+  quote: SaleQuote | null;
+  quoteLoading: boolean;
+  catalogReviewRequired: boolean;
 }
 export class CheckoutController {
   private state: CheckoutState = {
@@ -60,12 +66,18 @@ export class CheckoutController {
     lastSale: null,
     pendingSale: null,
     busyOrigin: null,
+    quote: null,
+    quoteLoading: false,
+    catalogReviewRequired: false,
   };
   private loadGeneration = 0;
   private readonly listeners = new Set<() => void>();
   private readonly writer: DraftWriter;
   private readonly queue: ScanQueue;
+  private readonly barcodeCache = new Map<string, { product: Product; readAt: number }>();
   private weightResolve: ((grams: number | null) => void) | null = null;
+  private quoteTimer: ReturnType<typeof setTimeout> | null = null;
+  private quoteGeneration = 0;
   private disposed = false;
   private readonly storageKey: string;
   constructor(
@@ -80,11 +92,16 @@ export class CheckoutController {
     );
     this.queue = new ScanQueue(
       async (code, current) => {
-        const product = unwrap(
-          code.startsWith('@')
-            ? await backend.products.get(code.slice(1))
-            : await backend.products.findByBarcode(code),
-        );
+        const cached = code.startsWith('@') ? undefined : this.barcodeCache.get(code);
+        const product =
+          cached && Date.now() - cached.readAt <= SCANNER_CACHE_MS
+            ? cached.product
+            : unwrap(
+                code.startsWith('@')
+                  ? await backend.products.get(code.slice(1))
+                  : await backend.products.findByBarcode(code),
+              );
+        if (!code.startsWith('@')) this.cacheBarcode(code, product);
         if (!current() || this.disposed) return;
         let quantity = 1;
         if (product.saleUnit === 'KG') {
@@ -102,6 +119,13 @@ export class CheckoutController {
       () => this.patch({ pendingScans: this.queue.pending }),
     );
   }
+  private cacheBarcode(code: string, product: Product): void {
+    if (this.barcodeCache.size >= SCANNER_CACHE_LIMIT) {
+      const oldest = this.barcodeCache.keys().next().value;
+      if (oldest) this.barcodeCache.delete(oldest);
+    }
+    this.barcodeCache.set(code, { product, readAt: Date.now() });
+  }
   subscribe = (listener: () => void) => {
     this.listeners.add(listener);
     return () => this.listeners.delete(listener);
@@ -113,8 +137,62 @@ export class CheckoutController {
     for (const listener of this.listeners) listener();
   }
   private change(body: Body): void {
-    this.patch({ body, error: '' });
+    this.patch({ body, error: '', quote: null });
     this.writer.update(body);
+    this.scheduleQuote();
+  }
+  private scheduleQuote(): void {
+    if (this.quoteTimer) clearTimeout(this.quoteTimer);
+    if (!this.state.body.lines.length) {
+      this.patch({ quote: null, quoteLoading: false });
+      return;
+    }
+    this.quoteTimer = setTimeout(() => void this.refreshQuote(true).catch(() => {}), 90);
+  }
+  async refreshQuote(silent = false): Promise<SaleQuote> {
+    const generation = ++this.quoteGeneration;
+    const body = this.state.body;
+    this.patch({ quoteLoading: true });
+    try {
+      const quoteMethod = this.backend.sales?.quote;
+      const response = quoteMethod ? await quoteMethod(body) : null;
+      if (
+        response &&
+        !response.ok &&
+        ['REVISION_CONFLICT', 'INACTIVE'].includes(response.error.code) &&
+        !this.disposed &&
+        generation === this.quoteGeneration &&
+        body === this.state.body
+      ) {
+        this.barcodeCache.clear();
+        this.patch({ catalogReviewRequired: true });
+      }
+      const quote = response
+        ? unwrap(response)
+        : (() => {
+            const local = calculateSale(this.saleLines(), body.discount);
+            return {
+              quoteHash: '',
+              ...local,
+              lines: local.lines.map((line, index) => ({
+                ...line,
+                lineId: body.lines[index]!.lineId,
+              })),
+              promotions: [],
+            } satisfies SaleQuote;
+          })();
+      if (!this.disposed && generation === this.quoteGeneration && body === this.state.body)
+        this.patch({ quote, quoteLoading: false, catalogReviewRequired: false });
+      return quote;
+    } catch (failure) {
+      if (!this.disposed && generation === this.quoteGeneration)
+        this.patch({
+          quote: null,
+          quoteLoading: false,
+          ...(silent ? {} : { error: errorMessage(failure) }),
+        });
+      throw failure;
+    }
   }
   async initialize(): Promise<void> {
     this.disposed = false;
@@ -152,7 +230,8 @@ export class CheckoutController {
         if (result.ok) products[id] = result.value;
       }),
     );
-    this.patch({ body, products });
+    this.patch({ body, products, quote: null });
+    this.scheduleQuote();
   }
   async recover(): Promise<void> {
     if (!this.state.recovery) return;
@@ -213,7 +292,9 @@ export class CheckoutController {
       this.weightResolve(null);
       this.weightResolve = null;
     }
+    const wasPayment = this.state.mode === 'PAYMENT';
     this.patch({ mode: 'SCAN', weightProduct: null, editingLineId: null, error: '' });
+    if (wasPayment) this.writer.resumeAutosave();
   }
   confirmWeight(grams: number): void {
     if (this.state.editingLineId) {
@@ -278,9 +359,10 @@ export class CheckoutController {
   totals() {
     if (!this.state.body.lines.length)
       return { subtotalCents: 0, discountCents: 0, totalCents: 0, lines: [] };
-    return calculateSale(this.saleLines(), this.state.body.discount);
+    return this.state.quote ?? calculateSale(this.saleLines(), this.state.body.discount);
   }
   stale(): boolean {
+    if (this.state.body.lines.length && this.state.catalogReviewRequired) return true;
     return this.state.body.lines.some((l) => {
       const p = this.state.products[l.productId];
       return (
@@ -305,7 +387,8 @@ export class CheckoutController {
           throw new Error(`${p.name} cambió de unidad. Retiralo y agregalo nuevamente.`);
         products[p.id] = p;
       }
-      this.patch({ products });
+      this.barcodeCache.clear();
+      this.patch({ products, catalogReviewRequired: false });
       this.change({
         ...body,
         lines: body.lines.map((l) => {
@@ -329,25 +412,24 @@ export class CheckoutController {
     if (this.state.mode !== 'SCAN') return;
     if (!this.state.body.lines.length || this.stale())
       throw new Error('Revisá los productos antes de cobrar.');
-    this.totals();
-    this.patch({ mode: 'BUSY', busyOrigin: 'SCAN' });
-    try {
-      await this.writer.flush();
-      this.patch({ mode: 'PAYMENT', error: '' });
-    } catch (error) {
-      this.patch({ mode: 'SCAN' });
-      throw error;
-    }
+    await this.refreshQuote(false);
+    this.patch({ mode: 'PAYMENT', error: '' });
   }
-  async pay(payments: PaymentInput[], negativeStockOverride?: { reason: string }): Promise<void> {
+  async pay(
+    payments: PaymentInput[],
+    negativeStockOverride?: { reason: string },
+    customer?: { customerId: string; onAccountCents: number },
+  ): Promise<void> {
     if (this.state.mode !== 'PAYMENT') return;
     this.patch({ mode: 'BUSY', busyOrigin: 'PAYMENT', error: '' });
     try {
-      await this.writer.flush();
+      const draftRevision = await this.writer.checkoutRevision();
       const input = CheckoutSchema.parse({
         ...this.state.body,
         payments,
-        ...(this.writer.revision ? { expectedDraftRevision: this.writer.revision } : {}),
+        ...(customer ? customer : {}),
+        ...(this.state.quote?.quoteHash ? { expectedQuoteHash: this.state.quote.quoteHash } : {}),
+        ...(draftRevision ? { expectedDraftRevision: draftRevision } : {}),
         ...(negativeStockOverride ? { negativeStockOverride } : {}),
       });
       this.storage.setItem(this.storageKey, JSON.stringify(input));
@@ -372,6 +454,7 @@ export class CheckoutController {
       this.storage.removeItem(this.storageKey);
       await this.hydrate(this.state.body);
       this.patch({ pendingSale: null, mode: 'SCAN', error: result.error.message });
+      this.writer.resumeAutosave();
     }
   }
   private accepted(sale: SaleDetail): void {
@@ -388,6 +471,9 @@ export class CheckoutController {
       pendingSale: null,
       recovery: null,
       lastSale: sale,
+      quote: null,
+      quoteLoading: false,
+      catalogReviewRequired: false,
       error: '',
     });
     this.onSale();
@@ -449,6 +535,8 @@ export class CheckoutController {
         mode: 'SCAN',
         recovery: null,
         lastSale: null,
+        quote: null,
+        quoteLoading: false,
         error: '',
       });
     } catch (error) {
@@ -471,6 +559,9 @@ export class CheckoutController {
     this.disposed = true;
     this.loadGeneration++;
     this.queue.cancel();
+    if (this.quoteTimer) clearTimeout(this.quoteTimer);
+    this.quoteGeneration++;
+    this.barcodeCache.clear();
     this.weightResolve?.(null);
     this.writer.dispose();
     this.listeners.clear();

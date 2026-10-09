@@ -26,6 +26,21 @@ export function MovementForm({
   const [error, setError] = useState('');
   const [insufficient, setInsufficient] = useState(false);
   const [allowNegative, setAllowNegative] = useState(false);
+  const [counted, setCounted] = useState(() =>
+    mode === 'count' && balance.quantityBase !== null && balance.quantityBase >= 0
+      ? quantityInput(balance.quantityBase, balance.unit)
+      : '',
+  );
+  let countedBase: number | null = null;
+  try {
+    if (counted.trim()) countedBase = parseQuantity(counted, balance.unit);
+  } catch {
+    /* Wait for a valid quantity. */
+  }
+  const difference =
+    countedBase !== null && balance.quantityBase !== null
+      ? countedBase - balance.quantityBase
+      : null;
   async function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (busy) return;
@@ -90,6 +105,7 @@ export function MovementForm({
       }
       onClose={onClose}
       busy={busy}
+      className="stock-movement-dialog"
     >
       <form onSubmit={(event) => void save(event)} onKeyDown={keyboard}>
         <div className="dialog-body">
@@ -137,22 +153,30 @@ export function MovementForm({
                   required
                   aria-label={mode === 'count' ? 'Cantidad contada' : 'Cantidad'}
                   inputMode={balance.unit === 'KG' ? 'decimal' : 'numeric'}
-                  defaultValue={
-                    mode === 'count' && balance.quantityBase !== null && balance.quantityBase >= 0
-                      ? quantityInput(balance.quantityBase, balance.unit)
-                      : ''
-                  }
+                  value={mode === 'count' ? counted : undefined}
                   placeholder={balance.unit === 'KG' ? '0,000' : '0'}
                   autoFocus
-                  onChange={() => setAllowNegative(false)}
+                  onChange={(event) => {
+                    setAllowNegative(false);
+                    if (mode === 'count') setCounted(event.target.value);
+                  }}
                 />
                 <span>{balance.unit === 'KG' ? 'kg' : 'unidades'}</span>
               </div>
+              {mode === 'count' && difference !== null && (
+                <span className={`stock-count-difference${difference < 0 ? ' negative' : ''}`}>
+                  Diferencia:{' '}
+                  <strong>
+                    {difference > 0 ? '+' : difference < 0 ? '−' : ''}
+                    {formatStock(Math.abs(difference), balance.unit)}
+                  </strong>
+                </span>
+              )}
               <small>
                 {mode === 'count'
-                  ? 'Ingresá la cantidad real que hay ahora.'
+                  ? 'El conteo reemplaza la existencia actual.'
                   : kind === 'RECEIPT'
-                    ? 'Cantidad que ingresa al almacén.'
+                    ? 'Cantidad que ingresa al stock.'
                     : 'Cantidad que se retira por pérdida, rotura u otro motivo.'}
               </small>
             </label>
@@ -184,9 +208,6 @@ export function MovementForm({
               </label>
             )}
           </fieldset>
-          <p className="subtle-note">
-            El registro conserva fecha, cantidad y motivo en el historial.
-          </p>
         </div>
         <div className="dialog-footer">
           <span className="shortcut-note">Ctrl + S para guardar · Esc para volver</span>

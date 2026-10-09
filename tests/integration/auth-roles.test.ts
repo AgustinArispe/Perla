@@ -33,17 +33,12 @@ it('actualiza esquema 4 conservando stock y adopta borrador legacy para el prime
   db.pragma('foreign_keys=ON');
   try {
     migrate(db, MIGRATIONS.slice(0, 4));
-    const catalog = new CatalogRepository(db),
-      stock = new StockService(db, catalog);
+    const catalog = new CatalogRepository(db);
     const p = catalog.save({ ...product, trackStock: true });
-    stock.opening({
-      productId: p.id,
-      countedBase: 8,
-      expectedRevision: 0,
-      expectedProductRevision: 1,
-      operationKey: randomUUID(),
-      reason: 'Conteo',
-    });
+    db.prepare(
+      'INSERT INTO inventory_balances (product_id,quantity_base,revision) VALUES (?,?,1)',
+    ).run(p.id, 8);
+    db.prepare('UPDATE products SET stock_initialized=1 WHERE id=?').run(p.id);
     const body = { checkoutKey: randomUUID(), lines: [], discount: { type: 'NONE' as const } };
     db.prepare("INSERT INTO checkout_drafts VALUES ('main',1,?,?)").run(
       JSON.stringify(body),
@@ -53,6 +48,7 @@ it('actualiza esquema 4 conservando stock y adopta borrador legacy para el prime
     const auth = new AuthService(db),
       app = new Application(db, auth),
       owner = auth.bootstrap({ username: 'jefe', name: 'Primer jefe', password });
+    const stock = new StockService(db, catalog);
     expect(app.dispatch('checkout.getDraft', null, owner.sessionToken)).toMatchObject({
       body,
       revision: 1,
@@ -102,6 +98,15 @@ it('registro de intentos lleno falla cerrado y una cuenta inactiva no ingresa', 
 it('bootstrap único, hashes privados, login genérico, bloqueo y logout', () => {
   const f = fixture();
   try {
+    expect(() =>
+      f.auth.saveUser(f.owner.sessionToken, {
+        username: 'clave-debil',
+        name: 'Clave débil',
+        role: 'SELLER',
+        active: true,
+        password: 'a'.repeat(16),
+      }),
+    ).toThrow('repita');
     expect(() => f.auth.bootstrap({ name: 'Otro', username: 'otro', password })).toThrow();
     expect(JSON.stringify(f.auth.listUsers(f.owner.sessionToken))).not.toContain('password');
     expect(
@@ -113,6 +118,48 @@ it('bootstrap único, hashes privados, login genérico, bloqueo y logout', () =>
     expect(() => f.auth.login({ username: 'jefe', password })).toThrow('intentos');
     f.auth.logout(f.owner.sessionToken);
     expect(() => f.auth.authorize(f.owner.sessionToken, 'products.save')).toThrow();
+  } finally {
+    f.db.close();
+  }
+});
+it('el bloqueo de login aumenta dentro de una ventana de quince minutos', () => {
+  const f = fixture();
+  try {
+    for (let i = 0; i < 5; i++)
+      expect(() => f.auth.login({ username: 'jefe', password: 'incorrecta' })).toThrow();
+    const first = f.db
+      .prepare('SELECT failures,blocked_until_ms FROM auth_attempts WHERE username=?')
+      .get('jefe') as { failures: number; blocked_until_ms: number };
+    expect(first.failures).toBe(5);
+    expect(first.blocked_until_ms).toBeGreaterThan(Date.now() + 50_000);
+    f.db.prepare('UPDATE auth_attempts SET blocked_until_ms=0 WHERE username=?').run('jefe');
+    expect(() => f.auth.login({ username: 'jefe', password: 'incorrecta' })).toThrow();
+    const second = f.db
+      .prepare('SELECT failures,blocked_until_ms FROM auth_attempts WHERE username=?')
+      .get('jefe') as { failures: number; blocked_until_ms: number };
+    expect(second.failures).toBe(6);
+    expect(second.blocked_until_ms).toBeGreaterThan(Date.now() + 110_000);
+  } finally {
+    f.db.close();
+  }
+});
+it('el jefe puede destrabar un acceso, pero no conceder el perfil administrador', () => {
+  const f = fixture();
+  try {
+    for (let i = 0; i < 5; i++)
+      expect(() => f.auth.login({ username: 'jefe', password: 'incorrecta' })).toThrow();
+    expect(() => f.auth.login({ username: 'jefe', password })).toThrow('intentos');
+    expect(f.auth.unlockUser(f.owner.sessionToken, { username: 'jefe' })).toBeNull();
+    expect(f.auth.login({ username: 'jefe', password }).user.role).toBe('OWNER');
+    expect(() =>
+      f.auth.saveUser(f.owner.sessionToken, {
+        username: 'admin',
+        name: 'Administrador',
+        role: 'ADMIN',
+        active: true,
+        password: 'Administracion-Segura-2026!',
+      }),
+    ).toThrow('administrador');
   } finally {
     f.db.close();
   }
@@ -212,6 +259,18 @@ it('borradores separados, cancelar exige revisión y ventas conservan actor sin 
       ],
       discount: { type: 'NONE' as const },
     };
+    f.db
+      .prepare('INSERT INTO product_cost_states VALUES (?,?,?,?,?,?,?,?)')
+      .run(
+        p.id,
+        'REFERENCE',
+        50000000,
+        0,
+        1,
+        new Date().toISOString(),
+        f.owner.user.id,
+        f.owner.user.name,
+      );
     f.app.dispatch('checkout.saveDraft', { body, expectedRevision: 0 }, seller.sessionToken);
     expect(f.app.dispatch('checkout.getDraft', null, f.owner.sessionToken)).toBeNull();
     expect(() =>
@@ -222,6 +281,11 @@ it('borradores separados, cancelar exige revisión y ventas conservan actor sin 
     const input = { ...body, payments: [{ method: 'CASH', amountCents: 100 }] };
     const sale = f.app.dispatch('sales.complete', input, seller.sessionToken) as SaleDetail;
     expect(sale.actorName).toBe('Vendedor');
+    expect(sale.items[0]?.costCents).toBeNull();
+    expect(
+      (f.app.dispatch('sales.detail', { saleId: sale.id }, f.owner.sessionToken) as SaleDetail)
+        .items[0]?.costCents,
+    ).toBe(50);
     f.app.dispatch('sales.complete', input, seller.sessionToken);
     expect(
       f.db.prepare("SELECT COUNT(*) AS n FROM audit_events WHERE operation='sales.complete'").get(),

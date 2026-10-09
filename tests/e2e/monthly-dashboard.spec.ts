@@ -53,14 +53,12 @@ test('jefe consulta neto y pagos aplicados; supervisor y vendedor no pueden cons
       if (!sale.ok) throw new Error(sale.error.message);
       return sale.value;
     });
-    await expect(page.getByRole('button', { name: 'Resumen mensual', exact: true })).toBeEnabled();
-    await page.getByRole('button', { name: 'Resumen mensual', exact: true }).click();
+    await expect(page.getByRole('button', { name: 'Resultados', exact: true })).toBeEnabled();
+    await page.getByRole('button', { name: 'Resultados', exact: true }).click();
     await page.getByLabel('Mes', { exact: true }).fill(sale.localMonth);
     await expect(page.getByTestId('monthly-net')).toHaveText('$ 1.800,00');
-    await expect(page.getByTestId('monthly-card')).toHaveText('$ 1.000,00');
-    await expect(
-      page.getByRole('heading', { name: 'Stock bajo · actual', exact: true }),
-    ).toBeVisible();
+    await expect(page.locator('[data-payment=CREDIT]')).toContainText('$ 1.000,00');
+    await expect(page.getByRole('button', { name: /Ver inventario actual/ })).toBeVisible();
     if (!process.env.BOCHA_E2E_EXECUTABLE)
       await page.screenshot({ path: 'tmp/monthly-dashboard.png' });
     await page.getByLabel('Mes', { exact: true }).fill('2000-01');
@@ -76,6 +74,7 @@ test('jefe consulta neto y pagos aplicados; supervisor y vendedor no pueden cons
     }, sale.id);
     await page.getByLabel('Mes', { exact: true }).fill(sale.localMonth);
     await expect(page.getByTestId('monthly-net')).toHaveText('$ 0,00');
+    await page.getByText('Desglose de ventas', { exact: true }).click();
     await expect(page.getByTestId('monthly-voided')).toHaveText('$ 1.800,00');
     for (const role of ['SUPERVISOR', 'SELLER'] as const) {
       await page.evaluate(
@@ -104,9 +103,7 @@ test('jefe consulta neto y pagos aplicados; supervisor y vendedor no pueden cons
           exact: true,
         }),
       ).toBeVisible();
-      await expect(page.getByRole('button', { name: 'Resumen mensual', exact: true })).toHaveCount(
-        0,
-      );
+      await expect(page.getByRole('button', { name: 'Resultados', exact: true })).toHaveCount(0);
       expect(
         await page.evaluate((month) => window.bocha!.dashboard.monthly(month), sale.localMonth),
       ).toMatchObject({ ok: false, error: { code: 'FORBIDDEN' } });

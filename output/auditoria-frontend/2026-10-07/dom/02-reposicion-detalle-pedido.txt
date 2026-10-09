@@ -1,0 +1,135 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Preparar compra" [level=1]
+  - paragraph: Calculá faltantes y seguí la mercadería pendiente.
+  - button "Volver"
+  - tablist "Reposición":
+    - tab "Sugerencias"
+    - tab "Pedidos pendientes" [selected]
+  - alert: Borradores preparados por proveedor. Confirmalos para registrar mercadería en camino.
+  - text: Ubicación
+  - combobox "Ubicación":
+    - option "Salón de ventas" [selected]
+    - option "Cámara de frío"
+    - option "Depósito central"
+    - option "Depósito de reserva"
+  - text: Estado
+  - combobox "Estado":
+    - option "Todos" [selected]
+    - option "Borrador"
+    - option "Pedido confirmado"
+    - option "Recibido en parte"
+    - option "Recibido"
+    - option "Resto cancelado"
+  - button "Descargar pedidos"
+  - table:
+    - rowgroup:
+      - row "Pedido Proveedor Destino Estado Llegada Detalle":
+        - columnheader "Pedido"
+        - columnheader "Proveedor"
+        - columnheader "Destino"
+        - columnheader "Estado"
+        - columnheader "Llegada"
+        - columnheader "Detalle"
+    - rowgroup:
+      - row "1 Almacén · Distribuidor local Salón de ventas Borrador Sin fecha Revisar":
+        - cell "1"
+        - cell "Almacén · Distribuidor local"
+        - cell "Salón de ventas"
+        - cell "Borrador"
+        - cell "Sin fecha"
+        - cell "Revisar":
+          - button "Revisar" [active]
+  - button "Anterior" [disabled]
+  - generic: 1 pedidos
+  - button "Siguiente" [disabled]
+  - region "Pedido 1":
+    - heading "Pedido 1 · Almacén · Distribuidor local" [level=2]
+    - button "Actualizar"
+    - button "Cerrar"
+    - paragraph: Borrador · Salón de ventas
+    - generic "Revisar fecha de llegada"
+    - table:
+      - rowgroup:
+        - row "Producto Pedido Recibido Pendiente":
+          - columnheader "Producto"
+          - columnheader "Pedido"
+          - columnheader "Recibido"
+          - columnheader "Pendiente"
+      - rowgroup:
+        - row "Aceite de girasol 900 ml · Buenos Sabores 11 0 11":
+          - cell "Aceite de girasol 900 ml · Buenos Sabores"
+          - cell "11"
+          - cell "0"
+          - cell "11"
+    - text: Fecha de llegada
+    - textbox "Fecha de llegada"
+    - checkbox "Revisé cantidades si cambió la existencia"
+    - text: Revisé cantidades si cambió la existencia
+    - button "Confirmar pedido"
+    - generic "Cancelar pendiente"

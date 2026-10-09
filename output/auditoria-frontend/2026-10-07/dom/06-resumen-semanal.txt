@@ -1,0 +1,98 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal" [active]:
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Resumen semanal" [level=1]
+  - button "Volver"
+  - text: Semana que empieza
+  - textbox "Semana que empieza": 2026-09-28
+  - button "Semana en curso"
+  - text: Versión
+  - combobox "Versión":
+    - option "Última versión" [selected]
+    - option "Versión 1 · 2026-10-07"
+  - heading "2026-09-28 al 2026-10-04" [level=2]
+  - paragraph: Resumen guardado · Versión 1 · Generado 7/10/2026, 08:03:03
+  - term: Ventas netas
+  - definition: $ 20.876.975,91
+  - term: Operaciones
+  - definition: "671"
+  - term: Margen bruto conocido
+  - definition: $ 7.057.923,80
+  - term: Cobertura de costo
+  - definition: 100%
+  - paragraph: "-9.16% respecto al mismo período de la semana anterior."
+  - generic "Cómo se calculan las cifras"
+  - heading "Pendientes al generar" [level=3]
+  - list:
+    - listitem: "Azúcar 1 kg · Buen Día: 0 unidades disponibles"
+    - listitem: "Azúcar 1 kg · Buenos Sabores: 0 unidades disponibles"
+    - listitem: "Azúcar 1 kg · Campo Vivo: 0 unidades disponibles"
+    - listitem: "Azúcar 1 kg · Cosecha Nueva: 0 unidades disponibles"
+    - listitem: "Azúcar 1 kg · Costa Clara: 0 unidades disponibles"
+  - button "Descargar Excel"
+  - button "Imprimir / Guardar PDF"
+  - button "Recalcular conservando versión"

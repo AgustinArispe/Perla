@@ -1,0 +1,74 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja" [active]:
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Elegir terminal" [level=2]
+  - text: Terminal
+  - combobox "Terminal":
+    - option "Seleccionar" [selected]
+    - option "Caja 1 · Lucía"
+    - option "Caja 2 · Martín"
+  - button "Usar terminal" [disabled]

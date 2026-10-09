@@ -1,0 +1,1675 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Proveedores" [level=1]
+  - textbox "Buscar proveedor"
+  - button "Nuevo proveedor": Nuevo proveedor
+  - button "Mis vistas": Mis vistas
+  - button "Exportar proveedores a Excel": Exportar Excel
+  - article:
+    - strong: Almacén · Distribuidor local
+    - generic: Activo
+    - button "Cuenta de Almacén · Distribuidor local. Saldo $ 41.733.144,53":
+      - generic: Saldo
+      - strong: $ 41.733.144,53
+    - button "Editar"
+  - article:
+    - strong: Bebidas · Distribuidor local
+    - generic: Activo
+    - button "Cuenta de Bebidas · Distribuidor local. Saldo $ 29.510.366,49":
+      - generic: Saldo
+      - strong: $ 29.510.366,49
+    - button "Editar"
+  - article:
+    - strong: Congelados · Distribuidor local
+    - generic: Activo
+    - button "Cuenta de Congelados · Distribuidor local. Saldo $ 24.146.798,50":
+      - generic: Saldo
+      - strong: $ 24.146.798,50
+    - button "Editar"
+  - article:
+    - strong: Fiambrería · Distribuidor local
+    - generic: Activo
+    - button "Cuenta de Fiambrería · Distribuidor local. Saldo $ 53.591.230,31":
+      - generic: Saldo
+      - strong: $ 53.591.230,31
+    - button "Editar"
+  - article:
+    - strong: Galletitas y golosinas · Distribuidor local
+    - generic: Activo
+    - button "Cuenta de Galletitas y golosinas · Distribuidor local. Saldo $ 18.834.744,61":
+      - generic: Saldo
+      - strong: $ 18.834.744,61
+    - button "Editar"
+  - article:
+    - strong: Infusiones y desayuno · Distribuidor local
+    - generic: Activo
+    - button "Cuenta de Infusiones y desayuno · Distribuidor local. Saldo $ 34.618.669,27":
+      - generic: Saldo
+      - strong: $ 34.618.669,27
+    - button "Editar"
+  - article:
+    - strong: Lácteos · Distribuidor local
+    - generic: Activo
+    - button "Cuenta de Lácteos · Distribuidor local. Saldo $ 14.358.954,32":
+      - generic: Saldo
+      - strong: $ 14.358.954,32
+    - button "Editar"
+  - article:
+    - strong: Limpieza · Distribuidor local
+    - generic: Activo
+    - button "Cuenta de Limpieza · Distribuidor local. Saldo $ 24.941.136,36":
+      - generic: Saldo
+      - strong: $ 24.941.136,36
+    - button "Editar"
+  - article:
+    - strong: Panadería y huevos · Distribuidor local
+    - generic: Activo
+    - button "Cuenta de Panadería y huevos · Distribuidor local. Saldo $ 13.622.203,58":
+      - generic: Saldo
+      - strong: $ 13.622.203,58
+    - button "Editar"
+  - article:
+    - strong: Verdulería · Distribuidor local
+    - generic: Activo
+    - button "Cuenta de Verdulería · Distribuidor local. Saldo $ 19.786.696,60":
+      - generic: Saldo
+      - strong: $ 19.786.696,60
+    - button "Editar"
+  - generic: 10 proveedores · Página 1
+  - button "Anterior" [disabled]
+  - button "Siguiente" [disabled]
+  - dialog "Almacén · Distribuidor local":
+    - heading "Almacén · Distribuidor local" [level=2]
+    - button "Cerrar"
+    - button "Exportar cuenta del proveedor a Excel": Exportar Excel
+    - generic: Saldo pendiente
+    - strong: $ 41.733.144,53
+    - generic: Crédito a favor
+    - strong: $ 0,00
+    - button "Registrar pago"
+    - heading "Nuevo pago" [level=3]
+    - generic: Importe
+    - textbox "Importe": 41733144,53
+    - generic: Fecha
+    - textbox "Fecha": 2026-10-07
+    - generic: Medio
+    - combobox "Medio":
+      - option "Efectivo"
+      - option "Débito"
+      - option "Crédito"
+      - option "Transferencia" [selected]
+      - option "Otro"
+    - generic: Nota · opcional
+    - textbox "Nota · opcional"
+    - button "Usar distribución automática" [active]
+    - strong: Compra N.º 5
+    - generic: Pendiente $ 6.436.243,23
+    - textbox "Compra N.º 5 Pendiente $ 6.436.243,23": 6436243,23
+    - strong: Compra N.º 30
+    - generic: Pendiente $ 40.986,00
+    - textbox "Compra N.º 30 Pendiente $ 40.986,00": 40986,00
+    - strong: Compra N.º 33
+    - generic: Pendiente $ 361.698,00
+    - textbox "Compra N.º 33 Pendiente $ 361.698,00": 361698,00
+    - strong: Compra N.º 42
+    - generic: Pendiente $ 677.166,00
+    - textbox "Compra N.º 42 Pendiente $ 677.166,00": 677166,00
+    - strong: Compra N.º 49
+    - generic: Pendiente $ 417.519,00
+    - textbox "Compra N.º 49 Pendiente $ 417.519,00": 417519,00
+    - strong: Compra N.º 56
+    - generic: Pendiente $ 205.413,00
+    - textbox "Compra N.º 56 Pendiente $ 205.413,00": 205413,00
+    - strong: Compra N.º 64
+    - generic: Pendiente $ 355.791,60
+    - textbox "Compra N.º 64 Pendiente $ 355.791,60": 355791,60
+    - strong: Compra N.º 72
+    - generic: Pendiente $ 857.946,00
+    - textbox "Compra N.º 72 Pendiente $ 857.946,00": 857946,00
+    - strong: Compra N.º 86
+    - generic: Pendiente $ 106.191,00
+    - textbox "Compra N.º 86 Pendiente $ 106.191,00": 106191,00
+    - strong: Compra N.º 90
+    - generic: Pendiente $ 276.276,00
+    - textbox "Compra N.º 90 Pendiente $ 276.276,00": 276276,00
+    - strong: Compra N.º 92
+    - generic: Pendiente $ 72.864,00
+    - textbox "Compra N.º 92 Pendiente $ 72.864,00": 72864,00
+    - strong: Compra N.º 94
+    - generic: Pendiente $ 110.676,00
+    - textbox "Compra N.º 94 Pendiente $ 110.676,00": 110676,00
+    - strong: Compra N.º 96
+    - generic: Pendiente $ 182.767,20
+    - textbox "Compra N.º 96 Pendiente $ 182.767,20": 182767,20
+    - strong: Compra N.º 104
+    - generic: Pendiente $ 156.147,00
+    - textbox "Compra N.º 104 Pendiente $ 156.147,00": 156147,00
+    - strong: Compra N.º 108
+    - generic: Pendiente $ 266.892,00
+    - textbox "Compra N.º 108 Pendiente $ 266.892,00": 266892,00
+    - strong: Compra N.º 114
+    - generic: Pendiente $ 145.728,00
+    - textbox "Compra N.º 114 Pendiente $ 145.728,00": 145728,00
+    - strong: Compra N.º 119
+    - generic: Pendiente $ 349.140,00
+    - textbox "Compra N.º 119 Pendiente $ 349.140,00": 349140,00
+    - strong: Compra N.º 125
+    - generic: Pendiente $ 279.739,80
+    - textbox "Compra N.º 125 Pendiente $ 279.739,80": 279739,80
+    - strong: Compra N.º 131
+    - generic: Pendiente $ 394.082,08
+    - textbox "Compra N.º 131 Pendiente $ 394.082,08": 394082,08
+    - strong: Compra N.º 138
+    - generic: Pendiente $ 347.574,87
+    - textbox "Compra N.º 138 Pendiente $ 347.574,87": 347574,87
+    - strong: Compra N.º 142
+    - generic: Pendiente $ 161.122,96
+    - textbox "Compra N.º 142 Pendiente $ 161.122,96": 161122,96
+    - strong: Compra N.º 147
+    - generic: Pendiente $ 88.652,76
+    - textbox "Compra N.º 147 Pendiente $ 88.652,76": 88652,76
+    - strong: Compra N.º 152
+    - generic: Pendiente $ 93.577,85
+    - textbox "Compra N.º 152 Pendiente $ 93.577,85": 93577,85
+    - strong: Compra N.º 157
+    - generic: Pendiente $ 729.611,99
+    - textbox "Compra N.º 157 Pendiente $ 729.611,99": 729611,99
+    - strong: Compra N.º 161
+    - generic: Pendiente $ 193.839,85
+    - textbox "Compra N.º 161 Pendiente $ 193.839,85": 193839,85
+    - strong: Compra N.º 164
+    - generic: Pendiente $ 117.781,71
+    - textbox "Compra N.º 164 Pendiente $ 117.781,71": 117781,71
+    - strong: Compra N.º 171
+    - generic: Pendiente $ 424.688,39
+    - textbox "Compra N.º 171 Pendiente $ 424.688,39": 424688,39
+    - strong: Compra N.º 175
+    - generic: Pendiente $ 164.075,10
+    - textbox "Compra N.º 175 Pendiente $ 164.075,10": 164075,10
+    - strong: Compra N.º 180
+    - generic: Pendiente $ 589.188,82
+    - textbox "Compra N.º 180 Pendiente $ 589.188,82": 589188,82
+    - strong: Compra N.º 192
+    - generic: Pendiente $ 256.037,33
+    - textbox "Compra N.º 192 Pendiente $ 256.037,33": 256037,33
+    - strong: Compra N.º 198
+    - generic: Pendiente $ 316.736,06
+    - textbox "Compra N.º 198 Pendiente $ 316.736,06": 316736,06
+    - strong: Compra N.º 206
+    - generic: Pendiente $ 417.441,78
+    - textbox "Compra N.º 206 Pendiente $ 417.441,78": 417441,78
+    - strong: Compra N.º 212
+    - generic: Pendiente $ 321.217,99
+    - textbox "Compra N.º 212 Pendiente $ 321.217,99": 321217,99
+    - strong: Compra N.º 216
+    - generic: Pendiente $ 75.143,59
+    - textbox "Compra N.º 216 Pendiente $ 75.143,59": 75143,59
+    - strong: Compra N.º 222
+    - generic: Pendiente $ 603.401,68
+    - textbox "Compra N.º 222 Pendiente $ 603.401,68": 603401,68
+    - strong: Compra N.º 234
+    - generic: Pendiente $ 51.291,63
+    - textbox "Compra N.º 234 Pendiente $ 51.291,63": 51291,63
+    - strong: Compra N.º 238
+    - generic: Pendiente $ 85.486,59
+    - textbox "Compra N.º 238 Pendiente $ 85.486,59": 85486,59
+    - strong: Compra N.º 244
+    - generic: Pendiente $ 618.669,61
+    - textbox "Compra N.º 244 Pendiente $ 618.669,61": 618669,61
+    - strong: Compra N.º 248
+    - generic: Pendiente $ 281.437,46
+    - textbox "Compra N.º 248 Pendiente $ 281.437,46": 281437,46
+    - strong: Compra N.º 253
+    - generic: Pendiente $ 120.314,70
+    - textbox "Compra N.º 253 Pendiente $ 120.314,70": 120314,70
+    - strong: Compra N.º 256
+    - generic: Pendiente $ 427.164,65
+    - textbox "Compra N.º 256 Pendiente $ 427.164,65": 427164,65
+    - strong: Compra N.º 263
+    - generic: Pendiente $ 182.767,20
+    - textbox "Compra N.º 263 Pendiente $ 182.767,20": 182767,20
+    - strong: Compra N.º 264
+    - generic: Pendiente $ 331.251,40
+    - textbox "Compra N.º 264 Pendiente $ 331.251,40": 331251,40
+    - strong: Compra N.º 273
+    - generic: Pendiente $ 122.393,70
+    - textbox "Compra N.º 273 Pendiente $ 122.393,70": 122393,70
+    - strong: Compra N.º 279
+    - generic: Pendiente $ 350.526,43
+    - textbox "Compra N.º 279 Pendiente $ 350.526,43": 350526,43
+    - strong: Compra N.º 283
+    - generic: Pendiente $ 728.033,90
+    - textbox "Compra N.º 283 Pendiente $ 728.033,90": 728033,90
+    - strong: Compra N.º 292
+    - generic: Pendiente $ 150.799,32
+    - textbox "Compra N.º 292 Pendiente $ 150.799,32": 150799,32
+    - strong: Compra N.º 299
+    - generic: Pendiente $ 103.631,25
+    - textbox "Compra N.º 299 Pendiente $ 103.631,25": 103631,25
+    - strong: Compra N.º 305
+    - generic: Pendiente $ 250.532,42
+    - textbox "Compra N.º 305 Pendiente $ 250.532,42": 250532,42
+    - strong: Compra N.º 309
+    - generic: Pendiente $ 263.985,70
+    - textbox "Compra N.º 309 Pendiente $ 263.985,70": 263985,70
+    - strong: Compra N.º 314
+    - generic: Pendiente $ 87.268,00
+    - textbox "Compra N.º 314 Pendiente $ 87.268,00": 87268,00
+    - strong: Compra N.º 319
+    - generic: Pendiente $ 107.339,64
+    - textbox "Compra N.º 319 Pendiente $ 107.339,64": 107339,64
+    - strong: Compra N.º 324
+    - generic: Pendiente $ 129.593,52
+    - textbox "Compra N.º 324 Pendiente $ 129.593,52": 129593,52
+    - strong: Compra N.º 330
+    - generic: Pendiente $ 717.416,42
+    - textbox "Compra N.º 330 Pendiente $ 717.416,42": 717416,42
+    - strong: Compra N.º 334
+    - generic: Pendiente $ 186.921,00
+    - textbox "Compra N.º 334 Pendiente $ 186.921,00": 186921,00
+    - strong: Compra N.º 337
+    - generic: Pendiente $ 387.972,28
+    - textbox "Compra N.º 337 Pendiente $ 387.972,28": 387972,28
+    - strong: Compra N.º 344
+    - generic: Pendiente $ 75.632,00
+    - textbox "Compra N.º 344 Pendiente $ 75.632,00": 75632,00
+    - strong: Compra N.º 352
+    - generic: Pendiente $ 105.884,87
+    - textbox "Compra N.º 352 Pendiente $ 105.884,87": 105884,87
+    - strong: Compra N.º 357
+    - generic: Pendiente $ 367.253,37
+    - textbox "Compra N.º 357 Pendiente $ 367.253,37": 367253,37
+    - strong: Compra N.º 365
+    - generic: Pendiente $ 229.951,80
+    - textbox "Compra N.º 365 Pendiente $ 229.951,80": 229951,80
+    - strong: Compra N.º 374
+    - generic: Pendiente $ 206.243,76
+    - textbox "Compra N.º 374 Pendiente $ 206.243,76": 206243,76
+    - strong: Compra N.º 378
+    - generic: Pendiente $ 239.987,00
+    - textbox "Compra N.º 378 Pendiente $ 239.987,00": 239987,00
+    - strong: Compra N.º 385
+    - generic: Pendiente $ 795.303,13
+    - textbox "Compra N.º 385 Pendiente $ 795.303,13": 795303,13
+    - strong: Compra N.º 390
+    - generic: Pendiente $ 323.764,28
+    - textbox "Compra N.º 390 Pendiente $ 323.764,28": 323764,28
+    - strong: Compra N.º 395
+    - generic: Pendiente $ 81.813,75
+    - textbox "Compra N.º 395 Pendiente $ 81.813,75": 81813,75
+    - strong: Compra N.º 403
+    - generic: Pendiente $ 124.356,90
+    - textbox "Compra N.º 403 Pendiente $ 124.356,90": 124356,90
+    - strong: Compra N.º 407
+    - generic: Pendiente $ 252.059,60
+    - textbox "Compra N.º 407 Pendiente $ 252.059,60": 252059,60
+    - strong: Compra N.º 411
+    - generic: Pendiente $ 296.057,74
+    - textbox "Compra N.º 411 Pendiente $ 296.057,74": 296057,74
+    - strong: Compra N.º 423
+    - generic: Pendiente $ 155.767,50
+    - textbox "Compra N.º 423 Pendiente $ 155.767,50": 155767,50
+    - strong: Compra N.º 424
+    - generic: Pendiente $ 242.831,49
+    - textbox "Compra N.º 424 Pendiente $ 242.831,49": 242831,49
+    - strong: Compra N.º 431
+    - generic: Pendiente $ 159.973,02
+    - textbox "Compra N.º 431 Pendiente $ 159.973,02": 159973,02
+    - strong: Compra N.º 439
+    - generic: Pendiente $ 377.009,93
+    - textbox "Compra N.º 439 Pendiente $ 377.009,93": 377009,93
+    - strong: Compra N.º 446
+    - generic: Pendiente $ 206.140,34
+    - textbox "Compra N.º 446 Pendiente $ 206.140,34": 206140,34
+    - strong: Compra N.º 450
+    - generic: Pendiente $ 414.629,27
+    - textbox "Compra N.º 450 Pendiente $ 414.629,27": 414629,27
+    - strong: Compra N.º 455
+    - generic: Pendiente $ 79.649,93
+    - textbox "Compra N.º 455 Pendiente $ 79.649,93": 79649,93
+    - strong: Compra N.º 463
+    - generic: Pendiente $ 403.410,28
+    - textbox "Compra N.º 463 Pendiente $ 403.410,28": 403410,28
+    - strong: Compra N.º 470
+    - generic: Pendiente $ 65.514,58
+    - textbox "Compra N.º 470 Pendiente $ 65.514,58": 65514,58
+    - strong: Compra N.º 477
+    - generic: Pendiente $ 85.184,47
+    - textbox "Compra N.º 477 Pendiente $ 85.184,47": 85184,47
+    - strong: Compra N.º 482
+    - generic: Pendiente $ 370.876,80
+    - textbox "Compra N.º 482 Pendiente $ 370.876,80": 370876,80
+    - strong: Compra N.º 489
+    - generic: Pendiente $ 130.581,40
+    - textbox "Compra N.º 489 Pendiente $ 130.581,40": 130581,40
+    - strong: Compra N.º 494
+    - generic: Pendiente $ 1.042.405,89
+    - textbox "Compra N.º 494 Pendiente $ 1.042.405,89": 1042405,89
+    - strong: Compra N.º 500
+    - generic: Pendiente $ 177.025,32
+    - textbox "Compra N.º 500 Pendiente $ 177.025,32": 177025,32
+    - strong: Compra N.º 508
+    - generic: Pendiente $ 208.511,32
+    - textbox "Compra N.º 508 Pendiente $ 208.511,32": 208511,32
+    - strong: Compra N.º 511
+    - generic: Pendiente $ 83.913,06
+    - textbox "Compra N.º 511 Pendiente $ 83.913,06": 83913,06
+    - strong: Compra N.º 520
+    - generic: Pendiente $ 69.104,42
+    - textbox "Compra N.º 520 Pendiente $ 69.104,42": 69104,42
+    - strong: Compra N.º 526
+    - generic: Pendiente $ 188.997,90
+    - textbox "Compra N.º 526 Pendiente $ 188.997,90": 188997,90
+    - strong: Compra N.º 527
+    - generic: Pendiente $ 529.205,06
+    - textbox "Compra N.º 527 Pendiente $ 529.205,06": 529205,06
+    - strong: Compra N.º 534
+    - generic: Pendiente $ 165.582,20
+    - textbox "Compra N.º 534 Pendiente $ 165.582,20": 165582,20
+    - strong: Compra N.º 541
+    - generic: Pendiente $ 329.445,27
+    - textbox "Compra N.º 541 Pendiente $ 329.445,27": 329445,27
+    - strong: Compra N.º 549
+    - generic: Pendiente $ 297.957,92
+    - textbox "Compra N.º 549 Pendiente $ 297.957,92": 297957,92
+    - strong: Compra N.º 557
+    - generic: Pendiente $ 246.578,51
+    - textbox "Compra N.º 557 Pendiente $ 246.578,51": 246578,51
+    - strong: Compra N.º 563
+    - generic: Pendiente $ 243.587,31
+    - textbox "Compra N.º 563 Pendiente $ 243.587,31": 243587,31
+    - strong: Compra N.º 570
+    - generic: Pendiente $ 361.991,92
+    - textbox "Compra N.º 570 Pendiente $ 361.991,92": 361991,92
+    - strong: Compra N.º 576
+    - generic: Pendiente $ 200.658,51
+    - textbox "Compra N.º 576 Pendiente $ 200.658,51": 200658,51
+    - strong: Compra N.º 582
+    - generic: Pendiente $ 94.189,68
+    - textbox "Compra N.º 582 Pendiente $ 94.189,68": 94189,68
+    - strong: Compra N.º 588
+    - generic: Pendiente $ 941.742,32
+    - textbox "Compra N.º 588 Pendiente $ 941.742,32": 941742,32
+    - strong: Compra N.º 595
+    - generic: Pendiente $ 173.530,74
+    - textbox "Compra N.º 595 Pendiente $ 173.530,74": 173530,74
+    - strong: Compra N.º 604
+    - generic: Pendiente $ 211.347,70
+    - textbox "Compra N.º 604 Pendiente $ 211.347,70": 211347,70
+    - strong: Compra N.º 609
+    - generic: Pendiente $ 106.717,24
+    - textbox "Compra N.º 609 Pendiente $ 106.717,24": 106717,24
+    - strong: Compra N.º 615
+    - generic: Pendiente $ 207.690,00
+    - textbox "Compra N.º 615 Pendiente $ 207.690,00": 207690,00
+    - strong: Compra N.º 616
+    - generic: Pendiente $ 279.167,00
+    - textbox "Compra N.º 616 Pendiente $ 279.167,00": 279167,00
+    - strong: Compra N.º 625
+    - generic: Pendiente $ 58.463,16
+    - textbox "Compra N.º 625 Pendiente $ 58.463,16": 58463,16
+    - strong: Compra N.º 631
+    - generic: Pendiente $ 457.569,90
+    - textbox "Compra N.º 631 Pendiente $ 457.569,90": 457569,90
+    - strong: Compra N.º 636
+    - generic: Pendiente $ 203.458,92
+    - textbox "Compra N.º 636 Pendiente $ 203.458,92": 203458,92
+    - strong: Compra N.º 643
+    - generic: Pendiente $ 296.411,84
+    - textbox "Compra N.º 643 Pendiente $ 296.411,84": 296411,84
+    - strong: Compra N.º 651
+    - generic: Pendiente $ 697.840,50
+    - textbox "Compra N.º 651 Pendiente $ 697.840,50": 697840,50
+    - strong: Compra N.º 659
+    - generic: Pendiente $ 86.301,21
+    - textbox "Compra N.º 659 Pendiente $ 86.301,21": 86301,21
+    - strong: Compra N.º 665
+    - generic: Pendiente $ 269.655,33
+    - textbox "Compra N.º 665 Pendiente $ 269.655,33": 269655,33
+    - strong: Compra N.º 676
+    - generic: Pendiente $ 296.488,72
+    - textbox "Compra N.º 676 Pendiente $ 296.488,72": 296488,72
+    - strong: Compra N.º 682
+    - generic: Pendiente $ 922.393,60
+    - textbox "Compra N.º 682 Pendiente $ 922.393,60": 922393,60
+    - strong: Compra N.º 686
+    - generic: Pendiente $ 99.757,42
+    - textbox "Compra N.º 686 Pendiente $ 99.757,42": 99757,42
+    - strong: Compra N.º 693
+    - generic: Pendiente $ 628.897,76
+    - textbox "Compra N.º 693 Pendiente $ 628.897,76": 628897,76
+    - strong: Compra N.º 700
+    - generic: Pendiente $ 230.602,54
+    - textbox "Compra N.º 700 Pendiente $ 230.602,54": 230602,54
+    - strong: Compra N.º 706
+    - generic: Pendiente $ 618.420,05
+    - textbox "Compra N.º 706 Pendiente $ 618.420,05": 618420,05
+    - strong: Compra N.º 712
+    - generic: Pendiente $ 246.533,48
+    - textbox "Compra N.º 712 Pendiente $ 246.533,48": 246533,48
+    - strong: Compra N.º 717
+    - generic: Pendiente $ 204.077,33
+    - textbox "Compra N.º 717 Pendiente $ 204.077,33": 204077,33
+    - strong: Compra N.º 725
+    - generic: Pendiente $ 134.998,50
+    - textbox "Compra N.º 725 Pendiente $ 134.998,50": 134998,50
+    - strong: Compra N.º 732
+    - generic: Pendiente $ 126.663,30
+    - textbox "Compra N.º 732 Pendiente $ 126.663,30": 126663,30
+    - strong: Compra N.º 739
+    - generic: Pendiente $ 320.152,38
+    - textbox "Compra N.º 739 Pendiente $ 320.152,38": 320152,38
+    - strong: Compra N.º 745
+    - generic: Pendiente $ 802.738,12
+    - textbox "Compra N.º 745 Pendiente $ 802.738,12": 802738,12
+    - strong: Compra N.º 758
+    - generic: Pendiente $ 317.795,48
+    - textbox "Compra N.º 758 Pendiente $ 317.795,48": 317795,48
+    - strong: Compra N.º 762
+    - generic: Pendiente $ 486.543,03
+    - textbox "Compra N.º 762 Pendiente $ 486.543,03": 486543,03
+    - generic: Distribuido
+    - strong: $ 41.733.144,53
+    - button "Cancelar"
+    - button "Confirmar pago"
+    - heading "Compras" [level=3]
+    - article:
+      - strong: Compra N.º 1
+      - generic: 6/5/2026
+      - generic: Pagada
+      - strong: $ 0,00
+    - article:
+      - strong: Compra N.º 2
+      - generic: 6/5/2026
+      - generic: Pagada
+      - strong: $ 0,00
+    - article:
+      - strong: Compra N.º 3
+      - generic: 6/5/2026
+      - generic: Pagada
+      - strong: $ 0,00
+    - article:
+      - strong: Compra N.º 4
+      - generic: 6/5/2026
+      - generic: Pagada
+      - strong: $ 0,00
+    - article:
+      - strong: Compra N.º 5
+      - generic: 6/5/2026
+      - generic: Pendiente
+      - strong: $ 6.436.243,23
+    - article:
+      - strong: Compra N.º 30
+      - generic: 8/5/2026
+      - generic: Pendiente
+      - strong: $ 40.986,00
+    - article:
+      - strong: Compra N.º 33
+      - generic: 11/5/2026
+      - generic: Pendiente
+      - strong: $ 361.698,00
+    - article:
+      - strong: Compra N.º 42
+      - generic: 12/5/2026
+      - generic: Pendiente
+      - strong: $ 677.166,00
+    - article:
+      - strong: Compra N.º 49
+      - generic: 13/5/2026
+      - generic: Pendiente
+      - strong: $ 417.519,00
+    - article:
+      - strong: Compra N.º 56
+      - generic: 14/5/2026
+      - generic: Pendiente
+      - strong: $ 205.413,00
+    - article:
+      - strong: Compra N.º 64
+      - generic: 15/5/2026
+      - generic: Pendiente
+      - strong: $ 355.791,60
+    - article:
+      - strong: Compra N.º 72
+      - generic: 16/5/2026
+      - generic: Pendiente
+      - strong: $ 857.946,00
+    - article:
+      - strong: Compra N.º 86
+      - generic: 19/5/2026
+      - generic: Pendiente
+      - strong: $ 106.191,00
+    - article:
+      - strong: Compra N.º 90
+      - generic: 20/5/2026
+      - generic: Pendiente
+      - strong: $ 276.276,00
+    - article:
+      - strong: Compra N.º 92
+      - generic: 21/5/2026
+      - generic: Pendiente
+      - strong: $ 72.864,00
+    - article:
+      - strong: Compra N.º 94
+      - generic: 22/5/2026
+      - generic: Pendiente
+      - strong: $ 110.676,00
+    - article:
+      - strong: Compra N.º 96
+      - generic: 22/5/2026
+      - generic: Pendiente
+      - strong: $ 182.767,20
+    - article:
+      - strong: Compra N.º 104
+      - generic: 26/5/2026
+      - generic: Pendiente
+      - strong: $ 156.147,00
+    - article:
+      - strong: Compra N.º 108
+      - generic: 27/5/2026
+      - generic: Pendiente
+      - strong: $ 266.892,00
+    - article:
+      - strong: Compra N.º 114
+      - generic: 28/5/2026
+      - generic: Pendiente
+      - strong: $ 145.728,00
+    - article:
+      - strong: Compra N.º 119
+      - generic: 29/5/2026
+      - generic: Pendiente
+      - strong: $ 349.140,00
+    - article:
+      - strong: Compra N.º 125
+      - generic: 30/5/2026
+      - generic: Pendiente
+      - strong: $ 279.739,80
+    - article:
+      - strong: Compra N.º 131
+      - generic: 1/6/2026
+      - generic: Pendiente
+      - strong: $ 394.082,08
+    - article:
+      - strong: Compra N.º 138
+      - generic: 2/6/2026
+      - generic: Pendiente
+      - strong: $ 347.574,87
+    - article:
+      - strong: Compra N.º 142
+      - generic: 3/6/2026
+      - generic: Pendiente
+      - strong: $ 161.122,96
+    - article:
+      - strong: Compra N.º 147
+      - generic: 4/6/2026
+      - generic: Pendiente
+      - strong: $ 88.652,76
+    - article:
+      - strong: Compra N.º 152
+      - generic: 5/6/2026
+      - generic: Pendiente
+      - strong: $ 93.577,85
+    - article:
+      - strong: Compra N.º 157
+      - generic: 6/6/2026
+      - generic: Pendiente
+      - strong: $ 729.611,99
+    - article:
+      - strong: Compra N.º 161
+      - generic: 8/6/2026
+      - generic: Pendiente
+      - strong: $ 193.839,85
+    - article:
+      - strong: Compra N.º 164
+      - generic: 9/6/2026
+      - generic: Pendiente
+      - strong: $ 117.781,71
+    - article:
+      - strong: Compra N.º 171
+      - generic: 10/6/2026
+      - generic: Pendiente
+      - strong: $ 424.688,39
+    - article:
+      - strong: Compra N.º 175
+      - generic: 10/6/2026
+      - generic: Pendiente
+      - strong: $ 164.075,10
+    - article:
+      - strong: Compra N.º 180
+      - generic: 12/6/2026
+      - generic: Pendiente
+      - strong: $ 589.188,82
+    - article:
+      - strong: Compra N.º 192
+      - generic: 15/6/2026
+      - generic: Pendiente
+      - strong: $ 256.037,33
+    - article:
+      - strong: Compra N.º 198
+      - generic: 16/6/2026
+      - generic: Pendiente
+      - strong: $ 316.736,06
+    - article:
+      - strong: Compra N.º 206
+      - generic: 17/6/2026
+      - generic: Pendiente
+      - strong: $ 417.441,78
+    - article:
+      - strong: Compra N.º 212
+      - generic: 18/6/2026
+      - generic: Pendiente
+      - strong: $ 321.217,99
+    - article:
+      - strong: Compra N.º 216
+      - generic: 19/6/2026
+      - generic: Pendiente
+      - strong: $ 75.143,59
+    - article:
+      - strong: Compra N.º 222
+      - generic: 20/6/2026
+      - generic: Pendiente
+      - strong: $ 603.401,68
+    - article:
+      - strong: Compra N.º 234
+      - generic: 23/6/2026
+      - generic: Pendiente
+      - strong: $ 51.291,63
+    - article:
+      - strong: Compra N.º 238
+      - generic: 24/6/2026
+      - generic: Pendiente
+      - strong: $ 85.486,59
+    - article:
+      - strong: Compra N.º 244
+      - generic: 25/6/2026
+      - generic: Pendiente
+      - strong: $ 618.669,61
+    - article:
+      - strong: Compra N.º 248
+      - generic: 26/6/2026
+      - generic: Pendiente
+      - strong: $ 281.437,46
+    - article:
+      - strong: Compra N.º 253
+      - generic: 27/6/2026
+      - generic: Pendiente
+      - strong: $ 120.314,70
+    - article:
+      - strong: Compra N.º 256
+      - generic: 29/6/2026
+      - generic: Pendiente
+      - strong: $ 427.164,65
+    - article:
+      - strong: Compra N.º 263
+      - generic: 29/6/2026
+      - generic: Pendiente
+      - strong: $ 182.767,20
+    - article:
+      - strong: Compra N.º 264
+      - generic: 30/6/2026
+      - generic: Pendiente
+      - strong: $ 331.251,40
+    - article:
+      - strong: Compra N.º 273
+      - generic: 2/7/2026
+      - generic: Pendiente
+      - strong: $ 122.393,70
+    - article:
+      - strong: Compra N.º 279
+      - generic: 3/7/2026
+      - generic: Pendiente
+      - strong: $ 350.526,43
+    - article:
+      - strong: Compra N.º 283
+      - generic: 4/7/2026
+      - generic: Pendiente
+      - strong: $ 728.033,90
+    - article:
+      - strong: Compra N.º 292
+      - generic: 6/7/2026
+      - generic: Pendiente
+      - strong: $ 150.799,32
+    - article:
+      - strong: Compra N.º 299
+      - generic: 7/7/2026
+      - generic: Pendiente
+      - strong: $ 103.631,25
+    - article:
+      - strong: Compra N.º 305
+      - generic: 8/7/2026
+      - generic: Pendiente
+      - strong: $ 250.532,42
+    - article:
+      - strong: Compra N.º 309
+      - generic: 9/7/2026
+      - generic: Pendiente
+      - strong: $ 263.985,70
+    - article:
+      - strong: Compra N.º 314
+      - generic: 10/7/2026
+      - generic: Pendiente
+      - strong: $ 87.268,00
+    - article:
+      - strong: Compra N.º 319
+      - generic: 11/7/2026
+      - generic: Pendiente
+      - strong: $ 107.339,64
+    - article:
+      - strong: Compra N.º 324
+      - generic: 13/7/2026
+      - generic: Pendiente
+      - strong: $ 129.593,52
+    - article:
+      - strong: Compra N.º 330
+      - generic: 14/7/2026
+      - generic: Pendiente
+      - strong: $ 717.416,42
+    - article:
+      - strong: Compra N.º 334
+      - generic: 14/7/2026
+      - generic: Pendiente
+      - strong: $ 186.921,00
+    - article:
+      - strong: Compra N.º 337
+      - generic: 16/7/2026
+      - generic: Pendiente
+      - strong: $ 387.972,28
+    - article:
+      - strong: Compra N.º 344
+      - generic: 17/7/2026
+      - generic: Pendiente
+      - strong: $ 75.632,00
+    - article:
+      - strong: Compra N.º 352
+      - generic: 18/7/2026
+      - generic: Pendiente
+      - strong: $ 105.884,87
+    - article:
+      - strong: Compra N.º 357
+      - generic: 20/7/2026
+      - generic: Pendiente
+      - strong: $ 367.253,37
+    - article:
+      - strong: Compra N.º 365
+      - generic: 21/7/2026
+      - generic: Pendiente
+      - strong: $ 229.951,80
+    - article:
+      - strong: Compra N.º 374
+      - generic: 23/7/2026
+      - generic: Pendiente
+      - strong: $ 206.243,76
+    - article:
+      - strong: Compra N.º 378
+      - generic: 24/7/2026
+      - generic: Pendiente
+      - strong: $ 239.987,00
+    - article:
+      - strong: Compra N.º 385
+      - generic: 25/7/2026
+      - generic: Pendiente
+      - strong: $ 795.303,13
+    - article:
+      - strong: Compra N.º 390
+      - generic: 27/7/2026
+      - generic: Pendiente
+      - strong: $ 323.764,28
+    - article:
+      - strong: Compra N.º 395
+      - generic: 28/7/2026
+      - generic: Pendiente
+      - strong: $ 81.813,75
+    - article:
+      - strong: Compra N.º 403
+      - generic: 29/7/2026
+      - generic: Pendiente
+      - strong: $ 124.356,90
+    - article:
+      - strong: Compra N.º 407
+      - generic: 30/7/2026
+      - generic: Pendiente
+      - strong: $ 252.059,60
+    - article:
+      - strong: Compra N.º 411
+      - generic: 31/7/2026
+      - generic: Pendiente
+      - strong: $ 296.057,74
+    - article:
+      - strong: Compra N.º 423
+      - generic: 1/8/2026
+      - generic: Pendiente
+      - strong: $ 155.767,50
+    - article:
+      - strong: Compra N.º 424
+      - generic: 3/8/2026
+      - generic: Pendiente
+      - strong: $ 242.831,49
+    - article:
+      - strong: Compra N.º 431
+      - generic: 4/8/2026
+      - generic: Pendiente
+      - strong: $ 159.973,02
+    - article:
+      - strong: Compra N.º 439
+      - generic: 5/8/2026
+      - generic: Pendiente
+      - strong: $ 377.009,93
+    - article:
+      - strong: Compra N.º 446
+      - generic: 6/8/2026
+      - generic: Pendiente
+      - strong: $ 206.140,34
+    - article:
+      - strong: Compra N.º 450
+      - generic: 7/8/2026
+      - generic: Pendiente
+      - strong: $ 414.629,27
+    - article:
+      - strong: Compra N.º 455
+      - generic: 8/8/2026
+      - generic: Pendiente
+      - strong: $ 79.649,93
+    - article:
+      - strong: Compra N.º 463
+      - generic: 10/8/2026
+      - generic: Pendiente
+      - strong: $ 403.410,28
+    - article:
+      - strong: Compra N.º 470
+      - generic: 11/8/2026
+      - generic: Pendiente
+      - strong: $ 65.514,58
+    - article:
+      - strong: Compra N.º 477
+      - generic: 12/8/2026
+      - generic: Pendiente
+      - strong: $ 85.184,47
+    - article:
+      - strong: Compra N.º 482
+      - generic: 13/8/2026
+      - generic: Pendiente
+      - strong: $ 370.876,80
+    - article:
+      - strong: Compra N.º 489
+      - generic: 14/8/2026
+      - generic: Pendiente
+      - strong: $ 130.581,40
+    - article:
+      - strong: Compra N.º 494
+      - generic: 15/8/2026
+      - generic: Pendiente
+      - strong: $ 1.042.405,89
+    - article:
+      - strong: Compra N.º 500
+      - generic: 17/8/2026
+      - generic: Pendiente
+      - strong: $ 177.025,32
+    - article:
+      - strong: Compra N.º 508
+      - generic: 18/8/2026
+      - generic: Pendiente
+      - strong: $ 208.511,32
+    - article:
+      - strong: Compra N.º 511
+      - generic: 19/8/2026
+      - generic: Pendiente
+      - strong: $ 83.913,06
+    - article:
+      - strong: Compra N.º 520
+      - generic: 21/8/2026
+      - generic: Pendiente
+      - strong: $ 69.104,42
+    - article:
+      - strong: Compra N.º 526
+      - generic: 21/8/2026
+      - generic: Pendiente
+      - strong: $ 188.997,90
+    - article:
+      - strong: Compra N.º 527
+      - generic: 22/8/2026
+      - generic: Pendiente
+      - strong: $ 529.205,06
+    - article:
+      - strong: Compra N.º 534
+      - generic: 24/8/2026
+      - generic: Pendiente
+      - strong: $ 165.582,20
+    - article:
+      - strong: Compra N.º 541
+      - generic: 25/8/2026
+      - generic: Pendiente
+      - strong: $ 329.445,27
+    - article:
+      - strong: Compra N.º 549
+      - generic: 26/8/2026
+      - generic: Pendiente
+      - strong: $ 297.957,92
+    - article:
+      - strong: Compra N.º 557
+      - generic: 27/8/2026
+      - generic: Pendiente
+      - strong: $ 246.578,51
+    - article:
+      - strong: Compra N.º 563
+      - generic: 28/8/2026
+      - generic: Pendiente
+      - strong: $ 243.587,31
+    - article:
+      - strong: Compra N.º 570
+      - generic: 29/8/2026
+      - generic: Pendiente
+      - strong: $ 361.991,92
+    - article:
+      - strong: Compra N.º 576
+      - generic: 31/8/2026
+      - generic: Pendiente
+      - strong: $ 200.658,51
+    - article:
+      - strong: Compra N.º 582
+      - generic: 1/9/2026
+      - generic: Pendiente
+      - strong: $ 94.189,68
+    - article:
+      - strong: Compra N.º 588
+      - generic: 2/9/2026
+      - generic: Pendiente
+      - strong: $ 941.742,32
+    - article:
+      - strong: Compra N.º 595
+      - generic: 3/9/2026
+      - generic: Pendiente
+      - strong: $ 173.530,74
+    - article:
+      - strong: Compra N.º 604
+      - generic: 5/9/2026
+      - generic: Pendiente
+      - strong: $ 211.347,70
+    - article:
+      - strong: Compra N.º 609
+      - generic: 7/9/2026
+      - generic: Pendiente
+      - strong: $ 106.717,24
+    - article:
+      - strong: Compra N.º 615
+      - generic: 7/9/2026
+      - generic: Pendiente
+      - strong: $ 207.690,00
+    - article:
+      - strong: Compra N.º 616
+      - generic: 8/9/2026
+      - generic: Pendiente
+      - strong: $ 279.167,00
+    - article:
+      - strong: Compra N.º 625
+      - generic: 9/9/2026
+      - generic: Pendiente
+      - strong: $ 58.463,16
+    - article:
+      - strong: Compra N.º 631
+      - generic: 10/9/2026
+      - generic: Pendiente
+      - strong: $ 457.569,90
+    - article:
+      - strong: Compra N.º 636
+      - generic: 11/9/2026
+      - generic: Pendiente
+      - strong: $ 203.458,92
+    - article:
+      - strong: Compra N.º 643
+      - generic: 12/9/2026
+      - generic: Pendiente
+      - strong: $ 296.411,84
+    - article:
+      - strong: Compra N.º 651
+      - generic: 14/9/2026
+      - generic: Pendiente
+      - strong: $ 697.840,50
+    - article:
+      - strong: Compra N.º 659
+      - generic: 15/9/2026
+      - generic: Pendiente
+      - strong: $ 86.301,21
+    - article:
+      - strong: Compra N.º 665
+      - generic: 16/9/2026
+      - generic: Pendiente
+      - strong: $ 269.655,33
+    - article:
+      - strong: Compra N.º 676
+      - generic: 18/9/2026
+      - generic: Pendiente
+      - strong: $ 296.488,72
+    - article:
+      - strong: Compra N.º 682
+      - generic: 19/9/2026
+      - generic: Pendiente
+      - strong: $ 922.393,60
+    - article:
+      - strong: Compra N.º 686
+      - generic: 21/9/2026
+      - generic: Pendiente
+      - strong: $ 99.757,42
+    - article:
+      - strong: Compra N.º 693
+      - generic: 22/9/2026
+      - generic: Pendiente
+      - strong: $ 628.897,76
+    - article:
+      - strong: Compra N.º 700
+      - generic: 23/9/2026
+      - generic: Pendiente
+      - strong: $ 230.602,54
+    - article:
+      - strong: Compra N.º 706
+      - generic: 24/9/2026
+      - generic: Pendiente
+      - strong: $ 618.420,05
+    - article:
+      - strong: Compra N.º 712
+      - generic: 25/9/2026
+      - generic: Pendiente
+      - strong: $ 246.533,48
+    - article:
+      - strong: Compra N.º 717
+      - generic: 26/9/2026
+      - generic: Pendiente
+      - strong: $ 204.077,33
+    - article:
+      - strong: Compra N.º 725
+      - generic: 26/9/2026
+      - generic: Pendiente
+      - strong: $ 134.998,50
+    - article:
+      - strong: Compra N.º 732
+      - generic: 29/9/2026
+      - generic: Pendiente
+      - strong: $ 126.663,30
+    - article:
+      - strong: Compra N.º 739
+      - generic: 30/9/2026
+      - generic: Pendiente
+      - strong: $ 320.152,38
+    - article:
+      - strong: Compra N.º 745
+      - generic: 1/10/2026
+      - generic: Pendiente
+      - strong: $ 802.738,12
+    - article:
+      - strong: Compra N.º 758
+      - generic: 3/10/2026
+      - generic: Pendiente
+      - strong: $ 317.795,48
+    - article:
+      - strong: Compra N.º 762
+      - generic: 5/10/2026
+      - generic: Pendiente
+      - strong: $ 486.543,03
+    - heading "Movimientos" [level=3]
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 5/10/2026 · Andrea · Jefa del mercado
+      - strong: $ 486.543,03
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 3/10/2026 · Andrea · Jefa del mercado
+      - strong: $ 206.567,06
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 1/10/2026 · Andrea · Jefa del mercado
+      - strong: $ 521.779,77
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 30/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 128.060,95
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 29/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 107.663,80
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 26/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 134.998,50
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 26/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 132.650,26
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 25/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 209.553,45
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 24/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 618.420,05
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 23/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 196.012,15
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 22/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 251.559,10
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 21/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 64.842,32
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 19/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 784.034,56
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 18/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 296.488,72
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 16/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 269.655,33
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 15/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 34.520,48
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 14/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 279.136,20
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 12/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 118.564,73
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 11/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 132.248,29
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 10/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 297.420,43
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 9/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 38.001,05
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 8/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 279.167,00
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 7/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 83.076,00
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 7/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 90.709,65
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 5/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 179.645,54
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 3/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 69.412,29
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 2/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 376.696,92
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 1/9/2026 · Andrea · Jefa del mercado
+      - strong: $ 80.061,22
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 31/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 130.428,03
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 29/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 144.796,76
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 28/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 207.049,21
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 27/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 160.276,03
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 26/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 297.957,92
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 25/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 280.028,47
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 24/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 140.744,87
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 22/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 211.682,02
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 21/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 75.599,16
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 21/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 44.917,87
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 19/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 83.913,06
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 18/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 83.404,52
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 17/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 150.471,52
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 15/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 416.962,35
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 14/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 130.581,40
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 13/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 148.350,72
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 12/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 55.369,90
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 11/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 65.514,58
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 10/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 262.216,68
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 8/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 51.772,45
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 7/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 414.629,27
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 6/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 82.456,13
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 5/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 245.056,45
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 4/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 159.973,02
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 3/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 97.132,59
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 1/8/2026 · Andrea · Jefa del mercado
+      - strong: $ 155.767,50
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 31/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 118.423,09
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 30/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 252.059,60
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 29/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 49.742,76
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 28/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 69.541,68
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 27/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 210.446,78
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 25/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 516.947,03
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 24/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 203.988,95
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 23/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 82.497,50
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 21/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 91.980,72
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 20/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 146.901,34
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 18/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 68.825,16
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 17/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 64.287,20
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 16/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 252.181,98
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 14/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 158.882,85
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 14/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 717.416,42
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 13/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 84.235,78
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 11/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 107.339,64
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 10/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 74.177,80
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 9/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 105.594,28
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 8/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 100.212,96
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 7/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 67.360,31
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 6/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 128.179,42
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 4/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 728.033,90
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 3/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 140.210,57
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 2/7/2026 · Andrea · Jefa del mercado
+      - strong: $ 79.555,90
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 30/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 132.500,56
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 29/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 182.767,20
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 29/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 277.657,02
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 27/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 102.267,49
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 26/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 112.574,98
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 25/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 402.135,24
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 24/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 85.486,59
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 23/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 43.597,88
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 20/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 603.401,68
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 19/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 63.872,05
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 18/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 321.217,99
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 17/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 354.825,51
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 16/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 269.225,65
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 15/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 102.414,93
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 12/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 500.810,49
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 10/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 164.075,10
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 10/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 424.688,39
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 9/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 100.114,45
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 8/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 193.839,85
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 6/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 474.247,79
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 5/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 60.825,60
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 4/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 75.354,84
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 3/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 104.729,92
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 2/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 347.574,87
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 1/6/2026 · Andrea · Jefa del mercado
+      - strong: $ 394.082,08
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 30/5/2026 · Andrea · Jefa del mercado
+      - strong: $ 181.830,87
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 29/5/2026 · Andrea · Jefa del mercado
+      - strong: $ 226.941,00
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 28/5/2026 · Andrea · Jefa del mercado
+      - strong: $ 58.291,20
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 27/5/2026 · Andrea · Jefa del mercado
+      - strong: $ 266.892,00
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 26/5/2026 · Andrea · Jefa del mercado
+      - strong: $ 132.724,95
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 22/5/2026 · Andrea · Jefa del mercado
+      - strong: $ 182.767,20
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 22/5/2026 · Andrea · Jefa del mercado
+      - strong: $ 110.676,00
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 21/5/2026 · Andrea · Jefa del mercado
+      - strong: $ 72.864,00
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 20/5/2026 · Andrea · Jefa del mercado
+      - strong: $ 234.834,60
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 19/5/2026 · Andrea · Jefa del mercado
+      - strong: $ 90.262,35
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 16/5/2026 · Andrea · Jefa del mercado
+      - strong: $ 343.178,40
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 15/5/2026 · Andrea · Jefa del mercado
+      - strong: $ 142.316,64
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 14/5/2026 · Andrea · Jefa del mercado
+      - strong: $ 133.518,45
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 13/5/2026 · Andrea · Jefa del mercado
+      - strong: $ 354.891,15
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 12/5/2026 · Andrea · Jefa del mercado
+      - strong: $ 575.591,10
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 11/5/2026 · Andrea · Jefa del mercado
+      - strong: $ 307.443,30
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 8/5/2026 · Andrea · Jefa del mercado
+      - strong: $ 16.394,40
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 6/5/2026 · Andrea · Jefa del mercado
+      - strong: $ 16.837.863,00
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 6/5/2026 · Andrea · Jefa del mercado
+      - strong: $ 16.464.209,37
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 6/5/2026 · Andrea · Jefa del mercado
+      - strong: $ 6.607.285,44
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 6/5/2026 · Andrea · Jefa del mercado
+      - strong: $ 16.359.234,15
+    - article:
+      - strong: Pago · Transferencia
+      - generic: 6/5/2026 · Andrea · Jefa del mercado
+      - strong: $ 16.404.273,90

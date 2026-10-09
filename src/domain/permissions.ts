@@ -1,6 +1,7 @@
 import type { Role } from '../shared/auth';
 const common = [
   'settings.get',
+  'settings.features.get',
   'terminals.active',
   'cash.current',
   'cash.open',
@@ -16,17 +17,31 @@ const common = [
   'checkout.getDraft',
   'checkout.saveDraft',
   'checkout.cancelDraft',
+  'sales.quote',
   'sales.complete',
   'sales.findByCheckoutKey',
   'sales.detail',
+  'receipts.create',
+  'receipts.markPrinted',
+  'customers.search',
+  'customers.get',
+  'customers.save',
 ];
 const management = [
+  'control.execute',
   'shifts.list',
   'audit.list',
   'products.save',
   'products.setActive',
+  'products.taxonomy',
+  'products.saveCategory',
+  'products.saveBrand',
   'products.previewImport',
   'products.applyImport',
+  'products.proposeInternalBarcode',
+  'products.labels',
+  'products.createLabel',
+  'products.markLabelPrinted',
   'stock.operation',
   'stock.get',
   'stock.search',
@@ -35,9 +50,47 @@ const management = [
   'stock.record',
   'stock.listLow',
   'stock.movements',
+  'lots.status',
+  'lots.enable',
+  'lots.reconcile',
+  'lots.setBlocked',
   'sales.list',
   'sales.previewVoid',
   'sales.void',
+  'sales.previewReturn',
+  'sales.return',
+  'sales.returns',
+  'receipts.list',
+  'suppliers.search',
+  'suppliers.get',
+  'suppliers.save',
+  'suppliers.setActive',
+  'purchases.getDraft',
+  'purchases.saveDraft',
+  'purchases.cancelDraft',
+  'purchases.receive',
+  'purchases.findByReceiptKey',
+  'purchases.detail',
+  'purchases.list',
+  'purchases.previewVoid',
+  'purchases.void',
+  'purchases.lastCost',
+  'costs.get',
+  'costs.setReference',
+  'notifications.list',
+  'notifications.markRead',
+  'supplierAccounts.detail',
+  'supplierAccounts.pay',
+  'customers.setActive',
+  'customerAccounts.detail',
+  'customerAccounts.collect',
+  'locations.list',
+  'locations.inventory',
+  'transfers.list',
+  'transfers.detail',
+  'transfers.dispatch',
+  'transfers.receive',
+  'transfers.cancel',
 ];
 const owner = [
   'terminals.list',
@@ -45,22 +98,46 @@ const owner = [
   'exports.products',
   'exports.sales',
   'exports.stock',
+  'exports.sale-items',
+  'exports.shifts',
+  'exports.purchases',
   'users.list',
   'users.save',
+  'auth.unlockUser',
   'dashboard.monthly',
+  'dashboard.compare',
   'backup.create',
   'backup.restore',
   'settings.save',
+  'settings.features.save',
+  'pricing.preview',
+  'pricing.confirm',
+  'promotions.list',
+  'promotions.get',
+  'promotions.save',
+  'customers.setCredit',
+  'locations.save',
+  'locations.assignTerminal',
+  'locations.summary',
 ];
+// Each level includes all operations of the preceding level. Feature switches
+// remain independent: a permission never enables a disabled business module.
+const sellerPermissions = new Set(common);
+const supervisorPermissions = new Set([...sellerPermissions, ...management]);
+const ownerPermissions = new Set([...supervisorPermissions, ...owner]);
+export const knownOperations: readonly string[] = [...ownerPermissions];
+const permissionsByRole: Record<Role, ReadonlySet<string>> = {
+  SELLER: sellerPermissions,
+  SUPERVISOR: supervisorPermissions,
+  OWNER: ownerPermissions,
+  ADMIN: new Set(ownerPermissions),
+};
 export function hasPermission(role: Role, operation: string): boolean {
-  return (
-    common.includes(operation) ||
-    (role !== 'SELLER' && management.includes(operation)) ||
-    (role === 'OWNER' && owner.includes(operation))
-  );
+  return permissionsByRole[role]?.has(operation) ?? false;
 }
 export const roleLabel: Record<Role, string> = {
   SELLER: 'Vendedor',
   SUPERVISOR: 'Supervisor',
   OWNER: 'Jefe',
+  ADMIN: 'Administrador del sistema',
 };

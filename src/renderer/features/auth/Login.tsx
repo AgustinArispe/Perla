@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { api, errorMessage, unwrap } from '../../api';
+import { PerlaNegraLogo } from '../../components/PerlaNegraLogo';
 export function Login({
   initialized: accountInitialized,
   onSignedIn,
@@ -36,65 +37,87 @@ export function Login({
   }
   return (
     <div className="auth-screen">
-      <div className="auth-card">
-        <div className="brand">
-          <span className="brand-mark">B.</span>
+      <section className="auth-brand-panel" aria-label="Perla Negra, pescados y mariscos">
+        <div className="auth-brand-top">
+          <span className="auth-brand-line" aria-hidden="true" />
           <div>
-            <strong>El Bocha</strong>
-            <span>Control del almacén</span>
+            <strong>Perla Negra</strong>
+            <span>Sistema interno</span>
           </div>
         </div>
-        <h1>{initialized ? 'Ingresar' : 'Configurar primer jefe'}</h1>
-        <form onSubmit={(event) => void submit(event)}>
-          {!initialized && (
+        <div className="auth-brand-center">
+          <span className="auth-brand-mark">
+            <PerlaNegraLogo />
+          </span>
+          <strong className="auth-brand-name">Perla Negra</strong>
+          <span className="auth-brand-descriptor">Pescados y mariscos</span>
+        </div>
+        <div className="auth-brand-footer">
+          <span>Control de ventas y stock</span>
+          <strong>Pescados y mariscos</strong>
+        </div>
+      </section>
+      <section className="auth-form-panel">
+        <div className="auth-card">
+          <div className="auth-card-heading">
+            <h1>{initialized ? 'Ingresar al sistema' : 'Configurar primer jefe'}</h1>
+            <p>
+              {initialized
+                ? 'Usá las credenciales asignadas a tu perfil.'
+                : 'Creá la cuenta principal para comenzar.'}
+            </p>
+          </div>
+          <form onSubmit={(event) => void submit(event)}>
+            {!initialized && (
+              <label className="field">
+                Nombre
+                <input
+                  name="name"
+                  required
+                  minLength={2}
+                  maxLength={100}
+                  autoComplete="name"
+                  autoFocus
+                />
+              </label>
+            )}
             <label className="field">
-              Nombre
+              Usuario
               <input
-                name="name"
+                name="username"
                 required
-                minLength={2}
-                maxLength={100}
-                autoComplete="name"
-                autoFocus
+                minLength={3}
+                maxLength={40}
+                autoComplete="username"
+                autoCapitalize="none"
+                spellCheck={false}
+                autoFocus={initialized}
               />
             </label>
-          )}
-          <label className="field">
-            Usuario
-            <input
-              name="username"
-              required
-              minLength={3}
-              maxLength={40}
-              autoComplete="username"
-              autoCapitalize="none"
-              spellCheck={false}
-              autoFocus={initialized}
-            />
-          </label>
-          <label className="field">
-            Contraseña
-            <input
-              name="password"
-              aria-label="Contraseña"
-              type="password"
-              required
-              minLength={initialized ? 1 : 15}
-              maxLength={128}
-              autoComplete={initialized ? 'current-password' : 'new-password'}
-            />
-            {!initialized && <small>Al menos 15 caracteres. Puede ser una frase.</small>}
-          </label>
-          {error && (
-            <div className="alert error" role="alert">
-              {error}
-            </div>
-          )}
-          <button className="button primary" disabled={busy}>
-            {busy ? 'Ingresando…' : initialized ? 'Ingresar' : 'Crear cuenta de jefe'}
-          </button>
-        </form>
-      </div>
+            <label className="field">
+              Contraseña
+              <input
+                name="password"
+                aria-label="Contraseña"
+                type="password"
+                required
+                minLength={initialized ? 1 : 8}
+                maxLength={128}
+                autoComplete={initialized ? 'current-password' : 'new-password'}
+              />
+              {!initialized && <small>Al menos 8 caracteres, con mayúscula y símbolo.</small>}
+            </label>
+            {error && (
+              <div className="alert error" role="alert">
+                {error}
+              </div>
+            )}
+            <button className="button primary" disabled={busy}>
+              {busy ? 'Ingresando…' : initialized ? 'Ingresar' : 'Crear cuenta de jefe'}
+            </button>
+          </form>
+        </div>
+      </section>
     </div>
   );
 }

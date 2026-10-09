@@ -34,6 +34,7 @@ export function BackupsPage({ onRestored }: { onRestored: () => Promise<void> })
     [notice, setNotice] = useState(''),
     [preview, setPreview] = useState<Preview | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
+  const latest = backups.data?.slice().sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0];
   async function run(action: () => Promise<void>) {
     if (busy) return;
     setBusy(true);
@@ -52,7 +53,6 @@ export function BackupsPage({ onRestored }: { onRestored: () => Promise<void> })
       <div className="page-heading">
         <div>
           <h1>Copias de seguridad</h1>
-          <p>Copias del negocio guardadas en el servidor</p>
         </div>
         <button
           className="button primary"
@@ -73,31 +73,25 @@ export function BackupsPage({ onRestored }: { onRestored: () => Promise<void> })
           {error}
         </div>
       )}
-      {notice && <p role="status">{notice}</p>}
-      <section className="dashboard-panel">
-        <h2>Subir una copia</h2>
-        <label className="field">
-          Archivo de copia
-          <input
-            ref={fileInput}
-            type="file"
-            accept=".bocha,application/octet-stream"
-            disabled={busy}
-            onChange={(event) => {
-              const file = event.currentTarget.files?.[0];
-              if (!file) return;
-              void run(async () => {
-                await webUpload<BackupInfo>('/backups/upload', file);
-                await client.invalidateQueries({ queryKey: ['backups'] });
-                setNotice('Copia subida y validada.');
-              }).finally(() => {
-                if (fileInput.current) fileInput.current.value = '';
-              });
-            }}
-          />
-        </label>
+      {notice && (
+        <p className="status-message" role="status">
+          {notice}
+        </p>
+      )}
+      <section className="backup-status commerce-backup-status" aria-live="polite">
+        <span>Última copia</span>
+        <strong>
+          {backups.isPending
+            ? 'Consultando…'
+            : backups.isError
+              ? 'No se pudo consultar'
+              : latest
+                ? date.format(new Date(latest.createdAt))
+                : 'Sin copias disponibles'}
+        </strong>
+        {latest && <small>{kinds[latest.kind]}</small>}
       </section>
-      <section className="dashboard-panel">
+      <section className="dashboard-panel commerce-backup-list">
         <h2>Copias disponibles</h2>
         {backups.isError && (
           <div className="alert error" role="alert">
@@ -144,7 +138,7 @@ export function BackupsPage({ onRestored }: { onRestored: () => Promise<void> })
                           void run(async () => {
                             await downloadFile(
                               `/backups/${info.id}/download`,
-                              `el-bocha-${info.id}.bocha`,
+                              `perla-negra-${info.id}.backup`,
                             );
                           })
                         }
@@ -182,6 +176,33 @@ export function BackupsPage({ onRestored }: { onRestored: () => Promise<void> })
           </table>
         </div>
       </section>
+      <details className="dashboard-panel backup-upload">
+        <summary>Subir una copia existente</summary>
+        <p>
+          Se valida y agrega a la lista. Los datos del negocio solo se reemplazan al confirmar una
+          restauración.
+        </p>
+        <label className="field">
+          Archivo de copia
+          <input
+            ref={fileInput}
+            type="file"
+            accept=".backup,.bocha,application/octet-stream"
+            disabled={busy}
+            onChange={(event) => {
+              const file = event.currentTarget.files?.[0];
+              if (!file) return;
+              void run(async () => {
+                await webUpload<BackupInfo>('/backups/upload', file);
+                await client.invalidateQueries({ queryKey: ['backups'] });
+                setNotice('Copia subida y validada.');
+              }).finally(() => {
+                if (fileInput.current) fileInput.current.value = '';
+              });
+            }}
+          />
+        </label>
+      </details>
       {preview && (
         <RestoreForm preview={preview} onClose={() => setPreview(null)} onRestored={onRestored} />
       )}

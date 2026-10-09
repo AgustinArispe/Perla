@@ -1,4 +1,15 @@
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import type { Customer } from '../../../shared/customers';
+import { CustomerForm } from '../customers/CustomerPage';
+import { EntityPicker } from '../../components/EntityPicker';
+import { unwrap } from '../../api';
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import type { User } from '../../../shared/auth';
 import { parseQuantity, formatMoney } from '../../../domain/values';
@@ -14,14 +25,24 @@ import { webValue } from '../../web-client';
 import { scannerMayCapture } from './scanner-focus';
 import { paymentLabels } from './PaymentDialog';
 import type { PaymentInput } from '../../../shared/sales';
+import type { SaleReceipt } from '../../../shared/receipts';
+import { Icon } from '../../components/Icon';
+import { ReceiptPrint } from '../receipts/ReceiptPrint';
 export type LeaveGuard = (() => Promise<void>) | null;
 export function Checkout({
   user,
   registerLeaveGuard,
+  customersEnabled = false,
+  customerCreditEnabled = false,
 }: {
   user: User;
   registerLeaveGuard: (guard: LeaveGuard) => void;
+  customersEnabled?: boolean;
+  customerCreditEnabled?: boolean;
 }) {
+  const [customer, setCustomer] = useState<Customer | null>(null);
+  const [customerOpen, setCustomerOpen] = useState(false);
+  const [createCustomerOpen, setCreateCustomerOpen] = useState(false);
   const client = useQueryClient();
   const settings = useQuery({
     queryKey: ['settings'],
@@ -37,10 +58,34 @@ export function Checkout({
       new CheckoutController(api(), user.id, localStorage, () => void client.invalidateQueries()),
   );
   const state = useSyncExternalStore(controller.subscribe, controller.getSnapshot);
+  const customerSaleKey = useRef(state.body.checkoutKey);
+  useEffect(() => {
+    if (customerSaleKey.current !== state.body.checkoutKey) {
+      customerSaleKey.current = state.body.checkoutKey;
+      setCustomer(null);
+    }
+  }, [state.body.checkoutKey]);
   const [code, setCode] = useState(''),
     [error, setError] = useState(''),
-    [weightOnly, setWeightOnly] = useState(false);
+    [weightOnly, setWeightOnly] = useState(false),
+    [receipt, setReceipt] = useState<SaleReceipt | null>(null);
   const scanner = useRef<HTMLInputElement>(null);
+  const preparedReceiptFor = useRef<string | null>(null);
+  const receiptWasOpen = useRef(false);
+  useLayoutEffect(() => {
+    if (receipt) {
+      receiptWasOpen.current = true;
+      return;
+    }
+    if (!receiptWasOpen.current) return;
+    receiptWasOpen.current = false;
+    if (state.mode === 'SCAN' && scannerMayCapture(document, scanner.current)) {
+      // Native modal restoration can leave a previously disabled input focused
+      // without an active editing context. Renew it before the next USB scan.
+      scanner.current?.blur();
+      scanner.current?.focus();
+    }
+  }, [receipt, state.mode]);
   const run = useCallback((promise: Promise<unknown>) => {
     setError('');
     void promise.catch((failure) => setError(errorMessage(failure)));
@@ -69,6 +114,18 @@ export function Checkout({
       window.removeEventListener('click', focusScanner);
     };
   }, [controller]);
+  useEffect(() => {
+    const sale = state.lastSale;
+    if (!sale || preparedReceiptFor.current === sale.id) return;
+    preparedReceiptFor.current = sale.id;
+    void api()
+      .receipts.create({ saleId: sale.id, format: 'THERMAL_80' })
+      .then((result) => {
+        if (result.ok) setReceipt(result.value);
+        else setError(result.error.message);
+      })
+      .catch((failure) => setError(errorMessage(failure)));
+  }, [state.lastSale]);
   useEffect(() => {
     function keyboard(event: KeyboardEvent) {
       if (event.defaultPrevented || event.ctrlKey || event.metaKey || event.altKey) return;
@@ -107,14 +164,7 @@ export function Checkout({
     state.mode === 'PAYMENT' || (state.mode === 'BUSY' && state.busyOrigin === 'PAYMENT');
   return (
     <>
-      <div className="page-heading checkout-heading">
-        <div>
-          <h1>Caja</h1>
-        </div>
-        <span className="checkout-save-state">
-          {state.unsaved ? 'Guardando borrador…' : 'Borrador al día'}
-        </span>
-      </div>
+      <h1 className="sr-only">Caja</h1>
       {state.lastSale && (
         <div className="sale-confirmed" role="status">
           <strong>Venta guardada · N.º {state.lastSale.number}</strong>
@@ -170,8 +220,13 @@ export function Checkout({
       )}
       <div className="checkout-layout">
         <section className="checkout-cart">
-          <div className="checkout-scan">
-            <label htmlFor="scanner">Escanear código</label>
+          <div className={`checkout-scan${ready ? ' scanner-ready' : ''}`}>
+            <div className="checkout-scan-heading">
+              <label htmlFor="scanner">Escanear código</label>
+              <span className="checkout-save-state">
+                {state.unsaved ? 'Guardando borrador…' : 'Borrador al día'}
+              </span>
+            </div>
             <div className="scanner-field">
               <input
                 id="scanner"
@@ -204,6 +259,7 @@ export function Checkout({
                   controller.modal('SEARCH');
                 }}
               >
+                <Icon name="search" size={18} />
                 Buscar producto · F3
               </button>
               <button
@@ -214,6 +270,7 @@ export function Checkout({
                   controller.modal('SEARCH');
                 }}
               >
+                <Icon name="box" size={18} />
                 Producto por kilo · F6
               </button>
               <span>
@@ -231,7 +288,7 @@ export function Checkout({
                 <tr>
                   <th>Producto</th>
                   <th>Cantidad</th>
-                  <th>Precio</th>
+                  <th className="checkout-line-price">Precio</th>
                   <th>Importe</th>
                   <th />
                 </tr>
@@ -248,6 +305,11 @@ export function Checkout({
                         <small>
                           {p?.barcode ?? p?.sku ?? ''}
                           {unit === 'KG' ? ' · Porción' : ''}
+                          <span className="checkout-line-inline-price">
+                            {' · '}
+                            {formatMoney(line.expectedPriceCents)}
+                            {unit === 'KG' ? ' / kg' : ''}
+                          </span>
                         </small>
                       </td>
                       <td>
@@ -292,16 +354,19 @@ export function Checkout({
                           )}
                         </div>
                       </td>
-                      <td>
+                      <td className="checkout-line-price">
                         {formatMoney(line.expectedPriceCents)}
                         {unit === 'KG' && <small>/ kg</small>}
                       </td>
                       <td>
                         <strong>
-                          {totals?.lines[index]
-                            ? formatMoney(totals.lines[index]!.grossCents)
-                            : '—'}
+                          {totals?.lines[index] ? formatMoney(totals.lines[index]!.netCents) : '—'}
                         </strong>
+                        {totals?.lines[index]?.discountCents ? (
+                          <small className="checkout-line-saving">
+                            Antes {formatMoney(totals.lines[index]!.grossCents)}
+                          </small>
+                        ) : null}
                       </td>
                       <td>
                         <button
@@ -334,17 +399,49 @@ export function Checkout({
               <dd>{totals ? formatMoney(totals.subtotalCents) : '—'}</dd>
             </div>
             <div>
-              <dt>Descuento</dt>
+              <dt>{state.quote?.promotions.length ? 'Promociones' : 'Descuento'}</dt>
               <dd>{totals ? formatMoney(totals.discountCents) : '—'}</dd>
             </div>
           </dl>
+          {state.quote?.promotions.length ? (
+            <div className="checkout-promotions" role="status">
+              <div>
+                <Icon name="tag" size={18} />
+                <strong>Ahorrás {formatMoney(state.quote.discountCents)}</strong>
+              </div>
+              {state.quote.promotions.map((promotion) => (
+                <span key={`${promotion.promotionId}:${promotion.revision}`}>{promotion.name}</span>
+              ))}
+            </div>
+          ) : state.quoteLoading && state.body.discount.type === 'NONE' ? (
+            <div className="checkout-quote-loading">Buscando promociones…</div>
+          ) : null}
           <button
             className="button secondary"
             disabled={!editable}
             onClick={() => controller.modal('DISCOUNT')}
           >
-            Cambiar descuento · F4
+            {state.body.discount.type === 'NONE'
+              ? 'Descuento manual · F4'
+              : 'Cambiar descuento · F4'}
           </button>
+          {customersEnabled && (
+            <button
+              className="button secondary checkout-customer-button"
+              disabled={!editable}
+              onClick={() => setCustomerOpen(true)}
+            >
+              <Icon name="users" size={18} />
+              {customer?.name ?? 'Elegir cliente'}
+            </button>
+          )}
+          {customer && (
+            <small className="checkout-customer-credit">
+              {customer.creditEnabled
+                ? `Cuenta disponible ${formatMoney(customer.availableCents)}`
+                : 'Cliente sin cuenta corriente'}
+            </small>
+          )}
           <div className="checkout-total">
             <span>Total</span>
             <strong>{totals ? formatMoney(totals.totalCents) : '—'}</strong>
@@ -366,6 +463,7 @@ export function Checkout({
             disabled={!editable || !state.body.lines.length || stale || !totals}
             onClick={() => run(controller.openPayment())}
           >
+            <Icon name="check" size={22} />
             Cobrar · F8
           </button>
           <button
@@ -377,6 +475,68 @@ export function Checkout({
           </button>
         </aside>
       </div>
+      {customerOpen && (
+        <Dialog title="Cliente de la venta" onClose={() => setCustomerOpen(false)}>
+          <div className="checkout-modal">
+            <button
+              type="button"
+              className="button secondary"
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={() => setCreateCustomerOpen(true)}
+            >
+              <Icon name="plus" size={18} /> Nuevo cliente
+            </button>
+            <EntityPicker
+              label="Cliente"
+              queryKey="customers"
+              value={customer}
+              onChange={(item) => {
+                setCustomer(item);
+                setCustomerOpen(false);
+              }}
+              load={async (query) =>
+                unwrap(
+                  await api().customers.search({
+                    query,
+                    activeOnly: true,
+                    limit: 30,
+                  }),
+                ).items
+              }
+              detail={(item) =>
+                item.creditEnabled
+                  ? `Disponible ${formatMoney(item.availableCents)}`
+                  : (item.phone ?? 'Sin cuenta corriente')
+              }
+            />
+            <button
+              type="button"
+              className="button quiet"
+              onClick={() => {
+                setCustomer(null);
+                setCustomerOpen(false);
+              }}
+            >
+              Consumidor final
+            </button>
+          </div>
+        </Dialog>
+      )}
+      {createCustomerOpen && (
+        <CustomerForm
+          customer={null}
+          canManageCredit={
+            customerCreditEnabled && (user.role === 'OWNER' || user.role === 'ADMIN')
+          }
+          onClose={() => setCreateCustomerOpen(false)}
+          onSaved={async (item) => {
+            setCustomer(item);
+            setCreateCustomerOpen(false);
+            setCustomerOpen(false);
+            await client.invalidateQueries({ queryKey: ['customers'] });
+          }}
+        />
+      )}
       {state.mode === 'SEARCH' && (
         <ProductSearch
           weightOnly={weightOnly}
@@ -387,6 +547,10 @@ export function Checkout({
       {state.mode === 'DISCOUNT' && (
         <DiscountDialog
           discount={state.body.discount}
+          automaticDiscountCents={
+            state.body.discount.type === 'NONE' ? (state.quote?.discountCents ?? 0) : 0
+          }
+          automaticPromotionNames={state.quote?.promotions.map((promotion) => promotion.name) ?? []}
           onClose={() => controller.closeModal()}
           onApply={(discount) => controller.applyDiscount(discount)}
         />
@@ -416,8 +580,12 @@ export function Checkout({
           role={user.role}
           busy={state.mode === 'BUSY'}
           backendError={state.error}
+          customersEnabled={customersEnabled}
+          customerCreditEnabled={customerCreditEnabled}
+          initialCustomer={customer}
+          onCustomerChange={setCustomer}
           onClose={() => controller.closeModal()}
-          onConfirm={(payments, override) => controller.pay(payments, override)}
+          onConfirm={(payments, override, customer) => controller.pay(payments, override, customer)}
         />
       )}
       {paymentOpen && !paymentMethods && (
@@ -483,6 +651,7 @@ export function Checkout({
           </div>
         </Dialog>
       )}
+      {receipt && <ReceiptPrint receipt={receipt} onClose={() => setReceipt(null)} />}
     </>
   );
 }

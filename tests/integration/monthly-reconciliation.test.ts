@@ -6,9 +6,16 @@ import { StockService } from '../../src/worker/stock/service';
 import { DraftRepository } from '../../src/worker/drafts';
 import { SalesService } from '../../src/worker/sales/service';
 import { MonthlyReports } from '../../src/worker/reports/queries';
+import { AuthService } from '../../src/worker/auth/service';
+import { CostService } from '../../src/worker/costs/service';
 it('concilia descuentos, aplicado sin vuelto, KG separado y anulaciones del mes original', () => {
   const db = openDatabase(':memory:');
   try {
+    const owner = new AuthService(db).bootstrap({
+      name: 'Dueña',
+      username: 'jefe',
+      password: 'Prueba-Perla-2026!',
+    }).user;
     const catalog = new CatalogRepository(db),
       stock = new StockService(db, catalog),
       sales = new SalesService(db, catalog, stock, new DraftRepository(db));
@@ -34,6 +41,18 @@ it('concilia descuentos, aplicado sin vuelto, KG separado y anulaciones del mes 
       trackStock: false,
       minStockBase: 0,
     });
+    const costs = new CostService(db);
+    costs.setReference({ productId: k.id, unitCostCents: 600000, expectedRevision: 0 }, owner);
+    db.prepare('INSERT INTO product_cost_states VALUES (?,?,?,?,?,?,?,?)').run(
+      p.id,
+      'WEIGHTED_AVERAGE',
+      400000000,
+      10,
+      1,
+      new Date().toISOString(),
+      owner.id,
+      owner.name,
+    );
     stock.opening({
       productId: p.id,
       countedBase: 10,
@@ -71,6 +90,13 @@ it('concilia descuentos, aplicado sin vuelto, KG separado y anulaciones del mes 
     expect(report.rankings.revenue.reduce((sum, p) => sum + p.netCents, 0)).toBe(271800);
     expect(report.rankings.units[0]).toMatchObject({ productId: p.id, quantityBase: 2 });
     expect(report.rankings.kilos[0]).toMatchObject({ productId: k.id, quantityBase: 250 });
+    expect(report.profitability).toMatchObject({
+      knownCostCents: 150800,
+      coveredNetCents: 271800,
+      grossMarginCents: 121000,
+      coverageBasisPoints: 10000,
+      missingLineCount: 0,
+    });
     expect(report.lowStock[0]).toMatchObject({
       productId: p.id,
       quantityBase: 8,

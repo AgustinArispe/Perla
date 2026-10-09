@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 
-const executable = resolve('release/win-unpacked/El Bocha POS.exe');
+const executable = resolve('release/win-unpacked/Perla Negra POS.exe');
 if (process.platform !== 'win32' || !existsSync(executable)) {
   console.error('Primero ejecutá npm run pack:win en Windows.');
   process.exit(1);

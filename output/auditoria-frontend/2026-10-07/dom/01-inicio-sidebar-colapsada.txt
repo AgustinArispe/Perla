@@ -1,0 +1,48 @@
+- complementary:
+  - button "Expandir menú" [active]
+  - navigation "Módulos":
+    - button "Inicio"
+    - button "Caja"
+    - button "Comprobantes"
+    - button "Reposición"
+    - button "Controles"
+    - button "Productos"
+    - button "Stock"
+    - button "Compras"
+    - button "Proveedores"
+    - button "Ubicaciones"
+    - button "Clientes"
+    - button "Promociones"
+    - button "Histórico"
+    - button "Turnos"
+    - button "Revisión"
+    - button "Agenda"
+    - button "Resumen semanal"
+    - button "Resumen mensual"
+    - button "Configuración"
+    - button "Usuarios"
+    - button "Actividad"
+    - button "Backups"
+  - button "Ayuda"
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+  - button "Cambiar contraseña"
+  - button "Cerrar sesión"
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Inicio" [level=1]
+  - button "Actualizar" [disabled]
+  - heading "Lo que necesita atención" [level=2]
+  - button "Vender"
+  - button "Hacer conteo"
+  - status: Buscando pendientes…
+  - generic "Página al ingresar"
+  - option "Inicio" [selected]
+  - option "Caja"
+  - option "Productos"
+  - option "Stock"
+  - option "Compras"
+  - option "Resumen mensual"

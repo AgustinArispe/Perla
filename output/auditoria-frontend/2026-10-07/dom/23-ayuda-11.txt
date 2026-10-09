@@ -1,0 +1,90 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Ayuda" [level=1]
+  - text: Buscar en la ayuda
+  - searchbox "Buscar en la ayuda"
+  - navigation "Temas de ayuda":
+    - button "Caja y ventas"
+    - button "Efectivo y cierre de caja"
+    - button "Productos"
+    - button "Stock"
+    - button "Proveedores y compras"
+    - button "Promociones"
+    - button "Clientes y cuenta corriente"
+    - button "Histórico y anulaciones"
+    - button "Resumen mensual"
+    - button "Usuarios y configuración"
+    - button "Copias de seguridad" [active] [pressed]
+    - button "Cuenta y alcance"
+    - button "Ubicaciones y traslados"
+  - article:
+    - heading "Copias de seguridad" [level=2]
+    - heading "Crear y guardar una copia" [level=3]
+    - paragraph: Crear copia guarda una copia cifrada de la base de datos. Descargar permite conservar el archivo .backup en otro dispositivo o ubicación segura. Las copias anteriores con extensión .bocha también se pueden restaurar. Un CSV sirve para consultar información; no recupera el sistema completo.
+    - heading "Restaurar" [level=3]
+    - paragraph: Subí o elegí una copia y revisala antes de restaurar. La restauración reemplaza los datos actuales por los de esa copia y cierra todas las sesiones. Coordiná con quienes estén usando la caja y guardá una copia actual antes de hacerlo. Se necesita tu contraseña y la clave de respaldo conservada por el administrador del servidor.

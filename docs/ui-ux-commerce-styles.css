@@ -1,0 +1,34 @@
+/* Integrar en perla.css: composición de compras, cuentas y administración. */
+.commerce-agenda { padding: 20px; }
+.commerce-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.commerce-tabs [aria-pressed="true"] { background: var(--selection, #E8EFF3); border-color: var(--primary, #17313D); color: var(--primary, #17313D); }
+.commerce-agenda article p { margin: 6px 0; color: var(--muted); }
+.commerce-agenda .agenda-totals { display: flex; flex-wrap: wrap; gap: 24px; padding: 20px 0; }
+.commerce-feature-group { padding: 12px 0 20px; }
+.commerce-feature-group h3 { margin: 0 0 8px; font-size: 16px; }
+.commerce-feature-changes { padding-left: 20px; }
+.commerce-feature-changes li { padding: 5px 0; }
+.commerce-form-details summary, .commerce-activity-details summary { cursor: pointer; color: var(--primary, #17313D); }
+.commerce-form-details .field { margin-top: 12px; }
+.commerce-activity-details { margin-top: 8px; }
+.commerce-activity-details dl { margin: 12px 0; }
+.commerce-activity-details dd { margin: 4px 0 12px; overflow-wrap: anywhere; }
+.commerce-role-help, .commerce-allocation-summary { color: var(--muted); line-height: 1.5; }
+.commerce-backup-list { width: 100%; min-width: 0; }
+.commerce-backup-status { margin-bottom: 20px; }
+.promotion-form .promotion-type-control { max-width: 360px; }
+.promotion-form .promotion-step { margin-bottom: 12px; }
+.promotion-form .promotion-step strong { font-size: 17px; }
+.promotion-form .promotion-form-section { padding: 16px 0; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: transparent; }
+.promotion-form .promotion-product-picker { max-height: 220px; overflow-y: auto; }
+.promotion-form .promotion-advanced { padding: 16px 0; }
+.promotion-form .promotion-advanced summary { cursor: pointer; line-height: 1.5; }
+.promotion-form .promotion-benefit-grid { align-items: start; }
+.promotion-priority-help { grid-column: 1 / -1; color: var(--muted); }
+@media (max-width: 600px) {
+  .commerce-agenda { padding: 16px; }
+  .commerce-agenda article > div { min-width: 0; }
+  .commerce-agenda article strong { overflow-wrap: anywhere; }
+  .commerce-backup-list .dashboard-table-scroll { max-width: 100%; }
+  .promotion-form .promotion-type-control { max-width: none; }
+}

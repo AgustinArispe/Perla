@@ -11,8 +11,12 @@ const code = z
 export const ProductInputSchema = z.strictObject({
   sku: code.transform((value) => value.toUpperCase()),
   barcode: code.nullable(),
+  internalBarcode: code.nullable().optional(),
   name: z.string().trim().min(2, 'El nombre debe tener al menos 2 caracteres.').max(140),
   category: z.string().trim().min(1).max(80).nullable(),
+  categoryId: IdSchema.nullable().optional(),
+  brand: z.string().trim().min(1).max(80).nullable().optional(),
+  brandId: IdSchema.nullable().optional(),
   saleUnit: z.enum(['UNIT', 'KG']),
   priceCents: z.number().int().min(1, 'El precio debe ser mayor a cero.').max(MAX_MONEY),
   active: z.boolean(),
@@ -22,6 +26,7 @@ export const ProductInputSchema = z.strictObject({
 export const ProductSaveSchema = ProductInputSchema.extend({
   id: IdSchema.optional(),
   expectedRevision: z.number().int().min(1).optional(),
+  generateInternalBarcode: z.boolean().optional(),
 }).refine((value) => Boolean(value.id) === Boolean(value.expectedRevision), {
   message: 'Para editar un producto se requiere su revisión actual.',
 });
@@ -29,16 +34,60 @@ export type ProductInput = z.infer<typeof ProductInputSchema>;
 export type ProductSaveInput = z.infer<typeof ProductSaveSchema>;
 export interface Product extends ProductInput {
   id: string;
+  internalBarcode?: string | null;
   revision: number;
   stockInitialized: boolean;
   createdAt: string;
   updatedAt: string;
 }
+export const LabelStatusSchema = z.enum(['PENDING', 'PRINTED']);
+export interface ProductLabel {
+  id: string;
+  productId: string;
+  productName: string;
+  barcode: string;
+  status: z.infer<typeof LabelStatusSchema>;
+  createdAt: string;
+  printedAt: string | null;
+}
+export interface ProductLabelPage {
+  items: ProductLabel[];
+  total: number;
+}
+export const ProductLabelListSchema = z.strictObject({ status: LabelStatusSchema.optional() });
+export const ProductLabelCreateSchema = z.strictObject({ productId: IdSchema });
+export const ProductLabelPrintSchema = z.strictObject({ labelId: IdSchema });
+export const TaxonomyItemSchema = z.strictObject({
+  id: IdSchema,
+  name: z.string().min(1).max(80),
+  active: z.boolean(),
+  revision: z.number().int().min(1),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
+export type TaxonomyItem = z.infer<typeof TaxonomyItemSchema>;
+export interface ProductTaxonomy {
+  categories: TaxonomyItem[];
+  brands: TaxonomyItem[];
+}
+export const TaxonomySaveSchema = z
+  .strictObject({
+    id: IdSchema.optional(),
+    expectedRevision: z.number().int().min(1).optional(),
+    name: z.string().trim().min(2).max(80),
+    active: z.boolean(),
+  })
+  .refine((value) => Boolean(value.id) === Boolean(value.expectedRevision), {
+    message: 'Para editar se requiere la revisión actual.',
+  });
+export type TaxonomySaveInput = z.infer<typeof TaxonomySaveSchema>;
 export const ProductSearchSchema = z.strictObject({
   saleUnit: z.enum(['UNIT', 'KG']).optional(),
   query: z.string().trim().max(120),
   activeOnly: z.boolean(),
   status: z.enum(['ALL', 'ACTIVE', 'INACTIVE']).default('ALL'),
+  categoryId: IdSchema.optional(),
+  brandId: IdSchema.optional(),
   limit: z.number().int().min(1).max(100),
   cursor: z.string().max(1000).optional(),
 });

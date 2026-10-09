@@ -109,7 +109,7 @@ ventas de prueba en las bases del comercio.
 ## Empaquetado Windows
 
 ```powershell
-npm run pack:win        # release/win-unpacked/El Bocha POS.exe
+npm run pack:win        # release/win-unpacked/Perla Negra POS.exe
 npm run test:packaged   # abre el ejecutable empaquetado y comprueba SQLite
 npm run dist:win        # genera instalador NSIS en release/
 ```

@@ -4,12 +4,15 @@ import { join } from 'node:path';
 import { randomBytes } from 'node:crypto';
 import { spawn } from 'node:child_process';
 const directory = mkdtempSync(join(tmpdir(), 'bocha-web-ui-'));
+const port = process.env.BOCHA_WEB_TEST_PORT ?? '3087';
+if (!/^\d+$/.test(port) || Number(port) < 1024 || Number(port) > 65535)
+  throw new Error('Puerto de prueba inválido.');
 const env = {
   ...process.env,
   NODE_ENV: 'test',
-  BOCHA_PUBLIC_ORIGIN: 'http://localhost:3087',
+  BOCHA_PUBLIC_ORIGIN: `http://localhost:${port}`,
   BOCHA_HOST: '127.0.0.1',
-  BOCHA_PORT: '3087',
+  BOCHA_PORT: port,
   BOCHA_DATABASE_PATH: join(directory, 'bocha.sqlite'),
   BOCHA_BACKUP_DIRECTORY: join(directory, 'backups'),
   BOCHA_BACKUP_KEY: randomBytes(32).toString('hex'),
@@ -22,7 +25,7 @@ const cli = spawn(
     '--username',
     'jefe',
     '--name',
-    'El Bocha',
+    'Perla Negra',
     '--password-stdin',
   ],
   { env, stdio: ['pipe', 'ignore', 'inherit'] },

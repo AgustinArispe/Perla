@@ -25,6 +25,7 @@ test('crear, editar, buscar y desactivar con datos persistidos y teclado', async
     await expect(page.getByRole('heading', { name: 'Productos', exact: true })).toBeVisible();
     await page.keyboard.press('F3');
     const form = page.getByRole('dialog');
+    await form.getByText('Más opciones').click();
     await form.getByLabel('Código interno').fill('LAC-01');
     await form.getByLabel('Código de barras').fill('0123456789012');
     await form.getByLabel('Nombre del producto').fill('Leche entera 1 L');
@@ -53,6 +54,7 @@ test('crear, editar, buscar y desactivar con datos persistidos y teclado', async
       }),
     ).toBe(0);
     await page.keyboard.press('F3');
+    await form.getByText('Más opciones').click();
     await form.getByLabel('Código interno').fill('LAC-02');
     await form.getByLabel('Código de barras').fill('0123456789012');
     await form.getByLabel('Nombre del producto').fill('Otra leche');

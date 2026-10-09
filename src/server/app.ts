@@ -13,6 +13,7 @@ export async function createServer(
     trustProxy: false | string[];
     logger?: false;
     csrfKey?: Buffer;
+    sessionMaxLifetimeMs?: number;
   },
   executor: Executor,
 ) {
@@ -32,17 +33,33 @@ export async function createServer(
   });
   await app.register(cookie);
   await app.register(helmet);
-  await app.register(rateLimit, { max: 300, timeWindow: 60000 });
   const name = config.production ? '__Host-bocha' : 'bocha_session',
     key = config.csrfKey ?? randomBytes(32),
     host = new URL(config.origin).host;
+  // Login limits use the parsed username as part of their key. Running the
+  // limiter in preHandler keeps several tills behind the same router from
+  // consuming one shared allowance while preserving per-account protection.
+  // Authenticated traffic is isolated by session so that terminals sharing a
+  // public IP do not consume one another's allowance. The digest keeps the
+  // private session token out of the rate-limit store.
+  await app.register(rateLimit, {
+    max: 1000,
+    timeWindow: 60000,
+    hook: 'preHandler',
+    keyGenerator: (request) => {
+      const session = request.cookies[name];
+      return session
+        ? `${request.ip}:${createHmac('sha256', key).update(session).digest('hex')}`
+        : request.ip;
+    },
+  });
   const csrf = (token: string) => createHmac('sha256', key).update(token).digest('hex');
   const options = {
     httpOnly: true,
     secure: config.production,
     sameSite: 'strict' as const,
     path: '/',
-    maxAge: 8 * 3600,
+    maxAge: Math.floor((config.sessionMaxLifetimeMs ?? 8 * 60 * 60_000) / 1000),
   };
   app.addHook('onRequest', async (req, reply) => {
     reply.header('cache-control', 'no-store');
@@ -113,18 +130,34 @@ export async function createServer(
     app.route({
       method,
       url,
-      config: operation === 'auth.login' ? { rateLimit: { max: 5, timeWindow: 60000 } } : {},
+      ...(operation === 'backups.upload' ? { bodyLimit: 128 * 1024 * 1024 } : {}),
+      config:
+        operation === 'auth.login'
+          ? {
+              rateLimit: {
+                max: 5,
+                timeWindow: 60000,
+                keyGenerator: (request) => {
+                  const username = (request.body as { username?: unknown } | null)?.username;
+                  return `${request.ip}:${typeof username === 'string' ? username.trim().toLowerCase() : ''}`;
+                },
+              },
+            }
+          : {},
       handler: async (req, reply) => {
         if (method !== 'GET') z.strictObject({}).parse(req.query);
         if (
           method === 'GET' &&
           ![
             'products.search',
+            'products.taxonomy',
+            'products.labels',
             'sales.list',
             'stock.search',
             'stock.listLow',
             'stock.movements',
             'dashboard.monthly',
+            'dashboard.compare',
             'cash.current',
             'shifts.list',
             'shifts.details',
@@ -132,6 +165,16 @@ export async function createServer(
             'exports.products',
             'exports.sales',
             'exports.stock',
+            'exports.sale-items',
+            'exports.shifts',
+            'exports.purchases',
+            'receipts.list',
+            'suppliers.search',
+            'purchases.list',
+            'customers.search',
+            'transfers.list',
+            'locations.summary',
+            'locations.inventory',
           ].includes(operation)
         )
           z.strictObject({}).parse(req.query);
@@ -158,8 +201,15 @@ export async function createServer(
         if (operation === 'backups.download') {
           reply
             .type('application/octet-stream')
-            .header('content-disposition', 'attachment; filename="el-bocha.bocha"');
+            .header('content-disposition', 'attachment; filename="perla-negra.backup"');
           return reply.send(result.value);
+        }
+        if (operation === 'exports.excel') {
+          const value = result.value as { content: Uint8Array; mimeType: string; filename: string };
+          return reply
+            .type(value.mimeType)
+            .header('content-disposition', `attachment; filename="${value.filename}"`)
+            .send(Buffer.from(value.content));
         }
         if (operation.startsWith('exports.')) {
           const value = result.value as { content: string; mimeType: string; filename: string };
@@ -186,6 +236,7 @@ export async function createServer(
   route('GET', '/api/v1/auth/session', 'auth.status', () => null);
   route('POST', '/api/v1/auth/logout', 'auth.logout', () => null);
   route('POST', '/api/v1/auth/password', 'auth.changePassword');
+  route('POST', '/api/v1/auth/unlock-user', 'auth.unlockUser');
   route('POST', '/api/v1/auth/terminal', 'auth.terminal');
   route('POST', '/api/v1/checkout/calculate-weight', 'checkout.calculateWeight');
   route('GET', '/api/v1/users', 'users.list', () => null);
@@ -199,14 +250,27 @@ export async function createServer(
   route('POST', '/api/v1/products', 'products.save');
   route('GET', '/api/v1/products/:id', 'products.get', (r) => ({ productId: params(r).id }));
   route('POST', '/api/v1/products/active', 'products.setActive');
+  route('GET', '/api/v1/products/taxonomy', 'products.taxonomy', (r) => query(r));
+  route('POST', '/api/v1/products/categories', 'products.saveCategory');
+  route('POST', '/api/v1/products/brands', 'products.saveBrand');
   route('GET', '/api/v1/barcodes/:barcode', 'products.findByBarcode', (r) => ({
     barcode: params(r).barcode,
   }));
+  route('POST', '/api/v1/products/internal-barcode', 'products.proposeInternalBarcode', () => null);
+  route('GET', '/api/v1/products/labels', 'products.labels', query);
+  route('POST', '/api/v1/products/labels', 'products.createLabel');
+  route('POST', '/api/v1/products/labels/printed', 'products.markLabelPrinted');
   route('POST', '/api/v1/products/import/preview', 'internal.importPreview');
   route('POST', '/api/v1/products/import/apply', 'products.applyImport');
+  route('POST', '/api/v1/pricing/preview', 'pricing.preview');
+  route('POST', '/api/v1/pricing/confirm', 'pricing.confirm');
+  route('GET', '/api/v1/promotions', 'promotions.list', () => null);
+  route('GET', '/api/v1/promotions/:id', 'promotions.get', (r) => ({ promotionId: params(r).id }));
+  route('POST', '/api/v1/promotions', 'promotions.save');
   route('GET', '/api/v1/checkout/draft', 'checkout.getDraft', () => null);
   route('PUT', '/api/v1/checkout/draft', 'checkout.saveDraft');
   route('POST', '/api/v1/checkout/cancel', 'checkout.cancelDraft');
+  route('POST', '/api/v1/sales/quote', 'sales.quote');
   route('GET', '/api/v1/sales', 'sales.list', (r) => ({ limit: 50, ...query(r) }));
   route('POST', '/api/v1/sales', 'sales.complete');
   route('GET', '/api/v1/sales/by-key/:key', 'sales.findByCheckoutKey', (r) => ({
@@ -217,7 +281,74 @@ export async function createServer(
     saleId: params(r).id,
   }));
   route('POST', '/api/v1/sales/void', 'sales.void');
+  route('GET', '/api/v1/sales/:id/return-preview', 'sales.previewReturn', (r) => ({
+    saleId: params(r).id,
+  }));
+  route('POST', '/api/v1/sales/returns', 'sales.return');
+  route('GET', '/api/v1/sales/:id/returns', 'sales.returns', (r) => ({
+    saleId: params(r).id,
+  }));
+  route('GET', '/api/v1/receipts', 'receipts.list', query);
+  route('POST', '/api/v1/receipts', 'receipts.create');
+  route('POST', '/api/v1/receipts/printed', 'receipts.markPrinted');
+  route('GET', '/api/v1/suppliers', 'suppliers.search', (r) => ({ limit: 50, ...query(r) }));
+  route('GET', '/api/v1/suppliers/:id', 'suppliers.get', (r) => ({ supplierId: params(r).id }));
+  route('POST', '/api/v1/suppliers', 'suppliers.save');
+  route('POST', '/api/v1/suppliers/active', 'suppliers.setActive');
+  route('GET', '/api/v1/suppliers/:id/account', 'supplierAccounts.detail', (r) => ({
+    supplierId: params(r).id,
+  }));
+  route('POST', '/api/v1/supplier-payments', 'supplierAccounts.pay');
+  route('GET', '/api/v1/customers', 'customers.search', (r) => ({ limit: 50, ...query(r) }));
+  route('GET', '/api/v1/customers/:id', 'customers.get', (r) => ({ customerId: params(r).id }));
+  route('POST', '/api/v1/customers', 'customers.save');
+  route('POST', '/api/v1/customers/active', 'customers.setActive');
+  route('POST', '/api/v1/customers/credit', 'customers.setCredit');
+  route('GET', '/api/v1/customers/:id/account', 'customerAccounts.detail', (r) => ({
+    customerId: params(r).id,
+  }));
+  route('POST', '/api/v1/customer-collections', 'customerAccounts.collect');
+  route('GET', '/api/v1/locations/inventory', 'locations.inventory', query);
+  route('GET', '/api/v1/locations', 'locations.list', () => ({}));
+  route('POST', '/api/v1/locations', 'locations.save');
+  route('POST', '/api/v1/locations/terminal', 'locations.assignTerminal');
+  route('GET', '/api/v1/locations/summary', 'locations.summary', query);
+  route('GET', '/api/v1/transfers', 'transfers.list', (r) => ({ limit: 30, ...query(r) }));
+  route('GET', '/api/v1/transfers/:id', 'transfers.detail', (r) => ({ transferId: params(r).id }));
+  route('POST', '/api/v1/transfers', 'transfers.dispatch');
+  route('POST', '/api/v1/transfers/receive', 'transfers.receive');
+  route('POST', '/api/v1/transfers/cancel', 'transfers.cancel');
+  route('GET', '/api/v1/purchases/draft', 'purchases.getDraft', () => null);
+  route('PUT', '/api/v1/purchases/draft', 'purchases.saveDraft');
+  route('POST', '/api/v1/purchases/draft/cancel', 'purchases.cancelDraft');
+  route('GET', '/api/v1/purchases', 'purchases.list', (r) => ({ limit: 50, ...query(r) }));
+  route('POST', '/api/v1/purchases', 'purchases.receive');
+  route('GET', '/api/v1/purchases/by-key/:key', 'purchases.findByReceiptKey', (r) => ({
+    receiptKey: params(r).key,
+  }));
+  route('GET', '/api/v1/purchases/:id/void-preview', 'purchases.previewVoid', (r) => ({
+    purchaseId: params(r).id,
+  }));
+  route('GET', '/api/v1/purchases/:id', 'purchases.detail', (r) => ({
+    purchaseId: params(r).id,
+  }));
+  route('POST', '/api/v1/purchases/void', 'purchases.void');
+  route('GET', '/api/v1/products/:id/last-cost', 'purchases.lastCost', (r) => ({
+    productId: params(r).id,
+  }));
+  route('GET', '/api/v1/products/:id/cost', 'costs.get', (r) => ({
+    productId: params(r).id,
+  }));
+  route('PUT', '/api/v1/products/:id/cost', 'costs.setReference', (r) => ({
+    ...(r.body as object),
+    productId: params(r).id,
+  }));
   route('GET', '/api/v1/dashboard/monthly', 'dashboard.monthly', query);
+  route('GET', '/api/v1/dashboard/comparison', 'dashboard.compare', query);
+  route('POST', '/api/v1/control', 'control.execute');
+  route('POST', '/api/v1/control/export', 'control.export');
+  route('GET', '/api/v1/notifications', 'notifications.list', () => null);
+  route('POST', '/api/v1/notifications/read', 'notifications.markRead');
   route('GET', '/api/v1/stock', 'stock.search', (r) => ({ limit: 50, ...query(r) }));
   route('GET', '/api/v1/stock/low', 'stock.listLow', (r) => ({ limit: 50, ...query(r) }));
   route('GET', '/api/v1/stock/operations/:key', 'stock.operation', (r) => ({
@@ -232,9 +363,25 @@ export async function createServer(
   route('POST', '/api/v1/stock/opening', 'stock.opening');
   route('POST', '/api/v1/stock/count', 'stock.count');
   route('POST', '/api/v1/stock/movement', 'stock.record');
+  route('GET', '/api/v1/products/:id/lots', 'lots.status', (r) => ({
+    productId: params(r).id,
+  }));
+  route('POST', '/api/v1/products/:id/lots/enable', 'lots.enable', (r) => ({
+    productId: params(r).id,
+  }));
+  route('POST', '/api/v1/products/:id/lots/reconcile', 'lots.reconcile', (r) => ({
+    ...(r.body as object),
+    productId: params(r).id,
+  }));
+  route('POST', '/api/v1/lots/:id/status', 'lots.setBlocked', (r) => ({
+    ...(r.body as object),
+    lotId: params(r).id,
+  }));
   for (const [method, url, op] of [
     ['GET', 'settings', 'settings.get'],
     ['PUT', 'settings', 'settings.save'],
+    ['GET', 'settings/features', 'settings.features.get'],
+    ['PUT', 'settings/features', 'settings.features.save'],
     ['GET', 'terminals/active', 'terminals.active'],
     ['GET', 'terminals', 'terminals.list'],
     ['POST', 'terminals', 'terminals.save'],
@@ -247,7 +394,8 @@ export async function createServer(
     ['GET', 'audit', 'audit.list'],
   ] as const)
     route(method, `/api/v1/${url}`, op, (r) => (method === 'GET' ? query(r) : r.body));
-  for (const kind of ['products', 'sales', 'stock'])
+  route('POST', '/api/v1/exports/excel', 'exports.excel');
+  for (const kind of ['products', 'sales', 'stock', 'sale-items', 'shifts', 'purchases'])
     route('GET', `/api/v1/exports/${kind}`, `exports.${kind}`, query);
   route('GET', '/api/v1/backups', 'backups.list', () => ({}));
   route('POST', '/api/v1/backups', 'backups.create', () => ({}));

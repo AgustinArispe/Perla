@@ -1,3 +1,6 @@
+import { SavedViews } from '../../components/SavedViews';
+import { useRememberedState, scalarViewFilters } from '../../components/useRememberedState';
+import { ExportButton } from '../../components/ExportButton';
 import { useState } from 'react';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import type {
@@ -18,11 +21,13 @@ export const operationDate = (value: string) =>
     timeStyle: 'short',
   }).format(new Date(value));
 export function ShiftHistory() {
-  const [from, setFrom] = useState('');
-  const [to, setTo] = useState('');
-  const [status, setStatus] = useState('ALL');
-  const [terminal, setTerminal] = useState('');
-  const [pages, setPages] = useState<(string | undefined)[]>([undefined]);
+  const [from, setFrom] = useRememberedState('shifts', 'fromDate', '');
+  const [to, setTo] = useRememberedState('shifts', 'toDate', '');
+  const [status, setStatus] = useRememberedState('shifts', 'status', 'ALL');
+  const [terminal, setTerminal] = useRememberedState('shifts', 'terminalId', '');
+  const [pages, setPages] = useRememberedState<(string | undefined)[]>('shifts', 'pages', [
+    undefined,
+  ]);
   const [selected, setSelected] = useState<string | null>(null);
   const terminals = useQuery({
     queryKey: ['terminals', 'active'],
@@ -51,129 +56,165 @@ export function ShiftHistory() {
   const invalid = !!from && !!to && from > to;
   const terminalName = (id: string) => terminals.data?.find((t) => t.id === id)?.name ?? id;
   return (
-    <section className="panel">
-      <div className="page-header">
-        <h1>Historial de cajas</h1>
+    <>
+      <div className="page-heading">
+        <h1>Turnos</h1>
       </div>
-      <div className="movement-filters">
-        <label className="field">
-          Desde
-          <input type="date" value={from} onChange={(e) => change(setFrom, e.target.value)} />
-        </label>
-        <label className="field">
-          Hasta
-          <input type="date" value={to} onChange={(e) => change(setTo, e.target.value)} />
-        </label>
-        <label className="field">
-          Estado
-          <select value={status} onChange={(e) => change(setStatus, e.target.value)}>
-            <option value="ALL">Todas</option>
-            <option value="OPEN">Abiertas</option>
-            <option value="CLOSED">Cerradas</option>
-          </select>
-        </label>
-        <label className="field">
-          Terminal
-          <select value={terminal} onChange={(e) => change(setTerminal, e.target.value)}>
-            <option value="">Todas</option>
-            {terminals.data?.map((t) => (
-              <option key={t.id} value={t.id}>
-                {t.name}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
-      {invalid && (
-        <div className="alert error" role="alert">
-          La fecha inicial debe ser anterior a la final.
+      <section className="panel">
+        <div className="movement-filters">
+          <label className="field">
+            Desde
+            <input type="date" value={from} onChange={(e) => change(setFrom, e.target.value)} />
+          </label>
+          <label className="field">
+            Hasta
+            <input type="date" value={to} onChange={(e) => change(setTo, e.target.value)} />
+          </label>
+          <label className="field">
+            Estado
+            <select value={status} onChange={(e) => change(setStatus, e.target.value)}>
+              <option value="ALL">Todas</option>
+              <option value="OPEN">Abiertas</option>
+              <option value="CLOSED">Cerradas</option>
+            </select>
+          </label>
+          <label className="field">
+            Terminal
+            <select value={terminal} onChange={(e) => change(setTerminal, e.target.value)}>
+              <option value="">Todas</option>
+              {terminals.data?.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <SavedViews
+            module="shifts"
+            filters={{
+              status,
+              ...(from ? { fromDate: from } : {}),
+              ...(to ? { toDate: to } : {}),
+              ...(terminal ? { terminalId: terminal } : {}),
+            }}
+            onApply={(filters) => {
+              const value = scalarViewFilters(filters);
+              setFrom(value.fromDate ?? '');
+              setTo(value.toDate ?? '');
+              setStatus(value.status ?? 'ALL');
+              setTerminal(value.terminalId ?? '');
+              setPages([undefined]);
+            }}
+          />
+          <ExportButton
+            dataset="shifts"
+            filters={{
+              status,
+              ...(from ? { fromDate: from } : {}),
+              ...(to ? { toDate: to } : {}),
+              ...(terminal ? { terminalId: terminal } : {}),
+            }}
+          />
         </div>
-      )}
-      {shifts.isError && (
-        <div className="alert error" role="alert">
-          {errorMessage(shifts.error)}{' '}
-          <button className="button secondary" onClick={() => void shifts.refetch()}>
-            Reintentar
-          </button>
-        </div>
-      )}
-      <div className="preview-table" aria-busy={shifts.isFetching}>
-        <table>
-          <thead>
-            <tr>
-              <th>Apertura</th>
-              <th>Terminal</th>
-              <th>Estado</th>
-              <th className="numeric">Inicial</th>
-              <th className="numeric">Contado</th>
-              <th className="numeric">Diferencia</th>
-              <th>Detalle</th>
-            </tr>
-          </thead>
-          <tbody>
-            {!invalid &&
-              shifts.data?.items.map((s) => (
-                <tr key={s.id}>
-                  <td>{operationDate(s.openedAt)}</td>
-                  <td>{terminalName(s.terminalId)}</td>
-                  <td>{s.status === 'OPEN' ? 'Abierta' : 'Cerrada'}</td>
-                  <td className="numeric">{formatMoney(s.openingCashCents)}</td>
-                  <td className="numeric">
-                    {s.countedCashCents == null ? '—' : formatMoney(s.countedCashCents)}
-                  </td>
-                  <td
-                    className={`numeric ${s.differenceCents && s.differenceCents < 0 ? 'negative-value' : ''}`}
-                  >
-                    {s.differenceCents == null ? '—' : formatMoney(s.differenceCents)}
-                  </td>
-                  <td>
-                    <button
-                      className="button secondary"
-                      onClick={() => setSelected(s.id)}
-                      aria-label={`Ver caja de ${terminalName(s.terminalId)} del ${operationDate(s.openedAt)}`}
+        {invalid && (
+          <div className="alert error" role="alert">
+            La fecha inicial debe ser anterior a la final.
+          </div>
+        )}
+        {shifts.isError && (
+          <div className="alert error" role="alert">
+            {errorMessage(shifts.error)}{' '}
+            <button className="button secondary" onClick={() => void shifts.refetch()}>
+              Reintentar
+            </button>
+          </div>
+        )}
+        <div className="preview-table" aria-busy={shifts.isFetching}>
+          <table>
+            <thead>
+              <tr>
+                <th>Apertura</th>
+                <th>Terminal</th>
+                <th>Estado</th>
+                <th className="numeric">Inicial</th>
+                <th className="numeric">Esperado</th>
+                <th className="numeric">Contado</th>
+                <th className="numeric">Diferencia</th>
+                <th>Detalle</th>
+              </tr>
+            </thead>
+            <tbody>
+              {!invalid &&
+                shifts.data?.items.map((s) => (
+                  <tr key={s.id}>
+                    <td>{operationDate(s.openedAt)}</td>
+                    <td>{terminalName(s.terminalId)}</td>
+                    <td>{s.status === 'OPEN' ? 'Abierta' : 'Cerrada'}</td>
+                    <td className="numeric">{formatMoney(s.openingCashCents)}</td>
+                    <td className="numeric">
+                      {s.expectedCashCents == null ? 'Al cerrar' : formatMoney(s.expectedCashCents)}
+                    </td>
+                    <td className="numeric">
+                      {s.countedCashCents == null ? '—' : formatMoney(s.countedCashCents)}
+                    </td>
+                    <td
+                      className={`numeric ${s.differenceCents && s.differenceCents < 0 ? 'negative-value' : ''}`}
                     >
-                      Ver caja
-                    </button>
+                      {s.differenceCents == null
+                        ? 'Pendiente de cierre'
+                        : s.differenceCents === 0
+                          ? 'Sin diferencia'
+                          : `${s.differenceCents < 0 ? 'Falta' : 'Sobra'} ${formatMoney(Math.abs(s.differenceCents))}`}
+                    </td>
+                    <td>
+                      <button
+                        className="button secondary"
+                        onClick={() => setSelected(s.id)}
+                        aria-label={`Ver caja de ${terminalName(s.terminalId)} del ${operationDate(s.openedAt)}`}
+                      >
+                        Ver caja
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              {(!shifts.data?.items.length || invalid) && !shifts.isError && (
+                <tr>
+                  <td className="empty-table" colSpan={8}>
+                    {shifts.isPending ? 'Cargando cajas…' : 'Sin cajas en este período.'}
                   </td>
                 </tr>
-              ))}
-            {(!shifts.data?.items.length || invalid) && !shifts.isError && (
-              <tr>
-                <td className="empty-table" colSpan={7}>
-                  {shifts.isPending ? 'Cargando cajas…' : 'Sin cajas en este período.'}
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-      <div className="dialog-footer">
-        <button
-          className="button secondary"
-          disabled={pages.length === 1 || shifts.isFetching || invalid}
-          onClick={() => setPages((p) => p.slice(0, -1))}
-        >
-          Anterior
-        </button>
-        <span>Página {pages.length}</span>
-        <button
-          className="button secondary"
-          disabled={
-            !shifts.data?.nextCursor || shifts.isFetching || shifts.isPlaceholderData || invalid
-          }
-          onClick={() => setPages((p) => [...p, shifts.data!.nextCursor!])}
-        >
-          Siguiente
-        </button>
-      </div>
-      {selected && (
-        <ShiftDetailDialog
-          shiftId={selected}
-          terminalName={terminalName}
-          onClose={() => setSelected(null)}
-        />
-      )}
-    </section>
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div className="dialog-footer">
+          <button
+            className="button secondary"
+            disabled={pages.length === 1 || shifts.isFetching || invalid}
+            onClick={() => setPages((p) => p.slice(0, -1))}
+          >
+            Anterior
+          </button>
+          <span>Página {pages.length}</span>
+          <button
+            className="button secondary"
+            disabled={
+              !shifts.data?.nextCursor || shifts.isFetching || shifts.isPlaceholderData || invalid
+            }
+            onClick={() => setPages((p) => [...p, shifts.data!.nextCursor!])}
+          >
+            Siguiente
+          </button>
+        </div>
+        {selected && (
+          <ShiftDetailDialog
+            shiftId={selected}
+            terminalName={terminalName}
+            onClose={() => setSelected(null)}
+          />
+        )}
+      </section>
+    </>
   );
 }
 function ShiftDetailDialog({

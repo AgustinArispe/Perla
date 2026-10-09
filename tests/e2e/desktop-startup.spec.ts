@@ -35,7 +35,7 @@ test('abre el escritorio con SQLite en worker y renderer aislado', async () => {
         if (!result.ok) throw new Error(result.error.message);
         expect(result.value.database).toBe('ready');
         expect(result.value.environment).toBe('test');
-        expect(result.value.schemaVersion).toBe(6);
+        expect(result.value.schemaVersion).toBe(23);
         if (attempt === 0) {
           const saved = await page.evaluate(() =>
             window.bocha!.products.save({
@@ -63,12 +63,25 @@ test('abre el escritorio con SQLite en worker y renderer aislado', async () => {
         }
         expect(await page.evaluate(() => Object.keys(window.bocha!))).toEqual([
           'dashboard',
+          'notifications',
           'auth',
           'users',
           'system',
           'products',
+          'pricing',
+          'promotions',
           'checkout',
           'stock',
+          'lots',
+          'receipts',
+          'suppliers',
+          'supplierAccounts',
+          'customers',
+          'customerAccounts',
+          'locations',
+          'transfers',
+          'purchases',
+          'costs',
           'sales',
         ]);
       } finally {

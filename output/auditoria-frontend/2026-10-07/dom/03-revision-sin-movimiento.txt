@@ -1,0 +1,378 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Revisión de productos" [level=1]
+  - button "Mis vistas": Mis vistas
+  - button "Volver"
+  - button "Descargar Excel"
+  - group "Vista comercial":
+    - button "Precios para revisar"
+    - button "Sin movimiento" [active]
+  - text: Período
+  - combobox "Período":
+    - option "30 días"
+    - option "60 días" [selected]
+    - option "90 días"
+  - text: Ubicación
+  - combobox "Ubicación":
+    - option "Todas las ubicaciones" [selected]
+    - option "Cámara de frío"
+    - option "Depósito central"
+    - option "Depósito de reserva"
+    - option "Salón de ventas"
+  - generic "Categorías y marcas"
+  - checkbox "Incluir artículos sin stock"
+  - text: Incluir artículos sin stock
+  - paragraph: 605 productos · El margen previsto no incluye gastos, impuestos ni comisiones.
+  - table:
+    - rowgroup:
+      - row "Seleccionar página Producto Existencia / valor al costo Última venta Estado":
+        - columnheader "Seleccionar página":
+          - checkbox "Seleccionar página"
+        - columnheader "Producto"
+        - columnheader "Existencia / valor al costo"
+        - columnheader "Última venta"
+        - columnheader "Estado"
+    - rowgroup:
+      - row "Seleccionar Gaseosa cola 2,25 L · Cosecha Nueva Gaseosa cola 2,25 L · Cosecha Nueva Fecha de precio no disponible 1333 unidades $ 5.555.410,80 2026-05-23 Sin ventas recientes":
+        - cell "Seleccionar Gaseosa cola 2,25 L · Cosecha Nueva":
+          - checkbox "Seleccionar Gaseosa cola 2,25 L · Cosecha Nueva"
+        - cell "Gaseosa cola 2,25 L · Cosecha Nueva Fecha de precio no disponible":
+          - strong: Gaseosa cola 2,25 L · Cosecha Nueva
+          - generic: Fecha de precio no disponible
+        - cell "1333 unidades $ 5.555.410,80":
+          - text: 1333 unidades
+          - generic: $ 5.555.410,80
+        - cell "2026-05-23"
+        - cell "Sin ventas recientes"
+      - row "Seleccionar Papas congeladas 1 kg · Nueva Mesa Papas congeladas 1 kg · Nueva Mesa Fecha de precio no disponible 929 unidades $ 4.070.413,50 2026-07-25 Sin ventas recientes":
+        - cell "Seleccionar Papas congeladas 1 kg · Nueva Mesa":
+          - checkbox "Seleccionar Papas congeladas 1 kg · Nueva Mesa"
+        - cell "Papas congeladas 1 kg · Nueva Mesa Fecha de precio no disponible":
+          - strong: Papas congeladas 1 kg · Nueva Mesa
+          - generic: Fecha de precio no disponible
+        - cell "929 unidades $ 4.070.413,50":
+          - text: 929 unidades
+          - generic: $ 4.070.413,50
+        - cell "2026-07-25"
+        - cell "Sin ventas recientes"
+      - row "Seleccionar Yerba suave 1 kg · Santa Ana Yerba suave 1 kg · Santa Ana Fecha de precio no disponible 682 unidades $ 2.894.067,00 2026-05-28 Sin ventas recientes":
+        - cell "Seleccionar Yerba suave 1 kg · Santa Ana":
+          - checkbox "Seleccionar Yerba suave 1 kg · Santa Ana"
+        - cell "Yerba suave 1 kg · Santa Ana Fecha de precio no disponible":
+          - strong: Yerba suave 1 kg · Santa Ana
+          - generic: Fecha de precio no disponible
+        - cell "682 unidades $ 2.894.067,00":
+          - text: 682 unidades
+          - generic: $ 2.894.067,00
+        - cell "2026-05-28"
+        - cell "Sin ventas recientes"
+      - row "Seleccionar Yerba con hierbas 500 g · La Estrella Yerba con hierbas 500 g · La Estrella Fecha de precio no disponible 897 unidades $ 2.859.456,60 2026-06-06 Sin ventas recientes":
+        - cell "Seleccionar Yerba con hierbas 500 g · La Estrella":
+          - checkbox "Seleccionar Yerba con hierbas 500 g · La Estrella"
+        - cell "Yerba con hierbas 500 g · La Estrella Fecha de precio no disponible":
+          - strong: Yerba con hierbas 500 g · La Estrella
+          - generic: Fecha de precio no disponible
+        - cell "897 unidades $ 2.859.456,60":
+          - text: 897 unidades
+          - generic: $ 2.859.456,60
+        - cell "2026-06-06"
+        - cell "Sin ventas recientes"
+      - row "Seleccionar Bondiola · Villa del Sol Bondiola · Villa del Sol Fecha de precio no disponible 150 kg $ 2.834.640,00 Nunca vendido Nunca vendido":
+        - cell "Seleccionar Bondiola · Villa del Sol":
+          - checkbox "Seleccionar Bondiola · Villa del Sol"
+        - cell "Bondiola · Villa del Sol Fecha de precio no disponible":
+          - strong: Bondiola · Villa del Sol
+          - generic: Fecha de precio no disponible
+        - cell "150 kg $ 2.834.640,00":
+          - text: 150 kg
+          - generic: $ 2.834.640,00
+        - cell "Nunca vendido"
+        - cell "Nunca vendido"
+      - row "Seleccionar Cacao 180 g · La Pradera Cacao 180 g · La Pradera Fecha de precio no disponible 1191 unidades $ 2.802.303,90 2026-06-04 Sin ventas recientes":
+        - cell "Seleccionar Cacao 180 g · La Pradera":
+          - checkbox "Seleccionar Cacao 180 g · La Pradera"
+        - cell "Cacao 180 g · La Pradera Fecha de precio no disponible":
+          - strong: Cacao 180 g · La Pradera
+          - generic: Fecha de precio no disponible
+        - cell "1191 unidades $ 2.802.303,90":
+          - text: 1191 unidades
+          - generic: $ 2.802.303,90
+        - cell "2026-06-04"
+        - cell "Sin ventas recientes"
+      - row "Seleccionar Vino tinto 750 ml · Tres Espigas Vino tinto 750 ml · Tres Espigas Fecha de precio no disponible 747 unidades $ 2.566.841,40 2026-07-31 Sin ventas recientes":
+        - cell "Seleccionar Vino tinto 750 ml · Tres Espigas":
+          - checkbox "Seleccionar Vino tinto 750 ml · Tres Espigas"
+        - cell "Vino tinto 750 ml · Tres Espigas Fecha de precio no disponible":
+          - strong: Vino tinto 750 ml · Tres Espigas
+          - generic: Fecha de precio no disponible
+        - cell "747 unidades $ 2.566.841,40":
+          - text: 747 unidades
+          - generic: $ 2.566.841,40
+        - cell "2026-07-31"
+        - cell "Sin ventas recientes"
+      - row "Seleccionar Dulce de leche 400 g · Buen Día Dulce de leche 400 g · Buen Día Fecha de precio no disponible 690 unidades $ 2.451.915,00 2026-05-23 Sin ventas recientes":
+        - cell "Seleccionar Dulce de leche 400 g · Buen Día":
+          - checkbox "Seleccionar Dulce de leche 400 g · Buen Día"
+        - cell "Dulce de leche 400 g · Buen Día Fecha de precio no disponible":
+          - strong: Dulce de leche 400 g · Buen Día
+          - generic: Fecha de precio no disponible
+        - cell "690 unidades $ 2.451.915,00":
+          - text: 690 unidades
+          - generic: $ 2.451.915,00
+        - cell "2026-05-23"
+        - cell "Sin ventas recientes"
+      - row "Seleccionar Gaseosa lima limón 2,25 L · Mi Barrio Gaseosa lima limón 2,25 L · Mi Barrio Fecha de precio no disponible 690 unidades $ 2.304.324,00 2026-06-06 Sin ventas recientes":
+        - cell "Seleccionar Gaseosa lima limón 2,25 L · Mi Barrio":
+          - checkbox "Seleccionar Gaseosa lima limón 2,25 L · Mi Barrio"
+        - cell "Gaseosa lima limón 2,25 L · Mi Barrio Fecha de precio no disponible":
+          - strong: Gaseosa lima limón 2,25 L · Mi Barrio
+          - generic: Fecha de precio no disponible
+        - cell "690 unidades $ 2.304.324,00":
+          - text: 690 unidades
+          - generic: $ 2.304.324,00
+        - cell "2026-06-06"
+        - cell "Sin ventas recientes"
+      - row "Seleccionar Milanesas de soja x4 · Los Aromos Milanesas de soja x4 · Los Aromos Fecha de precio no disponible 788 unidades $ 2.240.126,40 2026-06-08 Sin ventas recientes":
+        - cell "Seleccionar Milanesas de soja x4 · Los Aromos":
+          - checkbox "Seleccionar Milanesas de soja x4 · Los Aromos"
+        - cell "Milanesas de soja x4 · Los Aromos Fecha de precio no disponible":
+          - strong: Milanesas de soja x4 · Los Aromos
+          - generic: Fecha de precio no disponible
+        - cell "788 unidades $ 2.240.126,40":
+          - text: 788 unidades
+          - generic: $ 2.240.126,40
+        - cell "2026-06-08"
+        - cell "Sin ventas recientes"
+      - row "Seleccionar Vinagre 500 ml · Mi Barrio Vinagre 500 ml · Mi Barrio Fecha de precio no disponible 1458 unidades $ 1.720.294,20 2026-07-23 Sin ventas recientes":
+        - cell "Seleccionar Vinagre 500 ml · Mi Barrio":
+          - checkbox "Seleccionar Vinagre 500 ml · Mi Barrio"
+        - cell "Vinagre 500 ml · Mi Barrio Fecha de precio no disponible":
+          - strong: Vinagre 500 ml · Mi Barrio
+          - generic: Fecha de precio no disponible
+        - cell "1458 unidades $ 1.720.294,20":
+          - text: 1458 unidades
+          - generic: $ 1.720.294,20
+        - cell "2026-07-23"
+        - cell "Sin ventas recientes"
+      - row "Seleccionar Porotos 400 g · La Familia Porotos 400 g · La Familia Fecha de precio no disponible 1147 unidades $ 1.614.517,20 2026-05-13 Sin ventas recientes":
+        - cell "Seleccionar Porotos 400 g · La Familia":
+          - checkbox "Seleccionar Porotos 400 g · La Familia"
+        - cell "Porotos 400 g · La Familia Fecha de precio no disponible":
+          - strong: Porotos 400 g · La Familia
+          - generic: Fecha de precio no disponible
+        - cell "1147 unidades $ 1.614.517,20":
+          - text: 1147 unidades
+          - generic: $ 1.614.517,20
+        - cell "2026-05-13"
+        - cell "Sin ventas recientes"
+      - row "Seleccionar Pasta dental 90 g · Santa Lucía Pasta dental 90 g · Santa Lucía Fecha de precio no disponible 796 unidades $ 1.570.826,40 2026-07-25 Sin ventas recientes":
+        - cell "Seleccionar Pasta dental 90 g · Santa Lucía":
+          - checkbox "Seleccionar Pasta dental 90 g · Santa Lucía"
+        - cell "Pasta dental 90 g · Santa Lucía Fecha de precio no disponible":
+          - strong: Pasta dental 90 g · Santa Lucía
+          - generic: Fecha de precio no disponible
+        - cell "796 unidades $ 1.570.826,40":
+          - text: 796 unidades
+          - generic: $ 1.570.826,40
+        - cell "2026-07-25"
+        - cell "Sin ventas recientes"
+      - row "Seleccionar Agua mineral 2 L · La Huerta Agua mineral 2 L · La Huerta Fecha de precio no disponible 974 unidades $ 1.532.296,80 2026-05-28 Sin ventas recientes":
+        - cell "Seleccionar Agua mineral 2 L · La Huerta":
+          - checkbox "Seleccionar Agua mineral 2 L · La Huerta"
+        - cell "Agua mineral 2 L · La Huerta Fecha de precio no disponible":
+          - strong: Agua mineral 2 L · La Huerta
+          - generic: Fecha de precio no disponible
+        - cell "974 unidades $ 1.532.296,80":
+          - text: 974 unidades
+          - generic: $ 1.532.296,80
+        - cell "2026-05-28"
+        - cell "Sin ventas recientes"
+      - row "Seleccionar Galletitas de agua 200 g · Costa Clara Galletitas de agua 200 g · Costa Clara Fecha de precio no disponible 973 unidades $ 1.430.018,10 2026-08-08 Sin ventas recientes":
+        - cell "Seleccionar Galletitas de agua 200 g · Costa Clara":
+          - checkbox "Seleccionar Galletitas de agua 200 g · Costa Clara"
+        - cell "Galletitas de agua 200 g · Costa Clara Fecha de precio no disponible":
+          - strong: Galletitas de agua 200 g · Costa Clara
+          - generic: Fecha de precio no disponible
+        - cell "973 unidades $ 1.430.018,10":
+          - text: 973 unidades
+          - generic: $ 1.430.018,10
+        - cell "2026-08-08"
+        - cell "Sin ventas recientes"
+      - row "Seleccionar Palitos salados 100 g · El Molino Palitos salados 100 g · El Molino Fecha de precio no disponible 1204 unidades $ 1.420.599,60 2026-06-01 Sin ventas recientes":
+        - cell "Seleccionar Palitos salados 100 g · El Molino":
+          - checkbox "Seleccionar Palitos salados 100 g · El Molino"
+        - cell "Palitos salados 100 g · El Molino Fecha de precio no disponible":
+          - strong: Palitos salados 100 g · El Molino
+          - generic: Fecha de precio no disponible
+        - cell "1204 unidades $ 1.420.599,60":
+          - text: 1204 unidades
+          - generic: $ 1.420.599,60
+        - cell "2026-06-01"
+        - cell "Sin ventas recientes"
+      - row "Seleccionar Fideos spaghetti 500 g · El Ombú Fideos spaghetti 500 g · El Ombú Fecha de precio no disponible 1237 unidades $ 1.374.183,30 2026-05-15 Sin ventas recientes":
+        - cell "Seleccionar Fideos spaghetti 500 g · El Ombú":
+          - checkbox "Seleccionar Fideos spaghetti 500 g · El Ombú"
+        - cell "Fideos spaghetti 500 g · El Ombú Fecha de precio no disponible":
+          - strong: Fideos spaghetti 500 g · El Ombú
+          - generic: Fecha de precio no disponible
+        - cell "1237 unidades $ 1.374.183,30":
+          - text: 1237 unidades
+          - generic: $ 1.374.183,30
+        - cell "2026-05-15"
+        - cell "Sin ventas recientes"
+      - row "Seleccionar Salame Milán · Don Pedro Salame Milán · Don Pedro Fecha de precio no disponible 94 kg $ 1.280.994,40 Nunca vendido Nunca vendido":
+        - cell "Seleccionar Salame Milán · Don Pedro":
+          - checkbox "Seleccionar Salame Milán · Don Pedro"
+        - cell "Salame Milán · Don Pedro Fecha de precio no disponible":
+          - strong: Salame Milán · Don Pedro
+          - generic: Fecha de precio no disponible
+        - cell "94 kg $ 1.280.994,40":
+          - text: 94 kg
+          - generic: $ 1.280.994,40
+        - cell "Nunca vendido"
+        - cell "Nunca vendido"
+      - row "Seleccionar Vinagre 500 ml · Santa Lucía Vinagre 500 ml · Santa Lucía Fecha de precio no disponible 946 unidades $ 1.279.370,40 2026-06-09 Sin ventas recientes":
+        - cell "Seleccionar Vinagre 500 ml · Santa Lucía":
+          - checkbox "Seleccionar Vinagre 500 ml · Santa Lucía"
+        - cell "Vinagre 500 ml · Santa Lucía Fecha de precio no disponible":
+          - strong: Vinagre 500 ml · Santa Lucía
+          - generic: Fecha de precio no disponible
+        - cell "946 unidades $ 1.279.370,40":
+          - text: 946 unidades
+          - generic: $ 1.279.370,40
+        - cell "2026-06-09"
+        - cell "Sin ventas recientes"
+      - 'row "Seleccionar Yerba tradicional 500 g · Las Sierras Yerba tradicional 500 g · Las Sierras Precio actualizado: 2026-10-01 502 unidades $ 1.260.823,20 2026-08-08 Sin ventas recientes"':
+        - cell "Seleccionar Yerba tradicional 500 g · Las Sierras":
+          - checkbox "Seleccionar Yerba tradicional 500 g · Las Sierras"
+        - 'cell "Yerba tradicional 500 g · Las Sierras Precio actualizado: 2026-10-01"':
+          - strong: Yerba tradicional 500 g · Las Sierras
+          - generic: "Precio actualizado: 2026-10-01"
+        - cell "502 unidades $ 1.260.823,20":
+          - text: 502 unidades
+          - generic: $ 1.260.823,20
+        - cell "2026-08-08"
+        - cell "Sin ventas recientes"
+      - row "Seleccionar Galletitas de agua 200 g · Sol del Sur Galletitas de agua 200 g · Sol del Sur Fecha de precio no disponible 968 unidades $ 1.175.539,20 2026-05-19 Sin ventas recientes":
+        - cell "Seleccionar Galletitas de agua 200 g · Sol del Sur":
+          - checkbox "Seleccionar Galletitas de agua 200 g · Sol del Sur"
+        - cell "Galletitas de agua 200 g · Sol del Sur Fecha de precio no disponible":
+          - strong: Galletitas de agua 200 g · Sol del Sur
+          - generic: Fecha de precio no disponible
+        - cell "968 unidades $ 1.175.539,20":
+          - text: 968 unidades
+          - generic: $ 1.175.539,20
+        - cell "2026-05-19"
+        - cell "Sin ventas recientes"
+      - row "Seleccionar Galletitas chocolate 170 g · La Pradera Galletitas chocolate 170 g · La Pradera Fecha de precio no disponible 913 unidades $ 1.115.046,90 Nunca vendido Nunca vendido":
+        - cell "Seleccionar Galletitas chocolate 170 g · La Pradera":
+          - checkbox "Seleccionar Galletitas chocolate 170 g · La Pradera"
+        - cell "Galletitas chocolate 170 g · La Pradera Fecha de precio no disponible":
+          - strong: Galletitas chocolate 170 g · La Pradera
+          - generic: Fecha de precio no disponible
+        - cell "913 unidades $ 1.115.046,90":
+          - text: 913 unidades
+          - generic: $ 1.115.046,90
+        - cell "Nunca vendido"
+        - cell "Nunca vendido"
+      - row "Seleccionar Tomate triturado 400 g · Rincón Sur Tomate triturado 400 g · Rincón Sur Fecha de precio no disponible 1204 unidades $ 1.113.218,40 2026-06-05 Sin ventas recientes":
+        - cell "Seleccionar Tomate triturado 400 g · Rincón Sur":
+          - checkbox "Seleccionar Tomate triturado 400 g · Rincón Sur"
+        - cell "Tomate triturado 400 g · Rincón Sur Fecha de precio no disponible":
+          - strong: Tomate triturado 400 g · Rincón Sur
+          - generic: Fecha de precio no disponible
+        - cell "1204 unidades $ 1.113.218,40":
+          - text: 1204 unidades
+          - generic: $ 1.113.218,40
+        - cell "2026-06-05"
+        - cell "Sin ventas recientes"
+      - row "Seleccionar Polenta 500 g · Los Aromos Polenta 500 g · Los Aromos Fecha de precio no disponible 1070 unidades $ 996.705,00 2026-05-23 Sin ventas recientes":
+        - cell "Seleccionar Polenta 500 g · Los Aromos":
+          - checkbox "Seleccionar Polenta 500 g · Los Aromos"
+        - cell "Polenta 500 g · Los Aromos Fecha de precio no disponible":
+          - strong: Polenta 500 g · Los Aromos
+          - generic: Fecha de precio no disponible
+        - cell "1070 unidades $ 996.705,00":
+          - text: 1070 unidades
+          - generic: $ 996.705,00
+        - cell "2026-05-23"
+        - cell "Sin ventas recientes"
+      - 'row "Seleccionar Té negro x25 · Sol del Sur Té negro x25 · Sol del Sur Precio actualizado: 2026-10-01 651 unidades $ 880.412,40 2026-06-25 Sin ventas recientes"':
+        - cell "Seleccionar Té negro x25 · Sol del Sur":
+          - checkbox "Seleccionar Té negro x25 · Sol del Sur"
+        - 'cell "Té negro x25 · Sol del Sur Precio actualizado: 2026-10-01"':
+          - strong: Té negro x25 · Sol del Sur
+          - generic: "Precio actualizado: 2026-10-01"
+        - cell "651 unidades $ 880.412,40":
+          - text: 651 unidades
+          - generic: $ 880.412,40
+        - cell "2026-06-25"
+        - cell "Sin ventas recientes"
+  - button "Anterior" [disabled]
+  - generic: Página 1
+  - button "Siguiente"

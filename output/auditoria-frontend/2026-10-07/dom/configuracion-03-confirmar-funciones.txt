@@ -1,0 +1,132 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Configuración" [level=1]
+  - button "Actualizar"
+  - tablist "Configuración":
+    - tab "Negocio"
+    - tab "Funciones" [selected]
+    - tab "Terminales"
+    - tab "Exportar"
+  - tabpanel "Funciones":
+    - region "Funciones del negocio":
+      - heading "Funciones del negocio" [level=2]
+      - paragraph: Activá solamente las herramientas que necesitás.
+      - strong: Reposición y pedidos
+      - generic: Sugerencias de compra y recepción de pedidos.
+      - switch "Reposición y pedidos": Pausada
+      - strong: Control de stock
+      - generic: Existencias, conteos y alertas de reposición.
+      - switch "Control de stock": Pausada
+      - strong: Resumen mensual
+      - generic: Ventas y comparativos del negocio.
+      - switch "Resumen mensual" [checked]: Activa
+      - strong: Comprobantes
+      - generic: Comprobantes internos de las ventas.
+      - switch "Comprobantes" [checked]: Activa
+      - strong: Etiquetas
+      - generic: Etiquetas internas para productos.
+      - switch "Etiquetas" [checked]: Activa
+      - strong: Proveedores y compras
+      - generic: Recepciones, costos e historial de proveedores.
+      - switch "Proveedores y compras" [checked]: Activa
+      - strong: Costos y rentabilidad
+      - generic: Costo de mercadería, margen bruto y cobertura.
+      - switch "Costos y rentabilidad" [checked]: Activa
+      - strong: Devoluciones
+      - generic: Devoluciones parciales, reintegros y reingreso al stock.
+      - switch "Devoluciones" [checked]: Activa
+      - strong: Lotes y vencimientos
+      - generic: Trazabilidad y salida automática por próximo vencimiento.
+      - switch "Lotes y vencimientos" [checked]: Activa
+      - strong: Promociones
+      - generic: Ofertas automáticas aplicadas al cobrar.
+      - switch "Promociones" [checked]: Activa
+      - strong: Notificaciones
+      - generic: Avisos de stock, vencimientos y control del negocio.
+      - switch "Notificaciones" [checked]: Activa
+      - strong: Cuenta de proveedores
+      - generic: Saldos, pagos parciales y egresos vinculados a compras.
+      - switch "Cuenta de proveedores" [checked]: Activa
+      - strong: Clientes
+      - generic: Contactos e historial de compras.
+      - switch "Clientes" [checked]: Activa
+      - strong: Cuenta corriente
+      - generic: Ventas a cuenta, límites y cobros.
+      - switch "Cuenta corriente" [checked]: Activa
+      - strong: Ubicaciones y traslados
+      - generic: Stock por local y mercadería en tránsito.
+      - switch "Ubicaciones y traslados" [checked]: Activa
+      - button "Descartar"
+      - button "Aplicar cambios"
+      - dialog "Aplicar cambios":
+        - heading "Aplicar cambios" [level=2]
+        - button "Cerrar" [active]
+        - paragraph: Las funciones pausadas dejan de mostrarse. Las ventas y el historial se conservan.
+        - paragraph: Al reactivar Stock, realizá un conteo para volver a usar las existencias actuales.
+        - button "Volver"
+        - button "Confirmar cambios"

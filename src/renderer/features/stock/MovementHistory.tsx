@@ -1,3 +1,4 @@
+import {ExportButton} from '../../components/ExportButton';
 import { useState } from 'react';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import type { StockBalance, StockMovement } from '../../../shared/stock';
@@ -47,7 +48,7 @@ export function MovementHistory({
   return (
     <Dialog title={`Movimientos · ${balance.name}`} onClose={onClose} wide>
       <div className="dialog-body">
-        <div className="movement-filters">
+        <div className="movement-filters"><ExportButton dataset="movements" filters={{productId:balance.productId,...(from?{fromDate:from}:{}),...(to?{toDate:to}:{})}} />
           <label className="field">
             Desde
             <input

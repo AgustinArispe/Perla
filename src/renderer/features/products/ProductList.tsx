@@ -1,32 +1,52 @@
+import { SavedViews } from '../../components/SavedViews';
+import { useRememberedState, scalarViewFilters } from '../../components/useRememberedState';
+import { ExportButton } from '../../components/ExportButton';
 import { useEffect, useRef, useState } from 'react';
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { Product, ImportPreview as Preview } from '../../../shared/catalog';
 import { formatMoney } from '../../../domain/values';
 import { api, errorMessage, unwrap } from '../../api';
 import { Icon } from '../../components/Icon';
 import { ProductForm } from './ProductForm';
 import { ImportPreview } from './ImportPreview';
+import { TaxonomyManager } from './TaxonomyManager';
+import { Dialog } from '../../components/Dialog';
+import type { FeatureStatus } from '../../../shared/features';
+import { webValue } from '../../web-client';
+import { PriceBulkDialog } from './PriceBulkDialog';
 
-export function ProductList() {
+export function ProductList({ canChangePrices = false }: { canChangePrices?: boolean }) {
   const connected = true;
   const client = useQueryClient();
   const searchRef = useRef<HTMLInputElement>(null);
-  const [search, setSearch] = useState('');
-  const [query, setQuery] = useState('');
-  const [status, setStatus] = useState<'ALL' | 'ACTIVE' | 'INACTIVE'>('ALL');
-  const [pages, setPages] = useState<(string | undefined)[]>([undefined]);
+  const [search, setSearch] = useRememberedState('products', 'search', '');
+  const [query, setQuery] = useState(search);
+  const [status, setStatus] = useRememberedState<'ALL' | 'ACTIVE' | 'INACTIVE'>(
+    'products',
+    'status',
+    'ALL',
+  );
+  const [categoryId, setCategoryId] = useRememberedState('products', 'categoryId', '');
+  const [brandId, setBrandId] = useRememberedState('products', 'brandId', '');
+  const [taxonomyOpen, setTaxonomyOpen] = useState(false);
+  const [labelsOpen, setLabelsOpen] = useState(false);
+  const [pages, setPages] = useRememberedState<(string | undefined)[]>('products', 'pages', [
+    undefined,
+  ]);
   const [editor, setEditor] = useState<Product | null | undefined>(undefined);
   const [preview, setPreview] = useState<Preview | null>(null);
   const [notice, setNotice] = useState('');
   const [error, setError] = useState('');
   const [format, setFormat] = useState(false);
+  const [selected, setSelected] = useState<Record<string, Product>>({});
+  const [priceEditorOpen, setPriceEditorOpen] = useState(false);
   useEffect(() => {
     const timer = setTimeout(() => setQuery(search), 100);
     return () => clearTimeout(timer);
   }, [search]);
   const cursor = pages.at(-1);
   const products = useQuery({
-    queryKey: ['products', query, status, cursor],
+    queryKey: ['products', query, status, categoryId, brandId, cursor],
     queryFn: async () =>
       unwrap(
         await api().products.search({
@@ -34,11 +54,30 @@ export function ProductList() {
           status,
           activeOnly: false,
           limit: 50,
+          ...(categoryId ? { categoryId } : {}),
+          ...(brandId ? { brandId } : {}),
           ...(cursor ? { cursor } : {}),
         }),
       ),
     enabled: connected,
-    placeholderData: keepPreviousData,
+    retry: false,
+  });
+  const taxonomy = useQuery({
+    queryKey: ['product-taxonomy'],
+    queryFn: async () => unwrap(await api().products.taxonomy({})),
+    retry: false,
+  });
+  const features = useQuery({
+    queryKey: ['business-features'],
+    queryFn: () => webValue<FeatureStatus>('/settings/features'),
+    retry: false,
+  });
+  const labelsEnabled = features.data?.enabled.PRODUCT_LABELS ?? true;
+  const costsEnabled = features.data?.enabled.COSTS_MARGIN ?? false;
+  const labels = useQuery({
+    queryKey: ['product-labels'],
+    queryFn: async () => unwrap(await api().products.labels({ status: 'PENDING' })),
+    enabled: labelsOpen && labelsEnabled,
     retry: false,
   });
   const toggle = useMutation({
@@ -65,7 +104,25 @@ export function ProductList() {
     },
     onError: (failure) => setError(errorMessage(failure)),
   });
-  const modalOpen = editor !== undefined || Boolean(preview);
+  const createLabel = useMutation({
+    mutationFn: async (productId: string) =>
+      unwrap(await api().products.createLabel({ productId })),
+    onSuccess: (label) => {
+      setNotice(`Etiqueta para ${label.productName} lista para imprimir.`);
+      setError('');
+    },
+    onError: (failure) => setError(errorMessage(failure)),
+  });
+  const markLabelPrinted = useMutation({
+    mutationFn: async (labelId: string) =>
+      unwrap(await api().products.markLabelPrinted({ labelId })),
+    onSuccess: () => {
+      void client.invalidateQueries({ queryKey: ['product-labels'] });
+      setNotice('Etiqueta marcada como impresa.');
+    },
+    onError: (failure) => setError(errorMessage(failure)),
+  });
+  const modalOpen = editor !== undefined || Boolean(preview) || taxonomyOpen || priceEditorOpen;
   useEffect(() => {
     function keyboard(event: KeyboardEvent) {
       if (modalOpen) return;
@@ -95,12 +152,29 @@ export function ProductList() {
   }
   return (
     <>
-      <div className="page-heading">
+      <div className="page-heading product-page-heading">
         <div>
           <h1>Productos</h1>
-          <p>Precios, códigos y formas de venta.</p>
         </div>
         <div className="heading-actions">
+          {canChangePrices && (
+            <button
+              className="button secondary"
+              disabled={!Object.keys(selected).length}
+              onClick={() => setPriceEditorOpen(true)}
+            >
+              Actualizar precios
+              {Object.keys(selected).length ? ` (${Object.keys(selected).length})` : ''}
+            </button>
+          )}
+          <button className="button secondary" onClick={() => setTaxonomyOpen(true)}>
+            Categorías y marcas
+          </button>
+          {labelsEnabled && (
+            <button className="button secondary" onClick={() => setLabelsOpen(true)}>
+              Etiquetas{labels.data?.total ? ` (${labels.data.total})` : ''}
+            </button>
+          )}
           <button
             className="button secondary"
             disabled={!connected || importFile.isPending}
@@ -119,7 +193,7 @@ export function ProductList() {
       {!connected && (
         <div className="alert info">
           Vista previa. Abrí la aplicación de escritorio para cargar y consultar los datos del
-          almacén.
+          negocio.
         </div>
       )}
       {notice && (
@@ -177,20 +251,104 @@ export function ProductList() {
               <option value="INACTIVE">Inactivos</option>
             </select>
           </label>
+          <label className="filter-label">
+            Categoría
+            <select
+              value={categoryId}
+              onChange={(event) => {
+                setCategoryId(event.target.value);
+                setPages([undefined]);
+              }}
+            >
+              <option value="">Todas</option>
+              {taxonomy.data?.categories.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="filter-label">
+            Marca
+            <select
+              value={brandId}
+              onChange={(event) => {
+                setBrandId(event.target.value);
+                setPages([undefined]);
+              }}
+            >
+              <option value="">Todas</option>
+              {taxonomy.data?.brands.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <SavedViews
+            module="products"
+            filters={{
+              query: search,
+              status,
+              ...(categoryId ? { categoryId } : {}),
+              ...(brandId ? { brandId } : {}),
+            }}
+            onApply={(filters) => {
+              const value = scalarViewFilters(filters);
+              setSearch(value.query ?? '');
+              setQuery(value.query ?? '');
+              setStatus((value.status ?? 'ALL') as typeof status);
+              setCategoryId(value.categoryId ?? '');
+              setBrandId(value.brandId ?? '');
+              setPages([undefined]);
+            }}
+          />
+          <ExportButton
+            dataset="products"
+            filters={{
+              query: search,
+              status,
+              ...(categoryId ? { categoryId } : {}),
+              ...(brandId ? { brandId } : {}),
+            }}
+          />
         </div>
         <div className="catalog-summary">
           <span>
-            <strong>{products.data?.total.toLocaleString('es-AR') ?? '0'}</strong> productos
+            <strong>
+              {products.data?.total.toLocaleString('es-AR') ?? (products.isPending ? '…' : '0')}
+            </strong>{' '}
+            productos
             {query ? ' encontrados' : ' en el catálogo'}
           </span>
-          <span aria-live="polite">
-            {products.isFetching ? 'Buscando…' : 'Precio en pesos argentinos'}
-          </span>
+          <span aria-live="polite">{products.isFetching ? 'Buscando…' : ''}</span>
         </div>
         <div className={`table-scroll ${products.isPlaceholderData ? 'refreshing' : ''}`}>
           <table>
             <thead>
               <tr>
+                {canChangePrices && (
+                  <th className="selection-cell">
+                    <input
+                      type="checkbox"
+                      aria-label="Seleccionar productos de esta página"
+                      checked={
+                        Boolean(products.data?.items.length) &&
+                        products.data!.items.every((product) => selected[product.id])
+                      }
+                      onChange={(event) =>
+                        setSelected((current) => {
+                          const next = { ...current };
+                          for (const product of products.data?.items ?? []) {
+                            if (event.target.checked) next[product.id] = product;
+                            else delete next[product.id];
+                          }
+                          return next;
+                        })
+                      }
+                    />
+                  </th>
+                )}
                 <th>Producto</th>
                 <th>Código de barras</th>
                 <th>Venta</th>
@@ -202,17 +360,38 @@ export function ProductList() {
               </tr>
             </thead>
             <tbody>
-              {products.data?.items.map((product) => (
+              {(query === search ? products.data?.items : [])?.map((product) => (
                 <tr key={product.id}>
+                  {canChangePrices && (
+                    <td className="selection-cell">
+                      <input
+                        type="checkbox"
+                        aria-label={`Seleccionar ${product.name}`}
+                        checked={Boolean(selected[product.id])}
+                        onChange={(event) =>
+                          setSelected((current) => {
+                            const next = { ...current };
+                            if (event.target.checked) next[product.id] = product;
+                            else delete next[product.id];
+                            return next;
+                          })
+                        }
+                      />
+                    </td>
+                  )}
                   <td>
                     <strong>{product.name}</strong>
                     <small>
                       {product.sku}
                       {product.category ? ` · ${product.category}` : ''}
+                      {product.brand ? ` · ${product.brand}` : ''}
                     </small>
                   </td>
                   <td className="barcode">
-                    {product.barcode ?? <span className="muted">Sin código</span>}
+                    {product.barcode ?? product.internalBarcode ?? (
+                      <span className="muted">Sin código</span>
+                    )}
+                    {!product.barcode && product.internalBarcode && <small>Interno</small>}
                   </td>
                   <td>
                     <span className="pill unit-pill">
@@ -221,6 +400,16 @@ export function ProductList() {
                   </td>
                   <td className="numeric product-price">{formatMoney(product.priceCents)}</td>
                   <td>
+                    {labelsEnabled && product.internalBarcode && (
+                      <button
+                        className="edit-button"
+                        aria-label={`Crear etiqueta para ${product.name}`}
+                        disabled={createLabel.isPending}
+                        onClick={() => createLabel.mutate(product.id)}
+                      >
+                        Etiqueta
+                      </button>
+                    )}
                     <button
                       className={`pill state-button ${product.active ? 'good' : ''}`}
                       aria-label={`${product.active ? 'Desactivar' : 'Activar'} ${product.name}`}
@@ -250,14 +439,16 @@ export function ProductList() {
                 <Icon name={query ? 'search' : 'box'} size={34} />
               </div>
               <h2>
-                {query || status !== 'ALL' ? 'No encontramos productos' : 'Tu catálogo empieza acá'}
+                {query || status !== 'ALL' || categoryId || brandId
+                  ? 'No encontramos productos'
+                  : 'Tu catálogo empieza acá'}
               </h2>
               <p>
-                {query || status !== 'ALL'
+                {query || status !== 'ALL' || categoryId || brandId
                   ? 'Probá con otro nombre o código, o cambiá el filtro de estado.'
                   : 'Agregá el primer producto o cargá el catálogo desde un archivo.'}
               </p>
-              {!query && status === 'ALL' && (
+              {!query && status === 'ALL' && !categoryId && !brandId && (
                 <button
                   className="button primary"
                   disabled={!connected}
@@ -288,7 +479,7 @@ export function ProductList() {
           <button className="text-button" onClick={() => setFormat(!format)}>
             Formato para la carga inicial
           </button>
-          <div className="pagination">
+          {!!products.data?.total && <div className="pagination">
             <span>Página {pages.length}</span>
             <button
               className="button secondary small"
@@ -309,7 +500,7 @@ export function ProductList() {
             >
               Siguiente
             </button>
-          </div>
+          </div>}
         </div>
       </section>
       {format && (
@@ -320,7 +511,7 @@ export function ProductList() {
             barras debe conservarse como texto.
           </p>
           <code>
-            sku;barcode;nombre;precio_ars;unidad;activo;categoria;stock_inicial;stock_minimo
+            sku;barcode;nombre;precio_ars;unidad;activo;categoria;marca;stock_inicial;stock_minimo
           </code>
           <p>
             Unidad: UNIT o KG. Activo: si o no. Completá stock_inicial sólo con un conteo real, o
@@ -328,8 +519,18 @@ export function ProductList() {
           </p>
         </div>
       )}
+      {priceEditorOpen && (
+        <PriceBulkDialog
+          products={Object.values(selected)}
+          onClose={() => setPriceEditorOpen(false)}
+          onSaved={() => {
+            setPriceEditorOpen(false);
+            setSelected({});
+            setNotice('Precios actualizados.');
+          }}
+        />
+      )}
       <div className="page-footnote">
-        <span>Las bajas se hacen desactivando productos.</span>
         <span>
           <kbd>F2</kbd> Buscar <kbd>F3</kbd> Nuevo <kbd>Esc</kbd> Volver
         </span>
@@ -337,6 +538,7 @@ export function ProductList() {
       {editor !== undefined && (
         <ProductForm
           product={editor}
+          costsEnabled={costsEnabled}
           onClose={closeEditor}
           onSaved={(product) => {
             setNotice(`${product.name}: guardado.`);
@@ -358,6 +560,47 @@ export function ProductList() {
             closePreview();
           }}
         />
+      )}
+      {taxonomyOpen && (
+        <TaxonomyManager
+          onClose={() => {
+            setTaxonomyOpen(false);
+            restoreFocus();
+          }}
+        />
+      )}
+      {labelsOpen && (
+        <Dialog
+          title="Etiquetas pendientes"
+          onClose={() => {
+            setLabelsOpen(false);
+            restoreFocus();
+          }}
+          wide
+        >
+          <div className="dialog-body">
+            {labels.isPending && <p>Cargando etiquetas…</p>}
+            {labels.isError && <div className="alert error">{errorMessage(labels.error)}</div>}
+            {!labels.isPending && !labels.data?.items.length && <p>No hay etiquetas pendientes.</p>}
+            <div className="receipt-items">
+              {labels.data?.items.map((label) => (
+                <div key={label.id}>
+                  <span>
+                    <strong>{label.productName}</strong>
+                    <small>{label.barcode}</small>
+                  </span>
+                  <button
+                    className="button secondary small"
+                    disabled={markLabelPrinted.isPending}
+                    onClick={() => markLabelPrinted.mutate(label.id)}
+                  >
+                    Marcar impresa
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Dialog>
       )}
     </>
   );

@@ -27,9 +27,20 @@ export class DraftWriter {
   }
   update(body: Body): void {
     this.latest = body;
+    this.schedule();
+    this.changed();
+  }
+  private schedule(): void {
     clearTimeout(this.timer);
     this.timer = setTimeout(() => void this.flush().catch(() => {}), 300);
-    this.changed();
+  }
+  async checkoutRevision(): Promise<number | undefined> {
+    clearTimeout(this.timer);
+    if (this.running) await this.running;
+    return this.unsaved ? undefined : this.revision || undefined;
+  }
+  resumeAutosave(): void {
+    if (this.unsaved) this.schedule();
   }
   flush(): Promise<void> {
     clearTimeout(this.timer);

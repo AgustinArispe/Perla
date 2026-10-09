@@ -1,0 +1,407 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - generic: Ventas
+  - heading "Promociones" [level=1]
+  - button "Nueva promoción": Nueva promoción
+  - generic: Activas ahora
+  - strong: "2"
+  - generic: Se aplican automáticamente en Caja
+  - generic: Programadas
+  - strong: "0"
+  - generic: Comienzan en la fecha indicada
+  - generic: Borradores y finalizadas
+  - strong: "0"
+  - generic: Sin efecto sobre las ventas
+  - tablist:
+    - button "Activas 2":
+      - text: Activas
+      - generic: "2"
+    - button "Programadas 0":
+      - text: Programadas
+      - generic: "0"
+    - button "Borradores y finalizadas 0":
+      - text: Borradores y finalizadas
+      - generic: "0"
+  - button "Mis vistas": Mis vistas
+  - button "Exportar promociones a Excel": Exportar Excel
+  - article:
+    - generic: Activa
+    - generic: Llevá X, pagá Y
+    - 'heading "Galletitas de agua: llevá 3, pagá 2" [level=2]'
+    - paragraph:
+      - strong: 3 × 2
+      - generic: 1 objetivo
+    - button "Editar"
+    - button "Pausar"
+  - article:
+    - generic: Activa
+    - generic: Porcentaje
+    - 'heading "Verdulería: 5% de descuento" [level=2]'
+    - paragraph:
+      - strong: 5% menos
+      - generic: 1 objetivo
+    - button "Editar"
+    - button "Pausar"
+  - dialog "Editar promoción":
+    - heading "Editar promoción" [level=2]
+    - button "Cerrar"
+    - generic: "1"
+    - strong: Elegí la oferta
+    - generic: Una plantilla simple para cada objetivo.
+    - button "Porcentaje Ej. 15% menos":
+      - strong: Porcentaje
+      - generic: Ej. 15% menos
+    - button "Llevá X, pagá Y Ej. 3 × 2":
+      - strong: Llevá X, pagá Y
+      - generic: Ej. 3 × 2
+    - button "Precio por cantidad Ej. 2 por $5.000":
+      - strong: Precio por cantidad
+      - generic: Ej. 2 por $5.000
+    - button "Combo Varios productos a un precio":
+      - strong: Combo
+      - generic: Varios productos a un precio
+    - generic: "2"
+    - strong: Definí el beneficio
+    - generic: Nombre corto y valor que verá la caja.
+    - text: Nombre
+    - textbox "Nombre" [active]:
+      - /placeholder: Ej. Martes de merluza
+      - text: "Galletitas de agua: llevá 3, pagá 2"
+    - text: Cantidad que lleva
+    - textbox "Cantidad que lleva": "3"
+    - text: Cantidad que paga
+    - textbox "Cantidad que paga": "2"
+    - generic: Vista previa
+    - strong: Lleva 3 y paga 2
+    - generic: Se aplicará automáticamente cuando el carrito cumpla la condición.
+    - generic: "3"
+    - strong: Elegí dónde aplica
+    - generic: Productos, categorías o marcas.
+    - generic: "1"
+    - textbox:
+      - /placeholder: Buscar productos
+    - button "Aceite de girasol 900 ml SIM-0010 · $ 4.169,85 +":
+      - strong: Aceite de girasol 900 ml
+      - generic: SIM-0010 · $ 4.169,85
+      - generic: +
+    - button "Aceite de girasol 900 ml · Buen Día SIM-3937 · $ 4.220,00 +":
+      - strong: Aceite de girasol 900 ml · Buen Día
+      - generic: SIM-3937 · $ 4.220,00
+      - generic: +
+    - button "Aceite de girasol 900 ml · Buen Día SIM-0367 · $ 4.389,92 +":
+      - strong: Aceite de girasol 900 ml · Buen Día
+      - generic: SIM-0367 · $ 4.389,92
+      - generic: +
+    - button "Aceite de girasol 900 ml · Buenos Sabores SIM-3223 · $ 4.610,00 +":
+      - strong: Aceite de girasol 900 ml · Buenos Sabores
+      - generic: SIM-3223 · $ 4.610,00
+      - generic: +
+    - button "Aceite de girasol 900 ml · Campo Vivo SIM-1200 · $ 3.112,20 +":
+      - strong: Aceite de girasol 900 ml · Campo Vivo
+      - generic: SIM-1200 · $ 3.112,20
+      - generic: +
+    - button "Aceite de girasol 900 ml · Cosecha Nueva SIM-1914 · $ 3.060,00 +":
+      - strong: Aceite de girasol 900 ml · Cosecha Nueva
+      - generic: SIM-1914 · $ 3.060,00
+      - generic: +
+    - button "Aceite de girasol 900 ml · Costa Clara SIM-2152 · $ 2.960,00 +":
+      - strong: Aceite de girasol 900 ml · Costa Clara
+      - generic: SIM-2152 · $ 2.960,00
+      - generic: +
+    - button "Aceite de girasol 900 ml · Del Valle SIM-2628 · $ 3.940,00 +":
+      - strong: Aceite de girasol 900 ml · Del Valle
+      - generic: SIM-2628 · $ 3.940,00
+      - generic: +
+    - button "Aceite de girasol 900 ml · Don Pedro SIM-0962 · $ 5.617,71 +":
+      - strong: Aceite de girasol 900 ml · Don Pedro
+      - generic: SIM-0962 · $ 5.617,71
+      - generic: +
+    - button "Aceite de girasol 900 ml · El Molino SIM-0724 · $ 5.108,07 +":
+      - strong: Aceite de girasol 900 ml · El Molino
+      - generic: SIM-0724 · $ 5.108,07
+      - generic: +
+    - button "Aceite de girasol 900 ml · El Ombú SIM-2866 · $ 3.160,00 +":
+      - strong: Aceite de girasol 900 ml · El Ombú
+      - generic: SIM-2866 · $ 3.160,00
+      - generic: +
+    - button "Aceite de girasol 900 ml · El Trigal SIM-1438 · $ 3.870,00 +":
+      - strong: Aceite de girasol 900 ml · El Trigal
+      - generic: SIM-1438 · $ 3.870,00
+      - generic: +
+    - button "Aceite de girasol 900 ml · La Abuela SIM-1795 · $ 3.370,00 +":
+      - strong: Aceite de girasol 900 ml · La Abuela
+      - generic: SIM-1795 · $ 3.370,00
+      - generic: +
+    - button "Aceite de girasol 900 ml · La Colonia SIM-1081 · $ 2.890,00 +":
+      - strong: Aceite de girasol 900 ml · La Colonia
+      - generic: SIM-1081 · $ 2.890,00
+      - generic: +
+    - button "Aceite de girasol 900 ml · La Cumbre SIM-2509 · $ 3.400,00 +":
+      - strong: Aceite de girasol 900 ml · La Cumbre
+      - generic: SIM-2509 · $ 3.400,00
+      - generic: +
+    - button "Aceite de girasol 900 ml · La Estrella SIM-3104 · $ 4.810,00 +":
+      - strong: Aceite de girasol 900 ml · La Estrella
+      - generic: SIM-3104 · $ 4.810,00
+      - generic: +
+    - button "Aceite de girasol 900 ml · La Familia SIM-1557 · $ 3.490,00 +":
+      - strong: Aceite de girasol 900 ml · La Familia
+      - generic: SIM-1557 · $ 3.490,00
+      - generic: +
+    - button "Aceite de girasol 900 ml · La Huerta SIM-0486 · $ 6.023,11 +":
+      - strong: Aceite de girasol 900 ml · La Huerta
+      - generic: SIM-0486 · $ 6.023,11
+      - generic: +
+    - button "Aceite de girasol 900 ml · La Pradera SIM-2033 · $ 4.760,00 +":
+      - strong: Aceite de girasol 900 ml · La Pradera
+      - generic: SIM-2033 · $ 4.760,00
+      - generic: +
+    - button "Aceite de girasol 900 ml · La Reserva SIM-3580 · $ 4.970,00 +":
+      - strong: Aceite de girasol 900 ml · La Reserva
+      - generic: SIM-3580 · $ 4.970,00
+      - generic: +
+    - button "Aceite de girasol 900 ml · Las Sierras SIM-0843 · $ 3.498,04 +":
+      - strong: Aceite de girasol 900 ml · Las Sierras
+      - generic: SIM-0843 · $ 3.498,04
+      - generic: +
+    - button "Aceite de girasol 900 ml · Los Aromos SIM-0129 · $ 5.455,55 +":
+      - strong: Aceite de girasol 900 ml · Los Aromos
+      - generic: SIM-0129 · $ 5.455,55
+      - generic: +
+    - button "Aceite de girasol 900 ml · Los Aromos SIM-3699 · $ 2.920,00 +":
+      - strong: Aceite de girasol 900 ml · Los Aromos
+      - generic: SIM-3699 · $ 2.920,00
+      - generic: +
+    - button "Aceite de girasol 900 ml · Mi Barrio SIM-3342 · $ 3.850,00 +":
+      - strong: Aceite de girasol 900 ml · Mi Barrio
+      - generic: SIM-3342 · $ 3.850,00
+      - generic: +
+    - button "Aceite de girasol 900 ml · Nueva Mesa SIM-1319 · $ 4.430,00 +":
+      - strong: Aceite de girasol 900 ml · Nueva Mesa
+      - generic: SIM-1319 · $ 4.430,00
+      - generic: +
+    - button "Aceite de girasol 900 ml · Primavera SIM-2747 · $ 3.560,00 +":
+      - strong: Aceite de girasol 900 ml · Primavera
+      - generic: SIM-2747 · $ 3.560,00
+      - generic: +
+    - button "Aceite de girasol 900 ml · Rincón Sur SIM-2985 · $ 4.260,00 +":
+      - strong: Aceite de girasol 900 ml · Rincón Sur
+      - generic: SIM-2985 · $ 4.260,00
+      - generic: +
+    - button "Aceite de girasol 900 ml · Santa Ana SIM-1676 · $ 3.360,00 +":
+      - strong: Aceite de girasol 900 ml · Santa Ana
+      - generic: SIM-1676 · $ 3.360,00
+      - generic: +
+    - button "Aceite de girasol 900 ml · Santa Lucía SIM-3818 · $ 3.090,00 +":
+      - strong: Aceite de girasol 900 ml · Santa Lucía
+      - generic: SIM-3818 · $ 3.090,00
+      - generic: +
+    - button "Aceite de girasol 900 ml · Santa Lucía SIM-0248 · $ 3.173,73 +":
+      - strong: Aceite de girasol 900 ml · Santa Lucía
+      - generic: SIM-0248 · $ 3.173,73
+      - generic: +
+    - button "Aceite de girasol 900 ml · Sol del Sur SIM-0605 · $ 5.258,64 +":
+      - strong: Aceite de girasol 900 ml · Sol del Sur
+      - generic: SIM-0605 · $ 5.258,64
+      - generic: +
+    - button "Aceite de girasol 900 ml · Tierra Clara SIM-3461 · $ 3.600,00 +":
+      - strong: Aceite de girasol 900 ml · Tierra Clara
+      - generic: SIM-3461 · $ 3.600,00
+      - generic: +
+    - button "Aceite de girasol 900 ml · Tres Espigas SIM-2271 · $ 3.250,00 +":
+      - strong: Aceite de girasol 900 ml · Tres Espigas
+      - generic: SIM-2271 · $ 3.250,00
+      - generic: +
+    - button "Aceite de girasol 900 ml · Villa del Sol SIM-2390 · $ 5.190,00 +":
+      - strong: Aceite de girasol 900 ml · Villa del Sol
+      - generic: SIM-2390 · $ 5.190,00
+      - generic: +
+    - button "Aceite de oliva 500 ml SIM-0011 · $ 10.656,28 +":
+      - strong: Aceite de oliva 500 ml
+      - generic: SIM-0011 · $ 10.656,28
+      - generic: +
+    - button "Aceite de oliva 500 ml · Buen Día SIM-3938 · $ 7.570,00 +":
+      - strong: Aceite de oliva 500 ml · Buen Día
+      - generic: SIM-3938 · $ 7.570,00
+      - generic: +
+    - button "Aceite de oliva 500 ml · Buen Día SIM-0368 · $ 14.096,41 +":
+      - strong: Aceite de oliva 500 ml · Buen Día
+      - generic: SIM-0368 · $ 14.096,41
+      - generic: +
+    - button "Aceite de oliva 500 ml · Buenos Sabores SIM-3224 · $ 9.240,00 +":
+      - strong: Aceite de oliva 500 ml · Buenos Sabores
+      - generic: SIM-3224 · $ 9.240,00
+      - generic: +
+    - button "Aceite de oliva 500 ml · Campo Vivo SIM-1201 · $ 14.728,80 +":
+      - strong: Aceite de oliva 500 ml · Campo Vivo
+      - generic: SIM-1201 · $ 14.728,80
+      - generic: +
+    - button "Aceite de oliva 500 ml · Cosecha Nueva SIM-1915 · $ 9.680,00 +":
+      - strong: Aceite de oliva 500 ml · Cosecha Nueva
+      - generic: SIM-1915 · $ 9.680,00
+      - generic: +
+    - button "Aceite de oliva 500 ml · Costa Clara SIM-2153 · $ 8.570,00 +":
+      - strong: Aceite de oliva 500 ml · Costa Clara
+      - generic: SIM-2153 · $ 8.570,00
+      - generic: +
+    - button "Aceite de oliva 500 ml · Del Valle SIM-2629 · $ 13.060,00 +":
+      - strong: Aceite de oliva 500 ml · Del Valle
+      - generic: SIM-2629 · $ 13.060,00
+      - generic: +
+    - button "Aceite de oliva 500 ml · Don Pedro SIM-0963 · $ 13.864,75 +":
+      - strong: Aceite de oliva 500 ml · Don Pedro
+      - generic: SIM-0963 · $ 13.864,75
+      - generic: +
+    - button "Aceite de oliva 500 ml · El Molino SIM-0725 · $ 9.474,83 +":
+      - strong: Aceite de oliva 500 ml · El Molino
+      - generic: SIM-0725 · $ 9.474,83
+      - generic: +
+    - button "Aceite de oliva 500 ml · El Ombú SIM-2867 · $ 9.830,00 +":
+      - strong: Aceite de oliva 500 ml · El Ombú
+      - generic: SIM-2867 · $ 9.830,00
+      - generic: +
+    - button "Aceite de oliva 500 ml · El Trigal SIM-1439 · $ 7.040,00 +":
+      - strong: Aceite de oliva 500 ml · El Trigal
+      - generic: SIM-1439 · $ 7.040,00
+      - generic: +
+    - button "Aceite de oliva 500 ml · La Abuela SIM-1796 · $ 9.850,00 +":
+      - strong: Aceite de oliva 500 ml · La Abuela
+      - generic: SIM-1796 · $ 9.850,00
+      - generic: +
+    - button "Aceite de oliva 500 ml · La Colonia SIM-1082 · $ 14.849,30 +":
+      - strong: Aceite de oliva 500 ml · La Colonia
+      - generic: SIM-1082 · $ 14.849,30
+      - generic: +
+    - button "Aceite de oliva 500 ml · La Cumbre SIM-2510 · $ 9.240,00 +":
+      - strong: Aceite de oliva 500 ml · La Cumbre
+      - generic: SIM-2510 · $ 9.240,00
+      - generic: +
+    - button "Aceite de oliva 500 ml · La Estrella SIM-3105 · $ 12.220,00 +":
+      - strong: Aceite de oliva 500 ml · La Estrella
+      - generic: SIM-3105 · $ 12.220,00
+      - generic: +
+    - text: Producto 1
+    - button "Quitar": ×
+    - strong: Categorías
+    - button "Almacén"
+    - button "Bebidas"
+    - button "Congelados"
+    - button "Fiambrería"
+    - button "Galletitas y golosinas"
+    - button "Infusiones y desayuno"
+    - button "Lácteos"
+    - button "Limpieza"
+    - button "Panadería y huevos"
+    - button "Verdulería"
+    - strong: Marcas
+    - button "Buen Día"
+    - button "Buen Plato"
+    - button "Buenos Sabores"
+    - button "Campo Vivo"
+    - button "Campos del Sur"
+    - button "Cosecha Nueva"
+    - button "Costa Clara"
+    - button "Del Mercado"
+    - button "Del Valle"
+    - button "Don Pedro"
+    - button "Dulce Momento"
+    - button "El Molino"
+    - button "El Ombú"
+    - button "El Trigal"
+    - button "Hogar Claro"
+    - button "La Abuela"
+    - button "La Casona"
+    - button "La Colonia"
+    - button "La Cumbre"
+    - button "La Estancia"
+    - button "La Estrella"
+    - button "La Familia"
+    - button "La Huerta"
+    - button "La Pradera"
+    - button "La Reserva"
+    - button "Las Sierras"
+    - button "Los Aromos"
+    - button "Mi Barrio"
+    - button "Nueva Mesa"
+    - button "Primavera"
+    - button "Productores de Tandil"
+    - button "Rincón Sur"
+    - button "Santa Ana"
+    - button "Santa Lucía"
+    - button "Sierra Azul"
+    - button "Sol del Sur"
+    - button "Tierra Clara"
+    - button "Tres Espigas"
+    - button "Villa del Sol"
+    - generic "Programación y prioridad"
+    - option "Activa" [selected]
+    - option "Borrador"
+    - option "Pausada"
+    - generic: Se aplicará sin intervención del cajero.
+    - button "Cancelar"
+    - button "Guardar cambios"

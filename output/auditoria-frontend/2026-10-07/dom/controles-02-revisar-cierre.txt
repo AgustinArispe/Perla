@@ -1,0 +1,171 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Controles operativos" [level=1]
+  - paragraph: Conteos, vencimientos y revisión de cierres.
+  - button "Volver"
+  - tablist "Controles":
+    - tab "Hacer conteo"
+    - tab "Vencimientos"
+    - tab "Con diferencias" [selected]
+  - text: Estado
+  - combobox "Estado":
+    - option "Pendientes" [selected]
+    - option "Revisados"
+    - option "Todos"
+  - button "Exportar Excel"
+  - paragraph: Faltantes $ 2.300,00 · Sobrantes $ 750,00
+  - article:
+    - strong: Caja 2 · Martín · Martín López · Caja tarde
+    - paragraph: 22/9/2026, 07:30:00 · Esperado $ 60.000,00 · Contado $ 60.150,00
+    - paragraph: Sobrante $ 150,00
+    - button "Revisar cierre"
+  - article:
+    - strong: Caja 1 · Lucía · Lucía Fernández · Caja mañana
+    - paragraph: 22/9/2026, 01:30:00 · Esperado $ 60.000,00 · Contado $ 59.900,00
+    - paragraph: Faltante $ 100,00
+    - button "Revisar cierre"
+  - article:
+    - strong: Caja 2 · Martín · Martín López · Caja tarde
+    - paragraph: 2/9/2026, 07:30:00 · Esperado $ 60.000,00 · Contado $ 59.900,00
+    - paragraph: Faltante $ 100,00
+    - button "Revisar cierre"
+  - article:
+    - strong: Caja 1 · Lucía · Lucía Fernández · Caja mañana
+    - paragraph: 2/9/2026, 01:30:00 · Esperado $ 60.000,00 · Contado $ 59.700,00
+    - paragraph: Faltante $ 300,00
+    - button "Revisar cierre"
+  - article:
+    - strong: Caja 2 · Martín · Martín López · Caja tarde
+    - paragraph: 13/8/2026, 07:30:00 · Esperado $ 60.000,00 · Contado $ 60.150,00
+    - paragraph: Sobrante $ 150,00
+    - button "Revisar cierre"
+  - article:
+    - strong: Caja 1 · Lucía · Lucía Fernández · Caja mañana
+    - paragraph: 13/8/2026, 01:30:00 · Esperado $ 60.000,00 · Contado $ 59.900,00
+    - paragraph: Faltante $ 100,00
+    - button "Revisar cierre"
+  - article:
+    - strong: Caja 2 · Martín · Martín López · Caja tarde
+    - paragraph: 24/7/2026, 07:30:00 · Esperado $ 60.000,00 · Contado $ 59.700,00
+    - paragraph: Faltante $ 300,00
+    - button "Revisar cierre"
+  - article:
+    - strong: Caja 1 · Lucía · Lucía Fernández · Caja mañana
+    - paragraph: 24/7/2026, 01:30:00 · Esperado $ 60.000,00 · Contado $ 60.150,00
+    - paragraph: Sobrante $ 150,00
+    - button "Revisar cierre"
+  - article:
+    - strong: Caja 2 · Martín · Martín López · Caja tarde
+    - paragraph: 4/7/2026, 07:30:00 · Esperado $ 60.000,00 · Contado $ 59.700,00
+    - paragraph: Faltante $ 300,00
+    - button "Revisar cierre"
+  - article:
+    - strong: Caja 1 · Lucía · Lucía Fernández · Caja mañana
+    - paragraph: 4/7/2026, 01:30:00 · Esperado $ 60.000,00 · Contado $ 59.900,00
+    - paragraph: Faltante $ 100,00
+    - button "Revisar cierre"
+  - article:
+    - strong: Caja 2 · Martín · Martín López · Caja tarde
+    - paragraph: 15/6/2026, 07:30:00 · Esperado $ 60.000,00 · Contado $ 59.900,00
+    - paragraph: Faltante $ 100,00
+    - button "Revisar cierre"
+  - article:
+    - strong: Caja 1 · Lucía · Lucía Fernández · Caja mañana
+    - paragraph: 15/6/2026, 01:30:00 · Esperado $ 60.000,00 · Contado $ 59.700,00
+    - paragraph: Faltante $ 300,00
+    - button "Revisar cierre"
+  - article:
+    - strong: Caja 2 · Martín · Martín López · Caja tarde
+    - paragraph: 26/5/2026, 07:30:00 · Esperado $ 60.000,00 · Contado $ 59.700,00
+    - paragraph: Faltante $ 300,00
+    - button "Revisar cierre"
+  - article:
+    - strong: Caja 1 · Lucía · Lucía Fernández · Caja mañana
+    - paragraph: 26/5/2026, 01:30:00 · Esperado $ 60.000,00 · Contado $ 60.150,00
+    - paragraph: Sobrante $ 150,00
+    - button "Revisar cierre"
+  - article:
+    - strong: Caja 2 · Martín · Martín López · Caja tarde
+    - paragraph: 6/5/2026, 07:30:00 · Esperado $ 60.000,00 · Contado $ 59.700,00
+    - paragraph: Faltante $ 300,00
+    - button "Revisar cierre"
+  - article:
+    - strong: Caja 1 · Lucía · Lucía Fernández · Caja mañana
+    - paragraph: 6/5/2026, 01:30:00 · Esperado $ 60.000,00 · Contado $ 60.150,00
+    - paragraph: Sobrante $ 150,00
+    - button "Revisar cierre"
+  - button "Anterior" [disabled]
+  - generic: Página 1 · 16 resultados
+  - button "Siguiente" [disabled]
+  - dialog "Revisar cierre":
+    - heading "Revisar cierre" [level=2]
+    - button "Cerrar"
+    - paragraph: Caja 2 · Martín · Martín López · Caja tarde · Diferencia $ 150,00
+    - text: Nota de revisión
+    - textbox "Nota de revisión" [active]
+    - button "Marcar revisado" [disabled]

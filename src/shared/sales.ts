@@ -9,15 +9,34 @@ export const PaymentSchema = z.strictObject({
 export type PaymentInput = z.infer<typeof PaymentSchema>;
 export const CheckoutSchema = DraftBodySchema.extend({
   payments: z.array(PaymentSchema).max(20),
+  customerId: IdSchema.nullable().optional(),
+  onAccountCents: z.number().int().min(0).max(MAX_MONEY).default(0),
+  expectedQuoteHash: z.string().length(64).optional(),
   expectedDraftRevision: z.number().int().positive().optional(),
   negativeStockOverride: z.strictObject({ reason: z.string().trim().min(3).max(240) }).optional(),
+  locationId: IdSchema.optional(),
 }).refine(
   (v) => v.lines.length > 0 && new Set(v.lines.map((l) => l.lineId)).size === v.lines.length,
   {
     message: 'La venta requiere productos con identificadores únicos.',
   },
 );
-export type CheckoutInput = z.infer<typeof CheckoutSchema>;
+export type CheckoutInput = z.input<typeof CheckoutSchema>;
+export const SaleQuoteSchema = DraftBodySchema;
+export interface SaleQuote {
+  quoteHash: string;
+  subtotalCents: number;
+  discountCents: number;
+  totalCents: number;
+  lines: { lineId: string; grossCents: number; discountCents: number; netCents: number }[];
+  promotions: {
+    promotionId: string;
+    name: string;
+    revision: number;
+    discountCents: number;
+    allocations: { lineId: string; quantityBase: number; discountCents: number }[];
+  }[];
+}
 export const VoidSchema = z.strictObject({
   saleId: IdSchema,
   operationKey: IdSchema,
@@ -51,9 +70,13 @@ export interface SaleSummary {
   totalCents: number;
 }
 export interface SaleDetail extends SaleSummary {
+  customerId?: string | null;
+  customerName?: string | null;
+  onAccountCents?: number;
   actorUserId: string | null;
   actorName: string | null;
   discount: z.infer<typeof DraftBodySchema>['discount'];
+  promotions?: SaleQuote['promotions'];
   items: {
     id: string;
     lineId: string;
@@ -66,7 +89,14 @@ export interface SaleDetail extends SaleSummary {
     quantityBase: number;
     grossCents: number;
     discountCents: number;
+    promotionDiscountCents?: number;
+    manualDiscountCents?: number;
     netCents: number;
+    costMethod: 'WEIGHTED_AVERAGE' | 'REFERENCE' | null;
+    costRateMicrosPerBase: number | null;
+    costCents: number | null;
+    costEffectiveAt: string | null;
+    categoryName: string | null;
   }[];
   payments: (PaymentInput & { changeCents: number })[];
   events: {

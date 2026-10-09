@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { FeatureChangeInputSchema } from './features';
 const id = z.uuid(),
   money = z.number().int().min(0).max(9999999999),
   empty = z.strictObject({});
@@ -20,6 +21,8 @@ const exportSchema = z
   );
 export const OperationSchemas = {
   'settings.get': empty,
+  'settings.features.get': empty,
+  'settings.features.save': FeatureChangeInputSchema,
   'settings.save': z
     .strictObject({
       expectedRevision: z.number().int().positive(),
@@ -69,5 +72,8 @@ export const OperationSchemas = {
   'exports.products': exportSchema,
   'exports.sales': exportSchema,
   'exports.stock': exportSchema,
+  'exports.sale-items': exportSchema,
+  'exports.shifts': exportSchema,
+  'exports.purchases': exportSchema,
 } satisfies Record<string, z.ZodType>;
 export type OperationName = keyof typeof OperationSchemas;

@@ -5,6 +5,7 @@
 - [x] T01203 Validar errores y reintentos.
 - [x] T01204 Pruebas HTTP/DB y recuperación.
 - [x] T01205 Documentar y revisión final.
+- [x] T01206 Verificar faltantes y sobrantes de arqueo, corregir filtros de turnos/auditoría al día argentino y exportar productos alfabéticamente con columnas en español y precios en pesos. Evidencia: 110 pruebas de `npm run check`, exportación real de 27 productos y backend Docker actualizado.
 
 ## Evidencia
 

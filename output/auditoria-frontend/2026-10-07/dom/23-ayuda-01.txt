@@ -1,0 +1,98 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Ayuda" [level=1]
+  - text: Buscar en la ayuda
+  - searchbox "Buscar en la ayuda"
+  - navigation "Temas de ayuda":
+    - button "Caja y ventas" [active] [pressed]
+    - button "Efectivo y cierre de caja"
+    - button "Productos"
+    - button "Stock"
+    - button "Proveedores y compras"
+    - button "Promociones"
+    - button "Clientes y cuenta corriente"
+    - button "Histórico y anulaciones"
+    - button "Resumen mensual"
+    - button "Usuarios y configuración"
+    - button "Copias de seguridad"
+    - button "Cuenta y alcance"
+    - button "Ubicaciones y traslados"
+  - article:
+    - heading "Caja y ventas" [level=2]
+    - heading "Abrir la caja" [level=3]
+    - paragraph: Elegí la terminal que vas a usar e ingresá el efectivo que hay antes de empezar. Es el fondo para dar cambio, no una venta. Si ya hay un turno abierto a tu nombre, podés continuar en él.
+    - heading "Escanear y buscar" [level=3]
+    - paragraph: "El lector USB funciona como un teclado. Configuralo para que envíe Enter después de cada código. Escaneá en el campo de código: si el producto ya está en el carrito, suma una unidad. F2 vuelve al escaneo y F3 abre la búsqueda por nombre o código. Mientras escribís en otro campo o abrís una ventana, el escaneo queda suspendido."
+    - heading "Cantidades y productos por peso" [level=3]
+    - paragraph: Usá +, − o el campo de cantidad para cambiar unidades. Quitar elimina un renglón. Para pescado y otros productos por kilo, usá Producto por kilo (F6). Ingresá el peso o el importe de la porción; revisá la cantidad calculada antes de agregarla. 0,250 kg equivale a 250 gramos.
+    - heading "Descuentos y cobro" [level=3]
+    - paragraph: "Cambiar descuento (F4) permite aplicar un porcentaje o un monto a toda la venta. Cobrar (F8) abre los medios de pago. Podés combinar, por ejemplo, efectivo y débito. En efectivo recibido escribí lo que entrega el cliente: el sistema calcula el vuelto. Confirmar venta guarda la operación y descuenta el stock; abrir la ventana de cobro todavía no confirma nada."
+    - heading "Cancelar y recuperar un carrito" [level=3]
+    - paragraph: Cancelar venta en curso descarta la compra que todavía no se cobró. No borra una venta ya confirmada. Si salís y volvés a entrar, Recuperar carrito retoma la venta guardada a tu nombre. Revisá los cambios de precios que pueda mostrar el sistema.
+    - heading "Si se corta la conexión" [level=3]
+    - paragraph: No vuelvas a cobrar al cliente porque tarde en responder. Revisá el estado de la operación y usá el reintento que ofrece la pantalla. Una venta requiere conexión con el servidor; el sistema no confirma ventas sin conexión. Si no podés verificar qué pasó, consultá al supervisor antes de repetirla.

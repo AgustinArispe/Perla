@@ -1,0 +1,90 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Ayuda" [level=1]
+  - text: Buscar en la ayuda
+  - searchbox "Buscar en la ayuda"
+  - navigation "Temas de ayuda":
+    - button "Caja y ventas"
+    - button "Efectivo y cierre de caja"
+    - button "Productos"
+    - button "Stock"
+    - button "Proveedores y compras"
+    - button "Promociones"
+    - button "Clientes y cuenta corriente"
+    - button "Histórico y anulaciones"
+    - button "Resumen mensual"
+    - button "Usuarios y configuración"
+    - button "Copias de seguridad"
+    - button "Cuenta y alcance" [active] [pressed]
+    - button "Ubicaciones y traslados"
+  - article:
+    - heading "Cuenta y alcance" [level=2]
+    - heading "Contraseña y sesión" [level=3]
+    - paragraph: Cambiar contraseña permite actualizar tu clave personal. Cerrar sesión protege tu cuenta al dejar la PC. Si olvidás la contraseña, pedí al jefe que gestione el acceso; la recuperación de la cuenta del jefe la realiza el administrador del sistema.
+    - heading "Control interno" [level=3]
+    - paragraph: Perla Negra registra ventas y existencias para uso interno. No emite facturas ni comprobantes fiscales ni se integra con ARCA. Los datos de la demo son ficticios y están destinados a pruebas.

@@ -1,0 +1,92 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Ayuda" [level=1]
+  - text: Buscar en la ayuda
+  - searchbox "Buscar en la ayuda"
+  - navigation "Temas de ayuda":
+    - button "Caja y ventas"
+    - button "Efectivo y cierre de caja"
+    - button "Productos"
+    - button "Stock"
+    - button "Proveedores y compras"
+    - button "Promociones"
+    - button "Clientes y cuenta corriente"
+    - button "Histórico y anulaciones"
+    - button "Resumen mensual"
+    - button "Usuarios y configuración"
+    - button "Copias de seguridad"
+    - button "Cuenta y alcance"
+    - button "Ubicaciones y traslados" [active] [pressed]
+  - article:
+    - heading "Ubicaciones y traslados" [level=2]
+    - heading "Despachar mercadería" [level=3]
+    - paragraph: Elegí el origen y el destino, agregá los productos y confirmá el despacho. Las cantidades salen del stock de origen y quedan En tránsito hasta que el destino las reciba.
+    - heading "Recibir y registrar diferencias" [level=3]
+    - paragraph: Al llegar la mercadería, escribí la cantidad realmente recibida de cada producto. Si falta algo, la diferencia queda guardada en el traslado y solo lo recibido se suma al destino.
+    - heading "Cancelar un envío" [level=3]
+    - paragraph: Un traslado puede cancelarse mientras continúa En tránsito. El sistema repone el origen y conserva el motivo en el historial. Un traslado recibido ya no se puede cancelar.

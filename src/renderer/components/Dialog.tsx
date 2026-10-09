@@ -8,6 +8,8 @@ export function Dialog({
   onClose,
   busy = false,
   wide = false,
+  size,
+  className = '',
   onKeyDown,
 }: {
   title: string;
@@ -15,19 +17,31 @@ export function Dialog({
   onClose: () => void;
   busy?: boolean;
   wide?: boolean;
+  size?: 'compact' | 'regular' | 'wide';
+  className?: string;
   onKeyDown?: KeyboardEventHandler<HTMLDialogElement>;
 }) {
   const reference = useRef<HTMLDialogElement>(null);
   const id = useId();
   useLayoutEffect(() => {
     const dialog = reference.current!;
+    const origin = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     dialog.showModal();
-    return () => dialog.close();
+    const initialFocus =
+      dialog.querySelector<HTMLElement>('[data-dialog-focus]') ??
+      dialog.querySelector<HTMLElement>(
+        'input:not([type="hidden"]):not(:disabled), select:not(:disabled), textarea:not(:disabled)',
+      );
+    initialFocus?.focus();
+    return () => {
+      dialog.close();
+      if (origin?.isConnected) origin.focus();
+    };
   }, []);
   return (
     <dialog
       ref={reference}
-      className={`dialog ${wide ? 'dialog-wide' : ''}`}
+      className={`dialog dialog-${size ?? (wide ? 'wide' : 'regular')} ${className}`.trim()}
       aria-labelledby={id}
       onKeyDown={onKeyDown}
       onCancel={(event) => {

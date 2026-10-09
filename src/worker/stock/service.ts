@@ -31,6 +31,8 @@ const Cursor = z.strictObject({
   query: z.string(),
   filter: z.string(),
   includeInactive: z.boolean(),
+  categoryId: IdSchema.optional(),
+  brandId: IdSchema.optional(),
 });
 const MovementCursor = z.strictObject({
   sequence: z.number().int().positive(),
@@ -99,6 +101,43 @@ export class StockService {
   }
   record(input: StockRecordInput): StockBalance {
     return this.mutate('record', StockRecordSchema.parse(input));
+  }
+  appendPurchaseVoid(input: {
+    productId: string;
+    quantityBase: number;
+    reason: string;
+    operationKey: string;
+    purchaseId: string;
+    purchaseItemId: string;
+  }): StockBalance {
+    if (!this.db.inTransaction) throw new Error('La anulación requiere una transacción activa.');
+    const current = this.get(input.productId);
+    if (!current.trackStock || !current.initialized || current.quantityBase === null)
+      throw new DomainError(
+        'REVISION_CONFLICT',
+        'La existencia requiere revisión antes de anular.',
+      );
+    const next = nextBalance(current.quantityBase, -input.quantityBase, false);
+    const result: StockBalance = {
+      ...current,
+      quantityBase: next,
+      revision: current.revision + 1,
+      state: stockState(true, true, next, current.minStockBase),
+    };
+    this.ledger.appendWithinTransaction({
+      productId: input.productId,
+      deltaBase: -input.quantityBase,
+      nextBase: next,
+      revision: result.revision,
+      kind: 'VOID',
+      reason: input.reason,
+      operationKey: input.operationKey,
+      hash: createHash('sha256').update(JSON.stringify(input)).digest('hex'),
+      result,
+      purchaseId: input.purchaseId,
+      purchaseItemId: input.purchaseItemId,
+    });
+    return result;
   }
   private mutate(
     action: 'opening' | 'count' | 'record',
@@ -178,9 +217,13 @@ export class StockService {
     const input = StockSearchSchema.parse(raw);
     const query = normalizeSearch(input.query);
     const pattern = `%${query.replace(/[\\%_]/g, (c) => `\\${c}`)}%`;
-    const where = `(p.search_name LIKE ? ESCAPE '\\' OR bocha_search(p.sku) LIKE ? ESCAPE '\\' OR bocha_search(p.barcode) LIKE ? ESCAPE '\\')${input.includeInactive ? '' : ' AND p.active=1'}${input.filter === 'ALL' ? '' : ` AND (${stateSql})=?`}`;
+    const shortageFilter = input.filter === 'SHORTAGES';
+    const stateFilter = !shortageFilter && input.filter !== 'ALL';
+    const where = `(p.search_name LIKE ? ESCAPE '\\' OR bocha_search(p.sku) LIKE ? ESCAPE '\\' OR bocha_search(p.barcode) LIKE ? ESCAPE '\\')${input.includeInactive ? '' : ' AND p.active=1'}${shortageFilter ? ' AND p.track_stock=1 AND p.stock_initialized=1 AND b.quantity_base<=p.min_stock_base' : stateFilter ? ` AND (${stateSql})=?` : ''}${input.categoryId ? ' AND p.category_id=?' : ''}${input.brandId ? ' AND p.brand_id=?' : ''}`;
     const parameters: (string | number)[] = [pattern, pattern, pattern];
-    if (input.filter !== 'ALL') parameters.push(input.filter);
+    if (stateFilter) parameters.push(input.filter);
+    if (input.categoryId) parameters.push(input.categoryId);
+    if (input.brandId) parameters.push(input.brandId);
     const from = 'FROM products p LEFT JOIN inventory_balances b ON b.product_id=p.id';
     const total = (
       this.db.prepare(`SELECT COUNT(*) AS count ${from} WHERE ${where}`).get(...parameters) as {
@@ -194,7 +237,9 @@ export class StockService {
       if (
         cursor.query !== query ||
         cursor.filter !== input.filter ||
-        cursor.includeInactive !== input.includeInactive
+        cursor.includeInactive !== input.includeInactive ||
+        cursor.categoryId !== input.categoryId ||
+        cursor.brandId !== input.brandId
       )
         throw new DomainError('VALIDATION', 'La búsqueda cambió; volvé a la primera página.');
       after = ' AND (p.search_name>? OR (p.search_name=? AND p.id>?))';
@@ -218,6 +263,8 @@ export class StockService {
               query,
               filter: input.filter,
               includeInactive: input.includeInactive,
+              categoryId: input.categoryId,
+              brandId: input.brandId,
             })
           : null,
     };

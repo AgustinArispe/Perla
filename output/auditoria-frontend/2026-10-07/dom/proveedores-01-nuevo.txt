@@ -1,0 +1,155 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Proveedores" [level=1]
+  - textbox "Buscar proveedor"
+  - button "Nuevo proveedor": Nuevo proveedor
+  - button "Mis vistas": Mis vistas
+  - button "Exportar proveedores a Excel": Exportar Excel
+  - article:
+    - strong: Almacén · Distribuidor local
+    - generic: Activo
+    - button "Cuenta de Almacén · Distribuidor local. Saldo $ 41.733.144,53":
+      - generic: Saldo
+      - strong: $ 41.733.144,53
+    - button "Editar"
+  - article:
+    - strong: Bebidas · Distribuidor local
+    - generic: Activo
+    - button "Cuenta de Bebidas · Distribuidor local. Saldo $ 29.510.366,49":
+      - generic: Saldo
+      - strong: $ 29.510.366,49
+    - button "Editar"
+  - article:
+    - strong: Congelados · Distribuidor local
+    - generic: Activo
+    - button "Cuenta de Congelados · Distribuidor local. Saldo $ 24.146.798,50":
+      - generic: Saldo
+      - strong: $ 24.146.798,50
+    - button "Editar"
+  - article:
+    - strong: Fiambrería · Distribuidor local
+    - generic: Activo
+    - button "Cuenta de Fiambrería · Distribuidor local. Saldo $ 53.591.230,31":
+      - generic: Saldo
+      - strong: $ 53.591.230,31
+    - button "Editar"
+  - article:
+    - strong: Galletitas y golosinas · Distribuidor local
+    - generic: Activo
+    - button "Cuenta de Galletitas y golosinas · Distribuidor local. Saldo $ 18.834.744,61":
+      - generic: Saldo
+      - strong: $ 18.834.744,61
+    - button "Editar"
+  - article:
+    - strong: Infusiones y desayuno · Distribuidor local
+    - generic: Activo
+    - button "Cuenta de Infusiones y desayuno · Distribuidor local. Saldo $ 34.618.669,27":
+      - generic: Saldo
+      - strong: $ 34.618.669,27
+    - button "Editar"
+  - article:
+    - strong: Lácteos · Distribuidor local
+    - generic: Activo
+    - button "Cuenta de Lácteos · Distribuidor local. Saldo $ 14.358.954,32":
+      - generic: Saldo
+      - strong: $ 14.358.954,32
+    - button "Editar"
+  - article:
+    - strong: Limpieza · Distribuidor local
+    - generic: Activo
+    - button "Cuenta de Limpieza · Distribuidor local. Saldo $ 24.941.136,36":
+      - generic: Saldo
+      - strong: $ 24.941.136,36
+    - button "Editar"
+  - article:
+    - strong: Panadería y huevos · Distribuidor local
+    - generic: Activo
+    - button "Cuenta de Panadería y huevos · Distribuidor local. Saldo $ 13.622.203,58":
+      - generic: Saldo
+      - strong: $ 13.622.203,58
+    - button "Editar"
+  - article:
+    - strong: Verdulería · Distribuidor local
+    - generic: Activo
+    - button "Cuenta de Verdulería · Distribuidor local. Saldo $ 19.786.696,60":
+      - generic: Saldo
+      - strong: $ 19.786.696,60
+    - button "Editar"
+  - generic: 10 proveedores · Página 1
+  - button "Anterior" [disabled]
+  - button "Siguiente" [disabled]
+  - dialog "Nuevo proveedor":
+    - heading "Nuevo proveedor" [level=2]
+    - button "Cerrar"
+    - generic: Nombre
+    - textbox "Nombre" [active]
+    - generic: Teléfono
+    - textbox "Teléfono"
+    - button "Más datos"
+    - button "Cancelar"
+    - button "Guardar proveedor"

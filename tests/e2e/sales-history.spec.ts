@@ -78,16 +78,17 @@ test('Caja con scanner, peso, descuento y mixto conecta Histórico y stock', asy
     await page.keyboard.press('F8');
     const payment = page.getByRole('dialog');
     await expect(payment.getByRole('heading', { name: 'Cobrar venta', exact: true })).toBeVisible();
-    await page.keyboard.press('Enter');
-    await expect(payment).toBeVisible();
+    await payment.getByRole('button', { name: 'Dividir pago', exact: true }).click();
     await payment.getByLabel('Importe aplicado 1', { exact: true }).fill('1718');
     await payment.getByLabel('Efectivo recibido 1', { exact: true }).fill('2000');
-    await payment.getByRole('button', { name: 'Agregar medio de pago', exact: true }).click();
     await payment.getByLabel('Medio de pago 2', { exact: true }).selectOption('DEBIT');
     await payment.getByLabel('Importe aplicado 2', { exact: true }).fill('1000');
     await page.keyboard.press('F8');
     await expect(payment).not.toBeVisible();
     await expect(page.getByText('Venta guardada · N.º 1', { exact: true })).toBeVisible();
+    const receipt = page.getByRole('dialog');
+    await expect(receipt.getByRole('heading', { name: 'Comprobante de venta', exact: true })).toBeVisible();
+    await receipt.getByText('Cerrar', { exact: true }).click();
     await expect(scan).toBeFocused();
     const balances = await page.evaluate(
       async (ids) => Promise.all(ids.map((id) => window.bocha!.stock.get(id))),

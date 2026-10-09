@@ -1,0 +1,94 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Ayuda" [level=1]
+  - text: Buscar en la ayuda
+  - searchbox "Buscar en la ayuda"
+  - navigation "Temas de ayuda":
+    - button "Caja y ventas"
+    - button "Efectivo y cierre de caja"
+    - button "Productos"
+    - button "Stock"
+    - button "Proveedores y compras" [active] [pressed]
+    - button "Promociones"
+    - button "Clientes y cuenta corriente"
+    - button "Histórico y anulaciones"
+    - button "Resumen mensual"
+    - button "Usuarios y configuración"
+    - button "Copias de seguridad"
+    - button "Cuenta y alcance"
+    - button "Ubicaciones y traslados"
+  - article:
+    - heading "Proveedores y compras" [level=2]
+    - heading "Recibir mercadería" [level=3]
+    - paragraph: Elegí el proveedor, escaneá o buscá los productos e ingresá el costo de compra. El borrador se guarda solo. Al confirmar, la compra queda en el historial y, si usás control de stock, suma las cantidades recibidas.
+    - heading "Costos e historial" [level=3]
+    - paragraph: El sistema sugiere el último costo registrado para cada producto. El costo de compra no cambia el precio de venta. En Historial podés consultar quién recibió la mercadería, los costos de ese momento y el total.
+    - heading "Anular una compra" [level=3]
+    - paragraph: Una compra solo se anula automáticamente si el stock recibido todavía puede revertirse con seguridad. El motivo, la fecha y la persona responsable quedan registrados. Si hubo movimientos posteriores, revisá el stock antes de corregirlo.
+    - heading "Cuenta y pagos del proveedor" [level=3]
+    - paragraph: Cuando Cuenta de proveedores está activa, cada compra nueva queda pendiente. Abrí Proveedores, tocá el saldo y registrá pagos totales o parciales. El sistema los aplica primero a las compras más antiguas. Un pago en efectivo necesita una caja abierta y descuenta ese importe del efectivo esperado; transferencia o tarjeta no modifican el cajón.

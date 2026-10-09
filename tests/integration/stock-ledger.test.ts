@@ -315,6 +315,10 @@ it('muestra reposición de 2.000 productos y mantiene desconocidos por separado'
       `Reposición: 2.000 productos, p95=${times[28]!.toFixed(2)}ms (SQL+DTO, PC desarrollo).`,
     );
     expect(stock.search({ filter: 'UNKNOWN', limit: 20 }).total).toBe(1);
+    const shortages = stock.search({ filter: 'SHORTAGES', limit: 20 });
+    expect(shortages.total).toBe(1999);
+    expect(shortages.items.every((item) => item.state === 'LOW' || item.state === 'OUT' || item.state === 'NEGATIVE')).toBe(true);
+    expect(stock.search({ filter: 'SHORTAGES', query: 'Producto 0001', limit: 20 }).total).toBe(1);
     const first = stock.listLow({ limit: 50 });
     const next = stock.listLow({ limit: 50, cursor: first.nextCursor! });
     expect(new Set([...first.items, ...next.items].map((item) => item.productId)).size).toBe(100);

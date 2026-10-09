@@ -1,0 +1,11 @@
+{
+  "desktop": {
+    "chapters": 14,
+    "horizontalOverflow": false,
+    "missingAnchors": []
+  },
+  "mobile": {
+    "horizontalOverflow": false
+  },
+  "javascriptErrors": []
+}

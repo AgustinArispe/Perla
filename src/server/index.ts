@@ -37,6 +37,6 @@ async function main() {
   });
 }
 main().catch(() => {
-  console.error('No se pudo iniciar El Bocha. Revisá la configuración y la base de datos.');
+  console.error('No se pudo iniciar Perla Negra. Revisá la configuración y la base de datos.');
   process.exitCode = 1;
 });

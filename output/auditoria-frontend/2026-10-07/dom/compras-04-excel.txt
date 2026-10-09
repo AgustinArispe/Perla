@@ -1,0 +1,397 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Compras" [level=1]
+  - tablist "Secciones de compras":
+    - button "Recibir": Recibir
+    - button "Historial": Historial
+    - button "Proveedores": Proveedores
+  - generic: Desde
+  - textbox "Desde"
+  - generic: Hasta
+  - textbox "Hasta"
+  - generic: Estado
+  - combobox "Estado":
+    - option "Todas" [selected]
+    - option "Recibidas"
+    - option "Anuladas"
+  - button "Mis vistas": Mis vistas
+  - button "Exportar compras a Excel": Exportar Excel
+  - dialog "Exportar compras":
+    - heading "Exportar compras" [level=2]
+    - button "Cerrar"
+    - text: Desde
+    - textbox "Desde" [active]
+    - text: Hasta
+    - textbox "Hasta"
+    - generic "Estados Todas las opciones":
+      - generic: Estados
+      - generic: Todas las opciones
+    - paragraph: Incluye todos los resultados de los filtros, no solo esta página.
+    - generic "Guardar estos filtros"
+    - button "Volver"
+    - button "Descargar Excel"
+  - button "N.º 769 Verdulería · Distribuidor local 5/10/2026 Recibida $ 372.522,70":
+    - generic: N.º 769
+    - strong: Verdulería · Distribuidor local
+    - generic: 5/10/2026
+    - generic: Recibida
+    - strong: $ 372.522,70
+  - button "N.º 768 Fiambrería · Distribuidor local 5/10/2026 Recibida $ 1.031.170,62":
+    - generic: N.º 768
+    - strong: Fiambrería · Distribuidor local
+    - generic: 5/10/2026
+    - generic: Recibida
+    - strong: $ 1.031.170,62
+  - button "N.º 767 Congelados · Distribuidor local 5/10/2026 Recibida $ 292.994,24":
+    - generic: N.º 767
+    - strong: Congelados · Distribuidor local
+    - generic: 5/10/2026
+    - generic: Recibida
+    - strong: $ 292.994,24
+  - button "N.º 766 Limpieza · Distribuidor local 5/10/2026 Recibida $ 291.716,11":
+    - generic: N.º 766
+    - strong: Limpieza · Distribuidor local
+    - generic: 5/10/2026
+    - generic: Recibida
+    - strong: $ 291.716,11
+  - button "N.º 765 Galletitas y golosinas · Distribuidor local 5/10/2026 Recibida $ 71.929,50":
+    - generic: N.º 765
+    - strong: Galletitas y golosinas · Distribuidor local
+    - generic: 5/10/2026
+    - generic: Recibida
+    - strong: $ 71.929,50
+  - button "N.º 764 Bebidas · Distribuidor local 5/10/2026 Recibida $ 359.171,53":
+    - generic: N.º 764
+    - strong: Bebidas · Distribuidor local
+    - generic: 5/10/2026
+    - generic: Recibida
+    - strong: $ 359.171,53
+  - button "N.º 763 Infusiones y desayuno · Distribuidor local 5/10/2026 Recibida $ 634.060,05":
+    - generic: N.º 763
+    - strong: Infusiones y desayuno · Distribuidor local
+    - generic: 5/10/2026
+    - generic: Recibida
+    - strong: $ 634.060,05
+  - button "N.º 762 Almacén · Distribuidor local 5/10/2026 Recibida $ 486.543,03":
+    - generic: N.º 762
+    - strong: Almacén · Distribuidor local
+    - generic: 5/10/2026
+    - generic: Recibida
+    - strong: $ 486.543,03
+  - button "N.º 761 Verdulería · Distribuidor local 3/10/2026 Recibida $ 232.555,80":
+    - generic: N.º 761
+    - strong: Verdulería · Distribuidor local
+    - generic: 3/10/2026
+    - generic: Recibida
+    - strong: $ 232.555,80
+  - button "N.º 760 Fiambrería · Distribuidor local 3/10/2026 Recibida $ 1.447.983,90":
+    - generic: N.º 760
+    - strong: Fiambrería · Distribuidor local
+    - generic: 3/10/2026
+    - generic: Recibida
+    - strong: $ 1.447.983,90
+  - button "N.º 759 Limpieza · Distribuidor local 3/10/2026 Recibida $ 579.834,46":
+    - generic: N.º 759
+    - strong: Limpieza · Distribuidor local
+    - generic: 3/10/2026
+    - generic: Recibida
+    - strong: $ 579.834,46
+  - button "N.º 758 Almacén · Distribuidor local 3/10/2026 Recibida $ 317.795,48":
+    - generic: N.º 758
+    - strong: Almacén · Distribuidor local
+    - generic: 3/10/2026
+    - generic: Recibida
+    - strong: $ 317.795,48
+  - button "N.º 757 Verdulería · Distribuidor local 2/10/2026 Recibida $ 202.709,55":
+    - generic: N.º 757
+    - strong: Verdulería · Distribuidor local
+    - generic: 2/10/2026
+    - generic: Recibida
+    - strong: $ 202.709,55
+  - button "N.º 756 Fiambrería · Distribuidor local 2/10/2026 Recibida $ 604.078,53":
+    - generic: N.º 756
+    - strong: Fiambrería · Distribuidor local
+    - generic: 2/10/2026
+    - generic: Recibida
+    - strong: $ 604.078,53
+  - button "N.º 755 Limpieza · Distribuidor local 2/10/2026 Recibida $ 165.997,86":
+    - generic: N.º 755
+    - strong: Limpieza · Distribuidor local
+    - generic: 2/10/2026
+    - generic: Recibida
+    - strong: $ 165.997,86
+  - button "N.º 754 Bebidas · Distribuidor local 2/10/2026 Recibida $ 93.749,61":
+    - generic: N.º 754
+    - strong: Bebidas · Distribuidor local
+    - generic: 2/10/2026
+    - generic: Recibida
+    - strong: $ 93.749,61
+  - button "N.º 753 Lácteos · Distribuidor local 2/10/2026 Recibida $ 110.771,76":
+    - generic: N.º 753
+    - strong: Lácteos · Distribuidor local
+    - generic: 2/10/2026
+    - generic: Recibida
+    - strong: $ 110.771,76
+  - button "N.º 752 Infusiones y desayuno · Distribuidor local 2/10/2026 Recibida $ 173.830,50":
+    - generic: N.º 752
+    - strong: Infusiones y desayuno · Distribuidor local
+    - generic: 2/10/2026
+    - generic: Recibida
+    - strong: $ 173.830,50
+  - button "N.º 751 Verdulería · Distribuidor local 1/10/2026 Recibida $ 373.164,66":
+    - generic: N.º 751
+    - strong: Verdulería · Distribuidor local
+    - generic: 1/10/2026
+    - generic: Recibida
+    - strong: $ 373.164,66
+  - button "N.º 750 Fiambrería · Distribuidor local 1/10/2026 Recibida $ 1.121.839,66":
+    - generic: N.º 750
+    - strong: Fiambrería · Distribuidor local
+    - generic: 1/10/2026
+    - generic: Recibida
+    - strong: $ 1.121.839,66
+  - button "N.º 749 Congelados · Distribuidor local 1/10/2026 Recibida $ 328.959,12":
+    - generic: N.º 749
+    - strong: Congelados · Distribuidor local
+    - generic: 1/10/2026
+    - generic: Recibida
+    - strong: $ 328.959,12
+  - button "N.º 748 Limpieza · Distribuidor local 1/10/2026 Recibida $ 189.335,70":
+    - generic: N.º 748
+    - strong: Limpieza · Distribuidor local
+    - generic: 1/10/2026
+    - generic: Recibida
+    - strong: $ 189.335,70
+  - button "N.º 747 Galletitas y golosinas · Distribuidor local 1/10/2026 Recibida $ 285.163,39":
+    - generic: N.º 747
+    - strong: Galletitas y golosinas · Distribuidor local
+    - generic: 1/10/2026
+    - generic: Recibida
+    - strong: $ 285.163,39
+  - button "N.º 746 Infusiones y desayuno · Distribuidor local 1/10/2026 Recibida $ 109.333,44":
+    - generic: N.º 746
+    - strong: Infusiones y desayuno · Distribuidor local
+    - generic: 1/10/2026
+    - generic: Recibida
+    - strong: $ 109.333,44
+  - button "N.º 745 Almacén · Distribuidor local 1/10/2026 Recibida $ 802.738,12":
+    - generic: N.º 745
+    - strong: Almacén · Distribuidor local
+    - generic: 1/10/2026
+    - generic: Recibida
+    - strong: $ 802.738,12
+  - button "N.º 744 Panadería y huevos · Distribuidor local 30/9/2026 Recibida $ 189.461,44":
+    - generic: N.º 744
+    - strong: Panadería y huevos · Distribuidor local
+    - generic: 30/9/2026
+    - generic: Recibida
+    - strong: $ 189.461,44
+  - button "N.º 743 Verdulería · Distribuidor local 30/9/2026 Recibida $ 304.746,35":
+    - generic: N.º 743
+    - strong: Verdulería · Distribuidor local
+    - generic: 30/9/2026
+    - generic: Recibida
+    - strong: $ 304.746,35
+  - button "N.º 742 Fiambrería · Distribuidor local 30/9/2026 Recibida $ 412.641,00":
+    - generic: N.º 742
+    - strong: Fiambrería · Distribuidor local
+    - generic: 30/9/2026
+    - generic: Recibida
+    - strong: $ 412.641,00
+  - button "N.º 741 Galletitas y golosinas · Distribuidor local 30/9/2026 Recibida $ 197.736,44":
+    - generic: N.º 741
+    - strong: Galletitas y golosinas · Distribuidor local
+    - generic: 30/9/2026
+    - generic: Recibida
+    - strong: $ 197.736,44
+  - button "N.º 740 Infusiones y desayuno · Distribuidor local 30/9/2026 Recibida $ 244.986,72":
+    - generic: N.º 740
+    - strong: Infusiones y desayuno · Distribuidor local
+    - generic: 30/9/2026
+    - generic: Recibida
+    - strong: $ 244.986,72
+  - button "N.º 739 Almacén · Distribuidor local 30/9/2026 Recibida $ 320.152,38":
+    - generic: N.º 739
+    - strong: Almacén · Distribuidor local
+    - generic: 30/9/2026
+    - generic: Recibida
+    - strong: $ 320.152,38
+  - button "N.º 738 Panadería y huevos · Distribuidor local 29/9/2026 Recibida $ 334.381,50":
+    - generic: N.º 738
+    - strong: Panadería y huevos · Distribuidor local
+    - generic: 29/9/2026
+    - generic: Recibida
+    - strong: $ 334.381,50
+  - button "N.º 737 Verdulería · Distribuidor local 29/9/2026 Recibida $ 372.176,95":
+    - generic: N.º 737
+    - strong: Verdulería · Distribuidor local
+    - generic: 29/9/2026
+    - generic: Recibida
+    - strong: $ 372.176,95
+  - button "N.º 736 Congelados · Distribuidor local 29/9/2026 Recibida $ 736.737,21":
+    - generic: N.º 736
+    - strong: Congelados · Distribuidor local
+    - generic: 29/9/2026
+    - generic: Recibida
+    - strong: $ 736.737,21
+  - button "N.º 735 Galletitas y golosinas · Distribuidor local 29/9/2026 Recibida $ 105.788,96":
+    - generic: N.º 735
+    - strong: Galletitas y golosinas · Distribuidor local
+    - generic: 29/9/2026
+    - generic: Recibida
+    - strong: $ 105.788,96
+  - button "N.º 734 Lácteos · Distribuidor local 29/9/2026 Recibida $ 233.850,96":
+    - generic: N.º 734
+    - strong: Lácteos · Distribuidor local
+    - generic: 29/9/2026
+    - generic: Recibida
+    - strong: $ 233.850,96
+  - button "N.º 733 Infusiones y desayuno · Distribuidor local 29/9/2026 Recibida $ 642.625,23":
+    - generic: N.º 733
+    - strong: Infusiones y desayuno · Distribuidor local
+    - generic: 29/9/2026
+    - generic: Recibida
+    - strong: $ 642.625,23
+  - button "N.º 732 Almacén · Distribuidor local 29/9/2026 Recibida $ 126.663,30":
+    - generic: N.º 732
+    - strong: Almacén · Distribuidor local
+    - generic: 29/9/2026
+    - generic: Recibida
+    - strong: $ 126.663,30
+  - button "N.º 731 Verdulería · Distribuidor local 28/9/2026 Recibida $ 422.077,92":
+    - generic: N.º 731
+    - strong: Verdulería · Distribuidor local
+    - generic: 28/9/2026
+    - generic: Recibida
+    - strong: $ 422.077,92
+  - button "N.º 730 Fiambrería · Distribuidor local 28/9/2026 Recibida $ 427.242,00":
+    - generic: N.º 730
+    - strong: Fiambrería · Distribuidor local
+    - generic: 28/9/2026
+    - generic: Recibida
+    - strong: $ 427.242,00
+  - button "N.º 729 Limpieza · Distribuidor local 28/9/2026 Recibida $ 207.325,56":
+    - generic: N.º 729
+    - strong: Limpieza · Distribuidor local
+    - generic: 28/9/2026
+    - generic: Recibida
+    - strong: $ 207.325,56
+  - button "N.º 728 Galletitas y golosinas · Distribuidor local 28/9/2026 Recibida $ 221.322,30":
+    - generic: N.º 728
+    - strong: Galletitas y golosinas · Distribuidor local
+    - generic: 28/9/2026
+    - generic: Recibida
+    - strong: $ 221.322,30
+  - button "N.º 727 Bebidas · Distribuidor local 28/9/2026 Recibida $ 598.004,44":
+    - generic: N.º 727
+    - strong: Bebidas · Distribuidor local
+    - generic: 28/9/2026
+    - generic: Recibida
+    - strong: $ 598.004,44
+  - button "N.º 726 Lácteos · Distribuidor local 28/9/2026 Recibida $ 449.527,56":
+    - generic: N.º 726
+    - strong: Lácteos · Distribuidor local
+    - generic: 28/9/2026
+    - generic: Recibida
+    - strong: $ 449.527,56
+  - button "N.º 725 Almacén · Distribuidor local 26/9/2026 Recibida $ 134.998,50":
+    - generic: N.º 725
+    - strong: Almacén · Distribuidor local
+    - generic: 26/9/2026
+    - generic: Recibida
+    - strong: $ 134.998,50
+  - button "N.º 724 Verdulería · Distribuidor local 26/9/2026 Recibida $ 331.341,47":
+    - generic: N.º 724
+    - strong: Verdulería · Distribuidor local
+    - generic: 26/9/2026
+    - generic: Recibida
+    - strong: $ 331.341,47
+  - button "N.º 723 Fiambrería · Distribuidor local 26/9/2026 Recibida $ 562.005,00":
+    - generic: N.º 723
+    - strong: Fiambrería · Distribuidor local
+    - generic: 26/9/2026
+    - generic: Recibida
+    - strong: $ 562.005,00
+  - button "N.º 722 Limpieza · Distribuidor local 26/9/2026 Recibida $ 208.562,73":
+    - generic: N.º 722
+    - strong: Limpieza · Distribuidor local
+    - generic: 26/9/2026
+    - generic: Recibida
+    - strong: $ 208.562,73
+  - button "N.º 721 Galletitas y golosinas · Distribuidor local 26/9/2026 Recibida $ 247.151,38":
+    - generic: N.º 721
+    - strong: Galletitas y golosinas · Distribuidor local
+    - generic: 26/9/2026
+    - generic: Recibida
+    - strong: $ 247.151,38
+  - button "N.º 720 Bebidas · Distribuidor local 26/9/2026 Recibida $ 437.077,98":
+    - generic: N.º 720
+    - strong: Bebidas · Distribuidor local
+    - generic: 26/9/2026
+    - generic: Recibida
+    - strong: $ 437.077,98

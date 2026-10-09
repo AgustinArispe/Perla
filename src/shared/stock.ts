@@ -10,8 +10,9 @@ export const StockFilterSchema = z.enum([
   'NEGATIVE',
   'OK',
   'DISABLED',
+  'SHORTAGES',
 ]);
-export type StockState = Exclude<z.infer<typeof StockFilterSchema>, 'ALL'>;
+export type StockState = Exclude<z.infer<typeof StockFilterSchema>, 'ALL' | 'SHORTAGES'>;
 const mutation = {
   productId: IdSchema,
   operationKey: IdSchema,
@@ -37,6 +38,8 @@ export const StockSearchSchema = z.strictObject({
   query: z.string().trim().max(120).default(''),
   filter: StockFilterSchema.default('ALL'),
   includeInactive: z.boolean().default(false),
+  categoryId: IdSchema.optional(),
+  brandId: IdSchema.optional(),
   limit: z.number().int().min(1).max(100),
   cursor: z.string().max(1200).optional(),
 });

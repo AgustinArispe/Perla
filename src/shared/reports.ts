@@ -2,6 +2,19 @@ import { z } from 'zod';
 import type { PaymentInput } from './sales';
 export const MonthSchema = z.string().regex(/^[1-9]\d{3}-(0[1-9]|1[0-2])$/);
 export const MonthlyRequestSchema = z.strictObject({ month: MonthSchema });
+export const ComparisonRequestSchema = z
+  .strictObject({
+    preset: z.enum(['TODAY', 'WEEK', 'MONTH', 'CUSTOM']),
+    from: z.iso.date().optional(),
+    to: z.iso.date().optional(),
+  })
+  .superRefine((value, context) => {
+    if (value.preset === 'CUSTOM' && (!value.from || !value.to))
+      context.addIssue({ code: 'custom', message: 'Elegí las fechas del rango.' });
+    if (value.preset !== 'CUSTOM' && (value.from || value.to))
+      context.addIssue({ code: 'custom', message: 'Las fechas sólo corresponden al rango.' });
+  });
+export type ComparisonRequest = z.infer<typeof ComparisonRequestSchema>;
 export interface ReportTotals {
   grossCents: number;
   discountCents: number;
@@ -17,6 +30,15 @@ export interface RankedProduct {
   unit: 'UNIT' | 'KG';
   quantityBase: number;
   netCents: number;
+}
+export interface ProfitabilityBreakdown {
+  id: string;
+  name: string;
+  netCents: number;
+  coveredNetCents: number;
+  knownCostCents: number;
+  grossMarginCents: number;
+  coverageBasisPoints: number;
 }
 export interface MonthlyReport {
   month: string;
@@ -35,6 +57,15 @@ export interface MonthlyReport {
   cardCents: number;
   daily: { date: string; netCents: number; saleCount: number }[];
   rankings: { revenue: RankedProduct[]; units: RankedProduct[]; kilos: RankedProduct[] };
+  profitability: {
+    knownCostCents: number;
+    coveredNetCents: number;
+    grossMarginCents: number;
+    coverageBasisPoints: number;
+    missingLineCount: number;
+    products: ProfitabilityBreakdown[];
+    categories: ProfitabilityBreakdown[];
+  };
   lowStock: {
     productId: string;
     name: string;
@@ -45,4 +76,11 @@ export interface MonthlyReport {
     revenueRank: number | null;
     state: 'LOW' | 'EMPTY' | 'NEGATIVE';
   }[];
+}
+export interface PeriodComparison {
+  preset: ComparisonRequest['preset'];
+  period: { from: string; to: string; previousFrom: string; previousTo: string };
+  current: ReportTotals;
+  previous: ReportTotals;
+  changeBasisPoints: number | null;
 }

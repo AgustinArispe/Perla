@@ -1,0 +1,229 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - strong: Caja abierta · Caja 1 · Lucía
+  - button "Ingreso / retiro"
+  - button "Cerrar caja"
+  - heading "Caja" [level=1]
+  - generic: Escanear código
+  - generic: Borrador al día
+  - textbox "Escanear código" [disabled]:
+    - /placeholder: Código de barras + Enter
+  - generic: F2
+  - button "Buscar producto · F3" [disabled]: Buscar producto · F3
+  - button "Producto por kilo · F6" [disabled]: Producto por kilo · F6
+  - generic: Escaneo suspendido
+  - table:
+    - rowgroup:
+      - row "Producto Cantidad Precio Importe":
+        - columnheader "Producto"
+        - columnheader "Cantidad"
+        - columnheader "Precio"
+        - columnheader "Importe"
+        - columnheader
+    - rowgroup:
+      - row "Arroz largo fino 1 kg 7799900000014 Restar Arroz largo fino 1 kg Cambiar cantidad de Arroz largo fino 1 kg Sumar Arroz largo fino 1 kg $ 2.084,92 $ 4.169,84 Quitar Arroz largo fino 1 kg":
+        - cell "Arroz largo fino 1 kg 7799900000014":
+          - strong: Arroz largo fino 1 kg
+          - generic: "7799900000014"
+        - cell "Restar Arroz largo fino 1 kg Cambiar cantidad de Arroz largo fino 1 kg Sumar Arroz largo fino 1 kg":
+          - button "Restar Arroz largo fino 1 kg" [disabled]: −
+          - button "Cambiar cantidad de Arroz largo fino 1 kg" [disabled]: "2"
+          - button "Sumar Arroz largo fino 1 kg" [disabled]: +
+        - cell "$ 2.084,92"
+        - cell "$ 4.169,84":
+          - strong: $ 4.169,84
+        - cell "Quitar Arroz largo fino 1 kg":
+          - button "Quitar Arroz largo fino 1 kg" [disabled]: Quitar
+      - row "Jamón cocido SIM-0087 · Porción Cambiar cantidad de Jamón cocido $ 16.795,23 / kg $ 4.198,81 Quitar Jamón cocido":
+        - cell "Jamón cocido SIM-0087 · Porción":
+          - strong: Jamón cocido
+          - generic: SIM-0087 · Porción
+        - cell "Cambiar cantidad de Jamón cocido":
+          - button "Cambiar cantidad de Jamón cocido" [disabled]: 0,250 kg
+        - cell "$ 16.795,23 / kg":
+          - text: $ 16.795,23
+          - generic: / kg
+        - cell "$ 4.198,81":
+          - strong: $ 4.198,81
+        - cell "Quitar Jamón cocido":
+          - button "Quitar Jamón cocido" [disabled]: Quitar
+      - row "Tomate SIM-0101 · Porción Cambiar cantidad de Tomate $ 2.664,06 / kg $ 3.037,03 Antes $ 3.196,87 Quitar Tomate":
+        - cell "Tomate SIM-0101 · Porción":
+          - strong: Tomate
+          - generic: SIM-0101 · Porción
+        - cell "Cambiar cantidad de Tomate":
+          - button "Cambiar cantidad de Tomate" [disabled]: 1,200 kg
+        - cell "$ 2.664,06 / kg":
+          - text: $ 2.664,06
+          - generic: / kg
+        - cell "$ 3.037,03 Antes $ 3.196,87":
+          - strong: $ 3.037,03
+          - generic: Antes $ 3.196,87
+        - cell "Quitar Tomate":
+          - button "Quitar Tomate" [disabled]: Quitar
+  - complementary:
+    - heading "Venta en curso" [level=2]
+    - term: Subtotal
+    - definition: $ 11.565,52
+    - term: Promociones
+    - definition: $ 159,84
+    - status:
+      - strong: Ahorrás $ 159,84
+      - generic: "Verdulería: 5% de descuento"
+    - button "Descuento manual · F4" [disabled]
+    - button "Elegir cliente" [disabled]: Elegir cliente
+    - generic: Total
+    - strong: $ 11.405,68
+    - button "Cobrar · F8" [disabled]: Cobrar · F8
+    - button "Cancelar venta en curso" [disabled]
+  - dialog "Elegir producto por kilo":
+    - heading "Elegir producto por kilo" [level=2]
+    - button "Cerrar"
+    - text: Nombre o código
+    - combobox "Nombre o código" [expanded] [active]
+    - listbox "Productos encontrados":
+      - option "Agregar Banana":
+        - strong: Banana
+        - generic: SIM-0106 · Por kilo
+        - strong: $ 3.590,70
+      - option "Agregar Banana · Buen Día":
+        - strong: Banana · Buen Día
+        - generic: SIM-0463 · Por kilo
+        - strong: $ 3.382,20
+      - option "Agregar Banana · Buenos Sabores":
+        - strong: Banana · Buenos Sabores
+        - generic: SIM-3319 · Por kilo
+        - strong: $ 4.340,00
+      - option "Agregar Banana · Campo Vivo":
+        - strong: Banana · Campo Vivo
+        - generic: SIM-1296 · Por kilo
+        - strong: $ 3.750,00
+      - option "Agregar Banana · Cosecha Nueva":
+        - strong: Banana · Cosecha Nueva
+        - generic: SIM-2010 · Por kilo
+        - strong: $ 2.620,00
+      - option "Agregar Banana · Costa Clara":
+        - strong: Banana · Costa Clara
+        - generic: SIM-2248 · Por kilo
+        - strong: $ 2.510,00
+      - option "Agregar Banana · Del Valle" [selected]:
+        - strong: Banana · Del Valle
+        - generic: SIM-2724 · Por kilo
+        - strong: $ 3.430,00
+      - option "Agregar Banana · Don Pedro":
+        - strong: Banana · Don Pedro
+        - generic: SIM-1058 · Por kilo
+        - strong: $ 4.864,83
+      - option "Agregar Banana · El Molino":
+        - strong: Banana · El Molino
+        - generic: SIM-0820 · Por kilo
+        - strong: $ 3.648,64
+      - option "Agregar Banana · El Ombú":
+        - strong: Banana · El Ombú
+        - generic: SIM-2962 · Por kilo
+        - strong: $ 2.550,00
+      - option "Agregar Banana · El Trigal":
+        - strong: Banana · El Trigal
+        - generic: SIM-1534 · Por kilo
+        - strong: $ 3.970,00
+      - option "Agregar Banana · La Abuela":
+        - strong: Banana · La Abuela
+        - generic: SIM-1891 · Por kilo
+        - strong: $ 2.460,00
+      - option "Agregar Banana · La Colonia":
+        - strong: Banana · La Colonia
+        - generic: SIM-1177 · Por kilo
+        - strong: $ 2.720,00
+      - option "Agregar Banana · La Cumbre":
+        - strong: Banana · La Cumbre
+        - generic: SIM-2605 · Por kilo
+        - strong: $ 4.460,00
+      - option "Agregar Banana · La Estrella":
+        - strong: Banana · La Estrella
+        - generic: SIM-3200 · Por kilo
+        - strong: $ 2.700,00
+      - option "Agregar Banana · La Familia":
+        - strong: Banana · La Familia
+        - generic: SIM-1653 · Por kilo
+        - strong: $ 2.520,00
+      - option "Agregar Banana · La Huerta":
+        - strong: Banana · La Huerta
+        - generic: SIM-0582 · Por kilo
+        - strong: $ 4.667,93
+      - option "Agregar Banana · La Pradera":
+        - strong: Banana · La Pradera
+        - generic: SIM-2129 · Por kilo
+        - strong: $ 2.900,00
+      - option "Agregar Banana · La Reserva":
+        - strong: Banana · La Reserva
+        - generic: SIM-3676 · Por kilo
+        - strong: $ 3.700,00
+      - option "Agregar Banana · Las Sierras":
+        - strong: Banana · Las Sierras
+        - generic: SIM-0939 · Por kilo
+        - strong: $ 4.227,77

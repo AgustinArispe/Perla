@@ -1,0 +1,14 @@
+- region "Perla Negra, pescados y mariscos":
+  - strong: Perla Negra
+  - generic: Sistema interno
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - generic: Control de ventas y stock
+  - strong: Pescados y mariscos
+- heading "Ingresar al sistema" [level=1]
+- paragraph: Usá las credenciales asignadas a tu perfil.
+- text: Usuario
+- textbox "Usuario" [active]: <redacted>
+- text: Contraseña
+- textbox "Contraseña": <redacted>
+- button "Ingresar"

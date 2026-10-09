@@ -130,12 +130,45 @@ it('worker real: caja, kilos, venta concurrente idempotente, arqueo y restauraci
     await call('POST', 'sales/void', voidInput);
     await call('POST', 'sales/void', voidInput);
     expect((await call('GET', 'stock/' + product.id)).quantityBase).toBe(1000);
+    const returnSale = await call('POST', 'sales', {
+      checkoutKey: randomUUID(),
+      lines: [
+        {
+          lineId: randomUUID(),
+          productId: product.id,
+          quantityBase: 250,
+          expectedProductRevision: stock.productRevision,
+          expectedPriceCents: product.priceCents,
+        },
+      ],
+      discount: { type: 'NONE' },
+      payments: [{ method: 'CASH', amountCents: 300000 }],
+    });
+    const returnPreview = await call('GET', `sales/${returnSale.id}/return-preview`);
+    const returnInput = {
+      saleId: returnSale.id,
+      operationKey: randomUUID(),
+      reason: 'Devolución parcial de prueba',
+      refundMethod: 'CASH',
+      items: [
+        {
+          saleItemId: returnPreview.items[0].saleItemId,
+          quantityBase: 100,
+          disposition: 'RESTOCK',
+        },
+      ],
+    };
+    const partial = await call('POST', 'sales/returns', returnInput);
+    expect(partial.totalCents).toBe(120000);
+    expect((await call('POST', 'sales/returns', returnInput)).id).toBe(partial.id);
+    expect((await call('GET', `sales/${returnSale.id}/returns`))).toHaveLength(1);
+    expect((await call('GET', 'stock/' + product.id)).quantityBase).toBe(850);
     const refundClosed = await call('POST', 'cash/close', {
       shiftId: refundShift.id,
-      countedCashCents: 100000,
+      countedCashCents: 280000,
       operationKey: randomUUID(),
     });
-    expect(refundClosed.expectedCashCents).toBe(100000);
+    expect(refundClosed.expectedCashCents).toBe(280000);
     const backup = await call('POST', 'backups', {});
     const download = await app.inject({ url: `/api/v1/backups/${backup.id}/download`, headers });
     expect(download.statusCode).toBe(200);
@@ -185,6 +218,7 @@ it('sesiones web refrescan actividad, vencen inactivas y revocan otro ingreso', 
     ).toBeGreaterThan(Date.now() - 1000);
     runtime.database.prepare('UPDATE auth_sessions SET last_seen_ms=?').run(Date.now() - 1800001);
     expect(() => auth.requireUser(grant.sessionToken)).toThrow('venció');
+    expect(runtime.database.prepare('SELECT 1 FROM auth_sessions').get()).toBeUndefined();
     const first = auth.login(credentials),
       second = auth.login(credentials);
     expect(() => auth.requireUser(first.sessionToken)).toThrow();

@@ -1,0 +1,116 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Configuración" [level=1]
+  - button "Actualizar"
+  - tablist "Configuración":
+    - tab "Negocio"
+    - tab "Funciones"
+    - tab "Terminales" [selected]
+    - tab "Exportar"
+  - tabpanel "Terminales":
+    - region "Terminales":
+      - heading "Terminales" [level=2]
+      - button "Crear terminal"
+      - table:
+        - rowgroup:
+          - row "Nombre Estado Ubicación Acciones":
+            - columnheader "Nombre"
+            - columnheader "Estado"
+            - columnheader "Ubicación"
+            - columnheader "Acciones":
+              - generic: Acciones
+        - rowgroup:
+          - row "Caja 1 · Lucía Activa Salón de ventas Editar Caja 1 · Lucía":
+            - cell "Caja 1 · Lucía":
+              - strong: Caja 1 · Lucía
+            - cell "Activa"
+            - cell "Salón de ventas"
+            - cell "Editar Caja 1 · Lucía":
+              - button "Editar Caja 1 · Lucía": Editar
+          - row "Caja 2 · Martín Activa Salón de ventas Editar Caja 2 · Martín":
+            - cell "Caja 2 · Martín":
+              - strong: Caja 2 · Martín
+            - cell "Activa"
+            - cell "Salón de ventas"
+            - cell "Editar Caja 2 · Martín":
+              - button "Editar Caja 2 · Martín": Editar
+  - dialog "Crear terminal":
+    - heading "Crear terminal" [level=2]
+    - button "Cerrar"
+    - text: Nombre
+    - textbox "Nombre" [active]
+    - text: Ubicación
+    - combobox "Ubicación":
+      - option "Salón de ventas" [selected]
+      - option "Cámara de frío"
+      - option "Depósito central"
+      - option "Depósito de reserva"
+    - checkbox "Terminal activa" [checked]
+    - text: Terminal activa
+    - button "Volver"
+    - button "Guardar terminal"

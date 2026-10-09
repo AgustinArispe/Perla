@@ -79,6 +79,18 @@ it('guarda snapshots, stock, vuelto y borrador juntos; 100 reintentos no duplica
     f.db.close();
   }
 });
+it('confirma una venta rápida sin esperar el autosave del borrador y lo elimina en la misma transacción', () => {
+  const f = fixture();
+  try {
+    const input = { ...f.input, expectedDraftRevision: undefined };
+    const sale = f.sales.complete(input);
+    expect(sale.totalCents).toBe(300000);
+    expect(f.drafts.get()).toBeNull();
+    expect(f.stock.get(f.product.id).quantityBase).toBe(750);
+  } finally {
+    f.db.close();
+  }
+});
 it('fallo después de descontar stock revierte toda la venta y conserva el borrador', () => {
   const f = fixture();
   try {

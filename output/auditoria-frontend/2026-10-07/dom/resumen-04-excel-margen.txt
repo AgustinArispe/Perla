@@ -1,0 +1,411 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - button "Exportar resumen mensual a Excel": Exportar Excel
+  - heading "Resumen mensual" [level=1]
+  - group "Cambiar mes":
+    - button "Mes anterior"
+    - text: Mes
+    - textbox "Mes": 2026-10
+    - button "Mes siguiente" [disabled]
+  - button "Reporte PDF": Reporte PDF
+  - article:
+    - generic: Vendido neto
+    - strong:
+      - generic: $ 14.181.205,24
+    - generic: Del 1 oct al 7 oct
+  - article:
+    - generic: Ventas
+    - strong:
+      - generic: "449"
+    - generic: Ventas completadas
+  - article:
+    - generic: Ticket promedio
+    - strong:
+      - generic: $ 31.583,98
+    - generic: Por venta completada
+  - region "Ritmo del negocio":
+    - button "Exportar comparación a Excel": Exportar Excel
+    - heading "Ritmo del negocio" [level=2]
+    - group "Período a comparar":
+      - button "Hoy"
+      - button "Semana"
+      - button "Mes"
+      - button "Rango" [pressed]
+    - text: Desde
+    - textbox "Desde": 2026-10-01
+    - text: Hasta
+    - textbox "Hasta": 2026-10-07
+    - article:
+      - generic: 1 oct — 7 oct
+      - strong:
+        - generic: $ 14.181.205,24
+      - generic: 449 ventas · ticket $ 31.583,98
+    - generic: "-35,61%"
+    - generic: "Anterior: 24 sept — 30 sept · $ 22.025.709,89"
+  - region "Rentabilidad":
+    - button "Exportar margen bruto a Excel": Exportar Excel
+    - dialog "Exportar margen bruto":
+      - heading "Exportar margen bruto" [level=2]
+      - button "Cerrar"
+      - text: Mes
+      - textbox "Mes" [active]: 2026-10
+      - paragraph: Incluye todos los resultados de los filtros, no solo esta página.
+      - button "Volver"
+      - button "Descargar Excel"
+    - heading "Margen bruto" [level=2]
+    - generic: 100% cubierto
+    - article:
+      - generic: Costo de mercadería
+      - strong: $ 9.299.840,00
+    - article:
+      - generic: Margen bruto conocido
+      - strong:
+        - generic: $ 4.881.365,24
+    - text: No incluye gastos, impuestos ni comisiones.
+    - generic "Ver margen por producto y categoría"
+    - heading "Productos" [level=3]
+    - generic: Café instantáneo 100 g
+    - strong: $ 79.190,49
+    - generic: Yerba suave 1 kg
+    - strong: $ 76.961,60
+    - generic: Vino blanco 750 ml
+    - strong: $ 71.889,77
+    - generic: Aceite de oliva 500 ml
+    - strong: $ 61.298,28
+    - generic: Cerveza botella 1 L
+    - strong: $ 61.222,28
+    - generic: Huevos docena
+    - strong: $ 58.771,76
+    - generic: Pizza muzzarella
+    - strong: $ 54.046,73
+    - generic: Suavizante 900 ml
+    - strong: $ 52.693,87
+    - heading "Categorías" [level=3]
+    - generic: Almacén
+    - strong: $ 769.682,26
+    - generic: Verdulería
+    - strong: $ 735.044,06
+    - generic: Infusiones y desayuno
+    - strong: $ 603.823,11
+    - generic: Bebidas
+    - strong: $ 536.266,91
+    - generic: Fiambrería
+    - strong: $ 637.947,46
+    - generic: Limpieza
+    - strong: $ 439.869,14
+    - generic: Congelados
+    - strong: $ 380.532,74
+    - generic: Galletitas y golosinas
+    - strong: $ 329.831,18
+  - strong: Descuentos $ 137.573,89
+  - paragraph: Sobre $ 14.318.779,13 en ventas brutas
+  - heading "Ventas por día" [level=2]
+  - text: Mejor día
+  - strong: 3 oct
+  - text: · $ 4.148.506,99
+  - generic: $ 4.148.506,99
+  - generic: $ 0
+  - generic "Importe neto vendido por día":
+    - 'button "1 oct: $ 3.326.100,22, 108 ventas"':
+      - generic: "01"
+    - 'button "2 oct: $ 3.018.713,61, 91 ventas"':
+      - generic: "02"
+    - 'button "3 oct: $ 4.148.506,99, 132 ventas"':
+      - generic: "03"
+    - 'button "4 oct: $ 0,00, 0 ventas"':
+      - generic: "04"
+    - 'button "5 oct: $ 3.687.884,42, 118 ventas"':
+      - generic: "05"
+    - 'button "6 oct: $ 0,00, 0 ventas"':
+      - generic: "06"
+    - 'button "7 oct: $ 0,00, 0 ventas"':
+      - generic: "07"
+  - generic "Ver importes diarios"
+  - table:
+    - rowgroup:
+      - row "Día Ventas Neto":
+        - columnheader "Día"
+        - columnheader "Ventas"
+        - columnheader "Neto"
+    - rowgroup:
+      - row "1 oct 108 $ 3.326.100,22":
+        - cell "1 oct"
+        - cell "108"
+        - cell "$ 3.326.100,22"
+      - row "2 oct 91 $ 3.018.713,61":
+        - cell "2 oct"
+        - cell "91"
+        - cell "$ 3.018.713,61"
+      - row "3 oct 132 $ 4.148.506,99":
+        - cell "3 oct"
+        - cell "132"
+        - cell "$ 4.148.506,99"
+      - row "4 oct 0 $ 0,00":
+        - cell "4 oct"
+        - cell "0"
+        - cell "$ 0,00"
+      - row "5 oct 118 $ 3.687.884,42":
+        - cell "5 oct"
+        - cell "118"
+        - cell "$ 3.687.884,42"
+      - row "6 oct 0 $ 0,00":
+        - cell "6 oct"
+        - cell "0"
+        - cell "$ 0,00"
+      - row "7 oct 0 $ 0,00":
+        - cell "7 oct"
+        - cell "0"
+        - cell "$ 0,00"
+  - heading "Medios de pago" [level=2]
+  - button "Exportar medios de pago a Excel": Exportar Excel
+  - strong: Efectivo
+  - strong: $ 5.898.412,84
+  - generic: 41,59% del importe · 202 ventas(44,98%)
+  - strong: Débito
+  - strong: $ 3.837.225,94
+  - generic: 27,05% del importe · 129 ventas(28,73%)
+  - strong: Crédito
+  - strong: $ 1.575.002,21
+  - generic: 11,1% del importe · 48 ventas(10,69%)
+  - strong: Transferencia
+  - strong: $ 2.421.214,80
+  - generic: 17,07% del importe · 74 ventas(16,48%)
+  - generic "Medios sin ventas (1)"
+  - button "Exportar productos más vendidos a Excel": Exportar Excel
+  - heading "Productos más vendidos" [level=2]
+  - text: Ordenar por
+  - combobox "Ordenar productos":
+    - option "Facturación neta" [selected]
+    - option "Unidades"
+    - option "Kilos"
+  - table:
+    - rowgroup:
+      - row "Producto Cantidad Neto":
+        - columnheader "Producto"
+        - columnheader "Cantidad"
+        - columnheader "Neto"
+    - rowgroup:
+      - row "Café instantáneo 100 g 30 u. $ 236.291,70":
+        - cell "Café instantáneo 100 g"
+        - cell "30 u."
+        - cell "$ 236.291,70"
+      - row "Yerba suave 1 kg 32 u. $ 229.804,80":
+        - cell "Yerba suave 1 kg"
+        - cell "32 u."
+        - cell "$ 229.804,80"
+      - row "Vino blanco 750 ml 41 u. $ 213.705,12":
+        - cell "Vino blanco 750 ml"
+        - cell "41 u."
+        - cell "$ 213.705,12"
+      - row "Aceite de oliva 500 ml 18 u. $ 191.813,04":
+        - cell "Aceite de oliva 500 ml"
+        - cell "18 u."
+        - cell "$ 191.813,04"
+      - row "Cerveza botella 1 L 42 u. $ 184.203,20":
+        - cell "Cerveza botella 1 L"
+        - cell "42 u."
+        - cell "$ 184.203,20"
+      - row "Huevos docena 33 u. $ 175.828,62":
+        - cell "Huevos docena"
+        - cell "33 u."
+        - cell "$ 175.828,62"
+      - row "Pizza muzzarella 29 u. $ 161.195,26":
+        - cell "Pizza muzzarella"
+        - cell "29 u."
+        - cell "$ 161.195,26"
+      - row "Suavizante 900 ml 43 u. $ 158.204,78":
+        - cell "Suavizante 900 ml"
+        - cell "43 u."
+        - cell "$ 158.204,78"
+      - row "Papas congeladas 1 kg 23 u. $ 156.155,30":
+        - cell "Papas congeladas 1 kg"
+        - cell "23 u."
+        - cell "$ 156.155,30"
+      - row "Café molido 250 g 22 u. $ 137.404,23":
+        - cell "Café molido 250 g"
+        - cell "22 u."
+        - cell "$ 137.404,23"
+  - button "Exportar reposición a Excel": Exportar Excel
+  - heading "Para reponer" [level=2]
+  - button "Ver en Stock"
+  - paragraph: 852 productos para reponer.
+  - table:
+    - rowgroup:
+      - row "Producto Actual Mínimo Venta del mes Prioridad de revisión":
+        - columnheader "Producto"
+        - columnheader "Actual"
+        - columnheader "Mínimo"
+        - columnheader "Venta del mes"
+        - columnheader "Prioridad de revisión"
+    - rowgroup:
+      - row "Azúcar 1 kg · Buen Día 0 u. 12 u. 0 u. Sin existencias":
+        - cell "Azúcar 1 kg · Buen Día"
+        - cell "0 u.":
+          - strong: 0 u.
+        - cell "12 u."
+        - cell "0 u."
+        - cell "Sin existencias"
+      - row "Azúcar 1 kg · Buenos Sabores 0 u. 12 u. 0 u. Sin existencias":
+        - cell "Azúcar 1 kg · Buenos Sabores"
+        - cell "0 u.":
+          - strong: 0 u.
+        - cell "12 u."
+        - cell "0 u."
+        - cell "Sin existencias"
+      - row "Azúcar 1 kg · Campo Vivo 0 u. 12 u. 0 u. Sin existencias":
+        - cell "Azúcar 1 kg · Campo Vivo"
+        - cell "0 u.":
+          - strong: 0 u.
+        - cell "12 u."
+        - cell "0 u."
+        - cell "Sin existencias"
+      - row "Azúcar 1 kg · Cosecha Nueva 0 u. 12 u. 3 u. Sin existencias Puesto 667 por facturación del mes":
+        - cell "Azúcar 1 kg · Cosecha Nueva"
+        - cell "0 u.":
+          - strong: 0 u.
+        - cell "12 u."
+        - cell "3 u."
+        - cell "Sin existencias Puesto 667 por facturación del mes":
+          - text: Sin existencias
+          - generic: Puesto 667 por facturación del mes
+      - row "Azúcar 1 kg · Costa Clara 0 u. 12 u. 0 u. Sin existencias":
+        - cell "Azúcar 1 kg · Costa Clara"
+        - cell "0 u.":
+          - strong: 0 u.
+        - cell "12 u."
+        - cell "0 u."
+        - cell "Sin existencias"
+      - row "Azúcar 1 kg · Del Valle 0 u. 12 u. 4 u. Sin existencias Puesto 545 por facturación del mes":
+        - cell "Azúcar 1 kg · Del Valle"
+        - cell "0 u.":
+          - strong: 0 u.
+        - cell "12 u."
+        - cell "4 u."
+        - cell "Sin existencias Puesto 545 por facturación del mes":
+          - text: Sin existencias
+          - generic: Puesto 545 por facturación del mes
+      - row "Azúcar 1 kg · Don Pedro 0 u. 12 u. 0 u. Sin existencias":
+        - cell "Azúcar 1 kg · Don Pedro"
+        - cell "0 u.":
+          - strong: 0 u.
+        - cell "12 u."
+        - cell "0 u."
+        - cell "Sin existencias"
+      - row "Azúcar 1 kg · El Molino 0 u. 12 u. 0 u. Sin existencias":
+        - cell "Azúcar 1 kg · El Molino"
+        - cell "0 u.":
+          - strong: 0 u.
+        - cell "12 u."
+        - cell "0 u."
+        - cell "Sin existencias"
+  - paragraph: Mostrando 8 prioridades. Ver todas en Stock.
+  - text: Tarjeta
+  - strong: $ 5.412.228,15
+  - text: Anuladas
+  - strong: $ 117.835,93
+  - heading "Mercadería por ubicación" [level=2]
+  - button "Exportar ubicaciones a Excel": Exportar Excel
+  - article:
+    - strong: Salón de ventas
+    - generic: "288.946"
+    - text: unidades
+    - generic: 31.668,44
+    - text: kg
+    - generic: 0 por recibir
+    - generic: 2 en envío
+    - generic: 852 artículos bajo mínimo
+    - generic: 449 ventas
+    - strong: $ 14.181.205,24
+  - article:
+    - strong: Cámara de frío
+    - generic: "0"
+    - text: unidades
+    - generic: 119,02
+    - text: kg
+    - generic: 0 por recibir
+    - generic: 0 en envío
+    - generic: 49 artículos bajo mínimo
+  - article:
+    - strong: Depósito central
+    - generic: "4.319"
+    - text: unidades
+    - generic: "0"
+    - text: kg
+    - generic: 2 por recibir
+    - generic: 0 en envío
+    - generic: 507 artículos bajo mínimo
+  - article:
+    - strong: Depósito de reserva
+    - generic: "4.273"
+    - text: unidades
+    - generic: "0"
+    - text: kg
+    - generic: 0 por recibir
+    - generic: 0 en envío
+    - generic: 437 artículos bajo mínimo
+  - paragraph: "Actualizado: 5/10/2026, 07:05:00"

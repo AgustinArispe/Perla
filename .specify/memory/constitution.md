@@ -1,13 +1,14 @@
-# El Bocha POS Constitution
+# Perla Negra POS Constitution
 
 ## Core Principles
 
 ### I. Caja rápida y comprensible
 
 La aplicación DEBE priorizar scanner y teclado en navegador. Confirmar ventas
-requiere conexión al servidor; un corte no se interpreta como confirmación. Fondo blanco,
-verde de acento, texto principal mínimo 18 px, controles de cantidad de 22 px y
-total mínimo 48 px en escritorio. No se mezcla el dashboard con el flujo de caja.
+requiere conexión al servidor; un corte no se interpreta como confirmación. La identidad
+Perla Negra DEBE seguir el sistema PULSE con tinta, marfil y latón como base, contraste
+legible a plena luz, texto principal mínimo 18 px, controles de cantidad de 22 px y total
+mínimo 48 px en escritorio. No se mezcla el dashboard con el flujo de caja.
 Ningún cálculo de informes o backup puede bloquear el hilo de la interfaz.
 
 ### II. Ventas, pagos y stock consistentes
@@ -65,7 +66,7 @@ y restauraciones revocan sesiones. No se exponen SQL ni RPC arbitrarios.
 - React, TypeScript strict y Vite; Node/Fastify, worker, SQLite y SQL parametrizado.
 - Electron se conserva como versión previa; la interfaz web es la siguiente etapa.
 - Sin ARCA, emisión fiscal, procesamiento de tarjetas ni conexión a POS bancario.
-- Un comercio, un depósito lógico y varias terminales/usuarios con servidor central.
+- Un comercio, una o varias ubicaciones y varias terminales/usuarios con servidor central.
   Escalar a varias API/comercios requiere revisar persistencia y aislamiento.
 - Paquetes de aplicación resueltos y fijados en lockfile al comenzar implementación.
 - Node.js 24 LTS para herramientas de desarrollo; el cliente no instala Node ni Python.
@@ -86,4 +87,4 @@ dinero, stock o esquema requieren adaptar contratos, pruebas y migraciones.
 Versionar esta constitución: major para reglas incompatibles, minor para nuevas
 reglas, patch para aclaraciones. Revisar cumplimiento en cada entrega.
 
-**Version**: 2.0.0 | **Ratified**: 2026-09-17 | **Last Amended**: 2026-09-18
+**Version**: 2.2.0 | **Ratified**: 2026-09-17 | **Last Amended**: 2026-10-05

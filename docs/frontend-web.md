@@ -8,7 +8,7 @@ Con dependencias instaladas, compilar API y frontend. Configurar `BOCHA_BACKUP_K
 
 Para trabajar con recarga automática: API con `BOCHA_PUBLIC_ORIGIN=http://localhost:5173` y frontend con `npm run dev:web`. El proxy apunta por defecto a `http://127.0.0.1:3000`; `BOCHA_API_URL` permite cambiarlo.
 
-Docker de desarrollo: configurar `.env` a partir de `.env.example` con una clave aleatoria. `npm run docker:up` levanta frontend y API con una base persistente propia. Para crear la cuenta inicial, detener la API, ejecutar la CLI privada con `docker compose run --rm -T api node dist/api/cli.cjs owner:create --username jefe --name "El Bocha" --password-stdin` y luego iniciar los servicios. La contraseña se entrega por entrada estándar. No usar estas credenciales ni esta clave en producción.
+Docker de desarrollo: configurar `.env` a partir de `.env.example` con una clave aleatoria. `npm run docker:up` levanta frontend y API con una base persistente propia. Para crear la cuenta inicial, detener la API, ejecutar la CLI privada con `docker compose run --rm -T api node dist/api/cli.cjs owner:create --username jefe --name "Perla Negra" --password-stdin` y luego iniciar los servicios. La contraseña se entrega por entrada estándar. No usar estas credenciales ni esta clave en producción.
 
 ## Operación
 

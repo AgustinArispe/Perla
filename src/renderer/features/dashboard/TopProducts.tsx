@@ -4,7 +4,7 @@ import { formatMoney } from '../../../domain/values';
 import { formatStock } from '../../../domain/inventory';
 export function TopProducts({ report }: { report: MonthlyReport }) {
   const [kind, setKind] = useState<'revenue' | 'units' | 'kilos'>('revenue');
-  const rows = report.rankings[kind].slice(0, 10);
+  const rows = report.rankings[kind].slice(0, 5);
   return (
     <section className="dashboard-panel">
       <div className="dashboard-panel-heading">
@@ -22,25 +22,29 @@ export function TopProducts({ report }: { report: MonthlyReport }) {
           </select>
         </label>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Producto</th>
-            <th>Cantidad</th>
-            <th>Neto</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((p) => (
-            <tr key={p.productId}>
-              <td>{p.name}</td>
-              <td>{formatStock(p.quantityBase, p.unit)}</td>
-              <td>{formatMoney(p.netCents)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {!rows.length && <p>No hay ventas en este grupo.</p>}
+      {rows.length > 0 && (
+        <div className="ranking-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Neto</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((p) => (
+                <tr key={p.productId}>
+                  <td>{p.name}</td>
+                  <td>{formatStock(p.quantityBase, p.unit)}</td>
+                  <td>{formatMoney(p.netCents)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      {!rows.length && <p className="dashboard-empty">No hay ventas en este grupo.</p>}
     </section>
   );
 }

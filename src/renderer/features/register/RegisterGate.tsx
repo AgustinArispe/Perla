@@ -60,6 +60,21 @@ export function RegisterGate({
     enabled: !!current.data?.id && !!mode,
     retry: false,
   });
+  let closeDifference: number | null = null;
+  if (
+    mode === 'close' &&
+    amount.trim() &&
+    detail.data &&
+    detail.data.expectedCashCents !== null &&
+    !detail.isFetching &&
+    !detail.isError
+  ) {
+    try {
+      closeDifference = parseArs(amount) - detail.data.expectedCashCents;
+    } catch {
+      /* The form reports invalid amounts on submission. */
+    }
+  }
   function remember(value: Pending | null) {
     if (!actorId) throw new Error('Volvé a iniciar sesión antes de operar la caja.');
     const next = { ...pendingByUser };
@@ -199,7 +214,7 @@ export function RegisterGate({
     );
   if (!terminalId)
     return (
-      <section className="panel">
+      <section className="panel register-setup">
         <h2>Elegir terminal</h2>
         {feedback}
         {retryPending}
@@ -243,12 +258,14 @@ export function RegisterGate({
     );
   if (!current.data)
     return (
-      <section className="panel">
+      <section className="panel register-setup">
         <h2>Abrir caja · {terminals.data?.find((t) => t.id === terminalId)?.name}</h2>
         {feedback}
         {retryPending}
         {receipt && (
-          <p role="status">Caja cerrada · Diferencia {formatMoney(receipt.differenceCents ?? 0)}</p>
+          <p className="status-message" role="status">
+            Caja cerrada · Diferencia {formatMoney(receipt.differenceCents ?? 0)}
+          </p>
         )}
         <form
           onSubmit={(e) => {
@@ -277,7 +294,7 @@ export function RegisterGate({
   return (
     <>
       <div
-        className="panel"
+        className="panel register-toolbar"
         style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '12px' }}
       >
         <strong>Caja abierta · {terminals.data?.find((t) => t.id === terminalId)?.name}</strong>
@@ -369,6 +386,22 @@ export function RegisterGate({
                   style={{ fontSize: '2rem', fontVariantNumeric: 'tabular-nums' }}
                 />
               </label>
+              {mode === 'close' && closeDifference !== null && (
+                <div
+                  className="register-close-balance"
+                  data-state={
+                    closeDifference < 0 ? 'shortage' : closeDifference > 0 ? 'surplus' : 'balanced'
+                  }
+                  role="status"
+                >
+                  <span>Diferencia</span>
+                  <strong>
+                    {closeDifference === 0
+                      ? 'Sin diferencia'
+                      : `${closeDifference < 0 ? 'Faltan' : 'Sobran'} ${formatMoney(Math.abs(closeDifference))}`}
+                  </strong>
+                </div>
+              )}
               {mode === 'movement' && (
                 <label className="field">
                   Motivo
@@ -390,7 +423,15 @@ export function RegisterGate({
               >
                 Cancelar
               </button>
-              <button className="button primary" disabled={busy || !!pending}>
+              <button
+                className="button primary"
+                disabled={
+                  busy ||
+                  !!pending ||
+                  (mode === 'close' &&
+                    (detail.data?.expectedCashCents == null || detail.isFetching || detail.isError))
+                }
+              >
                 {busy ? 'Guardando…' : mode === 'close' ? 'Cerrar caja' : 'Registrar movimiento'}
               </button>
             </div>

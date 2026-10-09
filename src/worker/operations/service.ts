@@ -7,12 +7,15 @@ import { DomainError } from '../../shared/errors';
 import { recordAudit } from '../auth/audit';
 import { CashService, shiftSql } from './cash';
 import { exportCsv } from './export';
+import { FeatureService } from '../features/service';
 const terminalSql =
-  'SELECT id,name,active,revision,created_at_utc AS createdAt,updated_at_utc AS updatedAt FROM terminals';
+  'SELECT t.id,t.name,t.active,t.revision,t.created_at_utc AS createdAt,t.updated_at_utc AS updatedAt,tl.location_id AS locationId,l.name AS locationName FROM terminals t LEFT JOIN terminal_locations tl ON tl.terminal_id=t.id LEFT JOIN locations l ON l.id=tl.location_id';
 export class OperationsService {
   readonly cash: CashService;
+  private readonly features: FeatureService;
   constructor(private readonly db: Database.Database) {
     this.cash = new CashService(db);
+    this.features = new FeatureService(db);
   }
   execute(operation: string, payload: unknown, actor: User): unknown {
     if (!actor.active || !hasPermission(actor.role, operation))
@@ -26,6 +29,10 @@ export class OperationsService {
     switch (operation) {
       case 'settings.get':
         return this.settings();
+      case 'settings.features.get':
+        return this.features.status();
+      case 'settings.features.save':
+        return this.features.change(input as never, actor);
       case 'settings.save':
         return this.db
           .transaction(() => {
@@ -51,8 +58,8 @@ export class OperationsService {
         return this.db
           .prepare(
             terminalSql +
-              (operation === 'terminals.active' ? ' WHERE active=1' : '') +
-              ' ORDER BY name,id',
+              (operation === 'terminals.active' ? ' WHERE t.active=1' : '') +
+              ' ORDER BY t.name,t.id',
           )
           .all()
           .map((row) => ({
@@ -89,8 +96,11 @@ export class OperationsService {
               this.db
                 .prepare('INSERT INTO terminals VALUES (?,?,?,1,?,?)')
                 .run(id, input.name, Number(input.active), now, now);
+            this.db.prepare(`INSERT INTO terminal_locations(terminal_id,location_id,updated_at_utc)
+              VALUES (?,(SELECT id FROM locations WHERE is_default=1),?)
+              ON CONFLICT(terminal_id) DO NOTHING`).run(id,now);
             recordAudit(this.db, actor, operation, id);
-            const row = this.db.prepare(terminalSql + ' WHERE id=?').get(id) as Record<
+            const row = this.db.prepare(terminalSql + ' WHERE t.id=?').get(id) as Record<
               string,
               unknown
             >;
@@ -165,11 +175,11 @@ export class OperationsService {
     const args: unknown[] = [];
     if (from) {
       where.push(`${date}>=?`);
-      args.push(from + 'T00:00:00.000Z');
+      args.push(from + 'T03:00:00.000Z');
     }
     if (to) {
       where.push(`${date}<?`);
-      args.push(new Date(Date.parse(to) + 86400000).toISOString());
+      args.push(new Date(Date.parse(to) + 86400000 + 3 * 3600000).toISOString());
     }
     for (const [key, column] of (kind === 'shifts'
       ? [

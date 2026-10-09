@@ -3,6 +3,7 @@ import { it, expect } from 'vitest';
 import { openDatabase } from '../../src/worker/db/connection';
 import { AuthService } from '../../src/worker/auth/service';
 import { OperationsService } from '../../src/worker/operations/service';
+import { parse } from 'csv-parse/sync';
 function fixture() {
   const db = openDatabase(':memory:');
   const auth = new AuthService(db);
@@ -13,6 +14,85 @@ function fixture() {
   }).user;
   return { db, owner, ops: new OperationsService(db) };
 }
+it('shift filters use Argentine days and preserve shortage, surplus and pending closure', () => {
+  const f = fixture();
+  try {
+    const t = f.ops.execute('terminals.save', { name: 'Caja', active: true }, f.owner) as {
+      id: string;
+    };
+    const ids: string[] = [];
+    for (const countedCashCents of [900, 1100]) {
+      const s = f.ops.execute(
+        'cash.open',
+        { terminalId: t.id, openingCashCents: 1000, operationKey: randomUUID() },
+        f.owner,
+      ) as { id: string };
+      ids.push(s.id);
+      f.ops.execute(
+        'cash.close',
+        { shiftId: s.id, countedCashCents, operationKey: randomUUID() },
+        f.owner,
+      );
+      f.db
+        .prepare('UPDATE register_shifts SET opened_at_utc=? WHERE id=?')
+        .run('2026-09-19T01:30:00.000Z', s.id);
+    }
+    const list = f.ops.execute(
+      'shifts.list',
+      { fromDate: '2026-09-18', toDate: '2026-09-18' },
+      f.owner,
+    ) as { items: { differenceCents: number }[] };
+    expect(list.items.map((s) => s.differenceCents).sort((a, b) => a - b)).toEqual([-100, 100]);
+    for (const id of ids)
+      expect(f.ops.execute('shifts.details', { shiftId: id }, f.owner)).toMatchObject({
+        expectedCashCents: 1000,
+      });
+    expect(
+      f.ops.execute(
+        'cash.open',
+        { terminalId: t.id, openingCashCents: 1000, operationKey: randomUUID() },
+        f.owner,
+      ),
+    ).toMatchObject({ differenceCents: null });
+  } finally {
+    f.db.close();
+  }
+});
+it('product export is alphabetical, paginated and uses readable Argentine prices', () => {
+  const f = fixture();
+  try {
+    const now = new Date().toISOString();
+    for (const [name, search, price] of [
+      ['Yerba', 'yerba', 650000],
+      ['Árroz', 'arroz', 180050],
+      ['Aceite', 'aceite', 390000],
+    ]) {
+      f.db
+        .prepare(
+          "INSERT INTO products (id,sku,barcode,name,search_name,category,sale_unit,price_cents,active,track_stock,stock_initialized,min_stock_base,revision,created_at_utc,updated_at_utc) VALUES (?,?,NULL,?,?,NULL,'UNIT',?,1,0,0,0,1,?,?)",
+        )
+        .run(randomUUID(), String(name), name, search, price, now, now);
+    }
+    const exportPage = (offset: number) => {
+      const result = f.ops.execute(
+        'exports.products',
+        { fromDate: now.slice(0, 10), toDate: now.slice(0, 10), limit: 2, offset },
+        f.owner,
+      ) as { content: string };
+      return parse(result.content, { bom: true, delimiter: ';', columns: true }) as Record<
+        string,
+        string
+      >[];
+    };
+    const first = exportPage(0);
+    expect(first.map((r: Record<string, string>) => r.Producto)).toEqual(['Aceite', 'Árroz']);
+    expect(first[1]?.['Precio (ARS)']).toBe('1800,50');
+    expect(first[0]?.Estado).toBe('Activo');
+    expect(exportPage(2).map((r: Record<string, string>) => r.Producto)).toEqual(['Yerba']);
+  } finally {
+    f.db.close();
+  }
+});
 it('settings revision, terminal ownership, cash replay and immutable closure', () => {
   const f = fixture();
   try {
@@ -214,7 +294,9 @@ it('CSV exports are bounded, exclude credentials and neutralize spreadsheet form
   try {
     const now = new Date().toISOString();
     f.db
-      .prepare("INSERT INTO products VALUES (?,? ,NULL,?,? ,NULL,'UNIT',100,1,0,0,0,1,?,?)")
+      .prepare(
+        "INSERT INTO products (id,sku,barcode,name,search_name,category,sale_unit,price_cents,active,track_stock,stock_initialized,min_stock_base,revision,created_at_utc,updated_at_utc) VALUES (?,? ,NULL,?,? ,NULL,'UNIT',100,1,0,0,0,1,?,?)",
+      )
       .run(randomUUID(), '=IMPORT', '@SUM(1)', 'sum', now, now);
     const date = now.slice(0, 10);
     const exported = f.ops.execute(
@@ -234,6 +316,74 @@ it('CSV exports are bounded, exclude credentials and neutralize spreadsheet form
       nextCursor: string | null;
     };
     expect(first.items.length).toBeLessThanOrEqual(1);
+  } finally {
+    f.db.close();
+  }
+});
+it('exports sale detail and closed shifts with the business values needed for reconciliation', () => {
+  const f = fixture();
+  try {
+    const terminal = f.ops.execute(
+      'terminals.save',
+      { name: 'Caja exportación', active: true },
+      f.owner,
+    ) as { id: string };
+    const shift = f.ops.execute(
+      'cash.open',
+      { terminalId: terminal.id, openingCashCents: 1000, operationKey: randomUUID() },
+      f.owner,
+    ) as { id: string };
+    const productId = randomUUID(),
+      saleId = randomUUID();
+    const now = '2026-09-20T15:00:00.000Z';
+    f.db
+      .prepare(
+        "INSERT INTO products (id,sku,barcode,internal_barcode,name,search_name,category,sale_unit,price_cents,active,track_stock,stock_initialized,min_stock_base,revision,created_at_utc,updated_at_utc) VALUES (?,?,?,?,?,?,?,'UNIT',?,1,0,0,0,1,?,?)",
+      )
+      .run(
+        productId,
+        'ARROZ-1',
+        '7790000000001',
+        '2000000000008',
+        'Arroz largo fino',
+        'arroz largo fino',
+        'Almacén',
+        180000,
+        now,
+        now,
+      );
+    f.db
+      .prepare(
+        "INSERT INTO sales(id,number,checkout_key,payload_hash,status,created_at_utc,business_date,local_month,subtotal_cents,discount_cents,total_cents,discount_json,register_shift_id,terminal_id) VALUES (?,1,?,'hash','COMPLETED',?,'2026-09-20','2026-09',180000,0,180000,'{}',?,?)",
+      )
+      .run(saleId, randomUUID(), now, shift.id, terminal.id);
+    f.db
+      .prepare(
+        "INSERT INTO sale_items (id,sale_id,line_id,position,product_id,sku,barcode,name,unit,unit_price_cents,quantity_base,gross_cents,discount_cents,net_cents) VALUES (?,?,?,0,?,'ARROZ-1','7790000000001','Arroz largo fino','UNIT',180000,1,180000,0,180000)",
+      )
+      .run(randomUUID(), saleId, randomUUID(), productId);
+    f.ops.execute(
+      'cash.close',
+      { shiftId: shift.id, countedCashCents: 181000, operationKey: randomUUID() },
+      f.owner,
+    );
+    f.db
+      .prepare('UPDATE register_shifts SET opened_at_utc=?,closed_at_utc=? WHERE id=?')
+      .run(now, now, shift.id);
+    const detail = f.ops.execute(
+      'exports.sale-items',
+      { fromDate: '2026-09-20', toDate: '2026-09-20' },
+      f.owner,
+    ) as { content: string };
+    const shifts = f.ops.execute(
+      'exports.shifts',
+      { fromDate: '2026-09-20', toDate: '2026-09-20' },
+      f.owner,
+    ) as { content: string };
+    expect(detail).toMatchObject({ content: expect.stringContaining('Arroz largo fino') });
+    expect(detail.content).toContain('Precio unitario (ARS)');
+    expect(shifts.content).toContain('Diferencia (ARS)');
+    expect(shifts.content).toContain('1810,00');
   } finally {
     f.db.close();
   }

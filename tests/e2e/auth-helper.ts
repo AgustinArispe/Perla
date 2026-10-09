@@ -7,7 +7,7 @@ export async function signIn(page: Page): Promise<void> {
   if (status.value.user) return;
   await expect(
     page.getByRole('heading', {
-      name: status.value.initialized ? 'Ingresar' : 'Configurar primer jefe',
+      name: status.value.initialized ? 'Ingresar al sistema' : 'Configurar primer jefe',
       exact: true,
     }),
   ).toBeVisible();

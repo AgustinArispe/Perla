@@ -1,0 +1,92 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Ayuda" [level=1]
+  - text: Buscar en la ayuda
+  - searchbox "Buscar en la ayuda"
+  - navigation "Temas de ayuda":
+    - button "Caja y ventas"
+    - button "Efectivo y cierre de caja"
+    - button "Productos" [active] [pressed]
+    - button "Stock"
+    - button "Proveedores y compras"
+    - button "Promociones"
+    - button "Clientes y cuenta corriente"
+    - button "Histórico y anulaciones"
+    - button "Resumen mensual"
+    - button "Usuarios y configuración"
+    - button "Copias de seguridad"
+    - button "Cuenta y alcance"
+    - button "Ubicaciones y traslados"
+  - article:
+    - heading "Productos" [level=2]
+    - heading "Crear y editar" [level=3]
+    - paragraph: Nuevo producto permite cargar el nombre, código interno, código de barras, categoría y precio en pesos. Elegí Unidad o Kilogramo según cómo se vende. Cada producto necesita un código interno único; el código de barras también debe ser único si lo cargás.
+    - heading "Activar e inactivar" [level=3]
+    - paragraph: Un producto inactivo deja de estar disponible para nuevas ventas. Su información permanece en el catálogo y en las ventas anteriores. Cambiar el nombre o precio actual tampoco modifica el detalle de las ventas ya guardadas.
+    - heading "Importar una lista" [level=3]
+    - paragraph: Importar productos permite revisar un archivo CSV antes de aplicar la carga. Corregí los errores que aparezcan y confirmá el conteo físico si el archivo trae existencias iniciales. La exportación para consulta tiene columnas en español y precios en pesos; no es una copia de seguridad ni la plantilla de importación.

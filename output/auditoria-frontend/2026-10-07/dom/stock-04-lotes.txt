@@ -1,0 +1,807 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Stock" [level=1]
+  - searchbox "Buscar stock"
+  - generic: F2
+  - text: Estado
+  - combobox "Estado":
+    - option "Todos" [selected]
+    - option "Para reponer"
+    - option "Sin conteo"
+    - option "Agotados"
+    - option "Bajo mínimo"
+    - option "Negativos"
+    - option "Disponibles"
+    - option "Sin control"
+  - text: Categoría
+  - combobox "Categoría":
+    - option "Todas" [selected]
+    - option "Almacén"
+    - option "Bebidas"
+    - option "Congelados"
+    - option "Fiambrería"
+    - option "Galletitas y golosinas"
+    - option "Infusiones y desayuno"
+    - option "Lácteos"
+    - option "Limpieza"
+    - option "Panadería y huevos"
+    - option "Verdulería"
+  - text: Marca
+  - combobox "Marca":
+    - option "Todas" [selected]
+    - option "Buen Día"
+    - option "Buen Plato"
+    - option "Buenos Sabores"
+    - option "Campo Vivo"
+    - option "Campos del Sur"
+    - option "Cosecha Nueva"
+    - option "Costa Clara"
+    - option "Del Mercado"
+    - option "Del Valle"
+    - option "Don Pedro"
+    - option "Dulce Momento"
+    - option "El Molino"
+    - option "El Ombú"
+    - option "El Trigal"
+    - option "Hogar Claro"
+    - option "La Abuela"
+    - option "La Casona"
+    - option "La Colonia"
+    - option "La Cumbre"
+    - option "La Estancia"
+    - option "La Estrella"
+    - option "La Familia"
+    - option "La Huerta"
+    - option "La Pradera"
+    - option "La Reserva"
+    - option "Las Sierras"
+    - option "Los Aromos"
+    - option "Mi Barrio"
+    - option "Nueva Mesa"
+    - option "Primavera"
+    - option "Productores de Tandil"
+    - option "Rincón Sur"
+    - option "Santa Ana"
+    - option "Santa Lucía"
+    - option "Sierra Azul"
+    - option "Sol del Sur"
+    - option "Tierra Clara"
+    - option "Tres Espigas"
+    - option "Villa del Sol"
+  - button "Mis vistas": Mis vistas
+  - button "Exportar stock a Excel": Exportar Excel
+  - strong: "3.776"
+  - text: productos
+  - table:
+    - rowgroup:
+      - row "Producto Existencia Mínimo Estado Acciones":
+        - columnheader "Producto"
+        - columnheader "Existencia"
+        - columnheader "Mínimo"
+        - columnheader "Estado"
+        - columnheader "Acciones":
+          - generic: Acciones
+    - rowgroup:
+      - row "Aceite de girasol 900 ml SIM-0010 · Por unidad 105 u. 12 u. Disponible Contar Aceite de girasol 900 ml Registrar movimiento de Aceite de girasol 900 ml Ver movimientos de Aceite de girasol 900 ml Administrar lotes de Aceite de girasol 900 ml":
+        - cell "Aceite de girasol 900 ml SIM-0010 · Por unidad":
+          - strong: Aceite de girasol 900 ml
+          - generic: SIM-0010 · Por unidad
+        - cell "105 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml Registrar movimiento de Aceite de girasol 900 ml Ver movimientos de Aceite de girasol 900 ml Administrar lotes de Aceite de girasol 900 ml":
+          - button "Contar Aceite de girasol 900 ml": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml"
+          - button "Ver movimientos de Aceite de girasol 900 ml"
+          - button "Administrar lotes de Aceite de girasol 900 ml": Lotes
+      - row "Aceite de girasol 900 ml · Buen Día SIM-3937 · Por unidad — 12 u. Sin control Contar Aceite de girasol 900 ml · Buen Día Registrar movimiento de Aceite de girasol 900 ml · Buen Día Ver movimientos de Aceite de girasol 900 ml · Buen Día":
+        - cell "Aceite de girasol 900 ml · Buen Día SIM-3937 · Por unidad":
+          - strong: Aceite de girasol 900 ml · Buen Día
+          - generic: SIM-3937 · Por unidad
+        - cell "—"
+        - cell "12 u."
+        - cell "Sin control":
+          - generic: Sin control
+        - cell "Contar Aceite de girasol 900 ml · Buen Día Registrar movimiento de Aceite de girasol 900 ml · Buen Día Ver movimientos de Aceite de girasol 900 ml · Buen Día":
+          - button "Contar Aceite de girasol 900 ml · Buen Día" [disabled]: Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · Buen Día" [disabled]
+          - button "Ver movimientos de Aceite de girasol 900 ml · Buen Día"
+      - row "Aceite de girasol 900 ml · Buen Día SIM-0367 · Por unidad 81 u. 12 u. Disponible Contar Aceite de girasol 900 ml · Buen Día Registrar movimiento de Aceite de girasol 900 ml · Buen Día Ver movimientos de Aceite de girasol 900 ml · Buen Día Administrar lotes de Aceite de girasol 900 ml · Buen Día":
+        - cell "Aceite de girasol 900 ml · Buen Día SIM-0367 · Por unidad":
+          - strong: Aceite de girasol 900 ml · Buen Día
+          - generic: SIM-0367 · Por unidad
+        - cell "81 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · Buen Día Registrar movimiento de Aceite de girasol 900 ml · Buen Día Ver movimientos de Aceite de girasol 900 ml · Buen Día Administrar lotes de Aceite de girasol 900 ml · Buen Día":
+          - button "Contar Aceite de girasol 900 ml · Buen Día": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · Buen Día"
+          - button "Ver movimientos de Aceite de girasol 900 ml · Buen Día"
+          - button "Administrar lotes de Aceite de girasol 900 ml · Buen Día": Lotes
+      - row "Aceite de girasol 900 ml · Buenos Sabores SIM-3223 · Por unidad 1 u. 12 u. Bajo mínimo Contar Aceite de girasol 900 ml · Buenos Sabores Registrar movimiento de Aceite de girasol 900 ml · Buenos Sabores Ver movimientos de Aceite de girasol 900 ml · Buenos Sabores Administrar lotes de Aceite de girasol 900 ml · Buenos Sabores":
+        - cell "Aceite de girasol 900 ml · Buenos Sabores SIM-3223 · Por unidad":
+          - strong: Aceite de girasol 900 ml · Buenos Sabores
+          - generic: SIM-3223 · Por unidad
+        - cell "1 u."
+        - cell "12 u."
+        - cell "Bajo mínimo":
+          - generic: Bajo mínimo
+        - cell "Contar Aceite de girasol 900 ml · Buenos Sabores Registrar movimiento de Aceite de girasol 900 ml · Buenos Sabores Ver movimientos de Aceite de girasol 900 ml · Buenos Sabores Administrar lotes de Aceite de girasol 900 ml · Buenos Sabores":
+          - button "Contar Aceite de girasol 900 ml · Buenos Sabores": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · Buenos Sabores"
+          - button "Ver movimientos de Aceite de girasol 900 ml · Buenos Sabores"
+          - button "Administrar lotes de Aceite de girasol 900 ml · Buenos Sabores": Lotes
+      - row "Aceite de girasol 900 ml · Campo Vivo SIM-1200 · Por unidad 58 u. 12 u. Disponible Contar Aceite de girasol 900 ml · Campo Vivo Registrar movimiento de Aceite de girasol 900 ml · Campo Vivo Ver movimientos de Aceite de girasol 900 ml · Campo Vivo Administrar lotes de Aceite de girasol 900 ml · Campo Vivo":
+        - cell "Aceite de girasol 900 ml · Campo Vivo SIM-1200 · Por unidad":
+          - strong: Aceite de girasol 900 ml · Campo Vivo
+          - generic: SIM-1200 · Por unidad
+        - cell "58 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · Campo Vivo Registrar movimiento de Aceite de girasol 900 ml · Campo Vivo Ver movimientos de Aceite de girasol 900 ml · Campo Vivo Administrar lotes de Aceite de girasol 900 ml · Campo Vivo":
+          - button "Contar Aceite de girasol 900 ml · Campo Vivo": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · Campo Vivo"
+          - button "Ver movimientos de Aceite de girasol 900 ml · Campo Vivo"
+          - button "Administrar lotes de Aceite de girasol 900 ml · Campo Vivo": Lotes
+      - row "Aceite de girasol 900 ml · Cosecha Nueva SIM-1914 · Por unidad 65 u. 12 u. Disponible Contar Aceite de girasol 900 ml · Cosecha Nueva Registrar movimiento de Aceite de girasol 900 ml · Cosecha Nueva Ver movimientos de Aceite de girasol 900 ml · Cosecha Nueva Administrar lotes de Aceite de girasol 900 ml · Cosecha Nueva":
+        - cell "Aceite de girasol 900 ml · Cosecha Nueva SIM-1914 · Por unidad":
+          - strong: Aceite de girasol 900 ml · Cosecha Nueva
+          - generic: SIM-1914 · Por unidad
+        - cell "65 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · Cosecha Nueva Registrar movimiento de Aceite de girasol 900 ml · Cosecha Nueva Ver movimientos de Aceite de girasol 900 ml · Cosecha Nueva Administrar lotes de Aceite de girasol 900 ml · Cosecha Nueva":
+          - button "Contar Aceite de girasol 900 ml · Cosecha Nueva": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · Cosecha Nueva"
+          - button "Ver movimientos de Aceite de girasol 900 ml · Cosecha Nueva"
+          - button "Administrar lotes de Aceite de girasol 900 ml · Cosecha Nueva": Lotes
+      - row "Aceite de girasol 900 ml · Costa Clara SIM-2152 · Por unidad 2 u. 12 u. Bajo mínimo Contar Aceite de girasol 900 ml · Costa Clara Registrar movimiento de Aceite de girasol 900 ml · Costa Clara Ver movimientos de Aceite de girasol 900 ml · Costa Clara Administrar lotes de Aceite de girasol 900 ml · Costa Clara":
+        - cell "Aceite de girasol 900 ml · Costa Clara SIM-2152 · Por unidad":
+          - strong: Aceite de girasol 900 ml · Costa Clara
+          - generic: SIM-2152 · Por unidad
+        - cell "2 u."
+        - cell "12 u."
+        - cell "Bajo mínimo":
+          - generic: Bajo mínimo
+        - cell "Contar Aceite de girasol 900 ml · Costa Clara Registrar movimiento de Aceite de girasol 900 ml · Costa Clara Ver movimientos de Aceite de girasol 900 ml · Costa Clara Administrar lotes de Aceite de girasol 900 ml · Costa Clara":
+          - button "Contar Aceite de girasol 900 ml · Costa Clara": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · Costa Clara"
+          - button "Ver movimientos de Aceite de girasol 900 ml · Costa Clara"
+          - button "Administrar lotes de Aceite de girasol 900 ml · Costa Clara": Lotes
+      - row "Aceite de girasol 900 ml · Del Valle SIM-2628 · Por unidad 63 u. 12 u. Disponible Contar Aceite de girasol 900 ml · Del Valle Registrar movimiento de Aceite de girasol 900 ml · Del Valle Ver movimientos de Aceite de girasol 900 ml · Del Valle Administrar lotes de Aceite de girasol 900 ml · Del Valle":
+        - cell "Aceite de girasol 900 ml · Del Valle SIM-2628 · Por unidad":
+          - strong: Aceite de girasol 900 ml · Del Valle
+          - generic: SIM-2628 · Por unidad
+        - cell "63 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · Del Valle Registrar movimiento de Aceite de girasol 900 ml · Del Valle Ver movimientos de Aceite de girasol 900 ml · Del Valle Administrar lotes de Aceite de girasol 900 ml · Del Valle":
+          - button "Contar Aceite de girasol 900 ml · Del Valle": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · Del Valle"
+          - button "Ver movimientos de Aceite de girasol 900 ml · Del Valle"
+          - button "Administrar lotes de Aceite de girasol 900 ml · Del Valle": Lotes
+      - row "Aceite de girasol 900 ml · Don Pedro SIM-0962 · Por unidad 78 u. 12 u. Disponible Contar Aceite de girasol 900 ml · Don Pedro Registrar movimiento de Aceite de girasol 900 ml · Don Pedro Ver movimientos de Aceite de girasol 900 ml · Don Pedro Administrar lotes de Aceite de girasol 900 ml · Don Pedro":
+        - cell "Aceite de girasol 900 ml · Don Pedro SIM-0962 · Por unidad":
+          - strong: Aceite de girasol 900 ml · Don Pedro
+          - generic: SIM-0962 · Por unidad
+        - cell "78 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · Don Pedro Registrar movimiento de Aceite de girasol 900 ml · Don Pedro Ver movimientos de Aceite de girasol 900 ml · Don Pedro Administrar lotes de Aceite de girasol 900 ml · Don Pedro":
+          - button "Contar Aceite de girasol 900 ml · Don Pedro": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · Don Pedro"
+          - button "Ver movimientos de Aceite de girasol 900 ml · Don Pedro"
+          - button "Administrar lotes de Aceite de girasol 900 ml · Don Pedro": Lotes
+      - row "Aceite de girasol 900 ml · El Molino SIM-0724 · Por unidad 69 u. 12 u. Disponible Contar Aceite de girasol 900 ml · El Molino Registrar movimiento de Aceite de girasol 900 ml · El Molino Ver movimientos de Aceite de girasol 900 ml · El Molino Administrar lotes de Aceite de girasol 900 ml · El Molino":
+        - cell "Aceite de girasol 900 ml · El Molino SIM-0724 · Por unidad":
+          - strong: Aceite de girasol 900 ml · El Molino
+          - generic: SIM-0724 · Por unidad
+        - cell "69 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · El Molino Registrar movimiento de Aceite de girasol 900 ml · El Molino Ver movimientos de Aceite de girasol 900 ml · El Molino Administrar lotes de Aceite de girasol 900 ml · El Molino":
+          - button "Contar Aceite de girasol 900 ml · El Molino": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · El Molino"
+          - button "Ver movimientos de Aceite de girasol 900 ml · El Molino"
+          - button "Administrar lotes de Aceite de girasol 900 ml · El Molino": Lotes
+      - row "Aceite de girasol 900 ml · El Ombú SIM-2866 · Por unidad 73 u. 12 u. Disponible Contar Aceite de girasol 900 ml · El Ombú Registrar movimiento de Aceite de girasol 900 ml · El Ombú Ver movimientos de Aceite de girasol 900 ml · El Ombú Administrar lotes de Aceite de girasol 900 ml · El Ombú":
+        - cell "Aceite de girasol 900 ml · El Ombú SIM-2866 · Por unidad":
+          - strong: Aceite de girasol 900 ml · El Ombú
+          - generic: SIM-2866 · Por unidad
+        - cell "73 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · El Ombú Registrar movimiento de Aceite de girasol 900 ml · El Ombú Ver movimientos de Aceite de girasol 900 ml · El Ombú Administrar lotes de Aceite de girasol 900 ml · El Ombú":
+          - button "Contar Aceite de girasol 900 ml · El Ombú": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · El Ombú"
+          - button "Ver movimientos de Aceite de girasol 900 ml · El Ombú"
+          - button "Administrar lotes de Aceite de girasol 900 ml · El Ombú": Lotes
+      - row "Aceite de girasol 900 ml · El Trigal SIM-1438 · Por unidad 76 u. 12 u. Disponible Contar Aceite de girasol 900 ml · El Trigal Registrar movimiento de Aceite de girasol 900 ml · El Trigal Ver movimientos de Aceite de girasol 900 ml · El Trigal Administrar lotes de Aceite de girasol 900 ml · El Trigal":
+        - cell "Aceite de girasol 900 ml · El Trigal SIM-1438 · Por unidad":
+          - strong: Aceite de girasol 900 ml · El Trigal
+          - generic: SIM-1438 · Por unidad
+        - cell "76 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · El Trigal Registrar movimiento de Aceite de girasol 900 ml · El Trigal Ver movimientos de Aceite de girasol 900 ml · El Trigal Administrar lotes de Aceite de girasol 900 ml · El Trigal":
+          - button "Contar Aceite de girasol 900 ml · El Trigal": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · El Trigal"
+          - button "Ver movimientos de Aceite de girasol 900 ml · El Trigal"
+          - button "Administrar lotes de Aceite de girasol 900 ml · El Trigal": Lotes
+      - row "Aceite de girasol 900 ml · La Abuela SIM-1795 · Por unidad 1366 u. 12 u. Disponible Contar Aceite de girasol 900 ml · La Abuela Registrar movimiento de Aceite de girasol 900 ml · La Abuela Ver movimientos de Aceite de girasol 900 ml · La Abuela Administrar lotes de Aceite de girasol 900 ml · La Abuela":
+        - cell "Aceite de girasol 900 ml · La Abuela SIM-1795 · Por unidad":
+          - strong: Aceite de girasol 900 ml · La Abuela
+          - generic: SIM-1795 · Por unidad
+        - cell "1366 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · La Abuela Registrar movimiento de Aceite de girasol 900 ml · La Abuela Ver movimientos de Aceite de girasol 900 ml · La Abuela Administrar lotes de Aceite de girasol 900 ml · La Abuela":
+          - button "Contar Aceite de girasol 900 ml · La Abuela": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · La Abuela"
+          - button "Ver movimientos de Aceite de girasol 900 ml · La Abuela"
+          - button "Administrar lotes de Aceite de girasol 900 ml · La Abuela": Lotes
+      - row "Aceite de girasol 900 ml · La Colonia SIM-1081 · Por unidad 3 u. 12 u. Bajo mínimo Contar Aceite de girasol 900 ml · La Colonia Registrar movimiento de Aceite de girasol 900 ml · La Colonia Ver movimientos de Aceite de girasol 900 ml · La Colonia Administrar lotes de Aceite de girasol 900 ml · La Colonia":
+        - cell "Aceite de girasol 900 ml · La Colonia SIM-1081 · Por unidad":
+          - strong: Aceite de girasol 900 ml · La Colonia
+          - generic: SIM-1081 · Por unidad
+        - cell "3 u."
+        - cell "12 u."
+        - cell "Bajo mínimo":
+          - generic: Bajo mínimo
+        - cell "Contar Aceite de girasol 900 ml · La Colonia Registrar movimiento de Aceite de girasol 900 ml · La Colonia Ver movimientos de Aceite de girasol 900 ml · La Colonia Administrar lotes de Aceite de girasol 900 ml · La Colonia":
+          - button "Contar Aceite de girasol 900 ml · La Colonia": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · La Colonia"
+          - button "Ver movimientos de Aceite de girasol 900 ml · La Colonia"
+          - button "Administrar lotes de Aceite de girasol 900 ml · La Colonia": Lotes
+      - row "Aceite de girasol 900 ml · La Cumbre SIM-2509 · Por unidad 82 u. 12 u. Disponible Contar Aceite de girasol 900 ml · La Cumbre Registrar movimiento de Aceite de girasol 900 ml · La Cumbre Ver movimientos de Aceite de girasol 900 ml · La Cumbre Administrar lotes de Aceite de girasol 900 ml · La Cumbre":
+        - cell "Aceite de girasol 900 ml · La Cumbre SIM-2509 · Por unidad":
+          - strong: Aceite de girasol 900 ml · La Cumbre
+          - generic: SIM-2509 · Por unidad
+        - cell "82 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · La Cumbre Registrar movimiento de Aceite de girasol 900 ml · La Cumbre Ver movimientos de Aceite de girasol 900 ml · La Cumbre Administrar lotes de Aceite de girasol 900 ml · La Cumbre":
+          - button "Contar Aceite de girasol 900 ml · La Cumbre": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · La Cumbre"
+          - button "Ver movimientos de Aceite de girasol 900 ml · La Cumbre"
+          - button "Administrar lotes de Aceite de girasol 900 ml · La Cumbre": Lotes
+      - row "Aceite de girasol 900 ml · La Estrella SIM-3104 · Por unidad 94 u. 12 u. Disponible Contar Aceite de girasol 900 ml · La Estrella Registrar movimiento de Aceite de girasol 900 ml · La Estrella Ver movimientos de Aceite de girasol 900 ml · La Estrella Administrar lotes de Aceite de girasol 900 ml · La Estrella":
+        - cell "Aceite de girasol 900 ml · La Estrella SIM-3104 · Por unidad":
+          - strong: Aceite de girasol 900 ml · La Estrella
+          - generic: SIM-3104 · Por unidad
+        - cell "94 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · La Estrella Registrar movimiento de Aceite de girasol 900 ml · La Estrella Ver movimientos de Aceite de girasol 900 ml · La Estrella Administrar lotes de Aceite de girasol 900 ml · La Estrella":
+          - button "Contar Aceite de girasol 900 ml · La Estrella": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · La Estrella"
+          - button "Ver movimientos de Aceite de girasol 900 ml · La Estrella"
+          - button "Administrar lotes de Aceite de girasol 900 ml · La Estrella": Lotes
+      - row "Aceite de girasol 900 ml · La Familia SIM-1557 · Por unidad 60 u. 12 u. Disponible Contar Aceite de girasol 900 ml · La Familia Registrar movimiento de Aceite de girasol 900 ml · La Familia Ver movimientos de Aceite de girasol 900 ml · La Familia Administrar lotes de Aceite de girasol 900 ml · La Familia":
+        - cell "Aceite de girasol 900 ml · La Familia SIM-1557 · Por unidad":
+          - strong: Aceite de girasol 900 ml · La Familia
+          - generic: SIM-1557 · Por unidad
+        - cell "60 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · La Familia Registrar movimiento de Aceite de girasol 900 ml · La Familia Ver movimientos de Aceite de girasol 900 ml · La Familia Administrar lotes de Aceite de girasol 900 ml · La Familia":
+          - button "Contar Aceite de girasol 900 ml · La Familia": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · La Familia"
+          - button "Ver movimientos de Aceite de girasol 900 ml · La Familia"
+          - button "Administrar lotes de Aceite de girasol 900 ml · La Familia": Lotes
+      - row "Aceite de girasol 900 ml · La Huerta SIM-0486 · Por unidad 54 u. 12 u. Disponible Contar Aceite de girasol 900 ml · La Huerta Registrar movimiento de Aceite de girasol 900 ml · La Huerta Ver movimientos de Aceite de girasol 900 ml · La Huerta Administrar lotes de Aceite de girasol 900 ml · La Huerta":
+        - cell "Aceite de girasol 900 ml · La Huerta SIM-0486 · Por unidad":
+          - strong: Aceite de girasol 900 ml · La Huerta
+          - generic: SIM-0486 · Por unidad
+        - cell "54 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · La Huerta Registrar movimiento de Aceite de girasol 900 ml · La Huerta Ver movimientos de Aceite de girasol 900 ml · La Huerta Administrar lotes de Aceite de girasol 900 ml · La Huerta":
+          - button "Contar Aceite de girasol 900 ml · La Huerta": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · La Huerta"
+          - button "Ver movimientos de Aceite de girasol 900 ml · La Huerta"
+          - button "Administrar lotes de Aceite de girasol 900 ml · La Huerta": Lotes
+      - row "Aceite de girasol 900 ml · La Pradera SIM-2033 · Por unidad 81 u. 12 u. Disponible Contar Aceite de girasol 900 ml · La Pradera Registrar movimiento de Aceite de girasol 900 ml · La Pradera Ver movimientos de Aceite de girasol 900 ml · La Pradera Administrar lotes de Aceite de girasol 900 ml · La Pradera":
+        - cell "Aceite de girasol 900 ml · La Pradera SIM-2033 · Por unidad":
+          - strong: Aceite de girasol 900 ml · La Pradera
+          - generic: SIM-2033 · Por unidad
+        - cell "81 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · La Pradera Registrar movimiento de Aceite de girasol 900 ml · La Pradera Ver movimientos de Aceite de girasol 900 ml · La Pradera Administrar lotes de Aceite de girasol 900 ml · La Pradera":
+          - button "Contar Aceite de girasol 900 ml · La Pradera": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · La Pradera"
+          - button "Ver movimientos de Aceite de girasol 900 ml · La Pradera"
+          - button "Administrar lotes de Aceite de girasol 900 ml · La Pradera": Lotes
+      - row "Aceite de girasol 900 ml · La Reserva SIM-3580 · Por unidad 91 u. 12 u. Disponible Contar Aceite de girasol 900 ml · La Reserva Registrar movimiento de Aceite de girasol 900 ml · La Reserva Ver movimientos de Aceite de girasol 900 ml · La Reserva Administrar lotes de Aceite de girasol 900 ml · La Reserva":
+        - cell "Aceite de girasol 900 ml · La Reserva SIM-3580 · Por unidad":
+          - strong: Aceite de girasol 900 ml · La Reserva
+          - generic: SIM-3580 · Por unidad
+        - cell "91 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · La Reserva Registrar movimiento de Aceite de girasol 900 ml · La Reserva Ver movimientos de Aceite de girasol 900 ml · La Reserva Administrar lotes de Aceite de girasol 900 ml · La Reserva":
+          - button "Contar Aceite de girasol 900 ml · La Reserva": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · La Reserva"
+          - button "Ver movimientos de Aceite de girasol 900 ml · La Reserva"
+          - button "Administrar lotes de Aceite de girasol 900 ml · La Reserva": Lotes
+      - row "Aceite de girasol 900 ml · Las Sierras SIM-0843 · Por unidad 70 u. 12 u. Disponible Contar Aceite de girasol 900 ml · Las Sierras Registrar movimiento de Aceite de girasol 900 ml · Las Sierras Ver movimientos de Aceite de girasol 900 ml · Las Sierras Administrar lotes de Aceite de girasol 900 ml · Las Sierras":
+        - cell "Aceite de girasol 900 ml · Las Sierras SIM-0843 · Por unidad":
+          - strong: Aceite de girasol 900 ml · Las Sierras
+          - generic: SIM-0843 · Por unidad
+        - cell "70 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · Las Sierras Registrar movimiento de Aceite de girasol 900 ml · Las Sierras Ver movimientos de Aceite de girasol 900 ml · Las Sierras Administrar lotes de Aceite de girasol 900 ml · Las Sierras":
+          - button "Contar Aceite de girasol 900 ml · Las Sierras": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · Las Sierras"
+          - button "Ver movimientos de Aceite de girasol 900 ml · Las Sierras"
+          - button "Administrar lotes de Aceite de girasol 900 ml · Las Sierras": Lotes
+      - row "Aceite de girasol 900 ml · Los Aromos SIM-0129 · Por unidad 76 u. 12 u. Disponible Contar Aceite de girasol 900 ml · Los Aromos Registrar movimiento de Aceite de girasol 900 ml · Los Aromos Ver movimientos de Aceite de girasol 900 ml · Los Aromos Administrar lotes de Aceite de girasol 900 ml · Los Aromos":
+        - cell "Aceite de girasol 900 ml · Los Aromos SIM-0129 · Por unidad":
+          - strong: Aceite de girasol 900 ml · Los Aromos
+          - generic: SIM-0129 · Por unidad
+        - cell "76 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · Los Aromos Registrar movimiento de Aceite de girasol 900 ml · Los Aromos Ver movimientos de Aceite de girasol 900 ml · Los Aromos Administrar lotes de Aceite de girasol 900 ml · Los Aromos":
+          - button "Contar Aceite de girasol 900 ml · Los Aromos": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · Los Aromos"
+          - button "Ver movimientos de Aceite de girasol 900 ml · Los Aromos"
+          - button "Administrar lotes de Aceite de girasol 900 ml · Los Aromos": Lotes
+      - row "Aceite de girasol 900 ml · Los Aromos SIM-3699 · Por unidad 82 u. 12 u. Disponible Contar Aceite de girasol 900 ml · Los Aromos Registrar movimiento de Aceite de girasol 900 ml · Los Aromos Ver movimientos de Aceite de girasol 900 ml · Los Aromos Administrar lotes de Aceite de girasol 900 ml · Los Aromos":
+        - cell "Aceite de girasol 900 ml · Los Aromos SIM-3699 · Por unidad":
+          - strong: Aceite de girasol 900 ml · Los Aromos
+          - generic: SIM-3699 · Por unidad
+        - cell "82 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · Los Aromos Registrar movimiento de Aceite de girasol 900 ml · Los Aromos Ver movimientos de Aceite de girasol 900 ml · Los Aromos Administrar lotes de Aceite de girasol 900 ml · Los Aromos":
+          - button "Contar Aceite de girasol 900 ml · Los Aromos": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · Los Aromos"
+          - button "Ver movimientos de Aceite de girasol 900 ml · Los Aromos"
+          - button "Administrar lotes de Aceite de girasol 900 ml · Los Aromos": Lotes
+      - row "Aceite de girasol 900 ml · Mi Barrio SIM-3342 · Por unidad 414 u. 12 u. Disponible Contar Aceite de girasol 900 ml · Mi Barrio Registrar movimiento de Aceite de girasol 900 ml · Mi Barrio Ver movimientos de Aceite de girasol 900 ml · Mi Barrio Administrar lotes de Aceite de girasol 900 ml · Mi Barrio":
+        - cell "Aceite de girasol 900 ml · Mi Barrio SIM-3342 · Por unidad":
+          - strong: Aceite de girasol 900 ml · Mi Barrio
+          - generic: SIM-3342 · Por unidad
+        - cell "414 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · Mi Barrio Registrar movimiento de Aceite de girasol 900 ml · Mi Barrio Ver movimientos de Aceite de girasol 900 ml · Mi Barrio Administrar lotes de Aceite de girasol 900 ml · Mi Barrio":
+          - button "Contar Aceite de girasol 900 ml · Mi Barrio": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · Mi Barrio"
+          - button "Ver movimientos de Aceite de girasol 900 ml · Mi Barrio"
+          - button "Administrar lotes de Aceite de girasol 900 ml · Mi Barrio": Lotes
+      - row "Aceite de girasol 900 ml · Nueva Mesa SIM-1319 · Por unidad 79 u. 12 u. Disponible Contar Aceite de girasol 900 ml · Nueva Mesa Registrar movimiento de Aceite de girasol 900 ml · Nueva Mesa Ver movimientos de Aceite de girasol 900 ml · Nueva Mesa Administrar lotes de Aceite de girasol 900 ml · Nueva Mesa":
+        - cell "Aceite de girasol 900 ml · Nueva Mesa SIM-1319 · Por unidad":
+          - strong: Aceite de girasol 900 ml · Nueva Mesa
+          - generic: SIM-1319 · Por unidad
+        - cell "79 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · Nueva Mesa Registrar movimiento de Aceite de girasol 900 ml · Nueva Mesa Ver movimientos de Aceite de girasol 900 ml · Nueva Mesa Administrar lotes de Aceite de girasol 900 ml · Nueva Mesa":
+          - button "Contar Aceite de girasol 900 ml · Nueva Mesa": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · Nueva Mesa"
+          - button "Ver movimientos de Aceite de girasol 900 ml · Nueva Mesa"
+          - button "Administrar lotes de Aceite de girasol 900 ml · Nueva Mesa": Lotes
+      - row "Aceite de girasol 900 ml · Primavera SIM-2747 · Por unidad 78 u. 12 u. Disponible Contar Aceite de girasol 900 ml · Primavera Registrar movimiento de Aceite de girasol 900 ml · Primavera Ver movimientos de Aceite de girasol 900 ml · Primavera Administrar lotes de Aceite de girasol 900 ml · Primavera":
+        - cell "Aceite de girasol 900 ml · Primavera SIM-2747 · Por unidad":
+          - strong: Aceite de girasol 900 ml · Primavera
+          - generic: SIM-2747 · Por unidad
+        - cell "78 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · Primavera Registrar movimiento de Aceite de girasol 900 ml · Primavera Ver movimientos de Aceite de girasol 900 ml · Primavera Administrar lotes de Aceite de girasol 900 ml · Primavera":
+          - button "Contar Aceite de girasol 900 ml · Primavera": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · Primavera"
+          - button "Ver movimientos de Aceite de girasol 900 ml · Primavera"
+          - button "Administrar lotes de Aceite de girasol 900 ml · Primavera": Lotes
+      - row "Aceite de girasol 900 ml · Rincón Sur SIM-2985 · Por unidad 85 u. 12 u. Disponible Contar Aceite de girasol 900 ml · Rincón Sur Registrar movimiento de Aceite de girasol 900 ml · Rincón Sur Ver movimientos de Aceite de girasol 900 ml · Rincón Sur Administrar lotes de Aceite de girasol 900 ml · Rincón Sur":
+        - cell "Aceite de girasol 900 ml · Rincón Sur SIM-2985 · Por unidad":
+          - strong: Aceite de girasol 900 ml · Rincón Sur
+          - generic: SIM-2985 · Por unidad
+        - cell "85 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · Rincón Sur Registrar movimiento de Aceite de girasol 900 ml · Rincón Sur Ver movimientos de Aceite de girasol 900 ml · Rincón Sur Administrar lotes de Aceite de girasol 900 ml · Rincón Sur":
+          - button "Contar Aceite de girasol 900 ml · Rincón Sur": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · Rincón Sur"
+          - button "Ver movimientos de Aceite de girasol 900 ml · Rincón Sur"
+          - button "Administrar lotes de Aceite de girasol 900 ml · Rincón Sur": Lotes
+      - row "Aceite de girasol 900 ml · Santa Ana SIM-1676 · Por unidad 64 u. 12 u. Disponible Contar Aceite de girasol 900 ml · Santa Ana Registrar movimiento de Aceite de girasol 900 ml · Santa Ana Ver movimientos de Aceite de girasol 900 ml · Santa Ana Administrar lotes de Aceite de girasol 900 ml · Santa Ana":
+        - cell "Aceite de girasol 900 ml · Santa Ana SIM-1676 · Por unidad":
+          - strong: Aceite de girasol 900 ml · Santa Ana
+          - generic: SIM-1676 · Por unidad
+        - cell "64 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · Santa Ana Registrar movimiento de Aceite de girasol 900 ml · Santa Ana Ver movimientos de Aceite de girasol 900 ml · Santa Ana Administrar lotes de Aceite de girasol 900 ml · Santa Ana":
+          - button "Contar Aceite de girasol 900 ml · Santa Ana": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · Santa Ana"
+          - button "Ver movimientos de Aceite de girasol 900 ml · Santa Ana"
+          - button "Administrar lotes de Aceite de girasol 900 ml · Santa Ana": Lotes
+      - row "Aceite de girasol 900 ml · Santa Lucía SIM-3818 · Por unidad 73 u. 12 u. Disponible Contar Aceite de girasol 900 ml · Santa Lucía Registrar movimiento de Aceite de girasol 900 ml · Santa Lucía Ver movimientos de Aceite de girasol 900 ml · Santa Lucía Administrar lotes de Aceite de girasol 900 ml · Santa Lucía":
+        - cell "Aceite de girasol 900 ml · Santa Lucía SIM-3818 · Por unidad":
+          - strong: Aceite de girasol 900 ml · Santa Lucía
+          - generic: SIM-3818 · Por unidad
+        - cell "73 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · Santa Lucía Registrar movimiento de Aceite de girasol 900 ml · Santa Lucía Ver movimientos de Aceite de girasol 900 ml · Santa Lucía Administrar lotes de Aceite de girasol 900 ml · Santa Lucía":
+          - button "Contar Aceite de girasol 900 ml · Santa Lucía": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · Santa Lucía"
+          - button "Ver movimientos de Aceite de girasol 900 ml · Santa Lucía"
+          - button "Administrar lotes de Aceite de girasol 900 ml · Santa Lucía": Lotes
+      - row "Aceite de girasol 900 ml · Santa Lucía SIM-0248 · Por unidad 810 u. 12 u. Disponible Contar Aceite de girasol 900 ml · Santa Lucía Registrar movimiento de Aceite de girasol 900 ml · Santa Lucía Ver movimientos de Aceite de girasol 900 ml · Santa Lucía Administrar lotes de Aceite de girasol 900 ml · Santa Lucía":
+        - cell "Aceite de girasol 900 ml · Santa Lucía SIM-0248 · Por unidad":
+          - strong: Aceite de girasol 900 ml · Santa Lucía
+          - generic: SIM-0248 · Por unidad
+        - cell "810 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · Santa Lucía Registrar movimiento de Aceite de girasol 900 ml · Santa Lucía Ver movimientos de Aceite de girasol 900 ml · Santa Lucía Administrar lotes de Aceite de girasol 900 ml · Santa Lucía":
+          - button "Contar Aceite de girasol 900 ml · Santa Lucía": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · Santa Lucía"
+          - button "Ver movimientos de Aceite de girasol 900 ml · Santa Lucía"
+          - button "Administrar lotes de Aceite de girasol 900 ml · Santa Lucía": Lotes
+      - row "Aceite de girasol 900 ml · Sol del Sur SIM-0605 · Por unidad 66 u. 12 u. Disponible Contar Aceite de girasol 900 ml · Sol del Sur Registrar movimiento de Aceite de girasol 900 ml · Sol del Sur Ver movimientos de Aceite de girasol 900 ml · Sol del Sur Administrar lotes de Aceite de girasol 900 ml · Sol del Sur":
+        - cell "Aceite de girasol 900 ml · Sol del Sur SIM-0605 · Por unidad":
+          - strong: Aceite de girasol 900 ml · Sol del Sur
+          - generic: SIM-0605 · Por unidad
+        - cell "66 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · Sol del Sur Registrar movimiento de Aceite de girasol 900 ml · Sol del Sur Ver movimientos de Aceite de girasol 900 ml · Sol del Sur Administrar lotes de Aceite de girasol 900 ml · Sol del Sur":
+          - button "Contar Aceite de girasol 900 ml · Sol del Sur": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · Sol del Sur"
+          - button "Ver movimientos de Aceite de girasol 900 ml · Sol del Sur"
+          - button "Administrar lotes de Aceite de girasol 900 ml · Sol del Sur": Lotes
+      - row "Aceite de girasol 900 ml · Tierra Clara SIM-3461 · Por unidad 73 u. 12 u. Disponible Contar Aceite de girasol 900 ml · Tierra Clara Registrar movimiento de Aceite de girasol 900 ml · Tierra Clara Ver movimientos de Aceite de girasol 900 ml · Tierra Clara Administrar lotes de Aceite de girasol 900 ml · Tierra Clara":
+        - cell "Aceite de girasol 900 ml · Tierra Clara SIM-3461 · Por unidad":
+          - strong: Aceite de girasol 900 ml · Tierra Clara
+          - generic: SIM-3461 · Por unidad
+        - cell "73 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · Tierra Clara Registrar movimiento de Aceite de girasol 900 ml · Tierra Clara Ver movimientos de Aceite de girasol 900 ml · Tierra Clara Administrar lotes de Aceite de girasol 900 ml · Tierra Clara":
+          - button "Contar Aceite de girasol 900 ml · Tierra Clara": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · Tierra Clara"
+          - button "Ver movimientos de Aceite de girasol 900 ml · Tierra Clara"
+          - button "Administrar lotes de Aceite de girasol 900 ml · Tierra Clara": Lotes
+      - row "Aceite de girasol 900 ml · Tres Espigas SIM-2271 · Por unidad 74 u. 12 u. Disponible Contar Aceite de girasol 900 ml · Tres Espigas Registrar movimiento de Aceite de girasol 900 ml · Tres Espigas Ver movimientos de Aceite de girasol 900 ml · Tres Espigas Administrar lotes de Aceite de girasol 900 ml · Tres Espigas":
+        - cell "Aceite de girasol 900 ml · Tres Espigas SIM-2271 · Por unidad":
+          - strong: Aceite de girasol 900 ml · Tres Espigas
+          - generic: SIM-2271 · Por unidad
+        - cell "74 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · Tres Espigas Registrar movimiento de Aceite de girasol 900 ml · Tres Espigas Ver movimientos de Aceite de girasol 900 ml · Tres Espigas Administrar lotes de Aceite de girasol 900 ml · Tres Espigas":
+          - button "Contar Aceite de girasol 900 ml · Tres Espigas": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · Tres Espigas"
+          - button "Ver movimientos de Aceite de girasol 900 ml · Tres Espigas"
+          - button "Administrar lotes de Aceite de girasol 900 ml · Tres Espigas": Lotes
+      - row "Aceite de girasol 900 ml · Villa del Sol SIM-2390 · Por unidad 88 u. 12 u. Disponible Contar Aceite de girasol 900 ml · Villa del Sol Registrar movimiento de Aceite de girasol 900 ml · Villa del Sol Ver movimientos de Aceite de girasol 900 ml · Villa del Sol Administrar lotes de Aceite de girasol 900 ml · Villa del Sol":
+        - cell "Aceite de girasol 900 ml · Villa del Sol SIM-2390 · Por unidad":
+          - strong: Aceite de girasol 900 ml · Villa del Sol
+          - generic: SIM-2390 · Por unidad
+        - cell "88 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de girasol 900 ml · Villa del Sol Registrar movimiento de Aceite de girasol 900 ml · Villa del Sol Ver movimientos de Aceite de girasol 900 ml · Villa del Sol Administrar lotes de Aceite de girasol 900 ml · Villa del Sol":
+          - button "Contar Aceite de girasol 900 ml · Villa del Sol": Contar stock
+          - button "Registrar movimiento de Aceite de girasol 900 ml · Villa del Sol"
+          - button "Ver movimientos de Aceite de girasol 900 ml · Villa del Sol"
+          - button "Administrar lotes de Aceite de girasol 900 ml · Villa del Sol": Lotes
+      - row "Aceite de oliva 500 ml SIM-0011 · Por unidad 89 u. 12 u. Disponible Contar Aceite de oliva 500 ml Registrar movimiento de Aceite de oliva 500 ml Ver movimientos de Aceite de oliva 500 ml Administrar lotes de Aceite de oliva 500 ml":
+        - cell "Aceite de oliva 500 ml SIM-0011 · Por unidad":
+          - strong: Aceite de oliva 500 ml
+          - generic: SIM-0011 · Por unidad
+        - cell "89 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de oliva 500 ml Registrar movimiento de Aceite de oliva 500 ml Ver movimientos de Aceite de oliva 500 ml Administrar lotes de Aceite de oliva 500 ml":
+          - button "Contar Aceite de oliva 500 ml": Contar stock
+          - button "Registrar movimiento de Aceite de oliva 500 ml"
+          - button "Ver movimientos de Aceite de oliva 500 ml"
+          - button "Administrar lotes de Aceite de oliva 500 ml": Lotes
+      - row "Aceite de oliva 500 ml · Buen Día SIM-3938 · Por unidad — 12 u. Sin control Contar Aceite de oliva 500 ml · Buen Día Registrar movimiento de Aceite de oliva 500 ml · Buen Día Ver movimientos de Aceite de oliva 500 ml · Buen Día":
+        - cell "Aceite de oliva 500 ml · Buen Día SIM-3938 · Por unidad":
+          - strong: Aceite de oliva 500 ml · Buen Día
+          - generic: SIM-3938 · Por unidad
+        - cell "—"
+        - cell "12 u."
+        - cell "Sin control":
+          - generic: Sin control
+        - cell "Contar Aceite de oliva 500 ml · Buen Día Registrar movimiento de Aceite de oliva 500 ml · Buen Día Ver movimientos de Aceite de oliva 500 ml · Buen Día":
+          - button "Contar Aceite de oliva 500 ml · Buen Día" [disabled]: Contar stock
+          - button "Registrar movimiento de Aceite de oliva 500 ml · Buen Día" [disabled]
+          - button "Ver movimientos de Aceite de oliva 500 ml · Buen Día"
+      - row "Aceite de oliva 500 ml · Buen Día SIM-0368 · Por unidad 55 u. 12 u. Disponible Contar Aceite de oliva 500 ml · Buen Día Registrar movimiento de Aceite de oliva 500 ml · Buen Día Ver movimientos de Aceite de oliva 500 ml · Buen Día Administrar lotes de Aceite de oliva 500 ml · Buen Día":
+        - cell "Aceite de oliva 500 ml · Buen Día SIM-0368 · Por unidad":
+          - strong: Aceite de oliva 500 ml · Buen Día
+          - generic: SIM-0368 · Por unidad
+        - cell "55 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de oliva 500 ml · Buen Día Registrar movimiento de Aceite de oliva 500 ml · Buen Día Ver movimientos de Aceite de oliva 500 ml · Buen Día Administrar lotes de Aceite de oliva 500 ml · Buen Día":
+          - button "Contar Aceite de oliva 500 ml · Buen Día": Contar stock
+          - button "Registrar movimiento de Aceite de oliva 500 ml · Buen Día"
+          - button "Ver movimientos de Aceite de oliva 500 ml · Buen Día"
+          - button "Administrar lotes de Aceite de oliva 500 ml · Buen Día": Lotes
+      - row "Aceite de oliva 500 ml · Buenos Sabores SIM-3224 · Por unidad 71 u. 12 u. Disponible Contar Aceite de oliva 500 ml · Buenos Sabores Registrar movimiento de Aceite de oliva 500 ml · Buenos Sabores Ver movimientos de Aceite de oliva 500 ml · Buenos Sabores Administrar lotes de Aceite de oliva 500 ml · Buenos Sabores":
+        - cell "Aceite de oliva 500 ml · Buenos Sabores SIM-3224 · Por unidad":
+          - strong: Aceite de oliva 500 ml · Buenos Sabores
+          - generic: SIM-3224 · Por unidad
+        - cell "71 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de oliva 500 ml · Buenos Sabores Registrar movimiento de Aceite de oliva 500 ml · Buenos Sabores Ver movimientos de Aceite de oliva 500 ml · Buenos Sabores Administrar lotes de Aceite de oliva 500 ml · Buenos Sabores":
+          - button "Contar Aceite de oliva 500 ml · Buenos Sabores": Contar stock
+          - button "Registrar movimiento de Aceite de oliva 500 ml · Buenos Sabores"
+          - button "Ver movimientos de Aceite de oliva 500 ml · Buenos Sabores"
+          - button "Administrar lotes de Aceite de oliva 500 ml · Buenos Sabores": Lotes
+      - row "Aceite de oliva 500 ml · Campo Vivo SIM-1201 · Por unidad 64 u. 12 u. Disponible Contar Aceite de oliva 500 ml · Campo Vivo Registrar movimiento de Aceite de oliva 500 ml · Campo Vivo Ver movimientos de Aceite de oliva 500 ml · Campo Vivo Administrar lotes de Aceite de oliva 500 ml · Campo Vivo":
+        - cell "Aceite de oliva 500 ml · Campo Vivo SIM-1201 · Por unidad":
+          - strong: Aceite de oliva 500 ml · Campo Vivo
+          - generic: SIM-1201 · Por unidad
+        - cell "64 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de oliva 500 ml · Campo Vivo Registrar movimiento de Aceite de oliva 500 ml · Campo Vivo Ver movimientos de Aceite de oliva 500 ml · Campo Vivo Administrar lotes de Aceite de oliva 500 ml · Campo Vivo":
+          - button "Contar Aceite de oliva 500 ml · Campo Vivo": Contar stock
+          - button "Registrar movimiento de Aceite de oliva 500 ml · Campo Vivo"
+          - button "Ver movimientos de Aceite de oliva 500 ml · Campo Vivo"
+          - button "Administrar lotes de Aceite de oliva 500 ml · Campo Vivo": Lotes
+      - row "Aceite de oliva 500 ml · Cosecha Nueva SIM-1915 · Por unidad 67 u. 12 u. Disponible Contar Aceite de oliva 500 ml · Cosecha Nueva Registrar movimiento de Aceite de oliva 500 ml · Cosecha Nueva Ver movimientos de Aceite de oliva 500 ml · Cosecha Nueva Administrar lotes de Aceite de oliva 500 ml · Cosecha Nueva":
+        - cell "Aceite de oliva 500 ml · Cosecha Nueva SIM-1915 · Por unidad":
+          - strong: Aceite de oliva 500 ml · Cosecha Nueva
+          - generic: SIM-1915 · Por unidad
+        - cell "67 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de oliva 500 ml · Cosecha Nueva Registrar movimiento de Aceite de oliva 500 ml · Cosecha Nueva Ver movimientos de Aceite de oliva 500 ml · Cosecha Nueva Administrar lotes de Aceite de oliva 500 ml · Cosecha Nueva":
+          - button "Contar Aceite de oliva 500 ml · Cosecha Nueva": Contar stock
+          - button "Registrar movimiento de Aceite de oliva 500 ml · Cosecha Nueva"
+          - button "Ver movimientos de Aceite de oliva 500 ml · Cosecha Nueva"
+          - button "Administrar lotes de Aceite de oliva 500 ml · Cosecha Nueva": Lotes
+      - row "Aceite de oliva 500 ml · Costa Clara SIM-2153 · Por unidad 59 u. 12 u. Disponible Contar Aceite de oliva 500 ml · Costa Clara Registrar movimiento de Aceite de oliva 500 ml · Costa Clara Ver movimientos de Aceite de oliva 500 ml · Costa Clara Administrar lotes de Aceite de oliva 500 ml · Costa Clara":
+        - cell "Aceite de oliva 500 ml · Costa Clara SIM-2153 · Por unidad":
+          - strong: Aceite de oliva 500 ml · Costa Clara
+          - generic: SIM-2153 · Por unidad
+        - cell "59 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de oliva 500 ml · Costa Clara Registrar movimiento de Aceite de oliva 500 ml · Costa Clara Ver movimientos de Aceite de oliva 500 ml · Costa Clara Administrar lotes de Aceite de oliva 500 ml · Costa Clara":
+          - button "Contar Aceite de oliva 500 ml · Costa Clara": Contar stock
+          - button "Registrar movimiento de Aceite de oliva 500 ml · Costa Clara"
+          - button "Ver movimientos de Aceite de oliva 500 ml · Costa Clara"
+          - button "Administrar lotes de Aceite de oliva 500 ml · Costa Clara": Lotes
+      - row "Aceite de oliva 500 ml · Del Valle SIM-2629 · Por unidad 4 u. 12 u. Bajo mínimo Contar Aceite de oliva 500 ml · Del Valle Registrar movimiento de Aceite de oliva 500 ml · Del Valle Ver movimientos de Aceite de oliva 500 ml · Del Valle Administrar lotes de Aceite de oliva 500 ml · Del Valle":
+        - cell "Aceite de oliva 500 ml · Del Valle SIM-2629 · Por unidad":
+          - strong: Aceite de oliva 500 ml · Del Valle
+          - generic: SIM-2629 · Por unidad
+        - cell "4 u."
+        - cell "12 u."
+        - cell "Bajo mínimo":
+          - generic: Bajo mínimo
+        - cell "Contar Aceite de oliva 500 ml · Del Valle Registrar movimiento de Aceite de oliva 500 ml · Del Valle Ver movimientos de Aceite de oliva 500 ml · Del Valle Administrar lotes de Aceite de oliva 500 ml · Del Valle":
+          - button "Contar Aceite de oliva 500 ml · Del Valle": Contar stock
+          - button "Registrar movimiento de Aceite de oliva 500 ml · Del Valle"
+          - button "Ver movimientos de Aceite de oliva 500 ml · Del Valle"
+          - button "Administrar lotes de Aceite de oliva 500 ml · Del Valle": Lotes
+      - row "Aceite de oliva 500 ml · Don Pedro SIM-0963 · Por unidad 821 u. 12 u. Disponible Contar Aceite de oliva 500 ml · Don Pedro Registrar movimiento de Aceite de oliva 500 ml · Don Pedro Ver movimientos de Aceite de oliva 500 ml · Don Pedro Administrar lotes de Aceite de oliva 500 ml · Don Pedro":
+        - cell "Aceite de oliva 500 ml · Don Pedro SIM-0963 · Por unidad":
+          - strong: Aceite de oliva 500 ml · Don Pedro
+          - generic: SIM-0963 · Por unidad
+        - cell "821 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de oliva 500 ml · Don Pedro Registrar movimiento de Aceite de oliva 500 ml · Don Pedro Ver movimientos de Aceite de oliva 500 ml · Don Pedro Administrar lotes de Aceite de oliva 500 ml · Don Pedro":
+          - button "Contar Aceite de oliva 500 ml · Don Pedro": Contar stock
+          - button "Registrar movimiento de Aceite de oliva 500 ml · Don Pedro"
+          - button "Ver movimientos de Aceite de oliva 500 ml · Don Pedro"
+          - button "Administrar lotes de Aceite de oliva 500 ml · Don Pedro": Lotes
+      - row "Aceite de oliva 500 ml · El Molino SIM-0725 · Por unidad 58 u. 12 u. Disponible Contar Aceite de oliva 500 ml · El Molino Registrar movimiento de Aceite de oliva 500 ml · El Molino Ver movimientos de Aceite de oliva 500 ml · El Molino Administrar lotes de Aceite de oliva 500 ml · El Molino":
+        - cell "Aceite de oliva 500 ml · El Molino SIM-0725 · Por unidad":
+          - strong: Aceite de oliva 500 ml · El Molino
+          - generic: SIM-0725 · Por unidad
+        - cell "58 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de oliva 500 ml · El Molino Registrar movimiento de Aceite de oliva 500 ml · El Molino Ver movimientos de Aceite de oliva 500 ml · El Molino Administrar lotes de Aceite de oliva 500 ml · El Molino":
+          - button "Contar Aceite de oliva 500 ml · El Molino": Contar stock
+          - button "Registrar movimiento de Aceite de oliva 500 ml · El Molino"
+          - button "Ver movimientos de Aceite de oliva 500 ml · El Molino"
+          - button "Administrar lotes de Aceite de oliva 500 ml · El Molino": Lotes
+      - row "Aceite de oliva 500 ml · El Ombú SIM-2867 · Por unidad 79 u. 12 u. Disponible Contar Aceite de oliva 500 ml · El Ombú Registrar movimiento de Aceite de oliva 500 ml · El Ombú Ver movimientos de Aceite de oliva 500 ml · El Ombú Administrar lotes de Aceite de oliva 500 ml · El Ombú":
+        - cell "Aceite de oliva 500 ml · El Ombú SIM-2867 · Por unidad":
+          - strong: Aceite de oliva 500 ml · El Ombú
+          - generic: SIM-2867 · Por unidad
+        - cell "79 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de oliva 500 ml · El Ombú Registrar movimiento de Aceite de oliva 500 ml · El Ombú Ver movimientos de Aceite de oliva 500 ml · El Ombú Administrar lotes de Aceite de oliva 500 ml · El Ombú":
+          - button "Contar Aceite de oliva 500 ml · El Ombú": Contar stock
+          - button "Registrar movimiento de Aceite de oliva 500 ml · El Ombú"
+          - button "Ver movimientos de Aceite de oliva 500 ml · El Ombú"
+          - button "Administrar lotes de Aceite de oliva 500 ml · El Ombú": Lotes
+      - row "Aceite de oliva 500 ml · El Trigal SIM-1439 · Por unidad 63 u. 12 u. Disponible Contar Aceite de oliva 500 ml · El Trigal Registrar movimiento de Aceite de oliva 500 ml · El Trigal Ver movimientos de Aceite de oliva 500 ml · El Trigal Administrar lotes de Aceite de oliva 500 ml · El Trigal":
+        - cell "Aceite de oliva 500 ml · El Trigal SIM-1439 · Por unidad":
+          - strong: Aceite de oliva 500 ml · El Trigal
+          - generic: SIM-1439 · Por unidad
+        - cell "63 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de oliva 500 ml · El Trigal Registrar movimiento de Aceite de oliva 500 ml · El Trigal Ver movimientos de Aceite de oliva 500 ml · El Trigal Administrar lotes de Aceite de oliva 500 ml · El Trigal":
+          - button "Contar Aceite de oliva 500 ml · El Trigal": Contar stock
+          - button "Registrar movimiento de Aceite de oliva 500 ml · El Trigal"
+          - button "Ver movimientos de Aceite de oliva 500 ml · El Trigal"
+          - button "Administrar lotes de Aceite de oliva 500 ml · El Trigal": Lotes
+      - row "Aceite de oliva 500 ml · La Abuela SIM-1796 · Por unidad 60 u. 12 u. Disponible Contar Aceite de oliva 500 ml · La Abuela Registrar movimiento de Aceite de oliva 500 ml · La Abuela Ver movimientos de Aceite de oliva 500 ml · La Abuela Administrar lotes de Aceite de oliva 500 ml · La Abuela":
+        - cell "Aceite de oliva 500 ml · La Abuela SIM-1796 · Por unidad":
+          - strong: Aceite de oliva 500 ml · La Abuela
+          - generic: SIM-1796 · Por unidad
+        - cell "60 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de oliva 500 ml · La Abuela Registrar movimiento de Aceite de oliva 500 ml · La Abuela Ver movimientos de Aceite de oliva 500 ml · La Abuela Administrar lotes de Aceite de oliva 500 ml · La Abuela":
+          - button "Contar Aceite de oliva 500 ml · La Abuela": Contar stock
+          - button "Registrar movimiento de Aceite de oliva 500 ml · La Abuela"
+          - button "Ver movimientos de Aceite de oliva 500 ml · La Abuela"
+          - button "Administrar lotes de Aceite de oliva 500 ml · La Abuela": Lotes
+      - row "Aceite de oliva 500 ml · La Colonia SIM-1082 · Por unidad 67 u. 12 u. Disponible Contar Aceite de oliva 500 ml · La Colonia Registrar movimiento de Aceite de oliva 500 ml · La Colonia Ver movimientos de Aceite de oliva 500 ml · La Colonia Administrar lotes de Aceite de oliva 500 ml · La Colonia":
+        - cell "Aceite de oliva 500 ml · La Colonia SIM-1082 · Por unidad":
+          - strong: Aceite de oliva 500 ml · La Colonia
+          - generic: SIM-1082 · Por unidad
+        - cell "67 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de oliva 500 ml · La Colonia Registrar movimiento de Aceite de oliva 500 ml · La Colonia Ver movimientos de Aceite de oliva 500 ml · La Colonia Administrar lotes de Aceite de oliva 500 ml · La Colonia":
+          - button "Contar Aceite de oliva 500 ml · La Colonia": Contar stock
+          - button "Registrar movimiento de Aceite de oliva 500 ml · La Colonia"
+          - button "Ver movimientos de Aceite de oliva 500 ml · La Colonia"
+          - button "Administrar lotes de Aceite de oliva 500 ml · La Colonia": Lotes
+      - row "Aceite de oliva 500 ml · La Cumbre SIM-2510 · Por unidad 1219 u. 12 u. Disponible Contar Aceite de oliva 500 ml · La Cumbre Registrar movimiento de Aceite de oliva 500 ml · La Cumbre Ver movimientos de Aceite de oliva 500 ml · La Cumbre Administrar lotes de Aceite de oliva 500 ml · La Cumbre":
+        - cell "Aceite de oliva 500 ml · La Cumbre SIM-2510 · Por unidad":
+          - strong: Aceite de oliva 500 ml · La Cumbre
+          - generic: SIM-2510 · Por unidad
+        - cell "1219 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de oliva 500 ml · La Cumbre Registrar movimiento de Aceite de oliva 500 ml · La Cumbre Ver movimientos de Aceite de oliva 500 ml · La Cumbre Administrar lotes de Aceite de oliva 500 ml · La Cumbre":
+          - button "Contar Aceite de oliva 500 ml · La Cumbre": Contar stock
+          - button "Registrar movimiento de Aceite de oliva 500 ml · La Cumbre"
+          - button "Ver movimientos de Aceite de oliva 500 ml · La Cumbre"
+          - button "Administrar lotes de Aceite de oliva 500 ml · La Cumbre": Lotes
+      - row "Aceite de oliva 500 ml · La Estrella SIM-3105 · Por unidad 48 u. 12 u. Disponible Contar Aceite de oliva 500 ml · La Estrella Registrar movimiento de Aceite de oliva 500 ml · La Estrella Ver movimientos de Aceite de oliva 500 ml · La Estrella Administrar lotes de Aceite de oliva 500 ml · La Estrella":
+        - cell "Aceite de oliva 500 ml · La Estrella SIM-3105 · Por unidad":
+          - strong: Aceite de oliva 500 ml · La Estrella
+          - generic: SIM-3105 · Por unidad
+        - cell "48 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Aceite de oliva 500 ml · La Estrella Registrar movimiento de Aceite de oliva 500 ml · La Estrella Ver movimientos de Aceite de oliva 500 ml · La Estrella Administrar lotes de Aceite de oliva 500 ml · La Estrella":
+          - button "Contar Aceite de oliva 500 ml · La Estrella": Contar stock
+          - button "Registrar movimiento de Aceite de oliva 500 ml · La Estrella"
+          - button "Ver movimientos de Aceite de oliva 500 ml · La Estrella"
+          - button "Administrar lotes de Aceite de oliva 500 ml · La Estrella": Lotes
+  - generic: Página 1
+  - button "Anterior" [disabled]
+  - button "Siguiente"
+  - generic: F2 Buscar Esc Volver
+  - dialog "Lotes · Aceite de girasol 900 ml":
+    - heading "Lotes · Aceite de girasol 900 ml" [level=2]
+    - button "Cerrar" [active]
+    - strong: Controlar por lote y vencimiento
+    - paragraph: Al vender, el sistema descontará primero la mercadería que vence antes.
+    - button "Activar lotes"

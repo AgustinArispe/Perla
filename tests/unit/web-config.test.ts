@@ -24,6 +24,21 @@ it('producción exige HTTPS y clave externa; ignora configuración insegura', ()
   expect(config.production).toBe(true);
   expect(config.origin).toBe('https://pos.example.com');
   expect(config.trustProxy).toBe(false);
+  expect(config.sessionIdleTimeoutMs).toBe(30 * 60_000);
+  expect(config.sessionMaxLifetimeMs).toBe(8 * 60 * 60_000);
+  expect(() =>
+    readServerConfig({
+      BOCHA_BACKUP_KEY: 'a'.repeat(64),
+      BOCHA_SESSION_IDLE_MINUTES: '4',
+    }),
+  ).toThrow('BOCHA_SESSION_IDLE_MINUTES');
+  expect(() =>
+    readServerConfig({
+      BOCHA_BACKUP_KEY: 'a'.repeat(64),
+      BOCHA_SESSION_IDLE_MINUTES: '120',
+      BOCHA_SESSION_MAX_HOURS: '1',
+    }),
+  ).toThrow('duración máxima');
   expect(() =>
     readServerConfig({
       BOCHA_BACKUP_KEY: 'a'.repeat(64),

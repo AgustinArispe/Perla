@@ -14,6 +14,7 @@ jobs:
       - run: npm ci
       - run: npm run postinstall
       - run: npm run check
+      - run: npm audit --omit=dev
       - run: npx playwright install chromium
       - run: npm run test:web
       - run: npm run test:e2e

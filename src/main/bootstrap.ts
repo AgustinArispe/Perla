@@ -4,7 +4,7 @@ import type { SystemStatus } from '../shared/contracts';
 import { registerIpc } from './ipc';
 import { WorkerClient } from './worker-client';
 
-app.setName('ElBochaPOS');
+app.setName('PerlaNegraPOS');
 const environment: SystemStatus['environment'] = process.env.BOCHA_TEST_USER_DATA
   ? 'test'
   : app.isPackaged

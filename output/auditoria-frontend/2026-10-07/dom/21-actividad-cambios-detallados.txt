@@ -1,0 +1,348 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - button "Registro general"
+  - button "Cambios detallados" [active]
+  - heading "Cambios del negocio" [level=1]
+  - button "Descargar Excel"
+  - text: Entidad
+  - combobox "Entidad":
+    - option "Todas" [selected]
+    - option "Producto"
+    - option "Precio"
+    - option "Stock"
+    - option "Venta"
+    - option "Turno"
+    - option "Configuración"
+  - text: Producto o número de venta
+  - searchbox "Producto o número de venta"
+  - text: Persona
+  - combobox "Persona":
+    - option "Todas" [selected]
+    - option "Andrea · Jefa del mercado"
+    - option "Diego Gómez · Fiambrería"
+    - option "Lucía Fernández · Caja mañana"
+    - option "Martín López · Caja tarde"
+  - text: Operación
+  - combobox "Operación":
+    - option "Todas" [selected]
+    - option "auth.bootstrap"
+    - option "auth.login"
+    - option "Cierre de caja"
+    - option "cash.movement"
+    - option "Apertura de caja"
+    - option "cash.partialRefund"
+    - option "cash.refund"
+    - option "checkout.cancelDraft"
+    - option "checkout.saveDraft"
+    - option "costs.setReference"
+    - option "customerAccounts.collect"
+    - option "customers.save"
+    - option "customers.setCredit"
+    - option "locations.assignTerminal"
+    - option "locations.save"
+    - option "lots.enable"
+    - option "lots.reconcile"
+    - option "Precios actualizados"
+    - option "Producto guardado"
+    - option "products.saveBrand"
+    - option "products.saveCategory"
+    - option "Estado del producto"
+    - option "promotions.save"
+    - option "purchases.receive"
+    - option "purchases.saveDraft"
+    - option "receipts.create"
+    - option "receipts.markPrinted"
+    - option "Venta confirmada"
+    - option "sales.return"
+    - option "Venta anulada"
+    - option "settings.features.save"
+    - option "settings.save"
+    - option "Conteo de stock"
+    - option "stock.opening"
+    - option "Movimiento de stock"
+    - option "supplierAccounts.pay"
+    - option "suppliers.save"
+    - option "terminals.save"
+    - option "transfers.cancel"
+    - option "transfers.dispatch"
+    - option "transfers.receive"
+    - option "users.save"
+  - text: Desde
+  - textbox "Desde"
+  - text: Hasta
+  - textbox "Hasta"
+  - table:
+    - rowgroup:
+      - row "Fecha y persona Operación Cambios":
+        - columnheader "Fecha y persona"
+        - columnheader "Operación"
+        - columnheader "Cambios"
+    - rowgroup:
+      - row "7/10/2026, 09:21:48 Andrea · Jefa del mercado receipts.create Configuración Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "7/10/2026, 09:21:48 Andrea · Jefa del mercado":
+          - text: 7/10/2026, 09:21:48
+          - generic: Andrea · Jefa del mercado
+        - cell "receipts.create Configuración Registro anterior sin desglose":
+          - text: receipts.create
+          - generic: Configuración Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+      - row "7/10/2026, 09:12:39 Andrea · Jefa del mercado auth.login Configuración Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "7/10/2026, 09:12:39 Andrea · Jefa del mercado":
+          - text: 7/10/2026, 09:12:39
+          - generic: Andrea · Jefa del mercado
+        - cell "auth.login Configuración Registro anterior sin desglose":
+          - text: auth.login
+          - generic: Configuración Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+      - row "7/10/2026, 08:34:18 Andrea · Jefa del mercado auth.login Configuración Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "7/10/2026, 08:34:18 Andrea · Jefa del mercado":
+          - text: 7/10/2026, 08:34:18
+          - generic: Andrea · Jefa del mercado
+        - cell "auth.login Configuración Registro anterior sin desglose":
+          - text: auth.login
+          - generic: Configuración Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+      - row "7/10/2026, 07:50:33 Andrea · Jefa del mercado settings.features.save Configuración Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "7/10/2026, 07:50:33 Andrea · Jefa del mercado":
+          - text: 7/10/2026, 07:50:33
+          - generic: Andrea · Jefa del mercado
+        - cell "settings.features.save Configuración Registro anterior sin desglose":
+          - text: settings.features.save
+          - generic: Configuración Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+      - row "7/10/2026, 07:47:33 Andrea · Jefa del mercado auth.login Configuración Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "7/10/2026, 07:47:33 Andrea · Jefa del mercado":
+          - text: 7/10/2026, 07:47:33
+          - generic: Andrea · Jefa del mercado
+        - cell "auth.login Configuración Registro anterior sin desglose":
+          - text: auth.login
+          - generic: Configuración Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+      - row "6/10/2026, 11:29:07 Andrea · Jefa del mercado auth.login Configuración Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "6/10/2026, 11:29:07 Andrea · Jefa del mercado":
+          - text: 6/10/2026, 11:29:07
+          - generic: Andrea · Jefa del mercado
+        - cell "auth.login Configuración Registro anterior sin desglose":
+          - text: auth.login
+          - generic: Configuración Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+      - row "6/10/2026, 11:21:19 Andrea · Jefa del mercado auth.login Configuración Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "6/10/2026, 11:21:19 Andrea · Jefa del mercado":
+          - text: 6/10/2026, 11:21:19
+          - generic: Andrea · Jefa del mercado
+        - cell "auth.login Configuración Registro anterior sin desglose":
+          - text: auth.login
+          - generic: Configuración Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+      - row "6/10/2026, 07:10:55 Andrea · Jefa del mercado auth.login Configuración Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "6/10/2026, 07:10:55 Andrea · Jefa del mercado":
+          - text: 6/10/2026, 07:10:55
+          - generic: Andrea · Jefa del mercado
+        - cell "auth.login Configuración Registro anterior sin desglose":
+          - text: auth.login
+          - generic: Configuración Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+      - row "6/10/2026, 07:07:57 Andrea · Jefa del mercado Precios actualizados Configuración Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "6/10/2026, 07:07:57 Andrea · Jefa del mercado":
+          - text: 6/10/2026, 07:07:57
+          - generic: Andrea · Jefa del mercado
+        - cell "Precios actualizados Configuración Registro anterior sin desglose":
+          - text: Precios actualizados
+          - generic: Configuración Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+      - row "6/10/2026, 07:06:39 Andrea · Jefa del mercado auth.login Configuración Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "6/10/2026, 07:06:39 Andrea · Jefa del mercado":
+          - text: 6/10/2026, 07:06:39
+          - generic: Andrea · Jefa del mercado
+        - cell "auth.login Configuración Registro anterior sin desglose":
+          - text: auth.login
+          - generic: Configuración Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+      - row "6/10/2026, 07:05:01 Andrea · Jefa del mercado auth.login Configuración Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "6/10/2026, 07:05:01 Andrea · Jefa del mercado":
+          - text: 6/10/2026, 07:05:01
+          - generic: Andrea · Jefa del mercado
+        - cell "auth.login Configuración Registro anterior sin desglose":
+          - text: auth.login
+          - generic: Configuración Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+      - row "6/10/2026, 07:00:24 Andrea · Jefa del mercado auth.login Configuración Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "6/10/2026, 07:00:24 Andrea · Jefa del mercado":
+          - text: 6/10/2026, 07:00:24
+          - generic: Andrea · Jefa del mercado
+        - cell "auth.login Configuración Registro anterior sin desglose":
+          - text: auth.login
+          - generic: Configuración Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+      - row "6/10/2026, 06:46:56 Andrea · Jefa del mercado purchases.saveDraft Configuración Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "6/10/2026, 06:46:56 Andrea · Jefa del mercado":
+          - text: 6/10/2026, 06:46:56
+          - generic: Andrea · Jefa del mercado
+        - cell "purchases.saveDraft Configuración Registro anterior sin desglose":
+          - text: purchases.saveDraft
+          - generic: Configuración Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+      - row "6/10/2026, 06:46:28 Andrea · Jefa del mercado auth.login Configuración Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "6/10/2026, 06:46:28 Andrea · Jefa del mercado":
+          - text: 6/10/2026, 06:46:28
+          - generic: Andrea · Jefa del mercado
+        - cell "auth.login Configuración Registro anterior sin desglose":
+          - text: auth.login
+          - generic: Configuración Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+      - row "6/10/2026, 06:40:13 Andrea · Jefa del mercado auth.login Configuración Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "6/10/2026, 06:40:13 Andrea · Jefa del mercado":
+          - text: 6/10/2026, 06:40:13
+          - generic: Andrea · Jefa del mercado
+        - cell "auth.login Configuración Registro anterior sin desglose":
+          - text: auth.login
+          - generic: Configuración Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+      - row "6/10/2026, 05:08:54 Andrea · Jefa del mercado transfers.receive Configuración Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "6/10/2026, 05:08:54 Andrea · Jefa del mercado":
+          - text: 6/10/2026, 05:08:54
+          - generic: Andrea · Jefa del mercado
+        - cell "transfers.receive Configuración Registro anterior sin desglose":
+          - text: transfers.receive
+          - generic: Configuración Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+      - row "6/10/2026, 05:08:54 Andrea · Jefa del mercado transfers.dispatch Configuración Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "6/10/2026, 05:08:54 Andrea · Jefa del mercado":
+          - text: 6/10/2026, 05:08:54
+          - generic: Andrea · Jefa del mercado
+        - cell "transfers.dispatch Configuración Registro anterior sin desglose":
+          - text: transfers.dispatch
+          - generic: Configuración Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+      - row "6/10/2026, 05:08:54 Andrea · Jefa del mercado transfers.receive Configuración Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "6/10/2026, 05:08:54 Andrea · Jefa del mercado":
+          - text: 6/10/2026, 05:08:54
+          - generic: Andrea · Jefa del mercado
+        - cell "transfers.receive Configuración Registro anterior sin desglose":
+          - text: transfers.receive
+          - generic: Configuración Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+      - row "6/10/2026, 05:08:54 Andrea · Jefa del mercado transfers.dispatch Configuración Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "6/10/2026, 05:08:54 Andrea · Jefa del mercado":
+          - text: 6/10/2026, 05:08:54
+          - generic: Andrea · Jefa del mercado
+        - cell "transfers.dispatch Configuración Registro anterior sin desglose":
+          - text: transfers.dispatch
+          - generic: Configuración Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+      - row "6/10/2026, 05:08:54 Andrea · Jefa del mercado transfers.cancel Configuración Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "6/10/2026, 05:08:54 Andrea · Jefa del mercado":
+          - text: 6/10/2026, 05:08:54
+          - generic: Andrea · Jefa del mercado
+        - cell "transfers.cancel Configuración Registro anterior sin desglose":
+          - text: transfers.cancel
+          - generic: Configuración Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+      - row "6/10/2026, 05:08:54 Andrea · Jefa del mercado transfers.dispatch Configuración Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "6/10/2026, 05:08:54 Andrea · Jefa del mercado":
+          - text: 6/10/2026, 05:08:54
+          - generic: Andrea · Jefa del mercado
+        - cell "transfers.dispatch Configuración Registro anterior sin desglose":
+          - text: transfers.dispatch
+          - generic: Configuración Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+      - row "6/10/2026, 05:08:54 Andrea · Jefa del mercado transfers.dispatch Configuración Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "6/10/2026, 05:08:54 Andrea · Jefa del mercado":
+          - text: 6/10/2026, 05:08:54
+          - generic: Andrea · Jefa del mercado
+        - cell "transfers.dispatch Configuración Registro anterior sin desglose":
+          - text: transfers.dispatch
+          - generic: Configuración Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+      - row "6/10/2026, 05:08:54 Andrea · Jefa del mercado transfers.dispatch Configuración Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "6/10/2026, 05:08:54 Andrea · Jefa del mercado":
+          - text: 6/10/2026, 05:08:54
+          - generic: Andrea · Jefa del mercado
+        - cell "transfers.dispatch Configuración Registro anterior sin desglose":
+          - text: transfers.dispatch
+          - generic: Configuración Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+      - row "6/10/2026, 05:08:54 Andrea · Jefa del mercado checkout.saveDraft Configuración Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "6/10/2026, 05:08:54 Andrea · Jefa del mercado":
+          - text: 6/10/2026, 05:08:54
+          - generic: Andrea · Jefa del mercado
+        - cell "checkout.saveDraft Configuración Registro anterior sin desglose":
+          - text: checkout.saveDraft
+          - generic: Configuración Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+      - row "6/10/2026, 05:08:54 Lucía Fernández · Caja mañana Apertura de caja Turno Registro anterior sin desglose Registro anterior sin desglose":
+        - cell "6/10/2026, 05:08:54 Lucía Fernández · Caja mañana":
+          - text: 6/10/2026, 05:08:54
+          - generic: Lucía Fernández · Caja mañana
+        - cell "Apertura de caja Turno Registro anterior sin desglose":
+          - text: Apertura de caja
+          - generic: Turno Registro anterior sin desglose
+        - cell "Registro anterior sin desglose"
+  - button "Anterior" [disabled]
+  - generic: Página 1
+  - button "Siguiente"

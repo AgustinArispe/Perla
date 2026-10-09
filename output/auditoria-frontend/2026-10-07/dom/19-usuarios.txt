@@ -1,0 +1,137 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios" [active]:
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Usuarios" [level=1]
+  - button "Crear usuario"
+  - searchbox "Buscar usuarios"
+  - text: Estado
+  - combobox "Estado":
+    - option "Todos" [selected]
+    - option "Activos"
+    - option "Inactivos"
+  - text: Rol
+  - combobox "Rol":
+    - option "Todos" [selected]
+    - option "Jefe"
+    - option "Administrador"
+    - option "Supervisor"
+    - option "Vendedor"
+  - button "Mis vistas": Mis vistas
+  - button "Exportar usuarios a Excel": Exportar Excel
+  - table:
+    - rowgroup:
+      - row "Nombre Usuario Rol Estado":
+        - columnheader "Nombre"
+        - columnheader "Usuario"
+        - columnheader "Rol"
+        - columnheader "Estado"
+        - columnheader
+    - rowgroup:
+      - row "Andrea · Jefa del mercado jefe Jefe Activo Editar Andrea · Jefa del mercado Destrabar acceso de Andrea · Jefa del mercado":
+        - cell "Andrea · Jefa del mercado":
+          - strong: Andrea · Jefa del mercado
+        - cell "jefe"
+        - cell "Jefe":
+          - generic: Jefe
+        - cell "Activo":
+          - generic: Activo
+        - cell "Editar Andrea · Jefa del mercado Destrabar acceso de Andrea · Jefa del mercado":
+          - button "Editar Andrea · Jefa del mercado": Editar
+          - button "Destrabar acceso de Andrea · Jefa del mercado": Destrabar
+      - row "Diego Gómez · Fiambrería fiambreria Supervisor Activo Editar Diego Gómez · Fiambrería Destrabar acceso de Diego Gómez · Fiambrería":
+        - cell "Diego Gómez · Fiambrería":
+          - strong: Diego Gómez · Fiambrería
+        - cell "fiambreria"
+        - cell "Supervisor":
+          - generic: Supervisor
+        - cell "Activo":
+          - generic: Activo
+        - cell "Editar Diego Gómez · Fiambrería Destrabar acceso de Diego Gómez · Fiambrería":
+          - button "Editar Diego Gómez · Fiambrería": Editar
+          - button "Destrabar acceso de Diego Gómez · Fiambrería": Destrabar
+      - row "Lucía Fernández · Caja mañana caja1 Vendedor Activo Editar Lucía Fernández · Caja mañana Destrabar acceso de Lucía Fernández · Caja mañana":
+        - cell "Lucía Fernández · Caja mañana":
+          - strong: Lucía Fernández · Caja mañana
+        - cell "caja1"
+        - cell "Vendedor":
+          - generic: Vendedor
+        - cell "Activo":
+          - generic: Activo
+        - cell "Editar Lucía Fernández · Caja mañana Destrabar acceso de Lucía Fernández · Caja mañana":
+          - button "Editar Lucía Fernández · Caja mañana": Editar
+          - button "Destrabar acceso de Lucía Fernández · Caja mañana": Destrabar
+      - row "Martín López · Caja tarde caja2 Vendedor Activo Editar Martín López · Caja tarde Destrabar acceso de Martín López · Caja tarde":
+        - cell "Martín López · Caja tarde":
+          - strong: Martín López · Caja tarde
+        - cell "caja2"
+        - cell "Vendedor":
+          - generic: Vendedor
+        - cell "Activo":
+          - generic: Activo
+        - cell "Editar Martín López · Caja tarde Destrabar acceso de Martín López · Caja tarde":
+          - button "Editar Martín López · Caja tarde": Editar
+          - button "Destrabar acceso de Martín López · Caja tarde": Destrabar

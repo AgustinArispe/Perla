@@ -1,0 +1,159 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - strong: Caja abierta · Caja 1 · Lucía
+  - button "Ingreso / retiro"
+  - button "Cerrar caja"
+  - heading "Caja" [level=1]
+  - generic: Escanear código
+  - generic: Borrador al día
+  - textbox "Escanear código" [disabled]:
+    - /placeholder: Código de barras + Enter
+  - generic: F2
+  - button "Buscar producto · F3" [disabled]: Buscar producto · F3
+  - button "Producto por kilo · F6" [disabled]: Producto por kilo · F6
+  - generic: Escaneo suspendido
+  - table:
+    - rowgroup:
+      - row "Producto Cantidad Precio Importe":
+        - columnheader "Producto"
+        - columnheader "Cantidad"
+        - columnheader "Precio"
+        - columnheader "Importe"
+        - columnheader
+    - rowgroup:
+      - row "Arroz largo fino 1 kg 7799900000014 Restar Arroz largo fino 1 kg Cambiar cantidad de Arroz largo fino 1 kg Sumar Arroz largo fino 1 kg $ 2.084,92 $ 4.169,84 Quitar Arroz largo fino 1 kg":
+        - cell "Arroz largo fino 1 kg 7799900000014":
+          - strong: Arroz largo fino 1 kg
+          - generic: "7799900000014"
+        - cell "Restar Arroz largo fino 1 kg Cambiar cantidad de Arroz largo fino 1 kg Sumar Arroz largo fino 1 kg":
+          - button "Restar Arroz largo fino 1 kg" [disabled]: −
+          - button "Cambiar cantidad de Arroz largo fino 1 kg" [disabled]: "2"
+          - button "Sumar Arroz largo fino 1 kg" [disabled]: +
+        - cell "$ 2.084,92"
+        - cell "$ 4.169,84":
+          - strong: $ 4.169,84
+        - cell "Quitar Arroz largo fino 1 kg":
+          - button "Quitar Arroz largo fino 1 kg" [disabled]: Quitar
+      - row "Jamón cocido SIM-0087 · Porción Cambiar cantidad de Jamón cocido $ 16.795,23 / kg $ 4.198,81 Quitar Jamón cocido":
+        - cell "Jamón cocido SIM-0087 · Porción":
+          - strong: Jamón cocido
+          - generic: SIM-0087 · Porción
+        - cell "Cambiar cantidad de Jamón cocido":
+          - button "Cambiar cantidad de Jamón cocido" [disabled]: 0,250 kg
+        - cell "$ 16.795,23 / kg":
+          - text: $ 16.795,23
+          - generic: / kg
+        - cell "$ 4.198,81":
+          - strong: $ 4.198,81
+        - cell "Quitar Jamón cocido":
+          - button "Quitar Jamón cocido" [disabled]: Quitar
+      - row "Tomate SIM-0101 · Porción Cambiar cantidad de Tomate $ 2.664,06 / kg $ 3.037,03 Antes $ 3.196,87 Quitar Tomate":
+        - cell "Tomate SIM-0101 · Porción":
+          - strong: Tomate
+          - generic: SIM-0101 · Porción
+        - cell "Cambiar cantidad de Tomate":
+          - button "Cambiar cantidad de Tomate" [disabled]: 1,200 kg
+        - cell "$ 2.664,06 / kg":
+          - text: $ 2.664,06
+          - generic: / kg
+        - cell "$ 3.037,03 Antes $ 3.196,87":
+          - strong: $ 3.037,03
+          - generic: Antes $ 3.196,87
+        - cell "Quitar Tomate":
+          - button "Quitar Tomate" [disabled]: Quitar
+  - complementary:
+    - heading "Venta en curso" [level=2]
+    - term: Subtotal
+    - definition: $ 11.565,52
+    - term: Promociones
+    - definition: $ 159,84
+    - status:
+      - strong: Ahorrás $ 159,84
+      - generic: "Verdulería: 5% de descuento"
+    - button "Descuento manual · F4" [disabled]
+    - button "Elegir cliente" [disabled]: Elegir cliente
+    - generic: Total
+    - strong: $ 11.405,68
+    - button "Cobrar · F8" [disabled]: Cobrar · F8
+    - button "Cancelar venta en curso" [disabled]
+  - dialog "Cobrar venta":
+    - heading "Cobrar venta" [level=2]
+    - button "Cerrar"
+    - generic: Total a cobrar
+    - strong: $ 11.405,68
+    - combobox "Cliente"
+    - group "Medio de pago principal":
+      - button "Efectivo" [pressed]: Efectivo
+      - button "Débito"
+      - button "Crédito"
+      - button "Transferencia"
+    - generic: Efectivo recibido
+    - textbox "Efectivo recibido 1" [active]: 11405,68
+    - button "Dividir pago"
+    - button "Volver · Esc"
+    - button "Confirmar venta · F8"

@@ -1,0 +1,299 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos" [active]:
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Turnos" [level=1]
+  - text: Desde
+  - textbox "Desde"
+  - text: Hasta
+  - textbox "Hasta"
+  - text: Estado
+  - combobox "Estado":
+    - option "Todas" [selected]
+    - option "Abiertas"
+    - option "Cerradas"
+  - text: Terminal
+  - combobox "Terminal":
+    - option "Todas" [selected]
+    - option "Caja 1 · Lucía"
+    - option "Caja 2 · Martín"
+  - button "Mis vistas": Mis vistas
+  - button "Exportar turnos a Excel": Exportar Excel
+  - table:
+    - rowgroup:
+      - row "Apertura Terminal Estado Inicial Esperado Contado Diferencia Detalle":
+        - columnheader "Apertura"
+        - columnheader "Terminal"
+        - columnheader "Estado"
+        - columnheader "Inicial"
+        - columnheader "Esperado"
+        - columnheader "Contado"
+        - columnheader "Diferencia"
+        - columnheader "Detalle"
+    - rowgroup:
+      - row "6/10/26, 5:08 p. m. Caja 1 · Lucía Abierta $ 60.000,00 Al cerrar — Pendiente de cierre Ver caja de Caja 1 · Lucía del 6/10/26, 5:08 p. m.":
+        - cell "6/10/26, 5:08 p. m."
+        - cell "Caja 1 · Lucía"
+        - cell "Abierta"
+        - cell "$ 60.000,00"
+        - cell "Al cerrar"
+        - cell "—"
+        - cell "Pendiente de cierre"
+        - cell "Ver caja de Caja 1 · Lucía del 6/10/26, 5:08 p. m.":
+          - button "Ver caja de Caja 1 · Lucía del 6/10/26, 5:08 p. m.": Ver caja
+      - row "6/10/26, 5:03 p. m. Caja 1 · Lucía Cerrada $ 60.000,00 $ 60.000,00 $ 60.000,00 Sin diferencia Ver caja de Caja 1 · Lucía del 6/10/26, 5:03 p. m.":
+        - cell "6/10/26, 5:03 p. m."
+        - cell "Caja 1 · Lucía"
+        - cell "Cerrada"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "Sin diferencia"
+        - cell "Ver caja de Caja 1 · Lucía del 6/10/26, 5:03 p. m.":
+          - button "Ver caja de Caja 1 · Lucía del 6/10/26, 5:03 p. m.": Ver caja
+      - row "6/10/26, 5:03 p. m. Caja 2 · Martín Abierta $ 50.000,00 Al cerrar — Pendiente de cierre Ver caja de Caja 2 · Martín del 6/10/26, 5:03 p. m.":
+        - cell "6/10/26, 5:03 p. m."
+        - cell "Caja 2 · Martín"
+        - cell "Abierta"
+        - cell "$ 50.000,00"
+        - cell "Al cerrar"
+        - cell "—"
+        - cell "Pendiente de cierre"
+        - cell "Ver caja de Caja 2 · Martín del 6/10/26, 5:03 p. m.":
+          - button "Ver caja de Caja 2 · Martín del 6/10/26, 5:03 p. m.": Ver caja
+      - row "5/10/26, 2:00 p. m. Caja 2 · Martín Cerrada $ 60.000,00 $ 60.000,00 $ 60.000,00 Sin diferencia Ver caja de Caja 2 · Martín del 5/10/26, 2:00 p. m.":
+        - cell "5/10/26, 2:00 p. m."
+        - cell "Caja 2 · Martín"
+        - cell "Cerrada"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "Sin diferencia"
+        - cell "Ver caja de Caja 2 · Martín del 5/10/26, 2:00 p. m.":
+          - button "Ver caja de Caja 2 · Martín del 5/10/26, 2:00 p. m.": Ver caja
+      - row "5/10/26, 8:00 a. m. Caja 1 · Lucía Cerrada $ 60.000,00 $ 60.000,00 $ 60.000,00 Sin diferencia Ver caja de Caja 1 · Lucía del 5/10/26, 8:00 a. m.":
+        - cell "5/10/26, 8:00 a. m."
+        - cell "Caja 1 · Lucía"
+        - cell "Cerrada"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "Sin diferencia"
+        - cell "Ver caja de Caja 1 · Lucía del 5/10/26, 8:00 a. m.":
+          - button "Ver caja de Caja 1 · Lucía del 5/10/26, 8:00 a. m.": Ver caja
+      - row "3/10/26, 2:00 p. m. Caja 2 · Martín Cerrada $ 60.000,00 $ 60.000,00 $ 60.000,00 Sin diferencia Ver caja de Caja 2 · Martín del 3/10/26, 2:00 p. m.":
+        - cell "3/10/26, 2:00 p. m."
+        - cell "Caja 2 · Martín"
+        - cell "Cerrada"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "Sin diferencia"
+        - cell "Ver caja de Caja 2 · Martín del 3/10/26, 2:00 p. m.":
+          - button "Ver caja de Caja 2 · Martín del 3/10/26, 2:00 p. m.": Ver caja
+      - row "3/10/26, 8:00 a. m. Caja 1 · Lucía Cerrada $ 60.000,00 $ 60.000,00 $ 60.000,00 Sin diferencia Ver caja de Caja 1 · Lucía del 3/10/26, 8:00 a. m.":
+        - cell "3/10/26, 8:00 a. m."
+        - cell "Caja 1 · Lucía"
+        - cell "Cerrada"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "Sin diferencia"
+        - cell "Ver caja de Caja 1 · Lucía del 3/10/26, 8:00 a. m.":
+          - button "Ver caja de Caja 1 · Lucía del 3/10/26, 8:00 a. m.": Ver caja
+      - row "2/10/26, 2:00 p. m. Caja 2 · Martín Cerrada $ 60.000,00 $ 60.000,00 $ 60.000,00 Sin diferencia Ver caja de Caja 2 · Martín del 2/10/26, 2:00 p. m.":
+        - cell "2/10/26, 2:00 p. m."
+        - cell "Caja 2 · Martín"
+        - cell "Cerrada"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "Sin diferencia"
+        - cell "Ver caja de Caja 2 · Martín del 2/10/26, 2:00 p. m.":
+          - button "Ver caja de Caja 2 · Martín del 2/10/26, 2:00 p. m.": Ver caja
+      - row "2/10/26, 8:00 a. m. Caja 1 · Lucía Cerrada $ 60.000,00 $ 60.000,00 $ 60.000,00 Sin diferencia Ver caja de Caja 1 · Lucía del 2/10/26, 8:00 a. m.":
+        - cell "2/10/26, 8:00 a. m."
+        - cell "Caja 1 · Lucía"
+        - cell "Cerrada"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "Sin diferencia"
+        - cell "Ver caja de Caja 1 · Lucía del 2/10/26, 8:00 a. m.":
+          - button "Ver caja de Caja 1 · Lucía del 2/10/26, 8:00 a. m.": Ver caja
+      - row "1/10/26, 2:00 p. m. Caja 2 · Martín Cerrada $ 60.000,00 $ 60.000,00 $ 60.000,00 Sin diferencia Ver caja de Caja 2 · Martín del 1/10/26, 2:00 p. m.":
+        - cell "1/10/26, 2:00 p. m."
+        - cell "Caja 2 · Martín"
+        - cell "Cerrada"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "Sin diferencia"
+        - cell "Ver caja de Caja 2 · Martín del 1/10/26, 2:00 p. m.":
+          - button "Ver caja de Caja 2 · Martín del 1/10/26, 2:00 p. m.": Ver caja
+      - row "1/10/26, 8:00 a. m. Caja 1 · Lucía Cerrada $ 60.000,00 $ 60.000,00 $ 60.000,00 Sin diferencia Ver caja de Caja 1 · Lucía del 1/10/26, 8:00 a. m.":
+        - cell "1/10/26, 8:00 a. m."
+        - cell "Caja 1 · Lucía"
+        - cell "Cerrada"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "Sin diferencia"
+        - cell "Ver caja de Caja 1 · Lucía del 1/10/26, 8:00 a. m.":
+          - button "Ver caja de Caja 1 · Lucía del 1/10/26, 8:00 a. m.": Ver caja
+      - row "30/9/26, 2:00 p. m. Caja 2 · Martín Cerrada $ 60.000,00 $ 60.000,00 $ 60.000,00 Sin diferencia Ver caja de Caja 2 · Martín del 30/9/26, 2:00 p. m.":
+        - cell "30/9/26, 2:00 p. m."
+        - cell "Caja 2 · Martín"
+        - cell "Cerrada"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "Sin diferencia"
+        - cell "Ver caja de Caja 2 · Martín del 30/9/26, 2:00 p. m.":
+          - button "Ver caja de Caja 2 · Martín del 30/9/26, 2:00 p. m.": Ver caja
+      - row "30/9/26, 8:00 a. m. Caja 1 · Lucía Cerrada $ 60.000,00 $ 60.000,00 $ 60.000,00 Sin diferencia Ver caja de Caja 1 · Lucía del 30/9/26, 8:00 a. m.":
+        - cell "30/9/26, 8:00 a. m."
+        - cell "Caja 1 · Lucía"
+        - cell "Cerrada"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "Sin diferencia"
+        - cell "Ver caja de Caja 1 · Lucía del 30/9/26, 8:00 a. m.":
+          - button "Ver caja de Caja 1 · Lucía del 30/9/26, 8:00 a. m.": Ver caja
+      - row "29/9/26, 2:00 p. m. Caja 2 · Martín Cerrada $ 60.000,00 $ 60.000,00 $ 60.000,00 Sin diferencia Ver caja de Caja 2 · Martín del 29/9/26, 2:00 p. m.":
+        - cell "29/9/26, 2:00 p. m."
+        - cell "Caja 2 · Martín"
+        - cell "Cerrada"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "Sin diferencia"
+        - cell "Ver caja de Caja 2 · Martín del 29/9/26, 2:00 p. m.":
+          - button "Ver caja de Caja 2 · Martín del 29/9/26, 2:00 p. m.": Ver caja
+      - row "29/9/26, 8:00 a. m. Caja 1 · Lucía Cerrada $ 60.000,00 $ 60.000,00 $ 60.000,00 Sin diferencia Ver caja de Caja 1 · Lucía del 29/9/26, 8:00 a. m.":
+        - cell "29/9/26, 8:00 a. m."
+        - cell "Caja 1 · Lucía"
+        - cell "Cerrada"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "Sin diferencia"
+        - cell "Ver caja de Caja 1 · Lucía del 29/9/26, 8:00 a. m.":
+          - button "Ver caja de Caja 1 · Lucía del 29/9/26, 8:00 a. m.": Ver caja
+      - row "28/9/26, 2:00 p. m. Caja 2 · Martín Cerrada $ 60.000,00 $ 60.000,00 $ 60.000,00 Sin diferencia Ver caja de Caja 2 · Martín del 28/9/26, 2:00 p. m.":
+        - cell "28/9/26, 2:00 p. m."
+        - cell "Caja 2 · Martín"
+        - cell "Cerrada"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "Sin diferencia"
+        - cell "Ver caja de Caja 2 · Martín del 28/9/26, 2:00 p. m.":
+          - button "Ver caja de Caja 2 · Martín del 28/9/26, 2:00 p. m.": Ver caja
+      - row "28/9/26, 8:00 a. m. Caja 1 · Lucía Cerrada $ 60.000,00 $ 60.000,00 $ 60.000,00 Sin diferencia Ver caja de Caja 1 · Lucía del 28/9/26, 8:00 a. m.":
+        - cell "28/9/26, 8:00 a. m."
+        - cell "Caja 1 · Lucía"
+        - cell "Cerrada"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "Sin diferencia"
+        - cell "Ver caja de Caja 1 · Lucía del 28/9/26, 8:00 a. m.":
+          - button "Ver caja de Caja 1 · Lucía del 28/9/26, 8:00 a. m.": Ver caja
+      - row "26/9/26, 2:00 p. m. Caja 2 · Martín Cerrada $ 60.000,00 $ 60.000,00 $ 60.000,00 Sin diferencia Ver caja de Caja 2 · Martín del 26/9/26, 2:00 p. m.":
+        - cell "26/9/26, 2:00 p. m."
+        - cell "Caja 2 · Martín"
+        - cell "Cerrada"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "Sin diferencia"
+        - cell "Ver caja de Caja 2 · Martín del 26/9/26, 2:00 p. m.":
+          - button "Ver caja de Caja 2 · Martín del 26/9/26, 2:00 p. m.": Ver caja
+      - row "26/9/26, 8:00 a. m. Caja 1 · Lucía Cerrada $ 60.000,00 $ 60.000,00 $ 60.000,00 Sin diferencia Ver caja de Caja 1 · Lucía del 26/9/26, 8:00 a. m.":
+        - cell "26/9/26, 8:00 a. m."
+        - cell "Caja 1 · Lucía"
+        - cell "Cerrada"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "Sin diferencia"
+        - cell "Ver caja de Caja 1 · Lucía del 26/9/26, 8:00 a. m.":
+          - button "Ver caja de Caja 1 · Lucía del 26/9/26, 8:00 a. m.": Ver caja
+      - row "25/9/26, 2:00 p. m. Caja 2 · Martín Cerrada $ 60.000,00 $ 60.000,00 $ 60.000,00 Sin diferencia Ver caja de Caja 2 · Martín del 25/9/26, 2:00 p. m.":
+        - cell "25/9/26, 2:00 p. m."
+        - cell "Caja 2 · Martín"
+        - cell "Cerrada"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "$ 60.000,00"
+        - cell "Sin diferencia"
+        - cell "Ver caja de Caja 2 · Martín del 25/9/26, 2:00 p. m.":
+          - button "Ver caja de Caja 2 · Martín del 25/9/26, 2:00 p. m.": Ver caja
+  - button "Anterior" [disabled]
+  - generic: Página 1
+  - button "Siguiente"

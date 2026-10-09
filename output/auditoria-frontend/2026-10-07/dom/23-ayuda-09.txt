@@ -1,0 +1,98 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Ayuda" [level=1]
+  - text: Buscar en la ayuda
+  - searchbox "Buscar en la ayuda"
+  - navigation "Temas de ayuda":
+    - button "Caja y ventas"
+    - button "Efectivo y cierre de caja"
+    - button "Productos"
+    - button "Stock"
+    - button "Proveedores y compras"
+    - button "Promociones"
+    - button "Clientes y cuenta corriente"
+    - button "Histórico y anulaciones"
+    - button "Resumen mensual" [active] [pressed]
+    - button "Usuarios y configuración"
+    - button "Copias de seguridad"
+    - button "Cuenta y alcance"
+    - button "Ubicaciones y traslados"
+  - article:
+    - heading "Resumen mensual" [level=2]
+    - heading "Ventas y medios de pago" [level=3]
+    - paragraph: Elegí el mes para ver el total vendido, cantidad de ventas, ticket promedio y reparto por medio de pago. El neto considera los descuentos y excluye las ventas anuladas. Una venta con pagos combinados reparte su importe entre los medios utilizados.
+    - heading "Comparar períodos" [level=3]
+    - paragraph: Elegí Hoy, Semana, Mes o Rango para comparar ventas netas con el tramo anterior de igual cantidad de días. Sin base de comparación significa que el período anterior no tuvo ventas; no representa una caída ni un crecimiento.
+    - heading "Notificaciones" [level=3]
+    - paragraph: La campana reúne avisos vigentes de stock, vencimientos y caja. Abrir un aviso lo marca como leído y lleva a la tarea correspondiente. El aviso se resuelve cuando cambia la situación real; si vuelve a empeorar, aparece otra vez como pendiente.
+    - heading "Productos y reposición" [level=3]
+    - paragraph: El ranking ayuda a identificar los productos más vendidos. Las alertas de stock ayudan a planificar la reposición. El total vendido es facturación interna, no ganancia.
+    - heading "Margen bruto y cobertura" [level=3]
+    - paragraph: Si está habilitado Costos y rentabilidad, el margen bruto resta el costo conocido de la mercadería a la venta cubierta. La cobertura indica cuánto de lo vendido tiene costo registrado. No incluye gastos, impuestos ni comisiones. Un producto sin costo queda identificado y no se toma como costo cero.
+    - heading "Cómo se forma el costo" [level=3]
+    - paragraph: "Los productos con stock calculan un promedio al recibir compras. Los productos sin control de stock usan el costo de referencia cargado en su ficha. Cada venta conserva el costo de ese momento: cambiarlo después no modifica meses anteriores."

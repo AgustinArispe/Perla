@@ -1,14 +1,31 @@
+import { SavedViews } from '../../components/SavedViews';
+import { useRememberedState, scalarViewFilters } from '../../components/useRememberedState';
+import { ExportButton } from '../../components/ExportButton';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import type { SalesSearchInput } from '../../../shared/sales';
 import { formatMoney } from '../../../domain/values';
 import { api, unwrap, errorMessage } from '../../api';
 import { SaleDetailView } from './SaleDetail';
-export function SalesList({ userId }: { userId: string }) {
-  const [from, setFrom] = useState(''),
-    [to, setTo] = useState(''),
-    [status, setStatus] = useState<'ALL' | 'COMPLETED' | 'VOIDED'>('ALL'),
-    [cursors, setCursors] = useState<(string | undefined)[]>([undefined]),
+export function SalesList({
+  userId,
+  profitabilityEnabled = false,
+  returnsEnabled = false,
+}: {
+  userId: string;
+  profitabilityEnabled?: boolean;
+  returnsEnabled?: boolean;
+}) {
+  const [from, setFrom] = useRememberedState('sales', 'fromDate', ''),
+    [to, setTo] = useRememberedState('sales', 'toDate', ''),
+    [status, setStatus] = useRememberedState<'ALL' | 'COMPLETED' | 'VOIDED'>(
+      'sales',
+      'status',
+      'ALL',
+    ),
+    [cursors, setCursors] = useRememberedState<(string | undefined)[]>('sales', 'pages', [
+      undefined,
+    ]),
     [selected, setSelected] = useState<string | null>(null);
   const cursor = cursors.at(-1);
   const input: SalesSearchInput = {
@@ -71,6 +88,21 @@ export function SalesList({ userId }: { userId: string }) {
             <option value="VOIDED">Anuladas</option>
           </select>
         </label>
+        <SavedViews
+          module="sales"
+          filters={{ status, ...(from ? { fromDate: from } : {}), ...(to ? { toDate: to } : {}) }}
+          onApply={(filters) => {
+            const value = scalarViewFilters(filters);
+            setFrom(value.fromDate ?? '');
+            setTo(value.toDate ?? '');
+            setStatus((value.status ?? 'ALL') as typeof status);
+            setCursors([undefined]);
+          }}
+        />
+        <ExportButton
+          dataset="sales"
+          filters={{ status, ...(from ? { fromDate: from } : {}), ...(to ? { toDate: to } : {}) }}
+        />
       </div>
       {sales.isError && (
         <div className="alert error" role="alert">
@@ -138,7 +170,13 @@ export function SalesList({ userId }: { userId: string }) {
         </div>
       </div>
       {selected && (
-        <SaleDetailView saleId={selected} userId={userId} onClose={() => setSelected(null)} />
+        <SaleDetailView
+          saleId={selected}
+          userId={userId}
+          profitabilityEnabled={profitabilityEnabled}
+          returnsEnabled={returnsEnabled}
+          onClose={() => setSelected(null)}
+        />
       )}
     </>
   );

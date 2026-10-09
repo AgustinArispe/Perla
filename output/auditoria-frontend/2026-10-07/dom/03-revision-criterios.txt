@@ -1,0 +1,432 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Revisión de productos" [level=1]
+  - button "Mis vistas": Mis vistas
+  - button "Volver"
+  - button "Descargar Excel"
+  - group "Vista comercial":
+    - button "Precios para revisar"
+    - button "Sin movimiento"
+  - text: Período
+  - combobox "Período":
+    - option "30 días"
+    - option "60 días" [selected]
+    - option "90 días"
+  - text: Ubicación
+  - combobox "Ubicación":
+    - option "Todas las ubicaciones" [selected]
+    - option "Cámara de frío"
+    - option "Depósito central"
+    - option "Depósito de reserva"
+    - option "Salón de ventas"
+  - generic "Categorías y marcas"
+  - button "Criterios" [active]
+  - text: Margen mínimo (%)
+  - textbox "Margen mínimo (%)": "20"
+  - text: Revisar después de (días)
+  - textbox "Revisar después de (días)": "60"
+  - button "Guardar criterios"
+  - paragraph: 3776 productos · El margen previsto no incluye gastos, impuestos ni comisiones.
+  - table:
+    - rowgroup:
+      - row "Seleccionar página Producto Precio / costo Margen previsto Estado":
+        - columnheader "Seleccionar página":
+          - checkbox "Seleccionar página"
+        - columnheader "Producto"
+        - columnheader "Precio / costo"
+        - columnheader "Margen previsto"
+        - columnheader "Estado"
+    - rowgroup:
+      - 'row "Seleccionar Aceite de oliva 500 ml · La Cumbre Aceite de oliva 500 ml · La Cumbre Fecha de precio no disponible $ 9.240,00 Costo: $ 6.375,60 · WEIGHTED_AVERAGE 2026-05-06 31% Recargo sobre costo: 44.93% Costo actualizado · Precio sin revisar"':
+        - cell "Seleccionar Aceite de oliva 500 ml · La Cumbre":
+          - checkbox "Seleccionar Aceite de oliva 500 ml · La Cumbre"
+        - cell "Aceite de oliva 500 ml · La Cumbre Fecha de precio no disponible":
+          - strong: Aceite de oliva 500 ml · La Cumbre
+          - generic: Fecha de precio no disponible
+        - 'cell "$ 9.240,00 Costo: $ 6.375,60 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 9.240,00
+          - generic: "Costo: $ 6.375,60 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "31% Recargo sobre costo: 44.93%"':
+          - text: 31%
+          - generic: "Recargo sobre costo: 44.93%"
+        - cell "Costo actualizado · Precio sin revisar"
+      - 'row "Seleccionar Yerba suave 1 kg · Los Aromos Yerba suave 1 kg · Los Aromos Precio actualizado: 2026-10-01 $ 9.544,32 Costo: $ 5.685,60 · WEIGHTED_AVERAGE 2026-05-06 40.43% Recargo sobre costo: 67.87% Costo actualizado"':
+        - cell "Seleccionar Yerba suave 1 kg · Los Aromos":
+          - checkbox "Seleccionar Yerba suave 1 kg · Los Aromos"
+        - 'cell "Yerba suave 1 kg · Los Aromos Precio actualizado: 2026-10-01"':
+          - strong: Yerba suave 1 kg · Los Aromos
+          - generic: "Precio actualizado: 2026-10-01"
+        - 'cell "$ 9.544,32 Costo: $ 5.685,60 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 9.544,32
+          - generic: "Costo: $ 5.685,60 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "40.43% Recargo sobre costo: 67.87%"':
+          - text: 40.43%
+          - generic: "Recargo sobre costo: 67.87%"
+        - cell "Costo actualizado"
+      - 'row "Seleccionar Aceite de oliva 500 ml · Don Pedro Aceite de oliva 500 ml · Don Pedro Precio actualizado: 2026-10-01 $ 13.864,75 Costo: $ 8.259,30 · WEIGHTED_AVERAGE 2026-05-06 40.43% Recargo sobre costo: 67.87% Costo actualizado"':
+        - cell "Seleccionar Aceite de oliva 500 ml · Don Pedro":
+          - checkbox "Seleccionar Aceite de oliva 500 ml · Don Pedro"
+        - 'cell "Aceite de oliva 500 ml · Don Pedro Precio actualizado: 2026-10-01"':
+          - strong: Aceite de oliva 500 ml · Don Pedro
+          - generic: "Precio actualizado: 2026-10-01"
+        - 'cell "$ 13.864,75 Costo: $ 8.259,30 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 13.864,75
+          - generic: "Costo: $ 8.259,30 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "40.43% Recargo sobre costo: 67.87%"':
+          - text: 40.43%
+          - generic: "Recargo sobre costo: 67.87%"
+        - cell "Costo actualizado"
+      - 'row "Seleccionar Gaseosa cola 2,25 L · Cosecha Nueva Gaseosa cola 2,25 L · Cosecha Nueva Fecha de precio no disponible $ 6.040,00 Costo: $ 4.167,60 · WEIGHTED_AVERAGE 2026-05-06 31% Recargo sobre costo: 44.93% Costo actualizado · Precio sin revisar"':
+        - cell "Seleccionar Gaseosa cola 2,25 L · Cosecha Nueva":
+          - checkbox "Seleccionar Gaseosa cola 2,25 L · Cosecha Nueva"
+        - cell "Gaseosa cola 2,25 L · Cosecha Nueva Fecha de precio no disponible":
+          - strong: Gaseosa cola 2,25 L · Cosecha Nueva
+          - generic: Fecha de precio no disponible
+        - 'cell "$ 6.040,00 Costo: $ 4.167,60 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 6.040,00
+          - generic: "Costo: $ 4.167,60 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "31% Recargo sobre costo: 44.93%"':
+          - text: 31%
+          - generic: "Recargo sobre costo: 44.93%"
+        - cell "Costo actualizado · Precio sin revisar"
+      - 'row "Seleccionar Shampoo 400 ml · La Familia Shampoo 400 ml · La Familia Fecha de precio no disponible $ 7.010,00 Costo: $ 4.836,90 · WEIGHTED_AVERAGE 2026-05-06 31% Recargo sobre costo: 44.93% Costo actualizado · Precio sin revisar"':
+        - cell "Seleccionar Shampoo 400 ml · La Familia":
+          - checkbox "Seleccionar Shampoo 400 ml · La Familia"
+        - cell "Shampoo 400 ml · La Familia Fecha de precio no disponible":
+          - strong: Shampoo 400 ml · La Familia
+          - generic: Fecha de precio no disponible
+        - 'cell "$ 7.010,00 Costo: $ 4.836,90 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 7.010,00
+          - generic: "Costo: $ 4.836,90 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "31% Recargo sobre costo: 44.93%"':
+          - text: 31%
+          - generic: "Recargo sobre costo: 44.93%"
+        - cell "Costo actualizado · Precio sin revisar"
+      - 'row "Seleccionar Yerba suave 1 kg · Buenos Sabores Yerba suave 1 kg · Buenos Sabores Fecha de precio no disponible $ 7.340,00 Costo: $ 5.064,60 · WEIGHTED_AVERAGE 2026-05-06 31% Recargo sobre costo: 44.93% Costo actualizado · Precio sin revisar"':
+        - cell "Seleccionar Yerba suave 1 kg · Buenos Sabores":
+          - checkbox "Seleccionar Yerba suave 1 kg · Buenos Sabores"
+        - cell "Yerba suave 1 kg · Buenos Sabores Fecha de precio no disponible":
+          - strong: Yerba suave 1 kg · Buenos Sabores
+          - generic: Fecha de precio no disponible
+        - 'cell "$ 7.340,00 Costo: $ 5.064,60 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 7.340,00
+          - generic: "Costo: $ 5.064,60 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "31% Recargo sobre costo: 44.93%"':
+          - text: 31%
+          - generic: "Recargo sobre costo: 44.93%"
+        - cell "Costo actualizado · Precio sin revisar"
+      - 'row "Seleccionar Huevos docena · Buenos Sabores Huevos docena · Buenos Sabores Fecha de precio no disponible $ 5.560,00 Costo: $ 3.836,40 · WEIGHTED_AVERAGE 2026-05-06 31% Recargo sobre costo: 44.93% Costo actualizado · Precio sin revisar"':
+        - cell "Seleccionar Huevos docena · Buenos Sabores":
+          - checkbox "Seleccionar Huevos docena · Buenos Sabores"
+        - cell "Huevos docena · Buenos Sabores Fecha de precio no disponible":
+          - strong: Huevos docena · Buenos Sabores
+          - generic: Fecha de precio no disponible
+        - 'cell "$ 5.560,00 Costo: $ 3.836,40 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 5.560,00
+          - generic: "Costo: $ 3.836,40 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "31% Recargo sobre costo: 44.93%"':
+          - text: 31%
+          - generic: "Recargo sobre costo: 44.93%"
+        - cell "Costo actualizado · Precio sin revisar"
+      - 'row "Seleccionar Café molido 250 g · Tres Espigas Café molido 250 g · Tres Espigas Fecha de precio no disponible $ 5.160,00 Costo: $ 3.560,40 · WEIGHTED_AVERAGE 2026-05-06 31% Recargo sobre costo: 44.93% Costo actualizado · Precio sin revisar"':
+        - cell "Seleccionar Café molido 250 g · Tres Espigas":
+          - checkbox "Seleccionar Café molido 250 g · Tres Espigas"
+        - cell "Café molido 250 g · Tres Espigas Fecha de precio no disponible":
+          - strong: Café molido 250 g · Tres Espigas
+          - generic: Fecha de precio no disponible
+        - 'cell "$ 5.160,00 Costo: $ 3.560,40 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 5.160,00
+          - generic: "Costo: $ 3.560,40 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "31% Recargo sobre costo: 44.93%"':
+          - text: 31%
+          - generic: "Recargo sobre costo: 44.93%"
+        - cell "Costo actualizado · Precio sin revisar"
+      - 'row "Seleccionar Dulce de leche 400 g · Tierra Clara Dulce de leche 400 g · Tierra Clara Fecha de precio no disponible $ 5.070,00 Costo: $ 3.498,30 · WEIGHTED_AVERAGE 2026-05-06 31% Recargo sobre costo: 44.93% Costo actualizado · Precio sin revisar"':
+        - cell "Seleccionar Dulce de leche 400 g · Tierra Clara":
+          - checkbox "Seleccionar Dulce de leche 400 g · Tierra Clara"
+        - cell "Dulce de leche 400 g · Tierra Clara Fecha de precio no disponible":
+          - strong: Dulce de leche 400 g · Tierra Clara
+          - generic: Fecha de precio no disponible
+        - 'cell "$ 5.070,00 Costo: $ 3.498,30 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 5.070,00
+          - generic: "Costo: $ 3.498,30 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "31% Recargo sobre costo: 44.93%"':
+          - text: 31%
+          - generic: "Recargo sobre costo: 44.93%"
+        - cell "Costo actualizado · Precio sin revisar"
+      - 'row "Seleccionar Verduras congeladas 500 g · La Reserva Verduras congeladas 500 g · La Reserva Fecha de precio no disponible $ 4.530,00 Costo: $ 3.125,70 · WEIGHTED_AVERAGE 2026-05-06 31% Recargo sobre costo: 44.93% Costo actualizado · Precio sin revisar"':
+        - cell "Seleccionar Verduras congeladas 500 g · La Reserva":
+          - checkbox "Seleccionar Verduras congeladas 500 g · La Reserva"
+        - cell "Verduras congeladas 500 g · La Reserva Fecha de precio no disponible":
+          - strong: Verduras congeladas 500 g · La Reserva
+          - generic: Fecha de precio no disponible
+        - 'cell "$ 4.530,00 Costo: $ 3.125,70 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 4.530,00
+          - generic: "Costo: $ 3.125,70 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "31% Recargo sobre costo: 44.93%"':
+          - text: 31%
+          - generic: "Recargo sobre costo: 44.93%"
+        - cell "Costo actualizado · Precio sin revisar"
+      - 'row "Seleccionar Cerveza botella 1 L · La Familia Cerveza botella 1 L · La Familia Fecha de precio no disponible $ 4.900,00 Costo: $ 3.381,00 · WEIGHTED_AVERAGE 2026-05-06 31% Recargo sobre costo: 44.93% Costo actualizado · Precio sin revisar"':
+        - cell "Seleccionar Cerveza botella 1 L · La Familia":
+          - checkbox "Seleccionar Cerveza botella 1 L · La Familia"
+        - cell "Cerveza botella 1 L · La Familia Fecha de precio no disponible":
+          - strong: Cerveza botella 1 L · La Familia
+          - generic: Fecha de precio no disponible
+        - 'cell "$ 4.900,00 Costo: $ 3.381,00 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 4.900,00
+          - generic: "Costo: $ 3.381,00 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "31% Recargo sobre costo: 44.93%"':
+          - text: 31%
+          - generic: "Recargo sobre costo: 44.93%"
+        - cell "Costo actualizado · Precio sin revisar"
+      - 'row "Seleccionar Gaseosa naranja 2,25 L · La Colonia Gaseosa naranja 2,25 L · La Colonia Fecha de precio no disponible $ 4.160,00 Costo: $ 2.870,40 · WEIGHTED_AVERAGE 2026-05-06 31% Recargo sobre costo: 44.93% Costo actualizado · Precio sin revisar"':
+        - cell "Seleccionar Gaseosa naranja 2,25 L · La Colonia":
+          - checkbox "Seleccionar Gaseosa naranja 2,25 L · La Colonia"
+        - cell "Gaseosa naranja 2,25 L · La Colonia Fecha de precio no disponible":
+          - strong: Gaseosa naranja 2,25 L · La Colonia
+          - generic: Fecha de precio no disponible
+        - 'cell "$ 4.160,00 Costo: $ 2.870,40 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 4.160,00
+          - generic: "Costo: $ 2.870,40 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "31% Recargo sobre costo: 44.93%"':
+          - text: 31%
+          - generic: "Recargo sobre costo: 44.93%"
+        - cell "Costo actualizado · Precio sin revisar"
+      - 'row "Seleccionar Milanesas de soja x4 · Sol del Sur Milanesas de soja x4 · Sol del Sur Precio actualizado: 2026-10-01 $ 5.142,81 Costo: $ 3.063,60 · WEIGHTED_AVERAGE 2026-05-06 40.43% Recargo sobre costo: 67.87% Costo actualizado"':
+        - cell "Seleccionar Milanesas de soja x4 · Sol del Sur":
+          - checkbox "Seleccionar Milanesas de soja x4 · Sol del Sur"
+        - 'cell "Milanesas de soja x4 · Sol del Sur Precio actualizado: 2026-10-01"':
+          - strong: Milanesas de soja x4 · Sol del Sur
+          - generic: "Precio actualizado: 2026-10-01"
+        - 'cell "$ 5.142,81 Costo: $ 3.063,60 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 5.142,81
+          - generic: "Costo: $ 3.063,60 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "40.43% Recargo sobre costo: 67.87%"':
+          - text: 40.43%
+          - generic: "Recargo sobre costo: 67.87%"
+        - cell "Costo actualizado"
+      - 'row "Seleccionar Huevos docena · Santa Ana Huevos docena · Santa Ana Fecha de precio no disponible $ 4.500,00 Costo: $ 3.105,00 · WEIGHTED_AVERAGE 2026-05-06 31% Recargo sobre costo: 44.93% Costo actualizado · Precio sin revisar"':
+        - cell "Seleccionar Huevos docena · Santa Ana":
+          - checkbox "Seleccionar Huevos docena · Santa Ana"
+        - cell "Huevos docena · Santa Ana Fecha de precio no disponible":
+          - strong: Huevos docena · Santa Ana
+          - generic: Fecha de precio no disponible
+        - 'cell "$ 4.500,00 Costo: $ 3.105,00 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 4.500,00
+          - generic: "Costo: $ 3.105,00 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "31% Recargo sobre costo: 44.93%"':
+          - text: 31%
+          - generic: "Recargo sobre costo: 44.93%"
+        - cell "Costo actualizado · Precio sin revisar"
+      - 'row "Seleccionar Gaseosa cola 2,25 L · Buen Día Gaseosa cola 2,25 L · Buen Día Precio actualizado: 2026-10-01 $ 5.154,41 Costo: $ 3.070,50 · WEIGHTED_AVERAGE 2026-05-06 40.43% Recargo sobre costo: 67.87% Costo actualizado"':
+        - cell "Seleccionar Gaseosa cola 2,25 L · Buen Día":
+          - checkbox "Seleccionar Gaseosa cola 2,25 L · Buen Día"
+        - 'cell "Gaseosa cola 2,25 L · Buen Día Precio actualizado: 2026-10-01"':
+          - strong: Gaseosa cola 2,25 L · Buen Día
+          - generic: "Precio actualizado: 2026-10-01"
+        - 'cell "$ 5.154,41 Costo: $ 3.070,50 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 5.154,41
+          - generic: "Costo: $ 3.070,50 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "40.43% Recargo sobre costo: 67.87%"':
+          - text: 40.43%
+          - generic: "Recargo sobre costo: 67.87%"
+        - cell "Costo actualizado"
+      - 'row "Seleccionar Papas congeladas 1 kg · Nueva Mesa Papas congeladas 1 kg · Nueva Mesa Fecha de precio no disponible $ 6.350,00 Costo: $ 4.381,50 · WEIGHTED_AVERAGE 2026-05-06 31% Recargo sobre costo: 44.93% Costo actualizado · Precio sin revisar"':
+        - cell "Seleccionar Papas congeladas 1 kg · Nueva Mesa":
+          - checkbox "Seleccionar Papas congeladas 1 kg · Nueva Mesa"
+        - cell "Papas congeladas 1 kg · Nueva Mesa Fecha de precio no disponible":
+          - strong: Papas congeladas 1 kg · Nueva Mesa
+          - generic: Fecha de precio no disponible
+        - 'cell "$ 6.350,00 Costo: $ 4.381,50 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 6.350,00
+          - generic: "Costo: $ 4.381,50 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "31% Recargo sobre costo: 44.93%"':
+          - text: 31%
+          - generic: "Recargo sobre costo: 44.93%"
+        - cell "Costo actualizado · Precio sin revisar"
+      - 'row "Seleccionar Café molido 250 g · Santa Lucía Café molido 250 g · Santa Lucía Fecha de precio no disponible $ 6.650,00 Costo: $ 4.588,50 · WEIGHTED_AVERAGE 2026-05-06 31% Recargo sobre costo: 44.93% Costo actualizado · Precio sin revisar"':
+        - cell "Seleccionar Café molido 250 g · Santa Lucía":
+          - checkbox "Seleccionar Café molido 250 g · Santa Lucía"
+        - cell "Café molido 250 g · Santa Lucía Fecha de precio no disponible":
+          - strong: Café molido 250 g · Santa Lucía
+          - generic: Fecha de precio no disponible
+        - 'cell "$ 6.650,00 Costo: $ 4.588,50 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 6.650,00
+          - generic: "Costo: $ 4.588,50 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "31% Recargo sobre costo: 44.93%"':
+          - text: 31%
+          - generic: "Recargo sobre costo: 44.93%"
+        - cell "Costo actualizado · Precio sin revisar"
+      - 'row "Seleccionar Gaseosa lima limón 2,25 L · Santa Lucía Gaseosa lima limón 2,25 L · Santa Lucía Precio actualizado: 2026-10-01 $ 4.459,43 Costo: $ 2.656,50 · WEIGHTED_AVERAGE 2026-05-06 40.43% Recargo sobre costo: 67.87% Costo actualizado"':
+        - cell "Seleccionar Gaseosa lima limón 2,25 L · Santa Lucía":
+          - checkbox "Seleccionar Gaseosa lima limón 2,25 L · Santa Lucía"
+        - 'cell "Gaseosa lima limón 2,25 L · Santa Lucía Precio actualizado: 2026-10-01"':
+          - strong: Gaseosa lima limón 2,25 L · Santa Lucía
+          - generic: "Precio actualizado: 2026-10-01"
+        - 'cell "$ 4.459,43 Costo: $ 2.656,50 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 4.459,43
+          - generic: "Costo: $ 2.656,50 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "40.43% Recargo sobre costo: 67.87%"':
+          - text: 40.43%
+          - generic: "Recargo sobre costo: 67.87%"
+        - cell "Costo actualizado"
+      - 'row "Seleccionar Manteca 200 g · Tres Espigas Manteca 200 g · Tres Espigas Fecha de precio no disponible $ 4.050,00 Costo: $ 2.794,50 · WEIGHTED_AVERAGE 2026-05-06 31% Recargo sobre costo: 44.93% Costo actualizado · Precio sin revisar"':
+        - cell "Seleccionar Manteca 200 g · Tres Espigas":
+          - checkbox "Seleccionar Manteca 200 g · Tres Espigas"
+        - cell "Manteca 200 g · Tres Espigas Fecha de precio no disponible":
+          - strong: Manteca 200 g · Tres Espigas
+          - generic: Fecha de precio no disponible
+        - 'cell "$ 4.050,00 Costo: $ 2.794,50 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 4.050,00
+          - generic: "Costo: $ 2.794,50 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "31% Recargo sobre costo: 44.93%"':
+          - text: 31%
+          - generic: "Recargo sobre costo: 44.93%"
+        - cell "Costo actualizado · Precio sin revisar"
+      - 'row "Seleccionar Yogur bebible 1 L · La Estrella Yogur bebible 1 L · La Estrella Fecha de precio no disponible $ 4.210,00 Costo: $ 2.904,90 · WEIGHTED_AVERAGE 2026-05-06 31% Recargo sobre costo: 44.93% Costo actualizado · Precio sin revisar"':
+        - cell "Seleccionar Yogur bebible 1 L · La Estrella":
+          - checkbox "Seleccionar Yogur bebible 1 L · La Estrella"
+        - cell "Yogur bebible 1 L · La Estrella Fecha de precio no disponible":
+          - strong: Yogur bebible 1 L · La Estrella
+          - generic: Fecha de precio no disponible
+        - 'cell "$ 4.210,00 Costo: $ 2.904,90 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 4.210,00
+          - generic: "Costo: $ 2.904,90 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "31% Recargo sobre costo: 44.93%"':
+          - text: 31%
+          - generic: "Recargo sobre costo: 44.93%"
+        - cell "Costo actualizado · Precio sin revisar"
+      - 'row "Seleccionar Yogur bebible 1 L · La Familia Yogur bebible 1 L · La Familia Fecha de precio no disponible $ 3.470,00 Costo: $ 2.394,30 · WEIGHTED_AVERAGE 2026-05-06 31% Recargo sobre costo: 44.93% Costo actualizado · Precio sin revisar"':
+        - cell "Seleccionar Yogur bebible 1 L · La Familia":
+          - checkbox "Seleccionar Yogur bebible 1 L · La Familia"
+        - cell "Yogur bebible 1 L · La Familia Fecha de precio no disponible":
+          - strong: Yogur bebible 1 L · La Familia
+          - generic: Fecha de precio no disponible
+        - 'cell "$ 3.470,00 Costo: $ 2.394,30 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 3.470,00
+          - generic: "Costo: $ 2.394,30 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "31% Recargo sobre costo: 44.93%"':
+          - text: 31%
+          - generic: "Recargo sobre costo: 44.93%"
+        - cell "Costo actualizado · Precio sin revisar"
+      - 'row "Seleccionar Aceite de girasol 900 ml · La Abuela Aceite de girasol 900 ml · La Abuela Fecha de precio no disponible $ 3.370,00 Costo: $ 2.325,30 · WEIGHTED_AVERAGE 2026-05-06 31% Recargo sobre costo: 44.93% Costo actualizado · Precio sin revisar"':
+        - cell "Seleccionar Aceite de girasol 900 ml · La Abuela":
+          - checkbox "Seleccionar Aceite de girasol 900 ml · La Abuela"
+        - cell "Aceite de girasol 900 ml · La Abuela Fecha de precio no disponible":
+          - strong: Aceite de girasol 900 ml · La Abuela
+          - generic: Fecha de precio no disponible
+        - 'cell "$ 3.370,00 Costo: $ 2.325,30 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 3.370,00
+          - generic: "Costo: $ 2.325,30 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "31% Recargo sobre costo: 44.93%"':
+          - text: 31%
+          - generic: "Recargo sobre costo: 44.93%"
+        - cell "Costo actualizado · Precio sin revisar"
+      - 'row "Seleccionar Jabón para ropa 800 g · Nueva Mesa Jabón para ropa 800 g · Nueva Mesa Fecha de precio no disponible $ 4.610,00 Costo: $ 3.180,90 · WEIGHTED_AVERAGE 2026-05-06 31% Recargo sobre costo: 44.93% Costo actualizado · Precio sin revisar"':
+        - cell "Seleccionar Jabón para ropa 800 g · Nueva Mesa":
+          - checkbox "Seleccionar Jabón para ropa 800 g · Nueva Mesa"
+        - cell "Jabón para ropa 800 g · Nueva Mesa Fecha de precio no disponible":
+          - strong: Jabón para ropa 800 g · Nueva Mesa
+          - generic: Fecha de precio no disponible
+        - 'cell "$ 4.610,00 Costo: $ 3.180,90 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 4.610,00
+          - generic: "Costo: $ 3.180,90 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "31% Recargo sobre costo: 44.93%"':
+          - text: 31%
+          - generic: "Recargo sobre costo: 44.93%"
+        - cell "Costo actualizado · Precio sin revisar"
+      - 'row "Seleccionar Crema de leche 200 ml · Rincón Sur Crema de leche 200 ml · Rincón Sur Fecha de precio no disponible $ 3.420,00 Costo: $ 2.359,80 · WEIGHTED_AVERAGE 2026-05-06 31% Recargo sobre costo: 44.93% Costo actualizado · Precio sin revisar"':
+        - cell "Seleccionar Crema de leche 200 ml · Rincón Sur":
+          - checkbox "Seleccionar Crema de leche 200 ml · Rincón Sur"
+        - cell "Crema de leche 200 ml · Rincón Sur Fecha de precio no disponible":
+          - strong: Crema de leche 200 ml · Rincón Sur
+          - generic: Fecha de precio no disponible
+        - 'cell "$ 3.420,00 Costo: $ 2.359,80 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 3.420,00
+          - generic: "Costo: $ 2.359,80 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "31% Recargo sobre costo: 44.93%"':
+          - text: 31%
+          - generic: "Recargo sobre costo: 44.93%"
+        - cell "Costo actualizado · Precio sin revisar"
+      - 'row "Seleccionar Arroz integral 1 kg · El Molino Arroz integral 1 kg · El Molino Precio actualizado: 2026-10-01 $ 3.961,36 Costo: $ 2.359,80 · WEIGHTED_AVERAGE 2026-05-06 40.43% Recargo sobre costo: 67.87% Costo actualizado"':
+        - cell "Seleccionar Arroz integral 1 kg · El Molino":
+          - checkbox "Seleccionar Arroz integral 1 kg · El Molino"
+        - 'cell "Arroz integral 1 kg · El Molino Precio actualizado: 2026-10-01"':
+          - strong: Arroz integral 1 kg · El Molino
+          - generic: "Precio actualizado: 2026-10-01"
+        - 'cell "$ 3.961,36 Costo: $ 2.359,80 · WEIGHTED_AVERAGE 2026-05-06"':
+          - text: $ 3.961,36
+          - generic: "Costo: $ 2.359,80 · WEIGHTED_AVERAGE 2026-05-06"
+        - 'cell "40.43% Recargo sobre costo: 67.87%"':
+          - text: 40.43%
+          - generic: "Recargo sobre costo: 67.87%"
+        - cell "Costo actualizado"
+  - button "Anterior" [disabled]
+  - generic: Página 1
+  - button "Siguiente"

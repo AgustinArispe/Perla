@@ -1,0 +1,3784 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Productos" [level=1]
+  - button "Actualizar precios" [disabled]
+  - button "Categorías y marcas"
+  - button "Etiquetas (957)"
+  - button "Importar productos": Importar productos
+  - button "Nuevo producto F3":
+    - text: Nuevo producto
+    - generic: F3
+  - region "Catálogo de productos":
+    - searchbox "Buscar productos"
+    - generic: F2
+    - text: Estado
+    - combobox "Filtrar por estado":
+      - option "Todos" [selected]
+      - option "Activos"
+      - option "Inactivos"
+    - text: Categoría
+    - combobox "Categoría":
+      - option "Todas" [selected]
+      - option "Almacén"
+      - option "Bebidas"
+      - option "Congelados"
+      - option "Fiambrería"
+      - option "Galletitas y golosinas"
+      - option "Infusiones y desayuno"
+      - option "Lácteos"
+      - option "Limpieza"
+      - option "Panadería y huevos"
+      - option "Verdulería"
+    - text: Marca
+    - combobox "Marca":
+      - option "Todas" [selected]
+      - option "Buen Día"
+      - option "Buen Plato"
+      - option "Buenos Sabores"
+      - option "Campo Vivo"
+      - option "Campos del Sur"
+      - option "Cosecha Nueva"
+      - option "Costa Clara"
+      - option "Del Mercado"
+      - option "Del Valle"
+      - option "Don Pedro"
+      - option "Dulce Momento"
+      - option "El Molino"
+      - option "El Ombú"
+      - option "El Trigal"
+      - option "Hogar Claro"
+      - option "La Abuela"
+      - option "La Casona"
+      - option "La Colonia"
+      - option "La Cumbre"
+      - option "La Estancia"
+      - option "La Estrella"
+      - option "La Familia"
+      - option "La Huerta"
+      - option "La Pradera"
+      - option "La Reserva"
+      - option "Las Sierras"
+      - option "Los Aromos"
+      - option "Mi Barrio"
+      - option "Nueva Mesa"
+      - option "Primavera"
+      - option "Productores de Tandil"
+      - option "Rincón Sur"
+      - option "Santa Ana"
+      - option "Santa Lucía"
+      - option "Sierra Azul"
+      - option "Sol del Sur"
+      - option "Tierra Clara"
+      - option "Tres Espigas"
+      - option "Villa del Sol"
+    - button "Mis vistas": Mis vistas
+    - button "Exportar productos a Excel": Exportar Excel
+    - strong: "4.000"
+    - text: productos en el catálogo
+    - table:
+      - rowgroup:
+        - row "Seleccionar productos de esta página Producto Código de barras Venta Precio Estado Acciones":
+          - columnheader "Seleccionar productos de esta página":
+            - checkbox "Seleccionar productos de esta página"
+          - columnheader "Producto"
+          - columnheader "Código de barras"
+          - columnheader "Venta"
+          - columnheader "Precio"
+          - columnheader "Estado"
+          - columnheader "Acciones":
+            - generic: Acciones
+      - rowgroup:
+        - row "Seleccionar Aceite de girasol 900 ml Aceite de girasol 900 ml SIM-0010 · Almacén · Del Mercado 7799900000106 Unidad $ 4.169,85 Desactivar Aceite de girasol 900 ml Editar Aceite de girasol 900 ml":
+          - cell "Seleccionar Aceite de girasol 900 ml":
+            - checkbox "Seleccionar Aceite de girasol 900 ml"
+          - cell "Aceite de girasol 900 ml SIM-0010 · Almacén · Del Mercado":
+            - strong: Aceite de girasol 900 ml
+            - generic: SIM-0010 · Almacén · Del Mercado
+          - cell "7799900000106"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 4.169,85"
+          - cell "Desactivar Aceite de girasol 900 ml":
+            - button "Desactivar Aceite de girasol 900 ml": Activo
+          - cell "Editar Aceite de girasol 900 ml":
+            - button "Editar Aceite de girasol 900 ml":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Buen Día Aceite de girasol 900 ml · Buen Día SIM-3937 · Almacén · Buen Día 7799900039373 Unidad $ 4.220,00 Desactivar Aceite de girasol 900 ml · Buen Día Editar Aceite de girasol 900 ml · Buen Día":
+          - cell "Seleccionar Aceite de girasol 900 ml · Buen Día":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Buen Día"
+          - cell "Aceite de girasol 900 ml · Buen Día SIM-3937 · Almacén · Buen Día":
+            - strong: Aceite de girasol 900 ml · Buen Día
+            - generic: SIM-3937 · Almacén · Buen Día
+          - cell "7799900039373"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 4.220,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Buen Día":
+            - button "Desactivar Aceite de girasol 900 ml · Buen Día": Activo
+          - cell "Editar Aceite de girasol 900 ml · Buen Día":
+            - button "Editar Aceite de girasol 900 ml · Buen Día":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Buen Día Aceite de girasol 900 ml · Buen Día SIM-0367 · Almacén · Buen Día 7799900003671 Unidad $ 4.389,92 Desactivar Aceite de girasol 900 ml · Buen Día Editar Aceite de girasol 900 ml · Buen Día":
+          - cell "Seleccionar Aceite de girasol 900 ml · Buen Día":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Buen Día"
+          - cell "Aceite de girasol 900 ml · Buen Día SIM-0367 · Almacén · Buen Día":
+            - strong: Aceite de girasol 900 ml · Buen Día
+            - generic: SIM-0367 · Almacén · Buen Día
+          - cell "7799900003671"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 4.389,92"
+          - cell "Desactivar Aceite de girasol 900 ml · Buen Día":
+            - button "Desactivar Aceite de girasol 900 ml · Buen Día": Activo
+          - cell "Editar Aceite de girasol 900 ml · Buen Día":
+            - button "Editar Aceite de girasol 900 ml · Buen Día":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Buenos Sabores Aceite de girasol 900 ml · Buenos Sabores SIM-3223 · Almacén · Buenos Sabores 7799900032237 Unidad $ 4.610,00 Desactivar Aceite de girasol 900 ml · Buenos Sabores Editar Aceite de girasol 900 ml · Buenos Sabores":
+          - cell "Seleccionar Aceite de girasol 900 ml · Buenos Sabores":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Buenos Sabores"
+          - cell "Aceite de girasol 900 ml · Buenos Sabores SIM-3223 · Almacén · Buenos Sabores":
+            - strong: Aceite de girasol 900 ml · Buenos Sabores
+            - generic: SIM-3223 · Almacén · Buenos Sabores
+          - cell "7799900032237"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 4.610,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Buenos Sabores":
+            - button "Desactivar Aceite de girasol 900 ml · Buenos Sabores": Activo
+          - cell "Editar Aceite de girasol 900 ml · Buenos Sabores":
+            - button "Editar Aceite de girasol 900 ml · Buenos Sabores":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Campo Vivo Aceite de girasol 900 ml · Campo Vivo SIM-1200 · Almacén · Campo Vivo 7799900012000 Unidad $ 3.112,20 Desactivar Aceite de girasol 900 ml · Campo Vivo Editar Aceite de girasol 900 ml · Campo Vivo":
+          - cell "Seleccionar Aceite de girasol 900 ml · Campo Vivo":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Campo Vivo"
+          - cell "Aceite de girasol 900 ml · Campo Vivo SIM-1200 · Almacén · Campo Vivo":
+            - strong: Aceite de girasol 900 ml · Campo Vivo
+            - generic: SIM-1200 · Almacén · Campo Vivo
+          - cell "7799900012000"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.112,20"
+          - cell "Desactivar Aceite de girasol 900 ml · Campo Vivo":
+            - button "Desactivar Aceite de girasol 900 ml · Campo Vivo": Activo
+          - cell "Editar Aceite de girasol 900 ml · Campo Vivo":
+            - button "Editar Aceite de girasol 900 ml · Campo Vivo":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Cosecha Nueva Aceite de girasol 900 ml · Cosecha Nueva SIM-1914 · Almacén · Cosecha Nueva 7799900019146 Unidad $ 3.060,00 Desactivar Aceite de girasol 900 ml · Cosecha Nueva Editar Aceite de girasol 900 ml · Cosecha Nueva":
+          - cell "Seleccionar Aceite de girasol 900 ml · Cosecha Nueva":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Cosecha Nueva"
+          - cell "Aceite de girasol 900 ml · Cosecha Nueva SIM-1914 · Almacén · Cosecha Nueva":
+            - strong: Aceite de girasol 900 ml · Cosecha Nueva
+            - generic: SIM-1914 · Almacén · Cosecha Nueva
+          - cell "7799900019146"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.060,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Cosecha Nueva":
+            - button "Desactivar Aceite de girasol 900 ml · Cosecha Nueva": Activo
+          - cell "Editar Aceite de girasol 900 ml · Cosecha Nueva":
+            - button "Editar Aceite de girasol 900 ml · Cosecha Nueva":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Costa Clara Aceite de girasol 900 ml · Costa Clara SIM-2152 · Almacén · Costa Clara 7799900021521 Unidad $ 2.960,00 Desactivar Aceite de girasol 900 ml · Costa Clara Editar Aceite de girasol 900 ml · Costa Clara":
+          - cell "Seleccionar Aceite de girasol 900 ml · Costa Clara":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Costa Clara"
+          - cell "Aceite de girasol 900 ml · Costa Clara SIM-2152 · Almacén · Costa Clara":
+            - strong: Aceite de girasol 900 ml · Costa Clara
+            - generic: SIM-2152 · Almacén · Costa Clara
+          - cell "7799900021521"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 2.960,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Costa Clara":
+            - button "Desactivar Aceite de girasol 900 ml · Costa Clara": Activo
+          - cell "Editar Aceite de girasol 900 ml · Costa Clara":
+            - button "Editar Aceite de girasol 900 ml · Costa Clara":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Del Valle Aceite de girasol 900 ml · Del Valle SIM-2628 · Almacén · Del Valle 7799900026281 Unidad $ 3.940,00 Desactivar Aceite de girasol 900 ml · Del Valle Editar Aceite de girasol 900 ml · Del Valle":
+          - cell "Seleccionar Aceite de girasol 900 ml · Del Valle":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Del Valle"
+          - cell "Aceite de girasol 900 ml · Del Valle SIM-2628 · Almacén · Del Valle":
+            - strong: Aceite de girasol 900 ml · Del Valle
+            - generic: SIM-2628 · Almacén · Del Valle
+          - cell "7799900026281"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.940,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Del Valle":
+            - button "Desactivar Aceite de girasol 900 ml · Del Valle": Activo
+          - cell "Editar Aceite de girasol 900 ml · Del Valle":
+            - button "Editar Aceite de girasol 900 ml · Del Valle":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Don Pedro Aceite de girasol 900 ml · Don Pedro SIM-0962 · Almacén · Don Pedro 7799900009628 Unidad $ 5.617,71 Desactivar Aceite de girasol 900 ml · Don Pedro Editar Aceite de girasol 900 ml · Don Pedro":
+          - cell "Seleccionar Aceite de girasol 900 ml · Don Pedro":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Don Pedro"
+          - cell "Aceite de girasol 900 ml · Don Pedro SIM-0962 · Almacén · Don Pedro":
+            - strong: Aceite de girasol 900 ml · Don Pedro
+            - generic: SIM-0962 · Almacén · Don Pedro
+          - cell "7799900009628"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 5.617,71"
+          - cell "Desactivar Aceite de girasol 900 ml · Don Pedro":
+            - button "Desactivar Aceite de girasol 900 ml · Don Pedro": Activo
+          - cell "Editar Aceite de girasol 900 ml · Don Pedro":
+            - button "Editar Aceite de girasol 900 ml · Don Pedro":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · El Molino Aceite de girasol 900 ml · El Molino SIM-0724 · Almacén · El Molino 7799900007242 Unidad $ 5.108,07 Desactivar Aceite de girasol 900 ml · El Molino Editar Aceite de girasol 900 ml · El Molino":
+          - cell "Seleccionar Aceite de girasol 900 ml · El Molino":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · El Molino"
+          - cell "Aceite de girasol 900 ml · El Molino SIM-0724 · Almacén · El Molino":
+            - strong: Aceite de girasol 900 ml · El Molino
+            - generic: SIM-0724 · Almacén · El Molino
+          - cell "7799900007242"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 5.108,07"
+          - cell "Desactivar Aceite de girasol 900 ml · El Molino":
+            - button "Desactivar Aceite de girasol 900 ml · El Molino": Activo
+          - cell "Editar Aceite de girasol 900 ml · El Molino":
+            - button "Editar Aceite de girasol 900 ml · El Molino":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · El Ombú Aceite de girasol 900 ml · El Ombú SIM-2866 · Almacén · El Ombú 7799900028667 Unidad $ 3.160,00 Desactivar Aceite de girasol 900 ml · El Ombú Editar Aceite de girasol 900 ml · El Ombú":
+          - cell "Seleccionar Aceite de girasol 900 ml · El Ombú":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · El Ombú"
+          - cell "Aceite de girasol 900 ml · El Ombú SIM-2866 · Almacén · El Ombú":
+            - strong: Aceite de girasol 900 ml · El Ombú
+            - generic: SIM-2866 · Almacén · El Ombú
+          - cell "7799900028667"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.160,00"
+          - cell "Desactivar Aceite de girasol 900 ml · El Ombú":
+            - button "Desactivar Aceite de girasol 900 ml · El Ombú": Activo
+          - cell "Editar Aceite de girasol 900 ml · El Ombú":
+            - button "Editar Aceite de girasol 900 ml · El Ombú":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · El Trigal Aceite de girasol 900 ml · El Trigal SIM-1438 · Almacén · El Trigal 7799900014387 Unidad $ 3.870,00 Desactivar Aceite de girasol 900 ml · El Trigal Editar Aceite de girasol 900 ml · El Trigal":
+          - cell "Seleccionar Aceite de girasol 900 ml · El Trigal":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · El Trigal"
+          - cell "Aceite de girasol 900 ml · El Trigal SIM-1438 · Almacén · El Trigal":
+            - strong: Aceite de girasol 900 ml · El Trigal
+            - generic: SIM-1438 · Almacén · El Trigal
+          - cell "7799900014387"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.870,00"
+          - cell "Desactivar Aceite de girasol 900 ml · El Trigal":
+            - button "Desactivar Aceite de girasol 900 ml · El Trigal": Activo
+          - cell "Editar Aceite de girasol 900 ml · El Trigal":
+            - button "Editar Aceite de girasol 900 ml · El Trigal":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · La Abuela Aceite de girasol 900 ml · La Abuela SIM-1795 · Almacén · La Abuela 7799900017951 Unidad $ 3.370,00 Desactivar Aceite de girasol 900 ml · La Abuela Editar Aceite de girasol 900 ml · La Abuela":
+          - cell "Seleccionar Aceite de girasol 900 ml · La Abuela":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · La Abuela"
+          - cell "Aceite de girasol 900 ml · La Abuela SIM-1795 · Almacén · La Abuela":
+            - strong: Aceite de girasol 900 ml · La Abuela
+            - generic: SIM-1795 · Almacén · La Abuela
+          - cell "7799900017951"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.370,00"
+          - cell "Desactivar Aceite de girasol 900 ml · La Abuela":
+            - button "Desactivar Aceite de girasol 900 ml · La Abuela": Activo
+          - cell "Editar Aceite de girasol 900 ml · La Abuela":
+            - button "Editar Aceite de girasol 900 ml · La Abuela":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · La Colonia Aceite de girasol 900 ml · La Colonia SIM-1081 · Almacén · La Colonia 7799900010815 Unidad $ 2.890,00 Desactivar Aceite de girasol 900 ml · La Colonia Editar Aceite de girasol 900 ml · La Colonia":
+          - cell "Seleccionar Aceite de girasol 900 ml · La Colonia":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · La Colonia"
+          - cell "Aceite de girasol 900 ml · La Colonia SIM-1081 · Almacén · La Colonia":
+            - strong: Aceite de girasol 900 ml · La Colonia
+            - generic: SIM-1081 · Almacén · La Colonia
+          - cell "7799900010815"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 2.890,00"
+          - cell "Desactivar Aceite de girasol 900 ml · La Colonia":
+            - button "Desactivar Aceite de girasol 900 ml · La Colonia": Activo
+          - cell "Editar Aceite de girasol 900 ml · La Colonia":
+            - button "Editar Aceite de girasol 900 ml · La Colonia":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · La Cumbre Aceite de girasol 900 ml · La Cumbre SIM-2509 · Almacén · La Cumbre 7799900025093 Unidad $ 3.400,00 Desactivar Aceite de girasol 900 ml · La Cumbre Editar Aceite de girasol 900 ml · La Cumbre":
+          - cell "Seleccionar Aceite de girasol 900 ml · La Cumbre":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · La Cumbre"
+          - cell "Aceite de girasol 900 ml · La Cumbre SIM-2509 · Almacén · La Cumbre":
+            - strong: Aceite de girasol 900 ml · La Cumbre
+            - generic: SIM-2509 · Almacén · La Cumbre
+          - cell "7799900025093"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.400,00"
+          - cell "Desactivar Aceite de girasol 900 ml · La Cumbre":
+            - button "Desactivar Aceite de girasol 900 ml · La Cumbre": Activo
+          - cell "Editar Aceite de girasol 900 ml · La Cumbre":
+            - button "Editar Aceite de girasol 900 ml · La Cumbre":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · La Estrella Aceite de girasol 900 ml · La Estrella SIM-3104 · Almacén · La Estrella 7799900031049 Unidad $ 4.810,00 Desactivar Aceite de girasol 900 ml · La Estrella Editar Aceite de girasol 900 ml · La Estrella":
+          - cell "Seleccionar Aceite de girasol 900 ml · La Estrella":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · La Estrella"
+          - cell "Aceite de girasol 900 ml · La Estrella SIM-3104 · Almacén · La Estrella":
+            - strong: Aceite de girasol 900 ml · La Estrella
+            - generic: SIM-3104 · Almacén · La Estrella
+          - cell "7799900031049"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 4.810,00"
+          - cell "Desactivar Aceite de girasol 900 ml · La Estrella":
+            - button "Desactivar Aceite de girasol 900 ml · La Estrella": Activo
+          - cell "Editar Aceite de girasol 900 ml · La Estrella":
+            - button "Editar Aceite de girasol 900 ml · La Estrella":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · La Familia Aceite de girasol 900 ml · La Familia SIM-1557 · Almacén · La Familia 7799900015575 Unidad $ 3.490,00 Desactivar Aceite de girasol 900 ml · La Familia Editar Aceite de girasol 900 ml · La Familia":
+          - cell "Seleccionar Aceite de girasol 900 ml · La Familia":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · La Familia"
+          - cell "Aceite de girasol 900 ml · La Familia SIM-1557 · Almacén · La Familia":
+            - strong: Aceite de girasol 900 ml · La Familia
+            - generic: SIM-1557 · Almacén · La Familia
+          - cell "7799900015575"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.490,00"
+          - cell "Desactivar Aceite de girasol 900 ml · La Familia":
+            - button "Desactivar Aceite de girasol 900 ml · La Familia": Activo
+          - cell "Editar Aceite de girasol 900 ml · La Familia":
+            - button "Editar Aceite de girasol 900 ml · La Familia":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · La Huerta Aceite de girasol 900 ml · La Huerta SIM-0486 · Almacén · La Huerta 7799900004869 Unidad $ 6.023,11 Desactivar Aceite de girasol 900 ml · La Huerta Editar Aceite de girasol 900 ml · La Huerta":
+          - cell "Seleccionar Aceite de girasol 900 ml · La Huerta":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · La Huerta"
+          - cell "Aceite de girasol 900 ml · La Huerta SIM-0486 · Almacén · La Huerta":
+            - strong: Aceite de girasol 900 ml · La Huerta
+            - generic: SIM-0486 · Almacén · La Huerta
+          - cell "7799900004869"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 6.023,11"
+          - cell "Desactivar Aceite de girasol 900 ml · La Huerta":
+            - button "Desactivar Aceite de girasol 900 ml · La Huerta": Activo
+          - cell "Editar Aceite de girasol 900 ml · La Huerta":
+            - button "Editar Aceite de girasol 900 ml · La Huerta":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · La Pradera Aceite de girasol 900 ml · La Pradera SIM-2033 · Almacén · La Pradera 7799900020333 Unidad $ 4.760,00 Desactivar Aceite de girasol 900 ml · La Pradera Editar Aceite de girasol 900 ml · La Pradera":
+          - cell "Seleccionar Aceite de girasol 900 ml · La Pradera":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · La Pradera"
+          - cell "Aceite de girasol 900 ml · La Pradera SIM-2033 · Almacén · La Pradera":
+            - strong: Aceite de girasol 900 ml · La Pradera
+            - generic: SIM-2033 · Almacén · La Pradera
+          - cell "7799900020333"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 4.760,00"
+          - cell "Desactivar Aceite de girasol 900 ml · La Pradera":
+            - button "Desactivar Aceite de girasol 900 ml · La Pradera": Activo
+          - cell "Editar Aceite de girasol 900 ml · La Pradera":
+            - button "Editar Aceite de girasol 900 ml · La Pradera":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · La Reserva Aceite de girasol 900 ml · La Reserva SIM-3580 · Almacén · La Reserva 7799900035801 Unidad $ 4.970,00 Desactivar Aceite de girasol 900 ml · La Reserva Editar Aceite de girasol 900 ml · La Reserva":
+          - cell "Seleccionar Aceite de girasol 900 ml · La Reserva":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · La Reserva"
+          - cell "Aceite de girasol 900 ml · La Reserva SIM-3580 · Almacén · La Reserva":
+            - strong: Aceite de girasol 900 ml · La Reserva
+            - generic: SIM-3580 · Almacén · La Reserva
+          - cell "7799900035801"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 4.970,00"
+          - cell "Desactivar Aceite de girasol 900 ml · La Reserva":
+            - button "Desactivar Aceite de girasol 900 ml · La Reserva": Activo
+          - cell "Editar Aceite de girasol 900 ml · La Reserva":
+            - button "Editar Aceite de girasol 900 ml · La Reserva":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Las Sierras Aceite de girasol 900 ml · Las Sierras SIM-0843 · Almacén · Las Sierras 7799900008430 Unidad $ 3.498,04 Desactivar Aceite de girasol 900 ml · Las Sierras Editar Aceite de girasol 900 ml · Las Sierras":
+          - cell "Seleccionar Aceite de girasol 900 ml · Las Sierras":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Las Sierras"
+          - cell "Aceite de girasol 900 ml · Las Sierras SIM-0843 · Almacén · Las Sierras":
+            - strong: Aceite de girasol 900 ml · Las Sierras
+            - generic: SIM-0843 · Almacén · Las Sierras
+          - cell "7799900008430"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.498,04"
+          - cell "Desactivar Aceite de girasol 900 ml · Las Sierras":
+            - button "Desactivar Aceite de girasol 900 ml · Las Sierras": Activo
+          - cell "Editar Aceite de girasol 900 ml · Las Sierras":
+            - button "Editar Aceite de girasol 900 ml · Las Sierras":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Los Aromos Aceite de girasol 900 ml · Los Aromos SIM-0129 · Almacén · Los Aromos 7799900001295 Unidad $ 5.455,55 Desactivar Aceite de girasol 900 ml · Los Aromos Editar Aceite de girasol 900 ml · Los Aromos":
+          - cell "Seleccionar Aceite de girasol 900 ml · Los Aromos":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Los Aromos"
+          - cell "Aceite de girasol 900 ml · Los Aromos SIM-0129 · Almacén · Los Aromos":
+            - strong: Aceite de girasol 900 ml · Los Aromos
+            - generic: SIM-0129 · Almacén · Los Aromos
+          - cell "7799900001295"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 5.455,55"
+          - cell "Desactivar Aceite de girasol 900 ml · Los Aromos":
+            - button "Desactivar Aceite de girasol 900 ml · Los Aromos": Activo
+          - cell "Editar Aceite de girasol 900 ml · Los Aromos":
+            - button "Editar Aceite de girasol 900 ml · Los Aromos":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Los Aromos Aceite de girasol 900 ml · Los Aromos SIM-3699 · Almacén · Los Aromos 7799900036990 Unidad $ 2.920,00 Desactivar Aceite de girasol 900 ml · Los Aromos Editar Aceite de girasol 900 ml · Los Aromos":
+          - cell "Seleccionar Aceite de girasol 900 ml · Los Aromos":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Los Aromos"
+          - cell "Aceite de girasol 900 ml · Los Aromos SIM-3699 · Almacén · Los Aromos":
+            - strong: Aceite de girasol 900 ml · Los Aromos
+            - generic: SIM-3699 · Almacén · Los Aromos
+          - cell "7799900036990"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 2.920,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Los Aromos":
+            - button "Desactivar Aceite de girasol 900 ml · Los Aromos": Activo
+          - cell "Editar Aceite de girasol 900 ml · Los Aromos":
+            - button "Editar Aceite de girasol 900 ml · Los Aromos":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Mi Barrio Aceite de girasol 900 ml · Mi Barrio SIM-3342 · Almacén · Mi Barrio 7799900033425 Unidad $ 3.850,00 Desactivar Aceite de girasol 900 ml · Mi Barrio Editar Aceite de girasol 900 ml · Mi Barrio":
+          - cell "Seleccionar Aceite de girasol 900 ml · Mi Barrio":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Mi Barrio"
+          - cell "Aceite de girasol 900 ml · Mi Barrio SIM-3342 · Almacén · Mi Barrio":
+            - strong: Aceite de girasol 900 ml · Mi Barrio
+            - generic: SIM-3342 · Almacén · Mi Barrio
+          - cell "7799900033425"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.850,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Mi Barrio":
+            - button "Desactivar Aceite de girasol 900 ml · Mi Barrio": Activo
+          - cell "Editar Aceite de girasol 900 ml · Mi Barrio":
+            - button "Editar Aceite de girasol 900 ml · Mi Barrio":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Nueva Mesa Aceite de girasol 900 ml · Nueva Mesa SIM-1319 · Almacén · Nueva Mesa 7799900013199 Unidad $ 4.430,00 Desactivar Aceite de girasol 900 ml · Nueva Mesa Editar Aceite de girasol 900 ml · Nueva Mesa":
+          - cell "Seleccionar Aceite de girasol 900 ml · Nueva Mesa":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Nueva Mesa"
+          - cell "Aceite de girasol 900 ml · Nueva Mesa SIM-1319 · Almacén · Nueva Mesa":
+            - strong: Aceite de girasol 900 ml · Nueva Mesa
+            - generic: SIM-1319 · Almacén · Nueva Mesa
+          - cell "7799900013199"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 4.430,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Nueva Mesa":
+            - button "Desactivar Aceite de girasol 900 ml · Nueva Mesa": Activo
+          - cell "Editar Aceite de girasol 900 ml · Nueva Mesa":
+            - button "Editar Aceite de girasol 900 ml · Nueva Mesa":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Primavera Aceite de girasol 900 ml · Primavera SIM-2747 · Almacén · Primavera 7799900027479 Unidad $ 3.560,00 Desactivar Aceite de girasol 900 ml · Primavera Editar Aceite de girasol 900 ml · Primavera":
+          - cell "Seleccionar Aceite de girasol 900 ml · Primavera":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Primavera"
+          - cell "Aceite de girasol 900 ml · Primavera SIM-2747 · Almacén · Primavera":
+            - strong: Aceite de girasol 900 ml · Primavera
+            - generic: SIM-2747 · Almacén · Primavera
+          - cell "7799900027479"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.560,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Primavera":
+            - button "Desactivar Aceite de girasol 900 ml · Primavera": Activo
+          - cell "Editar Aceite de girasol 900 ml · Primavera":
+            - button "Editar Aceite de girasol 900 ml · Primavera":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Rincón Sur Aceite de girasol 900 ml · Rincón Sur SIM-2985 · Almacén · Rincón Sur 7799900029855 Unidad $ 4.260,00 Desactivar Aceite de girasol 900 ml · Rincón Sur Editar Aceite de girasol 900 ml · Rincón Sur":
+          - cell "Seleccionar Aceite de girasol 900 ml · Rincón Sur":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Rincón Sur"
+          - cell "Aceite de girasol 900 ml · Rincón Sur SIM-2985 · Almacén · Rincón Sur":
+            - strong: Aceite de girasol 900 ml · Rincón Sur
+            - generic: SIM-2985 · Almacén · Rincón Sur
+          - cell "7799900029855"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 4.260,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Rincón Sur":
+            - button "Desactivar Aceite de girasol 900 ml · Rincón Sur": Activo
+          - cell "Editar Aceite de girasol 900 ml · Rincón Sur":
+            - button "Editar Aceite de girasol 900 ml · Rincón Sur":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Santa Ana Aceite de girasol 900 ml · Santa Ana SIM-1676 · Almacén · Santa Ana 7799900016763 Unidad $ 3.360,00 Desactivar Aceite de girasol 900 ml · Santa Ana Editar Aceite de girasol 900 ml · Santa Ana":
+          - cell "Seleccionar Aceite de girasol 900 ml · Santa Ana":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Santa Ana"
+          - cell "Aceite de girasol 900 ml · Santa Ana SIM-1676 · Almacén · Santa Ana":
+            - strong: Aceite de girasol 900 ml · Santa Ana
+            - generic: SIM-1676 · Almacén · Santa Ana
+          - cell "7799900016763"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.360,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Santa Ana":
+            - button "Desactivar Aceite de girasol 900 ml · Santa Ana": Activo
+          - cell "Editar Aceite de girasol 900 ml · Santa Ana":
+            - button "Editar Aceite de girasol 900 ml · Santa Ana":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Santa Lucía Aceite de girasol 900 ml · Santa Lucía SIM-3818 · Almacén · Santa Lucía 7799900038185 Unidad $ 3.090,00 Desactivar Aceite de girasol 900 ml · Santa Lucía Editar Aceite de girasol 900 ml · Santa Lucía":
+          - cell "Seleccionar Aceite de girasol 900 ml · Santa Lucía":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Santa Lucía"
+          - cell "Aceite de girasol 900 ml · Santa Lucía SIM-3818 · Almacén · Santa Lucía":
+            - strong: Aceite de girasol 900 ml · Santa Lucía
+            - generic: SIM-3818 · Almacén · Santa Lucía
+          - cell "7799900038185"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.090,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Santa Lucía":
+            - button "Desactivar Aceite de girasol 900 ml · Santa Lucía": Activo
+          - cell "Editar Aceite de girasol 900 ml · Santa Lucía":
+            - button "Editar Aceite de girasol 900 ml · Santa Lucía":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Santa Lucía Aceite de girasol 900 ml · Santa Lucía SIM-0248 · Almacén · Santa Lucía 7799900002483 Unidad $ 3.173,73 Desactivar Aceite de girasol 900 ml · Santa Lucía Editar Aceite de girasol 900 ml · Santa Lucía":
+          - cell "Seleccionar Aceite de girasol 900 ml · Santa Lucía":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Santa Lucía"
+          - cell "Aceite de girasol 900 ml · Santa Lucía SIM-0248 · Almacén · Santa Lucía":
+            - strong: Aceite de girasol 900 ml · Santa Lucía
+            - generic: SIM-0248 · Almacén · Santa Lucía
+          - cell "7799900002483"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.173,73"
+          - cell "Desactivar Aceite de girasol 900 ml · Santa Lucía":
+            - button "Desactivar Aceite de girasol 900 ml · Santa Lucía": Activo
+          - cell "Editar Aceite de girasol 900 ml · Santa Lucía":
+            - button "Editar Aceite de girasol 900 ml · Santa Lucía":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Sol del Sur Aceite de girasol 900 ml · Sol del Sur SIM-0605 · Almacén · Sol del Sur 7799900006054 Unidad $ 5.258,64 Desactivar Aceite de girasol 900 ml · Sol del Sur Editar Aceite de girasol 900 ml · Sol del Sur":
+          - cell "Seleccionar Aceite de girasol 900 ml · Sol del Sur":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Sol del Sur"
+          - cell "Aceite de girasol 900 ml · Sol del Sur SIM-0605 · Almacén · Sol del Sur":
+            - strong: Aceite de girasol 900 ml · Sol del Sur
+            - generic: SIM-0605 · Almacén · Sol del Sur
+          - cell "7799900006054"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 5.258,64"
+          - cell "Desactivar Aceite de girasol 900 ml · Sol del Sur":
+            - button "Desactivar Aceite de girasol 900 ml · Sol del Sur": Activo
+          - cell "Editar Aceite de girasol 900 ml · Sol del Sur":
+            - button "Editar Aceite de girasol 900 ml · Sol del Sur":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Tierra Clara Aceite de girasol 900 ml · Tierra Clara SIM-3461 · Almacén · Tierra Clara 7799900034613 Unidad $ 3.600,00 Desactivar Aceite de girasol 900 ml · Tierra Clara Editar Aceite de girasol 900 ml · Tierra Clara":
+          - cell "Seleccionar Aceite de girasol 900 ml · Tierra Clara":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Tierra Clara"
+          - cell "Aceite de girasol 900 ml · Tierra Clara SIM-3461 · Almacén · Tierra Clara":
+            - strong: Aceite de girasol 900 ml · Tierra Clara
+            - generic: SIM-3461 · Almacén · Tierra Clara
+          - cell "7799900034613"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.600,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Tierra Clara":
+            - button "Desactivar Aceite de girasol 900 ml · Tierra Clara": Activo
+          - cell "Editar Aceite de girasol 900 ml · Tierra Clara":
+            - button "Editar Aceite de girasol 900 ml · Tierra Clara":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Tres Espigas Aceite de girasol 900 ml · Tres Espigas SIM-2271 · Almacén · Tres Espigas 7799900022719 Unidad $ 3.250,00 Desactivar Aceite de girasol 900 ml · Tres Espigas Editar Aceite de girasol 900 ml · Tres Espigas":
+          - cell "Seleccionar Aceite de girasol 900 ml · Tres Espigas":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Tres Espigas"
+          - cell "Aceite de girasol 900 ml · Tres Espigas SIM-2271 · Almacén · Tres Espigas":
+            - strong: Aceite de girasol 900 ml · Tres Espigas
+            - generic: SIM-2271 · Almacén · Tres Espigas
+          - cell "7799900022719"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.250,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Tres Espigas":
+            - button "Desactivar Aceite de girasol 900 ml · Tres Espigas": Activo
+          - cell "Editar Aceite de girasol 900 ml · Tres Espigas":
+            - button "Editar Aceite de girasol 900 ml · Tres Espigas":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Villa del Sol Aceite de girasol 900 ml · Villa del Sol SIM-2390 · Almacén · Villa del Sol 7799900023907 Unidad $ 5.190,00 Desactivar Aceite de girasol 900 ml · Villa del Sol Editar Aceite de girasol 900 ml · Villa del Sol":
+          - cell "Seleccionar Aceite de girasol 900 ml · Villa del Sol":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Villa del Sol"
+          - cell "Aceite de girasol 900 ml · Villa del Sol SIM-2390 · Almacén · Villa del Sol":
+            - strong: Aceite de girasol 900 ml · Villa del Sol
+            - generic: SIM-2390 · Almacén · Villa del Sol
+          - cell "7799900023907"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 5.190,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Villa del Sol":
+            - button "Desactivar Aceite de girasol 900 ml · Villa del Sol": Activo
+          - cell "Editar Aceite de girasol 900 ml · Villa del Sol":
+            - button "Editar Aceite de girasol 900 ml · Villa del Sol":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml Aceite de oliva 500 ml SIM-0011 · Almacén · Del Mercado 7799900000113 Unidad $ 10.656,28 Desactivar Aceite de oliva 500 ml Editar Aceite de oliva 500 ml":
+          - cell "Seleccionar Aceite de oliva 500 ml":
+            - checkbox "Seleccionar Aceite de oliva 500 ml"
+          - cell "Aceite de oliva 500 ml SIM-0011 · Almacén · Del Mercado":
+            - strong: Aceite de oliva 500 ml
+            - generic: SIM-0011 · Almacén · Del Mercado
+          - cell "7799900000113"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 10.656,28"
+          - cell "Desactivar Aceite de oliva 500 ml":
+            - button "Desactivar Aceite de oliva 500 ml": Activo
+          - cell "Editar Aceite de oliva 500 ml":
+            - button "Editar Aceite de oliva 500 ml":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · Buen Día Aceite de oliva 500 ml · Buen Día SIM-3938 · Almacén · Buen Día 7799900039380 Unidad $ 7.570,00 Desactivar Aceite de oliva 500 ml · Buen Día Editar Aceite de oliva 500 ml · Buen Día":
+          - cell "Seleccionar Aceite de oliva 500 ml · Buen Día":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · Buen Día"
+          - cell "Aceite de oliva 500 ml · Buen Día SIM-3938 · Almacén · Buen Día":
+            - strong: Aceite de oliva 500 ml · Buen Día
+            - generic: SIM-3938 · Almacén · Buen Día
+          - cell "7799900039380"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 7.570,00"
+          - cell "Desactivar Aceite de oliva 500 ml · Buen Día":
+            - button "Desactivar Aceite de oliva 500 ml · Buen Día": Activo
+          - cell "Editar Aceite de oliva 500 ml · Buen Día":
+            - button "Editar Aceite de oliva 500 ml · Buen Día":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · Buen Día Aceite de oliva 500 ml · Buen Día SIM-0368 · Almacén · Buen Día 7799900003688 Unidad $ 14.096,41 Desactivar Aceite de oliva 500 ml · Buen Día Editar Aceite de oliva 500 ml · Buen Día":
+          - cell "Seleccionar Aceite de oliva 500 ml · Buen Día":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · Buen Día"
+          - cell "Aceite de oliva 500 ml · Buen Día SIM-0368 · Almacén · Buen Día":
+            - strong: Aceite de oliva 500 ml · Buen Día
+            - generic: SIM-0368 · Almacén · Buen Día
+          - cell "7799900003688"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 14.096,41"
+          - cell "Desactivar Aceite de oliva 500 ml · Buen Día":
+            - button "Desactivar Aceite de oliva 500 ml · Buen Día": Activo
+          - cell "Editar Aceite de oliva 500 ml · Buen Día":
+            - button "Editar Aceite de oliva 500 ml · Buen Día":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · Buenos Sabores Aceite de oliva 500 ml · Buenos Sabores SIM-3224 · Almacén · Buenos Sabores 7799900032244 Unidad $ 9.240,00 Desactivar Aceite de oliva 500 ml · Buenos Sabores Editar Aceite de oliva 500 ml · Buenos Sabores":
+          - cell "Seleccionar Aceite de oliva 500 ml · Buenos Sabores":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · Buenos Sabores"
+          - cell "Aceite de oliva 500 ml · Buenos Sabores SIM-3224 · Almacén · Buenos Sabores":
+            - strong: Aceite de oliva 500 ml · Buenos Sabores
+            - generic: SIM-3224 · Almacén · Buenos Sabores
+          - cell "7799900032244"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 9.240,00"
+          - cell "Desactivar Aceite de oliva 500 ml · Buenos Sabores":
+            - button "Desactivar Aceite de oliva 500 ml · Buenos Sabores": Activo
+          - cell "Editar Aceite de oliva 500 ml · Buenos Sabores":
+            - button "Editar Aceite de oliva 500 ml · Buenos Sabores":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · Campo Vivo Aceite de oliva 500 ml · Campo Vivo SIM-1201 · Almacén · Campo Vivo 7799900012017 Unidad $ 14.728,80 Desactivar Aceite de oliva 500 ml · Campo Vivo Editar Aceite de oliva 500 ml · Campo Vivo":
+          - cell "Seleccionar Aceite de oliva 500 ml · Campo Vivo":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · Campo Vivo"
+          - cell "Aceite de oliva 500 ml · Campo Vivo SIM-1201 · Almacén · Campo Vivo":
+            - strong: Aceite de oliva 500 ml · Campo Vivo
+            - generic: SIM-1201 · Almacén · Campo Vivo
+          - cell "7799900012017"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 14.728,80"
+          - cell "Desactivar Aceite de oliva 500 ml · Campo Vivo":
+            - button "Desactivar Aceite de oliva 500 ml · Campo Vivo": Activo
+          - cell "Editar Aceite de oliva 500 ml · Campo Vivo":
+            - button "Editar Aceite de oliva 500 ml · Campo Vivo":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · Cosecha Nueva Aceite de oliva 500 ml · Cosecha Nueva SIM-1915 · Almacén · Cosecha Nueva 7799900019153 Unidad $ 9.680,00 Desactivar Aceite de oliva 500 ml · Cosecha Nueva Editar Aceite de oliva 500 ml · Cosecha Nueva":
+          - cell "Seleccionar Aceite de oliva 500 ml · Cosecha Nueva":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · Cosecha Nueva"
+          - cell "Aceite de oliva 500 ml · Cosecha Nueva SIM-1915 · Almacén · Cosecha Nueva":
+            - strong: Aceite de oliva 500 ml · Cosecha Nueva
+            - generic: SIM-1915 · Almacén · Cosecha Nueva
+          - cell "7799900019153"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 9.680,00"
+          - cell "Desactivar Aceite de oliva 500 ml · Cosecha Nueva":
+            - button "Desactivar Aceite de oliva 500 ml · Cosecha Nueva": Activo
+          - cell "Editar Aceite de oliva 500 ml · Cosecha Nueva":
+            - button "Editar Aceite de oliva 500 ml · Cosecha Nueva":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · Costa Clara Aceite de oliva 500 ml · Costa Clara SIM-2153 · Almacén · Costa Clara 7799900021538 Unidad $ 8.570,00 Desactivar Aceite de oliva 500 ml · Costa Clara Editar Aceite de oliva 500 ml · Costa Clara":
+          - cell "Seleccionar Aceite de oliva 500 ml · Costa Clara":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · Costa Clara"
+          - cell "Aceite de oliva 500 ml · Costa Clara SIM-2153 · Almacén · Costa Clara":
+            - strong: Aceite de oliva 500 ml · Costa Clara
+            - generic: SIM-2153 · Almacén · Costa Clara
+          - cell "7799900021538"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 8.570,00"
+          - cell "Desactivar Aceite de oliva 500 ml · Costa Clara":
+            - button "Desactivar Aceite de oliva 500 ml · Costa Clara": Activo
+          - cell "Editar Aceite de oliva 500 ml · Costa Clara":
+            - button "Editar Aceite de oliva 500 ml · Costa Clara":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · Del Valle Aceite de oliva 500 ml · Del Valle SIM-2629 · Almacén · Del Valle 7799900026298 Unidad $ 13.060,00 Desactivar Aceite de oliva 500 ml · Del Valle Editar Aceite de oliva 500 ml · Del Valle":
+          - cell "Seleccionar Aceite de oliva 500 ml · Del Valle":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · Del Valle"
+          - cell "Aceite de oliva 500 ml · Del Valle SIM-2629 · Almacén · Del Valle":
+            - strong: Aceite de oliva 500 ml · Del Valle
+            - generic: SIM-2629 · Almacén · Del Valle
+          - cell "7799900026298"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 13.060,00"
+          - cell "Desactivar Aceite de oliva 500 ml · Del Valle":
+            - button "Desactivar Aceite de oliva 500 ml · Del Valle": Activo
+          - cell "Editar Aceite de oliva 500 ml · Del Valle":
+            - button "Editar Aceite de oliva 500 ml · Del Valle":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · Don Pedro Aceite de oliva 500 ml · Don Pedro SIM-0963 · Almacén · Don Pedro 7799900009635 Unidad $ 13.864,75 Desactivar Aceite de oliva 500 ml · Don Pedro Editar Aceite de oliva 500 ml · Don Pedro":
+          - cell "Seleccionar Aceite de oliva 500 ml · Don Pedro":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · Don Pedro"
+          - cell "Aceite de oliva 500 ml · Don Pedro SIM-0963 · Almacén · Don Pedro":
+            - strong: Aceite de oliva 500 ml · Don Pedro
+            - generic: SIM-0963 · Almacén · Don Pedro
+          - cell "7799900009635"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 13.864,75"
+          - cell "Desactivar Aceite de oliva 500 ml · Don Pedro":
+            - button "Desactivar Aceite de oliva 500 ml · Don Pedro": Activo
+          - cell "Editar Aceite de oliva 500 ml · Don Pedro":
+            - button "Editar Aceite de oliva 500 ml · Don Pedro":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · El Molino Aceite de oliva 500 ml · El Molino SIM-0725 · Almacén · El Molino 7799900007259 Unidad $ 9.474,83 Desactivar Aceite de oliva 500 ml · El Molino Editar Aceite de oliva 500 ml · El Molino":
+          - cell "Seleccionar Aceite de oliva 500 ml · El Molino":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · El Molino"
+          - cell "Aceite de oliva 500 ml · El Molino SIM-0725 · Almacén · El Molino":
+            - strong: Aceite de oliva 500 ml · El Molino
+            - generic: SIM-0725 · Almacén · El Molino
+          - cell "7799900007259"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 9.474,83"
+          - cell "Desactivar Aceite de oliva 500 ml · El Molino":
+            - button "Desactivar Aceite de oliva 500 ml · El Molino": Activo
+          - cell "Editar Aceite de oliva 500 ml · El Molino":
+            - button "Editar Aceite de oliva 500 ml · El Molino":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · El Ombú Aceite de oliva 500 ml · El Ombú SIM-2867 · Almacén · El Ombú 7799900028674 Unidad $ 9.830,00 Desactivar Aceite de oliva 500 ml · El Ombú Editar Aceite de oliva 500 ml · El Ombú":
+          - cell "Seleccionar Aceite de oliva 500 ml · El Ombú":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · El Ombú"
+          - cell "Aceite de oliva 500 ml · El Ombú SIM-2867 · Almacén · El Ombú":
+            - strong: Aceite de oliva 500 ml · El Ombú
+            - generic: SIM-2867 · Almacén · El Ombú
+          - cell "7799900028674"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 9.830,00"
+          - cell "Desactivar Aceite de oliva 500 ml · El Ombú":
+            - button "Desactivar Aceite de oliva 500 ml · El Ombú": Activo
+          - cell "Editar Aceite de oliva 500 ml · El Ombú":
+            - button "Editar Aceite de oliva 500 ml · El Ombú":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · El Trigal Aceite de oliva 500 ml · El Trigal SIM-1439 · Almacén · El Trigal 7799900014394 Unidad $ 7.040,00 Desactivar Aceite de oliva 500 ml · El Trigal Editar Aceite de oliva 500 ml · El Trigal":
+          - cell "Seleccionar Aceite de oliva 500 ml · El Trigal":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · El Trigal"
+          - cell "Aceite de oliva 500 ml · El Trigal SIM-1439 · Almacén · El Trigal":
+            - strong: Aceite de oliva 500 ml · El Trigal
+            - generic: SIM-1439 · Almacén · El Trigal
+          - cell "7799900014394"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 7.040,00"
+          - cell "Desactivar Aceite de oliva 500 ml · El Trigal":
+            - button "Desactivar Aceite de oliva 500 ml · El Trigal": Activo
+          - cell "Editar Aceite de oliva 500 ml · El Trigal":
+            - button "Editar Aceite de oliva 500 ml · El Trigal":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · La Abuela Aceite de oliva 500 ml · La Abuela SIM-1796 · Almacén · La Abuela 7799900017968 Unidad $ 9.850,00 Desactivar Aceite de oliva 500 ml · La Abuela Editar Aceite de oliva 500 ml · La Abuela":
+          - cell "Seleccionar Aceite de oliva 500 ml · La Abuela":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · La Abuela"
+          - cell "Aceite de oliva 500 ml · La Abuela SIM-1796 · Almacén · La Abuela":
+            - strong: Aceite de oliva 500 ml · La Abuela
+            - generic: SIM-1796 · Almacén · La Abuela
+          - cell "7799900017968"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 9.850,00"
+          - cell "Desactivar Aceite de oliva 500 ml · La Abuela":
+            - button "Desactivar Aceite de oliva 500 ml · La Abuela": Activo
+          - cell "Editar Aceite de oliva 500 ml · La Abuela":
+            - button "Editar Aceite de oliva 500 ml · La Abuela":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · La Colonia Aceite de oliva 500 ml · La Colonia SIM-1082 · Almacén · La Colonia 7799900010822 Unidad $ 14.849,30 Desactivar Aceite de oliva 500 ml · La Colonia Editar Aceite de oliva 500 ml · La Colonia":
+          - cell "Seleccionar Aceite de oliva 500 ml · La Colonia":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · La Colonia"
+          - cell "Aceite de oliva 500 ml · La Colonia SIM-1082 · Almacén · La Colonia":
+            - strong: Aceite de oliva 500 ml · La Colonia
+            - generic: SIM-1082 · Almacén · La Colonia
+          - cell "7799900010822"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 14.849,30"
+          - cell "Desactivar Aceite de oliva 500 ml · La Colonia":
+            - button "Desactivar Aceite de oliva 500 ml · La Colonia": Activo
+          - cell "Editar Aceite de oliva 500 ml · La Colonia":
+            - button "Editar Aceite de oliva 500 ml · La Colonia":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · La Cumbre Aceite de oliva 500 ml · La Cumbre SIM-2510 · Almacén · La Cumbre 7799900025109 Unidad $ 9.240,00 Desactivar Aceite de oliva 500 ml · La Cumbre Editar Aceite de oliva 500 ml · La Cumbre":
+          - cell "Seleccionar Aceite de oliva 500 ml · La Cumbre":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · La Cumbre"
+          - cell "Aceite de oliva 500 ml · La Cumbre SIM-2510 · Almacén · La Cumbre":
+            - strong: Aceite de oliva 500 ml · La Cumbre
+            - generic: SIM-2510 · Almacén · La Cumbre
+          - cell "7799900025109"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 9.240,00"
+          - cell "Desactivar Aceite de oliva 500 ml · La Cumbre":
+            - button "Desactivar Aceite de oliva 500 ml · La Cumbre": Activo
+          - cell "Editar Aceite de oliva 500 ml · La Cumbre":
+            - button "Editar Aceite de oliva 500 ml · La Cumbre":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · La Estrella Aceite de oliva 500 ml · La Estrella SIM-3105 · Almacén · La Estrella 7799900031056 Unidad $ 12.220,00 Desactivar Aceite de oliva 500 ml · La Estrella Editar Aceite de oliva 500 ml · La Estrella":
+          - cell "Seleccionar Aceite de oliva 500 ml · La Estrella":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · La Estrella"
+          - cell "Aceite de oliva 500 ml · La Estrella SIM-3105 · Almacén · La Estrella":
+            - strong: Aceite de oliva 500 ml · La Estrella
+            - generic: SIM-3105 · Almacén · La Estrella
+          - cell "7799900031056"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 12.220,00"
+          - cell "Desactivar Aceite de oliva 500 ml · La Estrella":
+            - button "Desactivar Aceite de oliva 500 ml · La Estrella": Activo
+          - cell "Editar Aceite de oliva 500 ml · La Estrella":
+            - button "Editar Aceite de oliva 500 ml · La Estrella":
+              - generic: Editar
+    - button "Formato para la carga inicial"
+    - generic: Página 1
+    - button "Anterior" [disabled]
+    - button "Siguiente"
+  - generic: F2 Buscar F3 Nuevo Esc Volver
+  - dialog "Etiquetas pendientes":
+    - heading "Etiquetas pendientes" [level=2]
+    - button "Cerrar" [active]
+    - strong: Naranja · La Familia
+    - text: "2000000003986"
+    - button "Marcar impresa"
+    - strong: Pera · Costa Clara
+    - text: "2000000005461"
+    - button "Marcar impresa"
+    - strong: Zanahoria · Villa del Sol
+    - text: "2000000005966"
+    - button "Marcar impresa"
+    - strong: Tomate · La Huerta
+    - text: "2000000001319"
+    - button "Marcar impresa"
+    - strong: Pan integral · Los Aromos
+    - text: "2000000000572"
+    - button "Marcar impresa"
+    - strong: Pan francés · Rincón Sur
+    - text: "2000000007526"
+    - button "Marcar impresa"
+    - strong: Queso azul · Mi Barrio
+    - text: "2000000008233"
+    - button "Marcar impresa"
+    - strong: Pan integral · La Pradera
+    - text: "2000000005218"
+    - button "Marcar impresa"
+    - strong: Manzana roja · Los Aromos
+    - text: "2000000009186"
+    - button "Marcar impresa"
+    - strong: Queso sardo · Cosecha Nueva
+    - text: "2000000004747"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · El Molino
+    - text: "2000000001999"
+    - button "Marcar impresa"
+    - strong: Naranja · El Ombú
+    - text: "2000000007175"
+    - button "Marcar impresa"
+    - strong: Naranja · Las Sierras
+    - text: "2000000002248"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · La Cumbre
+    - text: "2000000006345"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · Buenos Sabores
+    - text: "2000000007953"
+    - button "Marcar impresa"
+    - strong: Zanahoria · La Reserva
+    - text: "2000000008868"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · El Molino
+    - text: "2000000001838"
+    - button "Marcar impresa"
+    - strong: Mortadela · La Familia
+    - text: "2000000003818"
+    - button "Marcar impresa"
+    - strong: Pan integral · La Abuela
+    - text: "2000000004631"
+    - button "Marcar impresa"
+    - strong: Manzana roja · La Reserva
+    - text: "2000000008899"
+    - button "Marcar impresa"
+    - strong: Tomate · Sol del Sur
+    - text: "2000000001609"
+    - button "Marcar impresa"
+    - strong: Zanahoria · La Familia
+    - text: "2000000003931"
+    - button "Marcar impresa"
+    - strong: Pan integral · Cosecha Nueva
+    - text: "2000000004921"
+    - button "Marcar impresa"
+    - strong: Banana · La Colonia
+    - text: "2000000002811"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · Tres Espigas
+    - text: "2000000005768"
+    - button "Marcar impresa"
+    - strong: Queso azul · Santa Ana
+    - text: "2000000004174"
+    - button "Marcar impresa"
+    - strong: Mortadela · Santa Lucía
+    - text: "2000000009322"
+    - button "Marcar impresa"
+    - strong: Naranja · Tierra Clara
+    - text: "2000000008622"
+    - button "Marcar impresa"
+    - strong: Queso sardo · Mi Barrio
+    - text: "2000000008226"
+    - button "Marcar impresa"
+    - strong: Naranja · Primavera
+    - text: "2000000006888"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · La Pradera
+    - text: "2000000005027"
+    - button "Marcar impresa"
+    - strong: Banana · La Abuela
+    - text: "2000000004556"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · La Colonia
+    - text: "2000000002903"
+    - button "Marcar impresa"
+    - strong: Zapallo · Campo Vivo
+    - text: "2000000003078"
+    - button "Marcar impresa"
+    - strong: Pera · La Familia
+    - text: "2000000004013"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · La Abuela
+    - text: "2000000004365"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · Villa del Sol
+    - text: "2000000005867"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada
+    - text: "2000000000121"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · Las Sierras
+    - text: "2000000002057"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · Rincón Sur
+    - text: "2000000007274"
+    - button "Marcar impresa"
+    - strong: Limón
+    - text: "2000000000237"
+    - button "Marcar impresa"
+    - strong: Mandarina · Mi Barrio
+    - text: "2000000008349"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · Los Aromos
+    - text: "2000000009087"
+    - button "Marcar impresa"
+    - strong: Limón · La Estrella
+    - text: "2000000007779"
+    - button "Marcar impresa"
+    - strong: Mandarina · El Trigal
+    - text: "2000000003702"
+    - button "Marcar impresa"
+    - strong: Batata · Buen Día
+    - text: "2000000001050"
+    - button "Marcar impresa"
+    - strong: Lechuga · Las Sierras
+    - text: "2000000002293"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · Primavera
+    - text: "2000000006734"
+    - button "Marcar impresa"
+    - strong: Bondiola · La Estrella
+    - text: "2000000007595"
+    - button "Marcar impresa"
+    - strong: Bondiola
+    - text: "2000000000053"
+    - button "Marcar impresa"
+    - strong: Queso tybo · Santa Lucía
+    - text: "2000000009353"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · Nueva Mesa
+    - text: "2000000003214"
+    - button "Marcar impresa"
+    - strong: Papa · La Estrella
+    - text: "2000000007670"
+    - button "Marcar impresa"
+    - strong: Pan integral · La Colonia
+    - text: "2000000002897"
+    - button "Marcar impresa"
+    - strong: Manzana roja · El Ombú
+    - text: "2000000007151"
+    - button "Marcar impresa"
+    - strong: Salame Milán · La Familia
+    - text: "2000000003801"
+    - button "Marcar impresa"
+    - strong: Batata · Los Aromos
+    - text: "2000000000473"
+    - button "Marcar impresa"
+    - strong: Naranja · La Colonia
+    - text: "2000000002828"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · Villa del Sol
+    - text: "2000000005928"
+    - button "Marcar impresa"
+    - strong: Salame Milán · La Colonia
+    - text: "2000000002644"
+    - button "Marcar impresa"
+    - strong: Queso tybo · Buen Día
+    - text: "2000000000947"
+    - button "Marcar impresa"
+    - strong: Mortadela · Tres Espigas
+    - text: "2000000005553"
+    - button "Marcar impresa"
+    - strong: Banana
+    - text: "2000000000206"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · La Pradera
+    - text: "2000000005225"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · Don Pedro
+    - text: "2000000002576"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · Don Pedro
+    - text: "2000000002385"
+    - button "Marcar impresa"
+    - strong: Mortadela · Las Sierras
+    - text: "2000000002071"
+    - button "Marcar impresa"
+    - strong: Cebolla · La Familia
+    - text: "2000000003917"
+    - button "Marcar impresa"
+    - strong: Queso sardo
+    - text: "2000000000107"
+    - button "Marcar impresa"
+    - strong: Tomate · Cosecha Nueva
+    - text: "2000000004792"
+    - button "Marcar impresa"
+    - strong: Pan francés · Tierra Clara
+    - text: "2000000008684"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · La Pradera
+    - text: "2000000004945"
+    - button "Marcar impresa"
+    - strong: Lechuga · Cosecha Nueva
+    - text: "2000000004907"
+    - button "Marcar impresa"
+    - strong: Zanahoria · La Colonia
+    - text: "2000000002774"
+    - button "Marcar impresa"
+    - strong: Mortadela · Costa Clara
+    - text: "2000000005263"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · La Estrella
+    - text: "2000000007663"
+    - button "Marcar impresa"
+    - strong: Bondiola · Don Pedro
+    - text: "2000000002378"
+    - button "Marcar impresa"
+    - strong: Muzzarella · Los Aromos
+    - text: "2000000009070"
+    - button "Marcar impresa"
+    - strong: Zapallo
+    - text: "2000000000176"
+    - button "Marcar impresa"
+    - strong: Naranja · Rincón Sur
+    - text: "2000000007465"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · La Pradera
+    - text: "2000000005058"
+    - button "Marcar impresa"
+    - strong: Zapallo · Sol del Sur
+    - text: "2000000001623"
+    - button "Marcar impresa"
+    - strong: Limón · La Familia
+    - text: "2000000004006"
+    - button "Marcar impresa"
+    - strong: Lechuga · El Molino
+    - text: "2000000002002"
+    - button "Marcar impresa"
+    - strong: Bondiola · Los Aromos
+    - text: "2000000000343"
+    - button "Marcar impresa"
+    - strong: Queso tybo · Cosecha Nueva
+    - text: "2000000004716"
+    - button "Marcar impresa"
+    - strong: Pan francés · Tres Espigas
+    - text: "2000000005782"
+    - button "Marcar impresa"
+    - strong: Lechuga · La Cumbre
+    - text: "2000000006352"
+    - button "Marcar impresa"
+    - strong: Cebolla · Santa Lucía
+    - text: "2000000009421"
+    - button "Marcar impresa"
+    - strong: Mortadela · Sol del Sur
+    - text: "2000000001494"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · Buenos Sabores
+    - text: "2000000007892"
+    - button "Marcar impresa"
+    - strong: Queso azul · Los Aromos
+    - text: "2000000000404"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · Las Sierras
+    - text: "2000000002156"
+    - button "Marcar impresa"
+    - strong: Mortadela · Rincón Sur
+    - text: "2000000007298"
+    - button "Marcar impresa"
+    - strong: Pera · Buenos Sabores
+    - text: "2000000008073"
+    - button "Marcar impresa"
+    - strong: Zapallo · La Cumbre
+    - text: "2000000006260"
+    - button "Marcar impresa"
+    - strong: Batata · Santa Lucía
+    - text: "2000000009469"
+    - button "Marcar impresa"
+    - strong: Zanahoria · La Abuela
+    - text: "2000000004518"
+    - button "Marcar impresa"
+    - strong: Manzana roja · Don Pedro
+    - text: "2000000002514"
+    - button "Marcar impresa"
+    - strong: Mortadela · Tierra Clara
+    - text: "2000000008455"
+    - button "Marcar impresa"
+    - strong: Tomate · Santa Ana
+    - text: "2000000004211"
+    - button "Marcar impresa"
+    - strong: Banana · Costa Clara
+    - text: "2000000005423"
+    - button "Marcar impresa"
+    - strong: Lechuga · Mi Barrio
+    - text: "2000000008387"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · Tierra Clara
+    - text: "2000000008530"
+    - button "Marcar impresa"
+    - strong: Queso azul · La Estrella
+    - text: "2000000007656"
+    - button "Marcar impresa"
+    - strong: Queso sardo · El Ombú
+    - text: "2000000007069"
+    - button "Marcar impresa"
+    - strong: Salame Milán · Rincón Sur
+    - text: "2000000007281"
+    - button "Marcar impresa"
+    - strong: Lechuga · Rincón Sur
+    - text: "2000000007519"
+    - button "Marcar impresa"
+    - strong: Muzzarella · El Trigal
+    - text: "2000000003566"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · Primavera
+    - text: "2000000006765"
+    - button "Marcar impresa"
+    - strong: Mortadela · La Abuela
+    - text: "2000000004396"
+    - button "Marcar impresa"
+    - strong: Queso sardo · Sol del Sur
+    - text: "2000000001555"
+    - button "Marcar impresa"
+    - strong: Mortadela · Campo Vivo
+    - text: "2000000002941"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · Costa Clara
+    - text: "2000000005287"
+    - button "Marcar impresa"
+    - strong: Papa · La Familia
+    - text: "2000000003900"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · Mi Barrio
+    - text: "2000000008417"
+    - button "Marcar impresa"
+    - strong: Banana · El Trigal
+    - text: "2000000003689"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · Santa Lucía
+    - text: "2000000009537"
+    - button "Marcar impresa"
+    - strong: Pan francés · Santa Lucía
+    - text: "2000000009551"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · Las Sierras
+    - text: "2000000002286"
+    - button "Marcar impresa"
+    - strong: Muzzarella · La Estrella
+    - text: "2000000007625"
+    - button "Marcar impresa"
+    - strong: Pan francés · El Trigal
+    - text: "2000000003757"
+    - button "Marcar impresa"
+    - strong: Muzzarella · Del Valle
+    - text: "2000000006468"
+    - button "Marcar impresa"
+    - strong: Limón · La Huerta
+    - text: "2000000001395"
+    - button "Marcar impresa"
+    - strong: Queso sardo · El Molino
+    - text: "2000000001845"
+    - button "Marcar impresa"
+    - strong: Salame Milán · Villa del Sol
+    - text: "2000000005836"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · Nueva Mesa
+    - text: "2000000003283"
+    - button "Marcar impresa"
+    - strong: Batata · Tres Espigas
+    - text: "2000000005690"
+    - button "Marcar impresa"
+    - strong: Salame Milán · La Reserva
+    - text: "2000000008738"
+    - button "Marcar impresa"
+    - strong: Banana · Cosecha Nueva
+    - text: "2000000004846"
+    - button "Marcar impresa"
+    - strong: Queso tybo · Nueva Mesa
+    - text: "2000000003269"
+    - button "Marcar impresa"
+    - strong: Banana · La Huerta
+    - text: "2000000001364"
+    - button "Marcar impresa"
+    - strong: Tomate · La Familia
+    - text: "2000000003924"
+    - button "Marcar impresa"
+    - strong: Zanahoria · Tierra Clara
+    - text: "2000000008578"
+    - button "Marcar impresa"
+    - strong: Pan integral · Las Sierras
+    - text: "2000000002316"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · Mi Barrio
+    - text: "2000000008370"
+    - button "Marcar impresa"
+    - strong: Muzzarella · La Abuela
+    - text: "2000000004433"
+    - button "Marcar impresa"
+    - strong: Zapallo · Los Aromos
+    - text: "2000000000466"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · El Molino
+    - text: "2000000002033"
+    - button "Marcar impresa"
+    - strong: Muzzarella · Santa Ana
+    - text: "2000000004143"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · Los Aromos
+    - text: "2000000009001"
+    - button "Marcar impresa"
+    - strong: Pan integral · La Huerta
+    - text: "2000000001449"
+    - button "Marcar impresa"
+    - strong: Limón · El Trigal
+    - text: "2000000003719"
+    - button "Marcar impresa"
+    - strong: Pera · Tres Espigas
+    - text: "2000000005751"
+    - button "Marcar impresa"
+    - strong: Batata · El Trigal
+    - text: "2000000003665"
+    - button "Marcar impresa"
+    - strong: Zanahoria · La Pradera
+    - text: "2000000005096"
+    - button "Marcar impresa"
+    - strong: Zanahoria · Campo Vivo
+    - text: "2000000003061"
+    - button "Marcar impresa"
+    - strong: Cebolla · Sol del Sur
+    - text: "2000000001593"
+    - button "Marcar impresa"
+    - strong: Banana · Del Valle
+    - text: "2000000006581"
+    - button "Marcar impresa"
+    - strong: Bondiola · Nueva Mesa
+    - text: "2000000003245"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · El Molino
+    - text: "2000000001869"
+    - button "Marcar impresa"
+    - strong: Batata · La Huerta
+    - text: "2000000001340"
+    - button "Marcar impresa"
+    - strong: Queso azul · Don Pedro
+    - text: "2000000002439"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · Los Aromos
+    - text: "2000000009056"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · Mi Barrio
+    - text: "2000000008141"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · Del Valle
+    - text: "2000000006406"
+    - button "Marcar impresa"
+    - strong: Queso azul · Los Aromos
+    - text: "2000000009100"
+    - button "Marcar impresa"
+    - strong: Mortadela · La Estrella
+    - text: "2000000007588"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · Santa Ana
+    - text: "2000000004082"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · Buenos Sabores
+    - text: "2000000007854"
+    - button "Marcar impresa"
+    - strong: Salame Milán · Los Aromos
+    - text: "2000000000329"
+    - button "Marcar impresa"
+    - strong: Pera · Los Aromos
+    - text: "2000000000534"
+    - button "Marcar impresa"
+    - strong: Pan integral · El Ombú
+    - text: "2000000007243"
+    - button "Marcar impresa"
+    - strong: Pera · La Cumbre
+    - text: "2000000006338"
+    - button "Marcar impresa"
+    - strong: Queso sardo · Las Sierras
+    - text: "2000000002132"
+    - button "Marcar impresa"
+    - strong: Limón · Tres Espigas
+    - text: "2000000005744"
+    - button "Marcar impresa"
+    - strong: Queso tybo · Don Pedro
+    - text: "2000000002392"
+    - button "Marcar impresa"
+    - strong: Limón · Tierra Clara
+    - text: "2000000008646"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · Tierra Clara
+    - text: "2000000008424"
+    - button "Marcar impresa"
+    - strong: Pan integral · Del Valle
+    - text: "2000000006666"
+    - button "Marcar impresa"
+    - strong: Mandarina · Del Valle
+    - text: "2000000006604"
+    - button "Marcar impresa"
+    - strong: Manzana roja · Tres Espigas
+    - text: "2000000005706"
+    - button "Marcar impresa"
+    - strong: Pan francés · Buen Día
+    - text: "2000000001142"
+    - button "Marcar impresa"
+    - strong: Muzzarella · Don Pedro
+    - text: "2000000002408"
+    - button "Marcar impresa"
+    - strong: Cebolla · La Reserva
+    - text: "2000000008844"
+    - button "Marcar impresa"
+    - strong: Salame Milán · El Trigal
+    - text: "2000000003511"
+    - button "Marcar impresa"
+    - strong: Limón · Mi Barrio
+    - text: "2000000008356"
+    - button "Marcar impresa"
+    - strong: Pan integral · Buenos Sabores
+    - text: "2000000008110"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · La Cumbre
+    - text: "2000000006215"
+    - button "Marcar impresa"
+    - strong: Muzzarella · Rincón Sur
+    - text: "2000000007335"
+    - button "Marcar impresa"
+    - strong: Batata · Don Pedro
+    - text: "2000000002507"
+    - button "Marcar impresa"
+    - strong: Limón · Los Aromos
+    - text: "2000000009223"
+    - button "Marcar impresa"
+    - strong: Papa · Mi Barrio
+    - text: "2000000008257"
+    - button "Marcar impresa"
+    - strong: Queso sardo · Villa del Sol
+    - text: "2000000005904"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · Nueva Mesa
+    - text: "2000000003252"
+    - button "Marcar impresa"
+    - strong: Mortadela · Buenos Sabores
+    - text: "2000000007878"
+    - button "Marcar impresa"
+    - strong: Limón · Buen Día
+    - text: "2000000001104"
+    - button "Marcar impresa"
+    - strong: Salame Milán · Sol del Sur
+    - text: "2000000001487"
+    - button "Marcar impresa"
+    - strong: Zapallo · Buen Día
+    - text: "2000000001043"
+    - button "Marcar impresa"
+    - strong: Pera · Villa del Sol
+    - text: "2000000006048"
+    - button "Marcar impresa"
+    - strong: Papa · Del Valle
+    - text: "2000000006512"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · Santa Lucía
+    - text: "2000000009308"
+    - button "Marcar impresa"
+    - strong: Zanahoria · Los Aromos
+    - text: "2000000000459"
+    - button "Marcar impresa"
+    - strong: Manzana roja · Santa Lucía
+    - text: "2000000000770"
+    - button "Marcar impresa"
+    - strong: Mandarina · Santa Lucía
+    - text: "2000000009506"
+    - button "Marcar impresa"
+    - strong: Salame Milán · Santa Ana
+    - text: "2000000004099"
+    - button "Marcar impresa"
+    - strong: Muzzarella · La Colonia
+    - text: "2000000002699"
+    - button "Marcar impresa"
+    - strong: Muzzarella · Las Sierras
+    - text: "2000000002118"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · Buen Día
+    - text: "2000000000961"
+    - button "Marcar impresa"
+    - strong: Lechuga · La Pradera
+    - text: "2000000005195"
+    - button "Marcar impresa"
+    - strong: Bondiola · Cosecha Nueva
+    - text: "2000000004693"
+    - button "Marcar impresa"
+    - strong: Pan integral · Mi Barrio
+    - text: "2000000008400"
+    - button "Marcar impresa"
+    - strong: Batata · Del Valle
+    - text: "2000000006567"
+    - button "Marcar impresa"
+    - strong: Queso sardo · Del Valle
+    - text: "2000000006482"
+    - button "Marcar impresa"
+    - strong: Queso sardo · La Cumbre
+    - text: "2000000006192"
+    - button "Marcar impresa"
+    - strong: Cebolla · La Cumbre
+    - text: "2000000006239"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · Sol del Sur
+    - text: "2000000001548"
+    - button "Marcar impresa"
+    - strong: Queso tybo · El Trigal
+    - text: "2000000003559"
+    - button "Marcar impresa"
+    - strong: Queso azul · El Trigal
+    - text: "2000000003597"
+    - button "Marcar impresa"
+    - strong: Salame Milán · El Molino
+    - text: "2000000001777"
+    - button "Marcar impresa"
+    - strong: Salame Milán · Las Sierras
+    - text: "2000000002064"
+    - button "Marcar impresa"
+    - strong: Bondiola · Buen Día
+    - text: "2000000000923"
+    - button "Marcar impresa"
+    - strong: Morrón rojo
+    - text: "2000000000251"
+    - button "Marcar impresa"
+    - strong: Pera · Primavera
+    - text: "2000000006918"
+    - button "Marcar impresa"
+    - strong: Queso tybo · Las Sierras
+    - text: "2000000002101"
+    - button "Marcar impresa"
+    - strong: Banana · La Familia
+    - text: "2000000003979"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · El Trigal
+    - text: "2000000003771"
+    - button "Marcar impresa"
+    - strong: Zanahoria · Sol del Sur
+    - text: "2000000001616"
+    - button "Marcar impresa"
+    - strong: Salame Milán · Don Pedro
+    - text: "2000000002354"
+    - button "Marcar impresa"
+    - strong: Banana · La Pradera
+    - text: "2000000005133"
+    - button "Marcar impresa"
+    - strong: Queso tybo · Santa Lucía
+    - text: "2000000000657"
+    - button "Marcar impresa"
+    - strong: Naranja
+    - text: "2000000000213"
+    - button "Marcar impresa"
+    - strong: Cebolla · Tierra Clara
+    - text: "2000000008554"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · La Estrella
+    - text: "2000000007793"
+    - button "Marcar impresa"
+    - strong: Tomate · Campo Vivo
+    - text: "2000000003054"
+    - button "Marcar impresa"
+    - strong: Lechuga · Santa Lucía
+    - text: "2000000000848"
+    - button "Marcar impresa"
+    - strong: Zapallo · El Ombú
+    - text: "2000000007137"
+    - button "Marcar impresa"
+    - strong: Lechuga · La Colonia
+    - text: "2000000002873"
+    - button "Marcar impresa"
+    - strong: Zapallo · Mi Barrio
+    - text: "2000000008295"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · Nueva Mesa
+    - text: "2000000003313"
+    - button "Marcar impresa"
+    - strong: Zapallo · Nueva Mesa
+    - text: "2000000003368"
+    - button "Marcar impresa"
+    - strong: Cebolla · Del Valle
+    - text: "2000000006529"
+    - button "Marcar impresa"
+    - strong: Salame Milán · Santa Lucía
+    - text: "2000000000619"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · Villa del Sol
+    - text: "2000000006093"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · La Reserva
+    - text: "2000000008998"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · Santa Lucía
+    - text: "2000000009292"
+    - button "Marcar impresa"
+    - strong: Naranja · La Huerta
+    - text: "2000000001371"
+    - button "Marcar impresa"
+    - strong: Salame Milán · Nueva Mesa
+    - text: "2000000003221"
+    - button "Marcar impresa"
+    - strong: Salame Milán · Buen Día
+    - text: "2000000000909"
+    - button "Marcar impresa"
+    - strong: Queso azul · Tierra Clara
+    - text: "2000000008523"
+    - button "Marcar impresa"
+    - strong: Pan francés · Los Aromos
+    - text: "2000000009261"
+    - button "Marcar impresa"
+    - strong: Cebolla · Buen Día
+    - text: "2000000001012"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · La Cumbre
+    - text: "2000000006383"
+    - button "Marcar impresa"
+    - strong: Papa · Sol del Sur
+    - text: "2000000001586"
+    - button "Marcar impresa"
+    - strong: Mandarina · Buen Día
+    - text: "2000000001098"
+    - button "Marcar impresa"
+    - strong: Tomate · Santa Lucía
+    - text: "2000000009438"
+    - button "Marcar impresa"
+    - strong: Zanahoria · Don Pedro
+    - text: "2000000002484"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · Los Aromos
+    - text: "2000000000381"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · Tres Espigas
+    - text: "2000000005577"
+    - button "Marcar impresa"
+    - strong: Queso sardo · Rincón Sur
+    - text: "2000000007359"
+    - button "Marcar impresa"
+    - strong: Limón · El Ombú
+    - text: "2000000007199"
+    - button "Marcar impresa"
+    - strong: Tomate · Rincón Sur
+    - text: "2000000007403"
+    - button "Marcar impresa"
+    - strong: Pan francés · La Cumbre
+    - text: "2000000006369"
+    - button "Marcar impresa"
+    - strong: Mandarina · La Reserva
+    - text: "2000000008929"
+    - button "Marcar impresa"
+    - strong: Papa · Santa Lucía
+    - text: "2000000009414"
+    - button "Marcar impresa"
+    - strong: Manzana roja · Los Aromos
+    - text: "2000000000480"
+    - button "Marcar impresa"
+    - strong: Limón · Nueva Mesa
+    - text: "2000000003429"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · Los Aromos
+    - text: "2000000000541"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · La Colonia
+    - text: "2000000002675"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · Cosecha Nueva
+    - text: "2000000004655"
+    - button "Marcar impresa"
+    - strong: Limón · La Pradera
+    - text: "2000000005164"
+    - button "Marcar impresa"
+    - strong: Banana · Buenos Sabores
+    - text: "2000000008035"
+    - button "Marcar impresa"
+    - strong: Queso tybo · Tierra Clara
+    - text: "2000000008486"
+    - button "Marcar impresa"
+    - strong: Lechuga
+    - text: "2000000000268"
+    - button "Marcar impresa"
+    - strong: Banana · Buen Día
+    - text: "2000000001074"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · La Familia
+    - text: "2000000003788"
+    - button "Marcar impresa"
+    - strong: Naranja · Mi Barrio
+    - text: "2000000008332"
+    - button "Marcar impresa"
+    - strong: Bondiola · La Familia
+    - text: "2000000003825"
+    - button "Marcar impresa"
+    - strong: Pera · La Colonia
+    - text: "2000000002859"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · Santa Ana
+    - text: "2000000004129"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · Del Valle
+    - text: "2000000006390"
+    - button "Marcar impresa"
+    - strong: Mortadela · Los Aromos
+    - text: "2000000009032"
+    - button "Marcar impresa"
+    - strong: Pan integral · Santa Lucía
+    - text: "2000000000862"
+    - button "Marcar impresa"
+    - strong: Mortadela
+    - text: "2000000000046"
+    - button "Marcar impresa"
+    - strong: Mandarina · Cosecha Nueva
+    - text: "2000000004860"
+    - button "Marcar impresa"
+    - strong: Zanahoria · Los Aromos
+    - text: "2000000009155"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · Mi Barrio
+    - text: "2000000008240"
+    - button "Marcar impresa"
+    - strong: Queso tybo · La Pradera
+    - text: "2000000005003"
+    - button "Marcar impresa"
+    - strong: Batata · Sol del Sur
+    - text: "2000000001630"
+    - button "Marcar impresa"
+    - strong: Naranja · Los Aromos
+    - text: "2000000000503"
+    - button "Marcar impresa"
+    - strong: Papa · La Colonia
+    - text: "2000000002743"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · La Familia
+    - text: "2000000003832"
+    - button "Marcar impresa"
+    - strong: Salame Milán · Campo Vivo
+    - text: "2000000002934"
+    - button "Marcar impresa"
+    - strong: Queso tybo · Del Valle
+    - text: "2000000006451"
+    - button "Marcar impresa"
+    - strong: Queso azul · Buenos Sabores
+    - text: "2000000007946"
+    - button "Marcar impresa"
+    - strong: Pera · Sol del Sur
+    - text: "2000000001692"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · Buenos Sabores
+    - text: "2000000008080"
+    - button "Marcar impresa"
+    - strong: Cebolla · Las Sierras
+    - text: "2000000002170"
+    - button "Marcar impresa"
+    - strong: Pan integral · La Estrella
+    - text: "2000000007823"
+    - button "Marcar impresa"
+    - strong: Cebolla
+    - text: "2000000000145"
+    - button "Marcar impresa"
+    - strong: Lechuga · Los Aromos
+    - text: "2000000009254"
+    - button "Marcar impresa"
+    - strong: Manzana roja · Santa Lucía
+    - text: "2000000009476"
+    - button "Marcar impresa"
+    - strong: Lechuga · Santa Lucía
+    - text: "2000000009544"
+    - button "Marcar impresa"
+    - strong: Pera · Mi Barrio
+    - text: "2000000008363"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · Cosecha Nueva
+    - text: "2000000004891"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · Tierra Clara
+    - text: "2000000008509"
+    - button "Marcar impresa"
+    - strong: Bondiola · Santa Lucía
+    - text: "2000000000633"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · Santa Ana
+    - text: "2000000004075"
+    - button "Marcar impresa"
+    - strong: Cebolla · Cosecha Nueva
+    - text: "2000000004785"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · Santa Lucía
+    - text: "2000000000596"
+    - button "Marcar impresa"
+    - strong: Cebolla · Buenos Sabores
+    - text: "2000000007977"
+    - button "Marcar impresa"
+    - strong: Muzzarella · Villa del Sol
+    - text: "2000000005881"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · Mi Barrio
+    - text: "2000000008189"
+    - button "Marcar impresa"
+    - strong: Manzana roja · Cosecha Nueva
+    - text: "2000000004839"
+    - button "Marcar impresa"
+    - strong: Pan francés · Villa del Sol
+    - text: "2000000006079"
+    - button "Marcar impresa"
+    - strong: Tomate · Buen Día
+    - text: "2000000001029"
+    - button "Marcar impresa"
+    - strong: Batata · La Cumbre
+    - text: "2000000006277"
+    - button "Marcar impresa"
+    - strong: Papa · La Pradera
+    - text: "2000000005065"
+    - button "Marcar impresa"
+    - strong: Banana · Tierra Clara
+    - text: "2000000008615"
+    - button "Marcar impresa"
+    - strong: Mortadela · El Ombú
+    - text: "2000000007007"
+    - button "Marcar impresa"
+    - strong: Queso sardo · La Reserva
+    - text: "2000000008806"
+    - button "Marcar impresa"
+    - strong: Queso tybo · Santa Ana
+    - text: "2000000004136"
+    - button "Marcar impresa"
+    - strong: Papa · Buenos Sabores
+    - text: "2000000007960"
+    - button "Marcar impresa"
+    - strong: Naranja · La Abuela
+    - text: "2000000004563"
+    - button "Marcar impresa"
+    - strong: Papa · La Cumbre
+    - text: "2000000006222"
+    - button "Marcar impresa"
+    - strong: Lechuga · Del Valle
+    - text: "2000000006642"
+    - button "Marcar impresa"
+    - strong: Salame Milán · Cosecha Nueva
+    - text: "2000000004679"
+    - button "Marcar impresa"
+    - strong: Mortadela · La Pradera
+    - text: "2000000004976"
+    - button "Marcar impresa"
+    - strong: Mandarina · Santa Ana
+    - text: "2000000004280"
+    - button "Marcar impresa"
+    - strong: Manzana roja · Sol del Sur
+    - text: "2000000001647"
+    - button "Marcar impresa"
+    - strong: Zanahoria · Las Sierras
+    - text: "2000000002194"
+    - button "Marcar impresa"
+    - strong: Pan francés · Las Sierras
+    - text: "2000000002309"
+    - button "Marcar impresa"
+    - strong: Tomate · La Cumbre
+    - text: "2000000006246"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · Primavera
+    - text: "2000000006796"
+    - button "Marcar impresa"
+    - strong: Pan integral · Santa Ana
+    - text: "2000000004341"
+    - button "Marcar impresa"
+    - strong: Pan integral · El Trigal
+    - text: "2000000003764"
+    - button "Marcar impresa"
+    - strong: Lechuga · Buenos Sabores
+    - text: "2000000008097"
+    - button "Marcar impresa"
+    - strong: Manzana roja · La Estrella
+    - text: "2000000007731"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · Del Valle
+    - text: "2000000006444"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · Campo Vivo
+    - text: "2000000002965"
+    - button "Marcar impresa"
+    - strong: Batata · Cosecha Nueva
+    - text: "2000000004822"
+    - button "Marcar impresa"
+    - strong: Naranja · Villa del Sol
+    - text: "2000000006017"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · El Trigal
+    - text: "2000000003603"
+    - button "Marcar impresa"
+    - strong: Zapallo · Tierra Clara
+    - text: "2000000008585"
+    - button "Marcar impresa"
+    - strong: Limón · Primavera
+    - text: "2000000006901"
+    - button "Marcar impresa"
+    - strong: Papa · Costa Clara
+    - text: "2000000005355"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · El Molino
+    - text: "2000000001807"
+    - button "Marcar impresa"
+    - strong: Queso tybo · La Familia
+    - text: "2000000003849"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · La Familia
+    - text: "2000000004068"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · La Abuela
+    - text: "2000000004471"
+    - button "Marcar impresa"
+    - strong: Queso cremoso
+    - text: "2000000000060"
+    - button "Marcar impresa"
+    - strong: Papa · Buen Día
+    - text: "2000000001005"
+    - button "Marcar impresa"
+    - strong: Mandarina · La Pradera
+    - text: "2000000005157"
+    - button "Marcar impresa"
+    - strong: Mandarina · El Ombú
+    - text: "2000000007182"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · Rincón Sur
+    - text: "2000000007311"
+    - button "Marcar impresa"
+    - strong: Papa · Tres Espigas
+    - text: "2000000005645"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · Los Aromos
+    - text: "2000000000411"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · La Huerta
+    - text: "2000000001180"
+    - button "Marcar impresa"
+    - strong: Cebolla · La Colonia
+    - text: "2000000002750"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · Los Aromos
+    - text: "2000000009247"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · La Pradera
+    - text: "2000000005188"
+    - button "Marcar impresa"
+    - strong: Queso sardo · Santa Lucía
+    - text: "2000000009384"
+    - button "Marcar impresa"
+    - strong: Zapallo · La Familia
+    - text: "2000000003948"
+    - button "Marcar impresa"
+    - strong: Mandarina · Santa Lucía
+    - text: "2000000000800"
+    - button "Marcar impresa"
+    - strong: Batata · La Abuela
+    - text: "2000000004532"
+    - button "Marcar impresa"
+    - strong: Muzzarella · Tres Espigas
+    - text: "2000000005591"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · Tierra Clara
+    - text: "2000000008660"
+    - button "Marcar impresa"
+    - strong: Pera · La Pradera
+    - text: "2000000005171"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · La Abuela
+    - text: "2000000004440"
+    - button "Marcar impresa"
+    - strong: Batata · Santa Ana
+    - text: "2000000004242"
+    - button "Marcar impresa"
+    - strong: Salame Milán · Tierra Clara
+    - text: "2000000008448"
+    - button "Marcar impresa"
+    - strong: Batata · Mi Barrio
+    - text: "2000000008301"
+    - button "Marcar impresa"
+    - strong: Pan francés · Costa Clara
+    - text: "2000000005492"
+    - button "Marcar impresa"
+    - strong: Zapallo · Del Valle
+    - text: "2000000006550"
+    - button "Marcar impresa"
+    - strong: Zanahoria · La Estrella
+    - text: "2000000007700"
+    - button "Marcar impresa"
+    - strong: Pan integral · Tres Espigas
+    - text: "2000000005799"
+    - button "Marcar impresa"
+    - strong: Jamón cocido
+    - text: "2000000000015"
+    - button "Marcar impresa"
+    - strong: Banana · Santa Ana
+    - text: "2000000004266"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · Sol del Sur
+    - text: "2000000001517"
+    - button "Marcar impresa"
+    - strong: Batata · La Pradera
+    - text: "2000000005119"
+    - button "Marcar impresa"
+    - strong: Manzana roja · El Trigal
+    - text: "2000000003672"
+    - button "Marcar impresa"
+    - strong: Salame Milán · La Estrella
+    - text: "2000000007571"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · Mi Barrio
+    - text: "2000000008134"
+    - button "Marcar impresa"
+    - strong: Cebolla · Costa Clara
+    - text: "2000000005362"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · La Abuela
+    - text: "2000000004419"
+    - button "Marcar impresa"
+    - strong: Naranja · Sol del Sur
+    - text: "2000000001661"
+    - button "Marcar impresa"
+    - strong: Bondiola · Sol del Sur
+    - text: "2000000001500"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · Primavera
+    - text: "2000000006925"
+    - button "Marcar impresa"
+    - strong: Cebolla · Santa Lucía
+    - text: "2000000000725"
+    - button "Marcar impresa"
+    - strong: Salame Milán · El Ombú
+    - text: "2000000006994"
+    - button "Marcar impresa"
+    - strong: Tomate · Nueva Mesa
+    - text: "2000000003344"
+    - button "Marcar impresa"
+    - strong: Mandarina · La Colonia
+    - text: "2000000002835"
+    - button "Marcar impresa"
+    - strong: Lechuga · Nueva Mesa
+    - text: "2000000003450"
+    - button "Marcar impresa"
+    - strong: Muzzarella · La Pradera
+    - text: "2000000005010"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · Sol del Sur
+    - text: "2000000001708"
+    - button "Marcar impresa"
+    - strong: Pera · Cosecha Nueva
+    - text: "2000000004884"
+    - button "Marcar impresa"
+    - strong: Manzana roja · La Colonia
+    - text: "2000000002804"
+    - button "Marcar impresa"
+    - strong: Zapallo · Costa Clara
+    - text: "2000000005393"
+    - button "Marcar impresa"
+    - strong: Bondiola · Buenos Sabores
+    - text: "2000000007885"
+    - button "Marcar impresa"
+    - strong: Queso tybo · Campo Vivo
+    - text: "2000000002972"
+    - button "Marcar impresa"
+    - strong: Banana · Campo Vivo
+    - text: "2000000003108"
+    - button "Marcar impresa"
+    - strong: Zanahoria · La Cumbre
+    - text: "2000000006253"
+    - button "Marcar impresa"
+    - strong: Queso azul · Del Valle
+    - text: "2000000006499"
+    - button "Marcar impresa"
+    - strong: Mandarina · La Huerta
+    - text: "2000000001388"
+    - button "Marcar impresa"
+    - strong: Mortadela · El Trigal
+    - text: "2000000003528"
+    - button "Marcar impresa"
+    - strong: Cebolla · Santa Ana
+    - text: "2000000004204"
+    - button "Marcar impresa"
+    - strong: Muzzarella · Nueva Mesa
+    - text: "2000000003276"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · Nueva Mesa
+    - text: "2000000003481"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · La Colonia
+    - text: "2000000002637"
+    - button "Marcar impresa"
+    - strong: Lechuga · Tres Espigas
+    - text: "2000000005775"
+    - button "Marcar impresa"
+    - strong: Pan integral · La Reserva
+    - text: "2000000008981"
+    - button "Marcar impresa"
+    - strong: Batata · La Familia
+    - text: "2000000003955"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · La Abuela
+    - text: "2000000004648"
+    - button "Marcar impresa"
+    - strong: Manzana roja · Tierra Clara
+    - text: "2000000008608"
+    - button "Marcar impresa"
+    - strong: Cebolla · Los Aromos
+    - text: "2000000000435"
+    - button "Marcar impresa"
+    - strong: Mandarina · La Familia
+    - text: "2000000003993"
+    - button "Marcar impresa"
+    - strong: Banana · Tres Espigas
+    - text: "2000000005713"
+    - button "Marcar impresa"
+    - strong: Tomate · Buenos Sabores
+    - text: "2000000007984"
+    - button "Marcar impresa"
+    - strong: Manzana roja · Buenos Sabores
+    - text: "2000000008028"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · Costa Clara
+    - text: "2000000005317"
+    - button "Marcar impresa"
+    - strong: Paleta cocida
+    - text: "2000000000022"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo
+    - text: "2000000000299"
+    - button "Marcar impresa"
+    - strong: Naranja · Santa Lucía
+    - text: "2000000009490"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · La Huerta
+    - text: "2000000001289"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · Sol del Sur
+    - text: "2000000001579"
+    - button "Marcar impresa"
+    - strong: Zanahoria · Cosecha Nueva
+    - text: "2000000004808"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · Santa Lucía
+    - text: "2000000009377"
+    - button "Marcar impresa"
+    - strong: Pan integral · Primavera
+    - text: "2000000006956"
+    - button "Marcar impresa"
+    - strong: Batata · Los Aromos
+    - text: "2000000009179"
+    - button "Marcar impresa"
+    - strong: Salame Milán · Del Valle
+    - text: "2000000006413"
+    - button "Marcar impresa"
+    - strong: Papa · La Abuela
+    - text: "2000000004488"
+    - button "Marcar impresa"
+    - strong: Bondiola · Primavera
+    - text: "2000000006727"
+    - button "Marcar impresa"
+    - strong: Pan integral · La Familia
+    - text: "2000000004051"
+    - button "Marcar impresa"
+    - strong: Zapallo · La Colonia
+    - text: "2000000002781"
+    - button "Marcar impresa"
+    - strong: Mortadela · Del Valle
+    - text: "2000000006420"
+    - button "Marcar impresa"
+    - strong: Queso azul · La Cumbre
+    - text: "2000000006208"
+    - button "Marcar impresa"
+    - strong: Queso sardo · Don Pedro
+    - text: "2000000002422"
+    - button "Marcar impresa"
+    - strong: Batata · Campo Vivo
+    - text: "2000000003085"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · Las Sierras
+    - text: "2000000002323"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · La Reserva
+    - text: "2000000008769"
+    - button "Marcar impresa"
+    - strong: Muzzarella · Buenos Sabores
+    - text: "2000000007915"
+    - button "Marcar impresa"
+    - strong: Tomate · Don Pedro
+    - text: "2000000002477"
+    - button "Marcar impresa"
+    - strong: Manzana roja · Villa del Sol
+    - text: "2000000005997"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · El Trigal
+    - text: "2000000003504"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · El Trigal
+    - text: "2000000003573"
+    - button "Marcar impresa"
+    - strong: Zapallo · Santa Ana
+    - text: "2000000004235"
+    - button "Marcar impresa"
+    - strong: Queso azul · La Pradera
+    - text: "2000000005041"
+    - button "Marcar impresa"
+    - strong: Lechuga · La Reserva
+    - text: "2000000008967"
+    - button "Marcar impresa"
+    - strong: Queso azul · La Huerta
+    - text: "2000000001272"
+    - button "Marcar impresa"
+    - strong: Cebolla · Villa del Sol
+    - text: "2000000005942"
+    - button "Marcar impresa"
+    - strong: Pan francés · El Ombú
+    - text: "2000000007236"
+    - button "Marcar impresa"
+    - strong: Banana · Las Sierras
+    - text: "2000000002231"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · La Huerta
+    - text: "2000000001173"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · Sol del Sur
+    - text: "2000000001463"
+    - button "Marcar impresa"
+    - strong: Zanahoria · Buenos Sabores
+    - text: "2000000007991"
+    - button "Marcar impresa"
+    - strong: Salame Milán · Tres Espigas
+    - text: "2000000005546"
+    - button "Marcar impresa"
+    - strong: Limón · Campo Vivo
+    - text: "2000000003139"
+    - button "Marcar impresa"
+    - strong: Naranja · Costa Clara
+    - text: "2000000005430"
+    - button "Marcar impresa"
+    - strong: Cebolla · Los Aromos
+    - text: "2000000009131"
+    - button "Marcar impresa"
+    - strong: Batata · El Molino
+    - text: "2000000001920"
+    - button "Marcar impresa"
+    - strong: Lechuga · Primavera
+    - text: "2000000006932"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · La Abuela
+    - text: "2000000004600"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · Buen Día
+    - text: "2000000000930"
+    - button "Marcar impresa"
+    - strong: Papa · El Trigal
+    - text: "2000000003610"
+    - button "Marcar impresa"
+    - strong: Bondiola · Rincón Sur
+    - text: "2000000007304"
+    - button "Marcar impresa"
+    - strong: Queso azul · La Abuela
+    - text: "2000000004464"
+    - button "Marcar impresa"
+    - strong: Zanahoria · Nueva Mesa
+    - text: "2000000003351"
+    - button "Marcar impresa"
+    - strong: Pan francés · La Pradera
+    - text: "2000000005201"
+    - button "Marcar impresa"
+    - strong: Banana · La Cumbre
+    - text: "2000000006291"
+    - button "Marcar impresa"
+    - strong: Zapallo · Las Sierras
+    - text: "2000000002200"
+    - button "Marcar impresa"
+    - strong: Papa · Rincón Sur
+    - text: "2000000007380"
+    - button "Marcar impresa"
+    - strong: Pera · Santa Lucía
+    - text: "2000000009520"
+    - button "Marcar impresa"
+    - strong: Pera · Rincón Sur
+    - text: "2000000007496"
+    - button "Marcar impresa"
+    - strong: Tomate · Las Sierras
+    - text: "2000000002187"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · El Ombú
+    - text: "2000000006970"
+    - button "Marcar impresa"
+    - strong: Limón · Del Valle
+    - text: "2000000006611"
+    - button "Marcar impresa"
+    - strong: Zanahoria · El Ombú
+    - text: "2000000007120"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · La Reserva
+    - text: "2000000008950"
+    - button "Marcar impresa"
+    - strong: Pan integral · Don Pedro
+    - text: "2000000002606"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · Santa Ana
+    - text: "2000000004150"
+    - button "Marcar impresa"
+    - strong: Papa · Campo Vivo
+    - text: "2000000003030"
+    - button "Marcar impresa"
+    - strong: Manzana roja · Campo Vivo
+    - text: "2000000003092"
+    - button "Marcar impresa"
+    - strong: Manzana roja · Las Sierras
+    - text: "2000000002224"
+    - button "Marcar impresa"
+    - strong: Zapallo · Villa del Sol
+    - text: "2000000005973"
+    - button "Marcar impresa"
+    - strong: Banana · Villa del Sol
+    - text: "2000000006000"
+    - button "Marcar impresa"
+    - strong: Queso tybo · Mi Barrio
+    - text: "2000000008196"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · Villa del Sol
+    - text: "2000000005898"
+    - button "Marcar impresa"
+    - strong: Banana · Mi Barrio
+    - text: "2000000008325"
+    - button "Marcar impresa"
+    - strong: Zapallo · La Pradera
+    - text: "2000000005102"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · Santa Ana
+    - text: "2000000004181"
+    - button "Marcar impresa"
+    - strong: Salame Milán
+    - text: "2000000000039"
+    - button "Marcar impresa"
+    - strong: Manzana roja · Rincón Sur
+    - text: "2000000007441"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · Rincón Sur
+    - text: "2000000007342"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · El Molino
+    - text: "2000000001760"
+    - button "Marcar impresa"
+    - strong: Queso sardo · Costa Clara
+    - text: "2000000005324"
+    - button "Marcar impresa"
+    - strong: Tomate · La Colonia
+    - text: "2000000002767"
+    - button "Marcar impresa"
+    - strong: Queso azul · Buen Día
+    - text: "2000000000985"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · Costa Clara
+    - text: "2000000005232"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · Cosecha Nueva
+    - text: "2000000004662"
+    - button "Marcar impresa"
+    - strong: Muzzarella · Tierra Clara
+    - text: "2000000008493"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · Primavera
+    - text: "2000000006680"
+    - button "Marcar impresa"
+    - strong: Mandarina · Rincón Sur
+    - text: "2000000007472"
+    - button "Marcar impresa"
+    - strong: Batata · La Colonia
+    - text: "2000000002798"
+    - button "Marcar impresa"
+    - strong: Muzzarella · Cosecha Nueva
+    - text: "2000000004723"
+    - button "Marcar impresa"
+    - strong: Manzana roja · La Pradera
+    - text: "2000000005126"
+    - button "Marcar impresa"
+    - strong: Limón · Don Pedro
+    - text: "2000000002552"
+    - button "Marcar impresa"
+    - strong: Naranja · Campo Vivo
+    - text: "2000000003115"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · Santa Lucía
+    - text: "2000000000701"
+    - button "Marcar impresa"
+    - strong: Lechuga · Buen Día
+    - text: "2000000001135"
+    - button "Marcar impresa"
+    - strong: Queso azul · La Reserva
+    - text: "2000000008813"
+    - button "Marcar impresa"
+    - strong: Muzzarella · Primavera
+    - text: "2000000006758"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · La Cumbre
+    - text: "2000000006185"
+    - button "Marcar impresa"
+    - strong: Bondiola · Costa Clara
+    - text: "2000000005270"
+    - button "Marcar impresa"
+    - strong: Pera · Santa Lucía
+    - text: "2000000000824"
+    - button "Marcar impresa"
+    - strong: Banana · Don Pedro
+    - text: "2000000002521"
+    - button "Marcar impresa"
+    - strong: Lechuga · Tierra Clara
+    - text: "2000000008677"
+    - button "Marcar impresa"
+    - strong: Mortadela · El Molino
+    - text: "2000000001784"
+    - button "Marcar impresa"
+    - strong: Mortadela · Villa del Sol
+    - text: "2000000005843"
+    - button "Marcar impresa"
+    - strong: Queso sardo · La Estrella
+    - text: "2000000007649"
+    - button "Marcar impresa"
+    - strong: Muzzarella · La Cumbre
+    - text: "2000000006178"
+    - button "Marcar impresa"
+    - strong: Batata
+    - text: "2000000000183"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · La Pradera
+    - text: "2000000004990"
+    - button "Marcar impresa"
+    - strong: Manzana roja · Mi Barrio
+    - text: "2000000008318"
+    - button "Marcar impresa"
+    - strong: Queso tybo · Rincón Sur
+    - text: "2000000007328"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · Santa Lucía
+    - text: "2000000009407"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · Buen Día
+    - text: "2000000000992"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · Villa del Sol
+    - text: "2000000005812"
+    - button "Marcar impresa"
+    - strong: Cebolla · Nueva Mesa
+    - text: "2000000003337"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · Costa Clara
+    - text: "2000000005515"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · Buen Día
+    - text: "2000000001128"
+    - button "Marcar impresa"
+    - strong: Lechuga · Campo Vivo
+    - text: "2000000003160"
+    - button "Marcar impresa"
+    - strong: Lechuga · Sol del Sur
+    - text: "2000000001715"
+    - button "Marcar impresa"
+    - strong: Pan integral · La Cumbre
+    - text: "2000000006376"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · El Ombú
+    - text: "2000000007212"
+    - button "Marcar impresa"
+    - strong: Manzana roja · Costa Clara
+    - text: "2000000005416"
+    - button "Marcar impresa"
+    - strong: Pan francés · La Reserva
+    - text: "2000000008974"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · La Cumbre
+    - text: "2000000006116"
+    - button "Marcar impresa"
+    - strong: Zanahoria · Buen Día
+    - text: "2000000001036"
+    - button "Marcar impresa"
+    - strong: Bondiola · Campo Vivo
+    - text: "2000000002958"
+    - button "Marcar impresa"
+    - strong: Limón · Cosecha Nueva
+    - text: "2000000004877"
+    - button "Marcar impresa"
+    - strong: Papa · Santa Lucía
+    - text: "2000000000718"
+    - button "Marcar impresa"
+    - strong: Pera · La Huerta
+    - text: "2000000001401"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · Don Pedro
+    - text: "2000000002347"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · El Trigal
+    - text: "2000000003733"
+    - button "Marcar impresa"
+    - strong: Queso tybo · Sol del Sur
+    - text: "2000000001524"
+    - button "Marcar impresa"
+    - strong: Limón · Santa Lucía
+    - text: "2000000009513"
+    - button "Marcar impresa"
+    - strong: Queso tybo · La Abuela
+    - text: "2000000004426"
+    - button "Marcar impresa"
+    - strong: Banana · El Molino
+    - text: "2000000001944"
+    - button "Marcar impresa"
+    - strong: Queso azul · Cosecha Nueva
+    - text: "2000000004754"
+    - button "Marcar impresa"
+    - strong: Queso tybo · El Ombú
+    - text: "2000000007038"
+    - button "Marcar impresa"
+    - strong: Queso tybo · Buenos Sabores
+    - text: "2000000007908"
+    - button "Marcar impresa"
+    - strong: Naranja · Tres Espigas
+    - text: "2000000005720"
+    - button "Marcar impresa"
+    - strong: Manzana roja · La Abuela
+    - text: "2000000004549"
+    - button "Marcar impresa"
+    - strong: Batata · Villa del Sol
+    - text: "2000000005980"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · El Molino
+    - text: "2000000001753"
+    - button "Marcar impresa"
+    - strong: Banana · La Estrella
+    - text: "2000000007748"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · Villa del Sol
+    - text: "2000000006055"
+    - button "Marcar impresa"
+    - strong: Tomate · La Reserva
+    - text: "2000000008851"
+    - button "Marcar impresa"
+    - strong: Salame Milán · La Huerta
+    - text: "2000000001197"
+    - button "Marcar impresa"
+    - strong: Batata · La Estrella
+    - text: "2000000007724"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · Rincón Sur
+    - text: "2000000007373"
+    - button "Marcar impresa"
+    - strong: Muzzarella · Costa Clara
+    - text: "2000000005300"
+    - button "Marcar impresa"
+    - strong: Mandarina · Primavera
+    - text: "2000000006895"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · La Familia
+    - text: "2000000003894"
+    - button "Marcar impresa"
+    - strong: Tomate · Santa Lucía
+    - text: "2000000000732"
+    - button "Marcar impresa"
+    - strong: Mortadela · Cosecha Nueva
+    - text: "2000000004686"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · Tierra Clara
+    - text: "2000000008479"
+    - button "Marcar impresa"
+    - strong: Papa · Nueva Mesa
+    - text: "2000000003320"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · El Trigal
+    - text: "2000000003498"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · La Reserva
+    - text: "2000000008790"
+    - button "Marcar impresa"
+    - strong: Banana · Santa Lucía
+    - text: "2000000009483"
+    - button "Marcar impresa"
+    - strong: Batata · Nueva Mesa
+    - text: "2000000003375"
+    - button "Marcar impresa"
+    - strong: Pera · Don Pedro
+    - text: "2000000002569"
+    - button "Marcar impresa"
+    - strong: Mandarina · La Estrella
+    - text: "2000000007762"
+    - button "Marcar impresa"
+    - strong: Cebolla · Primavera
+    - text: "2000000006819"
+    - button "Marcar impresa"
+    - strong: Pan francés · Primavera
+    - text: "2000000006949"
+    - button "Marcar impresa"
+    - strong: Muzzarella · La Familia
+    - text: "2000000003856"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · El Ombú
+    - text: "2000000007021"
+    - button "Marcar impresa"
+    - strong: Pan francés · La Abuela
+    - text: "2000000004624"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · Sol del Sur
+    - text: "2000000001470"
+    - button "Marcar impresa"
+    - strong: Queso tybo · Primavera
+    - text: "2000000006741"
+    - button "Marcar impresa"
+    - strong: Manzana roja · Santa Ana
+    - text: "2000000004259"
+    - button "Marcar impresa"
+    - strong: Zapallo · Los Aromos
+    - text: "2000000009162"
+    - button "Marcar impresa"
+    - strong: Pan francés · Campo Vivo
+    - text: "2000000003177"
+    - button "Marcar impresa"
+    - strong: Queso sardo · Santa Lucía
+    - text: "2000000000688"
+    - button "Marcar impresa"
+    - strong: Papa · Cosecha Nueva
+    - text: "2000000004778"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · Sol del Sur
+    - text: "2000000001746"
+    - button "Marcar impresa"
+    - strong: Pan integral · Rincón Sur
+    - text: "2000000007533"
+    - button "Marcar impresa"
+    - strong: Mortadela · Nueva Mesa
+    - text: "2000000003238"
+    - button "Marcar impresa"
+    - strong: Papa · La Reserva
+    - text: "2000000008837"
+    - button "Marcar impresa"
+    - strong: Pan francés · La Huerta
+    - text: "2000000001432"
+    - button "Marcar impresa"
+    - strong: Queso sardo · Santa Ana
+    - text: "2000000004167"
+    - button "Marcar impresa"
+    - strong: Salame Milán · La Cumbre
+    - text: "2000000006123"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · Las Sierras
+    - text: "2000000002095"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · Rincón Sur
+    - text: "2000000007267"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · La Estrella
+    - text: "2000000007564"
+    - button "Marcar impresa"
+    - strong: Mandarina · Tierra Clara
+    - text: "2000000008639"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · Tres Espigas
+    - text: "2000000005805"
+    - button "Marcar impresa"
+    - strong: Queso sardo · El Trigal
+    - text: "2000000003580"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · Tres Espigas
+    - text: "2000000005638"
+    - button "Marcar impresa"
+    - strong: Mandarina · Don Pedro
+    - text: "2000000002545"
+    - button "Marcar impresa"
+    - strong: Mortadela · La Reserva
+    - text: "2000000008745"
+    - button "Marcar impresa"
+    - strong: Zapallo · Tres Espigas
+    - text: "2000000005683"
+    - button "Marcar impresa"
+    - strong: Lechuga · La Estrella
+    - text: "2000000007809"
+    - button "Marcar impresa"
+    - strong: Pera · La Estrella
+    - text: "2000000007786"
+    - button "Marcar impresa"
+    - strong: Pan integral · Tierra Clara
+    - text: "2000000008691"
+    - button "Marcar impresa"
+    - strong: Mandarina · Villa del Sol
+    - text: "2000000006024"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · Buen Día
+    - text: "2000000000893"
+    - button "Marcar impresa"
+    - strong: Pan integral · Los Aromos
+    - text: "2000000009278"
+    - button "Marcar impresa"
+    - strong: Limón · Sol del Sur
+    - text: "2000000001685"
+    - button "Marcar impresa"
+    - strong: Mortadela · La Colonia
+    - text: "2000000002651"
+    - button "Marcar impresa"
+    - strong: Pan integral · Buen Día
+    - text: "2000000001159"
+    - button "Marcar impresa"
+    - strong: Naranja · Cosecha Nueva
+    - text: "2000000004853"
+    - button "Marcar impresa"
+    - strong: Batata · Las Sierras
+    - text: "2000000002217"
+    - button "Marcar impresa"
+    - strong: Pan integral · Sol del Sur
+    - text: "2000000001739"
+    - button "Marcar impresa"
+    - strong: Pan francés · Buenos Sabores
+    - text: "2000000008103"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · El Ombú
+    - text: "2000000006987"
+    - button "Marcar impresa"
+    - strong: Muzzarella
+    - text: "2000000000084"
+    - button "Marcar impresa"
+    - strong: Pan francés · Sol del Sur
+    - text: "2000000001722"
+    - button "Marcar impresa"
+    - strong: Salame Milán · Santa Lucía
+    - text: "2000000009315"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · La Estrella
+    - text: "2000000007632"
+    - button "Marcar impresa"
+    - strong: Zapallo · El Trigal
+    - text: "2000000003658"
+    - button "Marcar impresa"
+    - strong: Papa · Santa Ana
+    - text: "2000000004198"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · La Pradera
+    - text: "2000000004952"
+    - button "Marcar impresa"
+    - strong: Mortadela · Don Pedro
+    - text: "2000000002361"
+    - button "Marcar impresa"
+    - strong: Tomate · Mi Barrio
+    - text: "2000000008271"
+    - button "Marcar impresa"
+    - strong: Cebolla · Rincón Sur
+    - text: "2000000007397"
+    - button "Marcar impresa"
+    - strong: Salame Milán · La Pradera
+    - text: "2000000004969"
+    - button "Marcar impresa"
+    - strong: Mandarina · Campo Vivo
+    - text: "2000000003122"
+    - button "Marcar impresa"
+    - strong: Zapallo · Buenos Sabores
+    - text: "2000000008004"
+    - button "Marcar impresa"
+    - strong: Mortadela · Mi Barrio
+    - text: "2000000008165"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · La Familia
+    - text: "2000000003795"
+    - button "Marcar impresa"
+    - strong: Tomate · La Estrella
+    - text: "2000000007694"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · La Cumbre
+    - text: "2000000006109"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · Buenos Sabores
+    - text: "2000000007847"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · Santa Lucía
+    - text: "2000000000640"
+    - button "Marcar impresa"
+    - strong: Lechuga · Santa Ana
+    - text: "2000000004327"
+    - button "Marcar impresa"
+    - strong: Lechuga · La Huerta
+    - text: "2000000001425"
+    - button "Marcar impresa"
+    - strong: Pan francés
+    - text: "2000000000275"
+    - button "Marcar impresa"
+    - strong: Papa · Don Pedro
+    - text: "2000000002453"
+    - button "Marcar impresa"
+    - strong: Zanahoria · Rincón Sur
+    - text: "2000000007410"
+    - button "Marcar impresa"
+    - strong: Naranja · La Estrella
+    - text: "2000000007755"
+    - button "Marcar impresa"
+    - strong: Salame Milán · Buenos Sabores
+    - text: "2000000007861"
+    - button "Marcar impresa"
+    - strong: Pera · Las Sierras
+    - text: "2000000002279"
+    - button "Marcar impresa"
+    - strong: Limón · Los Aromos
+    - text: "2000000000527"
+    - button "Marcar impresa"
+    - strong: Pan francés · Santa Ana
+    - text: "2000000004334"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · Santa Lucía
+    - text: "2000000000671"
+    - button "Marcar impresa"
+    - strong: Pan francés · Santa Lucía
+    - text: "2000000000855"
+    - button "Marcar impresa"
+    - strong: Zapallo · Don Pedro
+    - text: "2000000002491"
+    - button "Marcar impresa"
+    - strong: Pera · Nueva Mesa
+    - text: "2000000003436"
+    - button "Marcar impresa"
+    - strong: Queso tybo · El Molino
+    - text: "2000000001814"
+    - button "Marcar impresa"
+    - strong: Papa · La Huerta
+    - text: "2000000001296"
+    - button "Marcar impresa"
+    - strong: Limón · Santa Lucía
+    - text: "2000000000817"
+    - button "Marcar impresa"
+    - strong: Bondiola · Las Sierras
+    - text: "2000000002088"
+    - button "Marcar impresa"
+    - strong: Pera · Del Valle
+    - text: "2000000006628"
+    - button "Marcar impresa"
+    - strong: Papa · Los Aromos
+    - text: "2000000000428"
+    - button "Marcar impresa"
+    - strong: Pan integral · Costa Clara
+    - text: "2000000005508"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · Los Aromos
+    - text: "2000000000350"
+    - button "Marcar impresa"
+    - strong: Queso tybo · Tres Espigas
+    - text: "2000000005584"
+    - button "Marcar impresa"
+    - strong: Pan francés · Los Aromos
+    - text: "2000000000565"
+    - button "Marcar impresa"
+    - strong: Mandarina · La Abuela
+    - text: "2000000004570"
+    - button "Marcar impresa"
+    - strong: Bondiola · Tres Espigas
+    - text: "2000000005560"
+    - button "Marcar impresa"
+    - strong: Muzzarella · La Huerta
+    - text: "2000000001241"
+    - button "Marcar impresa"
+    - strong: Batata · Costa Clara
+    - text: "2000000005409"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · Don Pedro
+    - text: "2000000002415"
+    - button "Marcar impresa"
+    - strong: Queso sardo · La Familia
+    - text: "2000000003870"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · Don Pedro
+    - text: "2000000002446"
+    - button "Marcar impresa"
+    - strong: Queso azul · Nueva Mesa
+    - text: "2000000003306"
+    - button "Marcar impresa"
+    - strong: Zapallo · La Reserva
+    - text: "2000000008875"
+    - button "Marcar impresa"
+    - strong: Limón · Santa Ana
+    - text: "2000000004297"
+    - button "Marcar impresa"
+    - strong: Bondiola · La Huerta
+    - text: "2000000001210"
+    - button "Marcar impresa"
+    - strong: Pera · El Trigal
+    - text: "2000000003726"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · Del Valle
+    - text: "2000000006475"
+    - button "Marcar impresa"
+    - strong: Limón · Villa del Sol
+    - text: "2000000006031"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · La Colonia
+    - text: "2000000002866"
+    - button "Marcar impresa"
+    - strong: Pan integral · Villa del Sol
+    - text: "2000000006086"
+    - button "Marcar impresa"
+    - strong: Pan francés · La Familia
+    - text: "2000000004044"
+    - button "Marcar impresa"
+    - strong: Salame Milán · Primavera
+    - text: "2000000006703"
+    - button "Marcar impresa"
+    - strong: Banana · Nueva Mesa
+    - text: "2000000003399"
+    - button "Marcar impresa"
+    - strong: Queso sardo · Campo Vivo
+    - text: "2000000003009"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · Los Aromos
+    - text: "2000000009117"
+    - button "Marcar impresa"
+    - strong: Pan francés · Don Pedro
+    - text: "2000000002590"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · Primavera
+    - text: "2000000006963"
+    - button "Marcar impresa"
+    - strong: Limón · Rincón Sur
+    - text: "2000000007489"
+    - button "Marcar impresa"
+    - strong: Queso sardo · La Colonia
+    - text: "2000000002712"
+    - button "Marcar impresa"
+    - strong: Mandarina · Las Sierras
+    - text: "2000000002255"
+    - button "Marcar impresa"
+    - strong: Queso azul · Primavera
+    - text: "2000000006789"
+    - button "Marcar impresa"
+    - strong: Limón · Buenos Sabores
+    - text: "2000000008066"
+    - button "Marcar impresa"
+    - strong: Queso tybo
+    - text: "2000000000077"
+    - button "Marcar impresa"
+    - strong: Queso sardo · La Huerta
+    - text: "2000000001265"
+    - button "Marcar impresa"
+    - strong: Cebolla · El Molino
+    - text: "2000000001883"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · La Familia
+    - text: "2000000003863"
+    - button "Marcar impresa"
+    - strong: Queso azul · Santa Lucía
+    - text: "2000000000695"
+    - button "Marcar impresa"
+    - strong: Mandarina · El Molino
+    - text: "2000000001968"
+    - button "Marcar impresa"
+    - strong: Muzzarella · Santa Lucía
+    - text: "2000000009360"
+    - button "Marcar impresa"
+    - strong: Zanahoria · El Trigal
+    - text: "2000000003641"
+    - button "Marcar impresa"
+    - strong: Mandarina · Costa Clara
+    - text: "2000000005447"
+    - button "Marcar impresa"
+    - strong: Pera · El Ombú
+    - text: "2000000007205"
+    - button "Marcar impresa"
+    - strong: Bondiola · El Molino
+    - text: "2000000001791"
+    - button "Marcar impresa"
+    - strong: Queso azul · Tres Espigas
+    - text: "2000000005621"
+    - button "Marcar impresa"
+    - strong: Cebolla · Campo Vivo
+    - text: "2000000003047"
+    - button "Marcar impresa"
+    - strong: Banana · El Ombú
+    - text: "2000000007168"
+    - button "Marcar impresa"
+    - strong: Lechuga · La Abuela
+    - text: "2000000004617"
+    - button "Marcar impresa"
+    - strong: Mortadela · Los Aromos
+    - text: "2000000000336"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · Los Aromos
+    - text: "2000000009018"
+    - button "Marcar impresa"
+    - strong: Zanahoria · Santa Lucía
+    - text: "2000000000749"
+    - button "Marcar impresa"
+    - strong: Bondiola · Del Valle
+    - text: "2000000006437"
+    - button "Marcar impresa"
+    - strong: Queso azul · Santa Lucía
+    - text: "2000000009391"
+    - button "Marcar impresa"
+    - strong: Mortadela · Santa Ana
+    - text: "2000000004105"
+    - button "Marcar impresa"
+    - strong: Muzzarella · Mi Barrio
+    - text: "2000000008202"
+    - button "Marcar impresa"
+    - strong: Mortadela · La Cumbre
+    - text: "2000000006130"
+    - button "Marcar impresa"
+    - strong: Queso azul · Sol del Sur
+    - text: "2000000001562"
+    - button "Marcar impresa"
+    - strong: Queso tybo · Villa del Sol
+    - text: "2000000005874"
+    - button "Marcar impresa"
+    - strong: Queso sardo · Tres Espigas
+    - text: "2000000005614"
+    - button "Marcar impresa"
+    - strong: Zapallo · Primavera
+    - text: "2000000006840"
+    - button "Marcar impresa"
+    - strong: Manzana roja · La Familia
+    - text: "2000000003962"
+    - button "Marcar impresa"
+    - strong: Salame Milán · La Abuela
+    - text: "2000000004389"
+    - button "Marcar impresa"
+    - strong: Queso azul · El Ombú
+    - text: "2000000007076"
+    - button "Marcar impresa"
+    - strong: Papa · Las Sierras
+    - text: "2000000002163"
+    - button "Marcar impresa"
+    - strong: Naranja · Buenos Sabores
+    - text: "2000000008042"
+    - button "Marcar impresa"
+    - strong: Pera · Campo Vivo
+    - text: "2000000003146"
+    - button "Marcar impresa"
+    - strong: Bondiola · La Pradera
+    - text: "2000000004983"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · Del Valle
+    - text: "2000000006505"
+    - button "Marcar impresa"
+    - strong: Muzzarella · Los Aromos
+    - text: "2000000000374"
+    - button "Marcar impresa"
+    - strong: Pan integral · Campo Vivo
+    - text: "2000000003184"
+    - button "Marcar impresa"
+    - strong: Mandarina · Sol del Sur
+    - text: "2000000001678"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · El Trigal
+    - text: "2000000003542"
+    - button "Marcar impresa"
+    - strong: Cebolla · La Estrella
+    - text: "2000000007687"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · La Estrella
+    - text: "2000000007830"
+    - button "Marcar impresa"
+    - strong: Muzzarella · El Molino
+    - text: "2000000001821"
+    - button "Marcar impresa"
+    - strong: Cebolla · Mi Barrio
+    - text: "2000000008264"
+    - button "Marcar impresa"
+    - strong: Queso tybo · La Huerta
+    - text: "2000000001234"
+    - button "Marcar impresa"
+    - strong: Pera · Santa Ana
+    - text: "2000000004303"
+    - button "Marcar impresa"
+    - strong: Tomate · Villa del Sol
+    - text: "2000000005959"
+    - button "Marcar impresa"
+    - strong: Papa · Villa del Sol
+    - text: "2000000005935"
+    - button "Marcar impresa"
+    - strong: Mortadela · Santa Lucía
+    - text: "2000000000626"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · La Reserva
+    - text: "2000000008721"
+    - button "Marcar impresa"
+    - strong: Papa · Tierra Clara
+    - text: "2000000008547"
+    - button "Marcar impresa"
+    - strong: Manzana roja · Del Valle
+    - text: "2000000006574"
+    - button "Marcar impresa"
+    - strong: Queso sardo · Buen Día
+    - text: "2000000000978"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · Tres Espigas
+    - text: "2000000005607"
+    - button "Marcar impresa"
+    - strong: Tomate · Los Aromos
+    - text: "2000000009148"
+    - button "Marcar impresa"
+    - strong: Muzzarella · Buen Día
+    - text: "2000000000954"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · La Colonia
+    - text: "2000000002620"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · El Ombú
+    - text: "2000000007250"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · Costa Clara
+    - text: "2000000005348"
+    - button "Marcar impresa"
+    - strong: Manzana roja · Buen Día
+    - text: "2000000001067"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · Tierra Clara
+    - text: "2000000008707"
+    - button "Marcar impresa"
+    - strong: Mandarina · Los Aromos
+    - text: "2000000000510"
+    - button "Marcar impresa"
+    - strong: Cebolla · Tres Espigas
+    - text: "2000000005652"
+    - button "Marcar impresa"
+    - strong: Lechuga · El Ombú
+    - text: "2000000007229"
+    - button "Marcar impresa"
+    - strong: Cebolla · El Trigal
+    - text: "2000000003627"
+    - button "Marcar impresa"
+    - strong: Queso azul · El Molino
+    - text: "2000000001852"
+    - button "Marcar impresa"
+    - strong: Batata · El Ombú
+    - text: "2000000007144"
+    - button "Marcar impresa"
+    - strong: Tomate · Primavera
+    - text: "2000000006826"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · Buen Día
+    - text: "2000000000886"
+    - button "Marcar impresa"
+    - strong: Manzana roja · La Cumbre
+    - text: "2000000006284"
+    - button "Marcar impresa"
+    - strong: Zanahoria · La Huerta
+    - text: "2000000001326"
+    - button "Marcar impresa"
+    - strong: Naranja · Del Valle
+    - text: "2000000006598"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · Las Sierras
+    - text: "2000000002125"
+    - button "Marcar impresa"
+    - strong: Bondiola · Santa Lucía
+    - text: "2000000009339"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · La Colonia
+    - text: "2000000002705"
+    - button "Marcar impresa"
+    - strong: Salame Milán · Mi Barrio
+    - text: "2000000008158"
+    - button "Marcar impresa"
+    - strong: Muzzarella · Santa Lucía
+    - text: "2000000000664"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · Buenos Sabores
+    - text: "2000000007922"
+    - button "Marcar impresa"
+    - strong: Queso sardo · La Abuela
+    - text: "2000000004457"
+    - button "Marcar impresa"
+    - strong: Bondiola · Tierra Clara
+    - text: "2000000008462"
+    - button "Marcar impresa"
+    - strong: Tomate · Tierra Clara
+    - text: "2000000008561"
+    - button "Marcar impresa"
+    - strong: Tomate
+    - text: "2000000000152"
+    - button "Marcar impresa"
+    - strong: Banana · Los Aromos
+    - text: "2000000009193"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · Costa Clara
+    - text: "2000000005249"
+    - button "Marcar impresa"
+    - strong: Tomate · Los Aromos
+    - text: "2000000000442"
+    - button "Marcar impresa"
+    - strong: Zanahoria · Santa Ana
+    - text: "2000000004228"
+    - button "Marcar impresa"
+    - strong: Tomate · La Abuela
+    - text: "2000000004501"
+    - button "Marcar impresa"
+    - strong: Pan integral · El Molino
+    - text: "2000000002026"
+    - button "Marcar impresa"
+    - strong: Limón · La Cumbre
+    - text: "2000000006321"
+    - button "Marcar impresa"
+    - strong: Mandarina · Tres Espigas
+    - text: "2000000005737"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · La Huerta
+    - text: "2000000001227"
+    - button "Marcar impresa"
+    - strong: Batata · Buenos Sabores
+    - text: "2000000008011"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · Del Valle
+    - text: "2000000006635"
+    - button "Marcar impresa"
+    - strong: Limón · El Molino
+    - text: "2000000001975"
+    - button "Marcar impresa"
+    - strong: Manzana roja · La Huerta
+    - text: "2000000001357"
+    - button "Marcar impresa"
+    - strong: Muzzarella · Campo Vivo
+    - text: "2000000002989"
+    - button "Marcar impresa"
+    - strong: Queso sardo · La Pradera
+    - text: "2000000005034"
+    - button "Marcar impresa"
+    - strong: Bondiola · La Cumbre
+    - text: "2000000006147"
+    - button "Marcar impresa"
+    - strong: Pan integral · Santa Lucía
+    - text: "2000000009568"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · La Colonia
+    - text: "2000000002736"
+    - button "Marcar impresa"
+    - strong: Queso azul · Campo Vivo
+    - text: "2000000003016"
+    - button "Marcar impresa"
+    - strong: Queso tybo · La Estrella
+    - text: "2000000007618"
+    - button "Marcar impresa"
+    - strong: Naranja · Santa Lucía
+    - text: "2000000000794"
+    - button "Marcar impresa"
+    - strong: Cebolla · La Pradera
+    - text: "2000000005072"
+    - button "Marcar impresa"
+    - strong: Limón · La Abuela
+    - text: "2000000004587"
+    - button "Marcar impresa"
+    - strong: Muzzarella · Sol del Sur
+    - text: "2000000001531"
+    - button "Marcar impresa"
+    - strong: Cebolla · La Huerta
+    - text: "2000000001302"
+    - button "Marcar impresa"
+    - strong: Zapallo · El Molino
+    - text: "2000000001913"
+    - button "Marcar impresa"
+    - strong: Queso sardo · Los Aromos
+    - text: "2000000000398"
+    - button "Marcar impresa"
+    - strong: Bondiola · Villa del Sol
+    - text: "2000000005850"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · Cosecha Nueva
+    - text: "2000000004730"
+    - button "Marcar impresa"
+    - strong: Queso tybo · La Cumbre
+    - text: "2000000006161"
+    - button "Marcar impresa"
+    - strong: Pan francés · Del Valle
+    - text: "2000000006659"
+    - button "Marcar impresa"
+    - strong: Limón · La Reserva
+    - text: "2000000008936"
+    - button "Marcar impresa"
+    - strong: Mortadela · La Huerta
+    - text: "2000000001203"
+    - button "Marcar impresa"
+    - strong: Batata · Santa Lucía
+    - text: "2000000000763"
+    - button "Marcar impresa"
+    - strong: Salame Milán · Costa Clara
+    - text: "2000000005256"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · Cosecha Nueva
+    - text: "2000000004761"
+    - button "Marcar impresa"
+    - strong: Naranja · Nueva Mesa
+    - text: "2000000003405"
+    - button "Marcar impresa"
+    - strong: Lechuga · Don Pedro
+    - text: "2000000002583"
+    - button "Marcar impresa"
+    - strong: Banana · Los Aromos
+    - text: "2000000000497"
+    - button "Marcar impresa"
+    - strong: Pan francés · Nueva Mesa
+    - text: "2000000003467"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · Cosecha Nueva
+    - text: "2000000004709"
+    - button "Marcar impresa"
+    - strong: Zapallo · Santa Lucía
+    - text: "2000000009452"
+    - button "Marcar impresa"
+    - strong: Lechuga · La Familia
+    - text: "2000000004037"
+    - button "Marcar impresa"
+    - strong: Tomate · El Molino
+    - text: "2000000001890"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · La Abuela
+    - text: "2000000004372"
+    - button "Marcar impresa"
+    - strong: Limón · Las Sierras
+    - text: "2000000002262"
+    - button "Marcar impresa"
+    - strong: Queso azul · Rincón Sur
+    - text: "2000000007366"
+    - button "Marcar impresa"
+    - strong: Queso sardo · Primavera
+    - text: "2000000006772"
+    - button "Marcar impresa"
+    - strong: Zanahoria · El Molino
+    - text: "2000000001906"
+    - button "Marcar impresa"
+    - strong: Papa · El Ombú
+    - text: "2000000007090"
+    - button "Marcar impresa"
+    - strong: Banana · La Reserva
+    - text: "2000000008905"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · Campo Vivo
+    - text: "2000000003023"
+    - button "Marcar impresa"
+    - strong: Queso sardo · Los Aromos
+    - text: "2000000009094"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · La Huerta
+    - text: "2000000001456"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · Costa Clara
+    - text: "2000000005478"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · Villa del Sol
+    - text: "2000000005829"
+    - button "Marcar impresa"
+    - strong: Papa · Los Aromos
+    - text: "2000000009124"
+    - button "Marcar impresa"
+    - strong: Mandarina · Nueva Mesa
+    - text: "2000000003412"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · La Reserva
+    - text: "2000000008714"
+    - button "Marcar impresa"
+    - strong: Naranja · La Cumbre
+    - text: "2000000006307"
+    - button "Marcar impresa"
+    - strong: Manzana roja · El Molino
+    - text: "2000000001937"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · Tres Espigas
+    - text: "2000000005522"
+    - button "Marcar impresa"
+    - strong: Queso azul · La Familia
+    - text: "2000000003887"
+    - button "Marcar impresa"
+    - strong: Papa · El Molino
+    - text: "2000000001876"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · Buen Día
+    - text: "2000000001166"
+    - button "Marcar impresa"
+    - strong: Mandarina · La Cumbre
+    - text: "2000000006314"
+    - button "Marcar impresa"
+    - strong: Mandarina
+    - text: "2000000000220"
+    - button "Marcar impresa"
+    - strong: Batata · La Reserva
+    - text: "2000000008882"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · Don Pedro
+    - text: "2000000002613"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · Las Sierras
+    - text: "2000000002040"
+    - button "Marcar impresa"
+    - strong: Queso azul
+    - text: "2000000000114"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · Santa Ana
+    - text: "2000000004310"
+    - button "Marcar impresa"
+    - strong: Pan francés · La Estrella
+    - text: "2000000007816"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · Buenos Sabores
+    - text: "2000000008127"
+    - button "Marcar impresa"
+    - strong: Pera · El Molino
+    - text: "2000000001982"
+    - button "Marcar impresa"
+    - strong: Bondiola · Santa Ana
+    - text: "2000000004112"
+    - button "Marcar impresa"
+    - strong: Bondiola · La Abuela
+    - text: "2000000004402"
+    - button "Marcar impresa"
+    - strong: Bondiola · Los Aromos
+    - text: "2000000009049"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · La Huerta
+    - text: "2000000001258"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · La Estrella
+    - text: "2000000007557"
+    - button "Marcar impresa"
+    - strong: Tomate · El Ombú
+    - text: "2000000007113"
+    - button "Marcar impresa"
+    - strong: Zapallo · La Huerta
+    - text: "2000000001333"
+    - button "Marcar impresa"
+    - strong: Queso azul · Las Sierras
+    - text: "2000000002149"
+    - button "Marcar impresa"
+    - strong: Tomate · Tres Espigas
+    - text: "2000000005669"
+    - button "Marcar impresa"
+    - strong: Pera · La Abuela
+    - text: "2000000004594"
+    - button "Marcar impresa"
+    - strong: Zapallo · Santa Lucía
+    - text: "2000000000756"
+    - button "Marcar impresa"
+    - strong: Queso sardo · Tierra Clara
+    - text: "2000000008516"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · Campo Vivo
+    - text: "2000000002996"
+    - button "Marcar impresa"
+    - strong: Cebolla · El Ombú
+    - text: "2000000007106"
+    - button "Marcar impresa"
+    - strong: Zanahoria · Mi Barrio
+    - text: "2000000008288"
+    - button "Marcar impresa"
+    - strong: Zanahoria · Primavera
+    - text: "2000000006833"
+    - button "Marcar impresa"
+    - strong: Queso tybo · Costa Clara
+    - text: "2000000005294"
+    - button "Marcar impresa"
+    - strong: Naranja · Buen Día
+    - text: "2000000001081"
+    - button "Marcar impresa"
+    - strong: Queso tybo · La Reserva
+    - text: "2000000008776"
+    - button "Marcar impresa"
+    - strong: Mortadela · Primavera
+    - text: "2000000006710"
+    - button "Marcar impresa"
+    - strong: Zapallo · Cosecha Nueva
+    - text: "2000000004815"
+    - button "Marcar impresa"
+    - strong: Banana · Rincón Sur
+    - text: "2000000007458"
+    - button "Marcar impresa"
+    - strong: Naranja · El Molino
+    - text: "2000000001951"
+    - button "Marcar impresa"
+    - strong: Queso sardo · Nueva Mesa
+    - text: "2000000003290"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · Don Pedro
+    - text: "2000000002330"
+    - button "Marcar impresa"
+    - strong: Queso reggianito
+    - text: "2000000000091"
+    - button "Marcar impresa"
+    - strong: Naranja · El Trigal
+    - text: "2000000003696"
+    - button "Marcar impresa"
+    - strong: Manzana roja
+    - text: "2000000000190"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · Tierra Clara
+    - text: "2000000008431"
+    - button "Marcar impresa"
+    - strong: Bondiola · Mi Barrio
+    - text: "2000000008172"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · La Familia
+    - text: "2000000004020"
+    - button "Marcar impresa"
+    - strong: Pera
+    - text: "2000000000244"
+    - button "Marcar impresa"
+    - strong: Cebolla · Don Pedro
+    - text: "2000000002460"
+    - button "Marcar impresa"
+    - strong: Batata · Rincón Sur
+    - text: "2000000007434"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · La Cumbre
+    - text: "2000000006154"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · Santa Lucía
+    - text: "2000000000831"
+    - button "Marcar impresa"
+    - strong: Lechuga · El Trigal
+    - text: "2000000003740"
+    - button "Marcar impresa"
+    - strong: Queso sardo · Buenos Sabores
+    - text: "2000000007939"
+    - button "Marcar impresa"
+    - strong: Tomate · El Trigal
+    - text: "2000000003634"
+    - button "Marcar impresa"
+    - strong: Pan francés · La Colonia
+    - text: "2000000002880"
+    - button "Marcar impresa"
+    - strong: Batata · Tierra Clara
+    - text: "2000000008592"
+    - button "Marcar impresa"
+    - strong: Naranja · Don Pedro
+    - text: "2000000002538"
+    - button "Marcar impresa"
+    - strong: Pan francés · El Molino
+    - text: "2000000002019"
+    - button "Marcar impresa"
+    - strong: Banana · Santa Lucía
+    - text: "2000000000787"
+    - button "Marcar impresa"
+    - strong: Bondiola · La Colonia
+    - text: "2000000002668"
+    - button "Marcar impresa"
+    - strong: Queso tybo · La Colonia
+    - text: "2000000002682"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · Los Aromos
+    - text: "2000000000305"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · La Reserva
+    - text: "2000000008820"
+    - button "Marcar impresa"
+    - strong: Queso azul · Villa del Sol
+    - text: "2000000005911"
+    - button "Marcar impresa"
+    - strong: Mandarina · Buenos Sabores
+    - text: "2000000008059"
+    - button "Marcar impresa"
+    - strong: Manzana roja · Nueva Mesa
+    - text: "2000000003382"
+    - button "Marcar impresa"
+    - strong: Manzana roja · Primavera
+    - text: "2000000006864"
+    - button "Marcar impresa"
+    - strong: Queso tybo · Los Aromos
+    - text: "2000000009063"
+    - button "Marcar impresa"
+    - strong: Zapallo · Rincón Sur
+    - text: "2000000007427"
+    - button "Marcar impresa"
+    - strong: Limón · La Colonia
+    - text: "2000000002842"
+    - button "Marcar impresa"
+    - strong: Queso tybo · Los Aromos
+    - text: "2000000000367"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · Mi Barrio
+    - text: "2000000008219"
+    - button "Marcar impresa"
+    - strong: Banana · Primavera
+    - text: "2000000006871"
+    - button "Marcar impresa"
+    - strong: Naranja · La Reserva
+    - text: "2000000008912"
+    - button "Marcar impresa"
+    - strong: Queso azul · La Colonia
+    - text: "2000000002729"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · Rincón Sur
+    - text: "2000000007502"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · Rincón Sur
+    - text: "2000000007540"
+    - button "Marcar impresa"
+    - strong: Pan francés · Cosecha Nueva
+    - text: "2000000004914"
+    - button "Marcar impresa"
+    - strong: Papa · Primavera
+    - text: "2000000006802"
+    - button "Marcar impresa"
+    - strong: Bondiola · El Ombú
+    - text: "2000000007014"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · Los Aromos
+    - text: "2000000000589"
+    - button "Marcar impresa"
+    - strong: Tomate · La Pradera
+    - text: "2000000005089"
+    - button "Marcar impresa"
+    - strong: Zanahoria · Santa Lucía
+    - text: "2000000009445"
+    - button "Marcar impresa"
+    - strong: Bondiola · El Trigal
+    - text: "2000000003535"
+    - button "Marcar impresa"
+    - strong: Tomate · Costa Clara
+    - text: "2000000005379"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · Los Aromos
+    - text: "2000000000312"
+    - button "Marcar impresa"
+    - strong: Lechuga · Los Aromos
+    - text: "2000000000558"
+    - button "Marcar impresa"
+    - strong: Tomate · Del Valle
+    - text: "2000000006536"
+    - button "Marcar impresa"
+    - strong: Muzzarella · El Ombú
+    - text: "2000000007045"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · Cosecha Nueva
+    - text: "2000000004938"
+    - button "Marcar impresa"
+    - strong: Lechuga · Costa Clara
+    - text: "2000000005485"
+    - button "Marcar impresa"
+    - strong: Papa
+    - text: "2000000000138"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · Los Aromos
+    - text: "2000000009285"
+    - button "Marcar impresa"
+    - strong: Pera · Tierra Clara
+    - text: "2000000008653"
+    - button "Marcar impresa"
+    - strong: Cebolla · La Abuela
+    - text: "2000000004495"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · Santa Lucía
+    - text: "2000000000879"
+    - button "Marcar impresa"
+    - strong: Mandarina · Los Aromos
+    - text: "2000000009216"
+    - button "Marcar impresa"
+    - strong: Muzzarella · La Reserva
+    - text: "2000000008783"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · Del Valle
+    - text: "2000000006673"
+    - button "Marcar impresa"
+    - strong: Naranja · Los Aromos
+    - text: "2000000009209"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · Santa Lucía
+    - text: "2000000000602"
+    - button "Marcar impresa"
+    - strong: Naranja · Santa Ana
+    - text: "2000000004273"
+    - button "Marcar impresa"
+    - strong: Zanahoria
+    - text: "2000000000169"
+    - button "Marcar impresa"
+    - strong: Pera · La Reserva
+    - text: "2000000008943"
+    - button "Marcar impresa"
+    - strong: Bondiola · La Reserva
+    - text: "2000000008752"
+    - button "Marcar impresa"
+    - strong: Naranja · La Pradera
+    - text: "2000000005140"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · Campo Vivo
+    - text: "2000000002910"
+    - button "Marcar impresa"
+    - strong: Pera · Buen Día
+    - text: "2000000001111"
+    - button "Marcar impresa"
+    - strong: Zanahoria · Costa Clara
+    - text: "2000000005386"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · Tres Espigas
+    - text: "2000000005539"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · Santa Lucía
+    - text: "2000000009346"
+    - button "Marcar impresa"
+    - strong: Lechuga · Villa del Sol
+    - text: "2000000006062"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · Campo Vivo
+    - text: "2000000003153"
+    - button "Marcar impresa"
+    - strong: Queso azul · Costa Clara
+    - text: "2000000005331"
+    - button "Marcar impresa"
+    - strong: Zanahoria · Tres Espigas
+    - text: "2000000005676"
+    - button "Marcar impresa"
+    - strong: Pan integral
+    - text: "2000000000282"
+    - button "Marcar impresa"
+    - strong: Zanahoria · Del Valle
+    - text: "2000000006543"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · La Huerta
+    - text: "2000000001418"
+    - button "Marcar impresa"
+    - strong: Salame Milán · Los Aromos
+    - text: "2000000009025"
+    - button "Marcar impresa"
+    - strong: Pan integral · Nueva Mesa
+    - text: "2000000003474"
+    - button "Marcar impresa"
+    - strong: Morrón rojo · Nueva Mesa
+    - text: "2000000003443"
+    - button "Marcar impresa"
+    - strong: Limón · Costa Clara
+    - text: "2000000005454"
+    - button "Marcar impresa"
+    - strong: Zapallo · La Estrella
+    - text: "2000000007717"
+    - button "Marcar impresa"
+    - strong: Queso reggianito · El Ombú
+    - text: "2000000007052"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · Santa Lucía
+    - text: "2000000009575"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · Campo Vivo
+    - text: "2000000002927"
+    - button "Marcar impresa"
+    - strong: Queso cremoso · La Estrella
+    - text: "2000000007601"
+    - button "Marcar impresa"
+    - strong: Pera · Los Aromos
+    - text: "2000000009230"
+    - button "Marcar impresa"
+    - strong: Pan francés · Mi Barrio
+    - text: "2000000008394"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · Santa Ana
+    - text: "2000000004358"
+    - button "Marcar impresa"
+    - strong: Banana · Sol del Sur
+    - text: "2000000001654"
+    - button "Marcar impresa"
+    - strong: Facturas por kilo · Campo Vivo
+    - text: "2000000003191"
+    - button "Marcar impresa"
+    - strong: Panceta ahumada · El Ombú
+    - text: "2000000007083"
+    - button "Marcar impresa"
+    - strong: Jamón cocido · Nueva Mesa
+    - text: "2000000003207"
+    - button "Marcar impresa"
+    - strong: Paleta cocida · Primavera
+    - text: "2000000006697"
+    - button "Marcar impresa"
+    - strong: Zapallo · La Abuela
+    - text: "2000000004525"
+    - button "Marcar impresa"
+    - strong: Mortadela · Buen Día
+    - text: "2000000000916"
+    - button "Marcar impresa"
+    - strong: Batata · Primavera
+    - text: "2000000006857"
+    - button "Marcar impresa"

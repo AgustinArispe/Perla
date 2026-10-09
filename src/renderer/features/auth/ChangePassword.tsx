@@ -2,12 +2,15 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { Dialog } from '../../components/Dialog';
 import { api, errorMessage, unwrap } from '../../api';
+import type { Role } from '../../../shared/auth';
 export function ChangePassword({
   onClose,
   onChanged,
+  role,
 }: {
   onClose: () => void;
   onChanged: () => Promise<void>;
+  role: Role;
 }) {
   const [busy, setBusy] = useState(false),
     [error, setError] = useState('');
@@ -50,12 +53,17 @@ export function ChangePassword({
             name="next"
             aria-label="Nueva contraseña"
             type="password"
-            minLength={15}
+            minLength={role === 'ADMIN' ? 16 : 8}
             maxLength={128}
             autoComplete="new-password"
             required
           />
-          <small>Al guardar tendrás que volver a ingresar.</small>
+          <small>
+            {role === 'ADMIN'
+              ? 'Administrador: 16 caracteres, mayúscula, minúscula, número y símbolo.'
+              : 'Al menos 8 caracteres, con mayúscula y símbolo.'}{' '}
+            Al guardar tendrás que volver a ingresar.
+          </small>
         </label>
         {error && (
           <div className="alert error" role="alert">

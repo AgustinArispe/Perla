@@ -1,0 +1,94 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Ayuda" [level=1]
+  - text: Buscar en la ayuda
+  - searchbox "Buscar en la ayuda"
+  - navigation "Temas de ayuda":
+    - button "Caja y ventas"
+    - button "Efectivo y cierre de caja"
+    - button "Productos"
+    - button "Stock" [active] [pressed]
+    - button "Proveedores y compras"
+    - button "Promociones"
+    - button "Clientes y cuenta corriente"
+    - button "Histórico y anulaciones"
+    - button "Resumen mensual"
+    - button "Usuarios y configuración"
+    - button "Copias de seguridad"
+    - button "Cuenta y alcance"
+    - button "Ubicaciones y traslados"
+  - article:
+    - heading "Stock" [level=2]
+    - heading "Estados de las existencias" [level=3]
+    - paragraph: Sin conteo significa que todavía no se cargó una cantidad inicial; no significa cero. Agotado indica cero. Bajo mínimo indica que hay menos que el mínimo configurado. Negativo indica una venta autorizada por encima de lo disponible. Sin control corresponde a productos que no llevan stock.
+    - heading "Contar, ingresar y registrar una merma" [level=3]
+    - paragraph: "Contar reemplaza la existencia por la cantidad que verificaste físicamente. Un ingreso de proveedor suma unidades o kilos. Una merma resta pérdidas o productos dañados. Registrá siempre el motivo. Las ventas y anulaciones generan sus propios movimientos: no hace falta descontarlas manualmente."
+    - heading "Autorizaciones y cambios simultáneos" [level=3]
+    - paragraph: Si no hay stock suficiente, revisá las existencias antes de vender. Una autorización de stock negativo exige el permiso correspondiente y un motivo. Si otro usuario cambió el producto o su stock, actualizá la pantalla y revisá el nuevo valor antes de guardar.
+    - heading "Lotes y vencimientos" [level=3]
+    - paragraph: Si Lotes está habilitado, abrí Lotes en el producto y activá su control. La primera vez distribuí la existencia actual. En las compras siguientes ingresá el código del proveedor y, si corresponde, el vencimiento. Caja descuenta primero lo que vence antes. Un lote bloqueado o vencido no queda disponible para vender.

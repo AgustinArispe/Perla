@@ -14,6 +14,12 @@ tmp/
 *.db-shm
 *.sqlite
 *.sqlite3
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite3-wal
+*.sqlite3-shm
+__pycache__/
+*.pyc
 backups/
 .env
 .env.*

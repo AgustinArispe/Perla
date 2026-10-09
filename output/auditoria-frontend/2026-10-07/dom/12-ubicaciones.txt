@@ -1,0 +1,335 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones" [active]:
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Ubicaciones" [level=1]
+  - button "Nueva ubicación": Nueva ubicación
+  - button "Nuevo traslado": Nuevo traslado
+  - region "Locales y depósitos":
+    - heading "Locales y depósitos" [level=2]
+    - button "Salón de ventas Principal":
+      - strong: Salón de ventas
+      - generic: Principal
+    - button "Editar Salón de ventas"
+    - button "Cámara de frío FRIO":
+      - strong: Cámara de frío
+      - generic: FRIO
+    - button "Editar Cámara de frío"
+    - button "Depósito central CENTRAL":
+      - strong: Depósito central
+      - generic: CENTRAL
+    - button "Editar Depósito central"
+    - button "Depósito de reserva RESERVA":
+      - strong: Depósito de reserva
+      - generic: RESERVA
+    - button "Editar Depósito de reserva"
+  - heading "Salón de ventas" [level=2]
+  - generic: 3677 artículos
+  - textbox "Buscar stock en ubicación":
+    - /placeholder: Buscar artículo o código
+  - button "Mis vistas": Mis vistas
+  - button "Exportar existencias por ubicación a Excel": Exportar Excel
+  - table:
+    - rowgroup:
+      - row "Artículo Existencia":
+        - columnheader "Artículo"
+        - columnheader "Existencia"
+    - rowgroup:
+      - row "Aceite de girasol 900 ml 7799900000106 105 u.":
+        - cell "Aceite de girasol 900 ml 7799900000106":
+          - strong: Aceite de girasol 900 ml
+          - generic: "7799900000106"
+        - cell "105 u.":
+          - strong: 105 u.
+      - row "Aceite de girasol 900 ml · Buen Día 7799900003671 63 u.":
+        - cell "Aceite de girasol 900 ml · Buen Día 7799900003671":
+          - strong: Aceite de girasol 900 ml · Buen Día
+          - generic: "7799900003671"
+        - cell "63 u.":
+          - strong: 63 u.
+      - row "Aceite de girasol 900 ml · Buenos Sabores 7799900032237 1 u.":
+        - cell "Aceite de girasol 900 ml · Buenos Sabores 7799900032237":
+          - strong: Aceite de girasol 900 ml · Buenos Sabores
+          - generic: "7799900032237"
+        - cell "1 u.":
+          - strong: 1 u.
+      - row "Aceite de girasol 900 ml · Campo Vivo 7799900012000 58 u.":
+        - cell "Aceite de girasol 900 ml · Campo Vivo 7799900012000":
+          - strong: Aceite de girasol 900 ml · Campo Vivo
+          - generic: "7799900012000"
+        - cell "58 u.":
+          - strong: 58 u.
+      - row "Aceite de girasol 900 ml · Cosecha Nueva 7799900019146 65 u.":
+        - cell "Aceite de girasol 900 ml · Cosecha Nueva 7799900019146":
+          - strong: Aceite de girasol 900 ml · Cosecha Nueva
+          - generic: "7799900019146"
+        - cell "65 u.":
+          - strong: 65 u.
+      - row "Aceite de girasol 900 ml · Costa Clara 7799900021521 2 u.":
+        - cell "Aceite de girasol 900 ml · Costa Clara 7799900021521":
+          - strong: Aceite de girasol 900 ml · Costa Clara
+          - generic: "7799900021521"
+        - cell "2 u.":
+          - strong: 2 u.
+      - row "Aceite de girasol 900 ml · Del Valle 7799900026281 63 u.":
+        - cell "Aceite de girasol 900 ml · Del Valle 7799900026281":
+          - strong: Aceite de girasol 900 ml · Del Valle
+          - generic: "7799900026281"
+        - cell "63 u.":
+          - strong: 63 u.
+      - row "Aceite de girasol 900 ml · Don Pedro 7799900009628 56 u.":
+        - cell "Aceite de girasol 900 ml · Don Pedro 7799900009628":
+          - strong: Aceite de girasol 900 ml · Don Pedro
+          - generic: "7799900009628"
+        - cell "56 u.":
+          - strong: 56 u.
+      - row "Aceite de girasol 900 ml · El Molino 7799900007242 56 u.":
+        - cell "Aceite de girasol 900 ml · El Molino 7799900007242":
+          - strong: Aceite de girasol 900 ml · El Molino
+          - generic: "7799900007242"
+        - cell "56 u.":
+          - strong: 56 u.
+      - row "Aceite de girasol 900 ml · El Ombú 7799900028667 73 u.":
+        - cell "Aceite de girasol 900 ml · El Ombú 7799900028667":
+          - strong: Aceite de girasol 900 ml · El Ombú
+          - generic: "7799900028667"
+        - cell "73 u.":
+          - strong: 73 u.
+      - row "Aceite de girasol 900 ml · El Trigal 7799900014387 76 u.":
+        - cell "Aceite de girasol 900 ml · El Trigal 7799900014387":
+          - strong: Aceite de girasol 900 ml · El Trigal
+          - generic: "7799900014387"
+        - cell "76 u.":
+          - strong: 76 u.
+      - row "Aceite de girasol 900 ml · La Abuela 7799900017951 1366 u.":
+        - cell "Aceite de girasol 900 ml · La Abuela 7799900017951":
+          - strong: Aceite de girasol 900 ml · La Abuela
+          - generic: "7799900017951"
+        - cell "1366 u.":
+          - strong: 1366 u.
+      - row "Aceite de girasol 900 ml · La Colonia 7799900010815 0 u.":
+        - cell "Aceite de girasol 900 ml · La Colonia 7799900010815":
+          - strong: Aceite de girasol 900 ml · La Colonia
+          - generic: "7799900010815"
+        - cell "0 u.":
+          - strong: 0 u.
+      - row "Aceite de girasol 900 ml · La Cumbre 7799900025093 82 u.":
+        - cell "Aceite de girasol 900 ml · La Cumbre 7799900025093":
+          - strong: Aceite de girasol 900 ml · La Cumbre
+          - generic: "7799900025093"
+        - cell "82 u.":
+          - strong: 82 u.
+      - row "Aceite de girasol 900 ml · La Estrella 7799900031049 94 u.":
+        - cell "Aceite de girasol 900 ml · La Estrella 7799900031049":
+          - strong: Aceite de girasol 900 ml · La Estrella
+          - generic: "7799900031049"
+        - cell "94 u.":
+          - strong: 94 u.
+      - row "Aceite de girasol 900 ml · La Familia 7799900015575 60 u.":
+        - cell "Aceite de girasol 900 ml · La Familia 7799900015575":
+          - strong: Aceite de girasol 900 ml · La Familia
+          - generic: "7799900015575"
+        - cell "60 u.":
+          - strong: 60 u.
+      - row "Aceite de girasol 900 ml · La Huerta 7799900004869 30 u.":
+        - cell "Aceite de girasol 900 ml · La Huerta 7799900004869":
+          - strong: Aceite de girasol 900 ml · La Huerta
+          - generic: "7799900004869"
+        - cell "30 u.":
+          - strong: 30 u.
+      - row "Aceite de girasol 900 ml · La Pradera 7799900020333 81 u.":
+        - cell "Aceite de girasol 900 ml · La Pradera 7799900020333":
+          - strong: Aceite de girasol 900 ml · La Pradera
+          - generic: "7799900020333"
+        - cell "81 u.":
+          - strong: 81 u.
+      - row "Aceite de girasol 900 ml · La Reserva 7799900035801 91 u.":
+        - cell "Aceite de girasol 900 ml · La Reserva 7799900035801":
+          - strong: Aceite de girasol 900 ml · La Reserva
+          - generic: "7799900035801"
+        - cell "91 u.":
+          - strong: 91 u.
+      - row "Aceite de girasol 900 ml · Las Sierras 7799900008430 56 u.":
+        - cell "Aceite de girasol 900 ml · Las Sierras 7799900008430":
+          - strong: Aceite de girasol 900 ml · Las Sierras
+          - generic: "7799900008430"
+        - cell "56 u.":
+          - strong: 56 u.
+  - generic: Página 1
+  - button "Anterior" [disabled]
+  - button "Siguiente"
+  - heading "Traslados" [level=2]
+  - generic: 2 por recibir
+  - text: Estado de envíos
+  - combobox "Estado de envíos":
+    - option "Todos" [selected]
+    - option "En tránsito"
+    - option "Recibidos"
+    - option "Cancelados"
+  - button "Mis vistas": Mis vistas
+  - button "Exportar traslados a Excel": Exportar Excel
+  - article:
+    - strong: Salón de ventas → Depósito central
+    - generic: N.º 20 · 6/10/2026 · 3 productos
+    - generic: Recibido
+    - button "Ver detalle"
+  - article:
+    - strong: Salón de ventas → Depósito central
+    - generic: N.º 19 · 6/10/2026 · 3 productos
+    - generic: Recibido
+    - button "Ver detalle"
+  - article:
+    - strong: Salón de ventas → Depósito central
+    - generic: N.º 18 · 6/10/2026 · 3 productos
+    - generic: Cancelado
+    - button "Ver detalle"
+  - article:
+    - strong: Salón de ventas → Depósito central
+    - generic: N.º 17 · 6/10/2026 · 3 productos
+    - generic: En tránsito
+    - button "Cancelar"
+    - button "Recibir"
+  - article:
+    - strong: Salón de ventas → Depósito central
+    - generic: N.º 16 · 6/10/2026 · 3 productos
+    - generic: En tránsito
+    - button "Cancelar"
+    - button "Recibir"
+  - article:
+    - strong: Salón de ventas → Cámara de frío
+    - generic: N.º 15 · 6/10/2026 · 52 productos
+    - generic: Recibido
+    - button "Ver detalle"
+  - article:
+    - strong: Salón de ventas → Depósito de reserva
+    - generic: N.º 14 · 6/10/2026 · 77 productos
+    - generic: Recibido
+    - button "Ver detalle"
+  - article:
+    - strong: Salón de ventas → Depósito de reserva
+    - generic: N.º 13 · 6/10/2026 · 79 productos
+    - generic: Recibido
+    - button "Ver detalle"
+  - article:
+    - strong: Salón de ventas → Depósito de reserva
+    - generic: N.º 12 · 6/10/2026 · 75 productos
+    - generic: Recibido
+    - button "Ver detalle"
+  - article:
+    - strong: Salón de ventas → Depósito de reserva
+    - generic: N.º 11 · 6/10/2026 · 78 productos
+    - generic: Recibido
+    - button "Ver detalle"
+  - article:
+    - strong: Salón de ventas → Depósito de reserva
+    - generic: N.º 10 · 6/10/2026 · 77 productos
+    - generic: Recibido
+    - button "Ver detalle"
+  - article:
+    - strong: Salón de ventas → Depósito de reserva
+    - generic: N.º 9 · 6/10/2026 · 80 productos
+    - generic: Recibido
+    - button "Ver detalle"
+  - article:
+    - strong: Salón de ventas → Depósito de reserva
+    - generic: N.º 8 · 6/10/2026 · 79 productos
+    - generic: Recibido
+    - button "Ver detalle"
+  - article:
+    - strong: Salón de ventas → Depósito central
+    - generic: N.º 7 · 6/10/2026 · 85 productos
+    - generic: Recibido
+    - button "Ver detalle"
+  - article:
+    - strong: Salón de ventas → Depósito central
+    - generic: N.º 6 · 6/10/2026 · 87 productos
+    - generic: Recibido
+    - button "Ver detalle"
+  - article:
+    - strong: Salón de ventas → Depósito central
+    - generic: N.º 5 · 6/10/2026 · 85 productos
+    - generic: Recibido
+    - button "Ver detalle"
+  - article:
+    - strong: Salón de ventas → Depósito central
+    - generic: N.º 4 · 6/10/2026 · 86 productos
+    - generic: Recibido
+    - button "Ver detalle"
+  - article:
+    - strong: Salón de ventas → Depósito central
+    - generic: N.º 3 · 6/10/2026 · 85 productos
+    - generic: Recibido
+    - button "Ver detalle"
+  - article:
+    - strong: Salón de ventas → Depósito central
+    - generic: N.º 2 · 6/10/2026 · 86 productos
+    - generic: Recibido
+    - button "Ver detalle"
+  - article:
+    - strong: Salón de ventas → Depósito central
+    - generic: N.º 1 · 6/10/2026 · 86 productos
+    - generic: Recibido
+    - button "Ver detalle"

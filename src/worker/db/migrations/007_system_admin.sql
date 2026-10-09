@@ -1,0 +1,1 @@
+ALTER TABLE users ADD COLUMN system_admin INTEGER NOT NULL DEFAULT 0 CHECK(system_admin IN (0,1));

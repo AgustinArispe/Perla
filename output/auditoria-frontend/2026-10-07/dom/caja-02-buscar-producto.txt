@@ -1,0 +1,229 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - strong: Caja abierta · Caja 1 · Lucía
+  - button "Ingreso / retiro"
+  - button "Cerrar caja"
+  - heading "Caja" [level=1]
+  - generic: Escanear código
+  - generic: Borrador al día
+  - textbox "Escanear código" [disabled]:
+    - /placeholder: Código de barras + Enter
+  - generic: F2
+  - button "Buscar producto · F3" [disabled]: Buscar producto · F3
+  - button "Producto por kilo · F6" [disabled]: Producto por kilo · F6
+  - generic: Escaneo suspendido
+  - table:
+    - rowgroup:
+      - row "Producto Cantidad Precio Importe":
+        - columnheader "Producto"
+        - columnheader "Cantidad"
+        - columnheader "Precio"
+        - columnheader "Importe"
+        - columnheader
+    - rowgroup:
+      - row "Arroz largo fino 1 kg 7799900000014 Restar Arroz largo fino 1 kg Cambiar cantidad de Arroz largo fino 1 kg Sumar Arroz largo fino 1 kg $ 2.084,92 $ 4.169,84 Quitar Arroz largo fino 1 kg":
+        - cell "Arroz largo fino 1 kg 7799900000014":
+          - strong: Arroz largo fino 1 kg
+          - generic: "7799900000014"
+        - cell "Restar Arroz largo fino 1 kg Cambiar cantidad de Arroz largo fino 1 kg Sumar Arroz largo fino 1 kg":
+          - button "Restar Arroz largo fino 1 kg" [disabled]: −
+          - button "Cambiar cantidad de Arroz largo fino 1 kg" [disabled]: "2"
+          - button "Sumar Arroz largo fino 1 kg" [disabled]: +
+        - cell "$ 2.084,92"
+        - cell "$ 4.169,84":
+          - strong: $ 4.169,84
+        - cell "Quitar Arroz largo fino 1 kg":
+          - button "Quitar Arroz largo fino 1 kg" [disabled]: Quitar
+      - row "Jamón cocido SIM-0087 · Porción Cambiar cantidad de Jamón cocido $ 16.795,23 / kg $ 4.198,81 Quitar Jamón cocido":
+        - cell "Jamón cocido SIM-0087 · Porción":
+          - strong: Jamón cocido
+          - generic: SIM-0087 · Porción
+        - cell "Cambiar cantidad de Jamón cocido":
+          - button "Cambiar cantidad de Jamón cocido" [disabled]: 0,250 kg
+        - cell "$ 16.795,23 / kg":
+          - text: $ 16.795,23
+          - generic: / kg
+        - cell "$ 4.198,81":
+          - strong: $ 4.198,81
+        - cell "Quitar Jamón cocido":
+          - button "Quitar Jamón cocido" [disabled]: Quitar
+      - row "Tomate SIM-0101 · Porción Cambiar cantidad de Tomate $ 2.664,06 / kg $ 3.037,03 Antes $ 3.196,87 Quitar Tomate":
+        - cell "Tomate SIM-0101 · Porción":
+          - strong: Tomate
+          - generic: SIM-0101 · Porción
+        - cell "Cambiar cantidad de Tomate":
+          - button "Cambiar cantidad de Tomate" [disabled]: 1,200 kg
+        - cell "$ 2.664,06 / kg":
+          - text: $ 2.664,06
+          - generic: / kg
+        - cell "$ 3.037,03 Antes $ 3.196,87":
+          - strong: $ 3.037,03
+          - generic: Antes $ 3.196,87
+        - cell "Quitar Tomate":
+          - button "Quitar Tomate" [disabled]: Quitar
+  - complementary:
+    - heading "Venta en curso" [level=2]
+    - term: Subtotal
+    - definition: $ 11.565,52
+    - term: Promociones
+    - definition: $ 159,84
+    - status:
+      - strong: Ahorrás $ 159,84
+      - generic: "Verdulería: 5% de descuento"
+    - button "Descuento manual · F4" [disabled]
+    - button "Elegir cliente" [disabled]: Elegir cliente
+    - generic: Total
+    - strong: $ 11.405,68
+    - button "Cobrar · F8" [disabled]: Cobrar · F8
+    - button "Cancelar venta en curso" [disabled]
+  - dialog "Buscar producto":
+    - heading "Buscar producto" [level=2]
+    - button "Cerrar"
+    - text: Nombre o código
+    - combobox "Nombre o código" [expanded] [active]
+    - listbox "Productos encontrados":
+      - option "Agregar Aceite de girasol 900 ml":
+        - strong: Aceite de girasol 900 ml
+        - text: "7799900000106"
+        - strong: $ 4.169,85
+      - option "Agregar Aceite de girasol 900 ml · Buen Día":
+        - strong: Aceite de girasol 900 ml · Buen Día
+        - text: "7799900039373"
+        - strong: $ 4.220,00
+      - option "Agregar Aceite de girasol 900 ml · Buen Día":
+        - strong: Aceite de girasol 900 ml · Buen Día
+        - text: "7799900003671"
+        - strong: $ 4.389,92
+      - option "Agregar Aceite de girasol 900 ml · Buenos Sabores" [selected]:
+        - strong: Aceite de girasol 900 ml · Buenos Sabores
+        - text: "7799900032237"
+        - strong: $ 4.610,00
+      - option "Agregar Aceite de girasol 900 ml · Campo Vivo":
+        - strong: Aceite de girasol 900 ml · Campo Vivo
+        - text: "7799900012000"
+        - strong: $ 3.112,20
+      - option "Agregar Aceite de girasol 900 ml · Cosecha Nueva":
+        - strong: Aceite de girasol 900 ml · Cosecha Nueva
+        - text: "7799900019146"
+        - strong: $ 3.060,00
+      - option "Agregar Aceite de girasol 900 ml · Costa Clara":
+        - strong: Aceite de girasol 900 ml · Costa Clara
+        - text: "7799900021521"
+        - strong: $ 2.960,00
+      - option "Agregar Aceite de girasol 900 ml · Del Valle":
+        - strong: Aceite de girasol 900 ml · Del Valle
+        - text: "7799900026281"
+        - strong: $ 3.940,00
+      - option "Agregar Aceite de girasol 900 ml · Don Pedro":
+        - strong: Aceite de girasol 900 ml · Don Pedro
+        - text: "7799900009628"
+        - strong: $ 5.617,71
+      - option "Agregar Aceite de girasol 900 ml · El Molino":
+        - strong: Aceite de girasol 900 ml · El Molino
+        - text: "7799900007242"
+        - strong: $ 5.108,07
+      - option "Agregar Aceite de girasol 900 ml · El Ombú":
+        - strong: Aceite de girasol 900 ml · El Ombú
+        - text: "7799900028667"
+        - strong: $ 3.160,00
+      - option "Agregar Aceite de girasol 900 ml · El Trigal":
+        - strong: Aceite de girasol 900 ml · El Trigal
+        - text: "7799900014387"
+        - strong: $ 3.870,00
+      - option "Agregar Aceite de girasol 900 ml · La Abuela":
+        - strong: Aceite de girasol 900 ml · La Abuela
+        - text: "7799900017951"
+        - strong: $ 3.370,00
+      - option "Agregar Aceite de girasol 900 ml · La Colonia":
+        - strong: Aceite de girasol 900 ml · La Colonia
+        - text: "7799900010815"
+        - strong: $ 2.890,00
+      - option "Agregar Aceite de girasol 900 ml · La Cumbre":
+        - strong: Aceite de girasol 900 ml · La Cumbre
+        - text: "7799900025093"
+        - strong: $ 3.400,00
+      - option "Agregar Aceite de girasol 900 ml · La Estrella":
+        - strong: Aceite de girasol 900 ml · La Estrella
+        - text: "7799900031049"
+        - strong: $ 4.810,00
+      - option "Agregar Aceite de girasol 900 ml · La Familia":
+        - strong: Aceite de girasol 900 ml · La Familia
+        - text: "7799900015575"
+        - strong: $ 3.490,00
+      - option "Agregar Aceite de girasol 900 ml · La Huerta":
+        - strong: Aceite de girasol 900 ml · La Huerta
+        - text: "7799900004869"
+        - strong: $ 6.023,11
+      - option "Agregar Aceite de girasol 900 ml · La Pradera":
+        - strong: Aceite de girasol 900 ml · La Pradera
+        - text: "7799900020333"
+        - strong: $ 4.760,00
+      - option "Agregar Aceite de girasol 900 ml · La Reserva":
+        - strong: Aceite de girasol 900 ml · La Reserva
+        - text: "7799900035801"
+        - strong: $ 4.970,00

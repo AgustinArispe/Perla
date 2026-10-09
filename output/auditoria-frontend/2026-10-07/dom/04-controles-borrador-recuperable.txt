@@ -1,0 +1,101 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Controles operativos" [level=1]
+  - paragraph: Conteos, vencimientos y revisión de cierres.
+  - button "Volver"
+  - tablist "Controles":
+    - tab "Hacer conteo" [selected]
+    - tab "Vencimientos"
+    - tab "Con diferencias"
+  - text: Ubicación
+  - combobox "Ubicación":
+    - option "Salón de ventas" [selected]
+    - option "Cámara de frío"
+    - option "Depósito central"
+    - option "Depósito de reserva"
+  - text: Categoría
+  - combobox "Categoría":
+    - option "Todas"
+    - option "Almacén"
+    - option "Bebidas"
+    - option "Congelados" [selected]
+    - option "Fiambrería"
+    - option "Galletitas y golosinas"
+    - option "Infusiones y desayuno"
+    - option "Limpieza"
+    - option "Lácteos"
+    - option "Panadería y huevos"
+    - option "Verdulería"
+  - button "Iniciar conteo"
+  - heading "Borradores recuperables" [level=2]
+  - article:
+    - generic: Salón de ventas · 7/10/2026, 10:32:35
+    - button "Retomar"
+  - button "Anterior" [disabled]
+  - generic: Página 1 · 1 resultados
+  - button "Siguiente" [disabled]

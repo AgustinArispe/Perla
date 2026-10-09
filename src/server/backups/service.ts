@@ -160,7 +160,7 @@ export class BackupService {
   constructor(private readonly options: Options) {
     if (options.key.length !== 32) throw new Error('La clave de backup debe tener 32 bytes.');
     this.key = Buffer.from(options.key);
-    this.maxBytes = options.maxBytes ?? 128 * 1024 * 1024;
+    this.maxBytes = options.maxBytes ?? 512 * 1024 * 1024;
     mkdirSync(options.backupDirectory, { recursive: true, mode: 0o700 });
     chmodSync(options.backupDirectory, 0o700);
   }

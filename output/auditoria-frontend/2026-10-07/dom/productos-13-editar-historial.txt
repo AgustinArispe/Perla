@@ -1,0 +1,1086 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Productos" [level=1]
+  - button "Actualizar precios" [disabled]
+  - button "Categorías y marcas"
+  - button "Etiquetas"
+  - button "Importar productos": Importar productos
+  - button "Nuevo producto F3":
+    - text: Nuevo producto
+    - generic: F3
+  - region "Catálogo de productos":
+    - searchbox "Buscar productos"
+    - generic: F2
+    - text: Estado
+    - combobox "Filtrar por estado":
+      - option "Todos" [selected]
+      - option "Activos"
+      - option "Inactivos"
+    - text: Categoría
+    - combobox "Categoría":
+      - option "Todas" [selected]
+      - option "Almacén"
+      - option "Bebidas"
+      - option "Congelados"
+      - option "Fiambrería"
+      - option "Galletitas y golosinas"
+      - option "Infusiones y desayuno"
+      - option "Lácteos"
+      - option "Limpieza"
+      - option "Panadería y huevos"
+      - option "Verdulería"
+    - text: Marca
+    - combobox "Marca":
+      - option "Todas" [selected]
+      - option "Buen Día"
+      - option "Buen Plato"
+      - option "Buenos Sabores"
+      - option "Campo Vivo"
+      - option "Campos del Sur"
+      - option "Cosecha Nueva"
+      - option "Costa Clara"
+      - option "Del Mercado"
+      - option "Del Valle"
+      - option "Don Pedro"
+      - option "Dulce Momento"
+      - option "El Molino"
+      - option "El Ombú"
+      - option "El Trigal"
+      - option "Hogar Claro"
+      - option "La Abuela"
+      - option "La Casona"
+      - option "La Colonia"
+      - option "La Cumbre"
+      - option "La Estancia"
+      - option "La Estrella"
+      - option "La Familia"
+      - option "La Huerta"
+      - option "La Pradera"
+      - option "La Reserva"
+      - option "Las Sierras"
+      - option "Los Aromos"
+      - option "Mi Barrio"
+      - option "Nueva Mesa"
+      - option "Primavera"
+      - option "Productores de Tandil"
+      - option "Rincón Sur"
+      - option "Santa Ana"
+      - option "Santa Lucía"
+      - option "Sierra Azul"
+      - option "Sol del Sur"
+      - option "Tierra Clara"
+      - option "Tres Espigas"
+      - option "Villa del Sol"
+    - button "Mis vistas": Mis vistas
+    - button "Exportar productos a Excel": Exportar Excel
+    - strong: "4.000"
+    - text: productos en el catálogo
+    - table:
+      - rowgroup:
+        - row "Seleccionar productos de esta página Producto Código de barras Venta Precio Estado Acciones":
+          - columnheader "Seleccionar productos de esta página":
+            - checkbox "Seleccionar productos de esta página"
+          - columnheader "Producto"
+          - columnheader "Código de barras"
+          - columnheader "Venta"
+          - columnheader "Precio"
+          - columnheader "Estado"
+          - columnheader "Acciones":
+            - generic: Acciones
+      - rowgroup:
+        - row "Seleccionar Aceite de girasol 900 ml Aceite de girasol 900 ml SIM-0010 · Almacén · Del Mercado 7799900000106 Unidad $ 4.169,85 Desactivar Aceite de girasol 900 ml Editar Aceite de girasol 900 ml":
+          - cell "Seleccionar Aceite de girasol 900 ml":
+            - checkbox "Seleccionar Aceite de girasol 900 ml"
+          - cell "Aceite de girasol 900 ml SIM-0010 · Almacén · Del Mercado":
+            - strong: Aceite de girasol 900 ml
+            - generic: SIM-0010 · Almacén · Del Mercado
+          - cell "7799900000106"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 4.169,85"
+          - cell "Desactivar Aceite de girasol 900 ml":
+            - button "Desactivar Aceite de girasol 900 ml": Activo
+          - cell "Editar Aceite de girasol 900 ml":
+            - button "Editar Aceite de girasol 900 ml":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Buen Día Aceite de girasol 900 ml · Buen Día SIM-3937 · Almacén · Buen Día 7799900039373 Unidad $ 4.220,00 Desactivar Aceite de girasol 900 ml · Buen Día Editar Aceite de girasol 900 ml · Buen Día":
+          - cell "Seleccionar Aceite de girasol 900 ml · Buen Día":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Buen Día"
+          - cell "Aceite de girasol 900 ml · Buen Día SIM-3937 · Almacén · Buen Día":
+            - strong: Aceite de girasol 900 ml · Buen Día
+            - generic: SIM-3937 · Almacén · Buen Día
+          - cell "7799900039373"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 4.220,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Buen Día":
+            - button "Desactivar Aceite de girasol 900 ml · Buen Día": Activo
+          - cell "Editar Aceite de girasol 900 ml · Buen Día":
+            - button "Editar Aceite de girasol 900 ml · Buen Día":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Buen Día Aceite de girasol 900 ml · Buen Día SIM-0367 · Almacén · Buen Día 7799900003671 Unidad $ 4.389,92 Desactivar Aceite de girasol 900 ml · Buen Día Editar Aceite de girasol 900 ml · Buen Día":
+          - cell "Seleccionar Aceite de girasol 900 ml · Buen Día":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Buen Día"
+          - cell "Aceite de girasol 900 ml · Buen Día SIM-0367 · Almacén · Buen Día":
+            - strong: Aceite de girasol 900 ml · Buen Día
+            - generic: SIM-0367 · Almacén · Buen Día
+          - cell "7799900003671"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 4.389,92"
+          - cell "Desactivar Aceite de girasol 900 ml · Buen Día":
+            - button "Desactivar Aceite de girasol 900 ml · Buen Día": Activo
+          - cell "Editar Aceite de girasol 900 ml · Buen Día":
+            - button "Editar Aceite de girasol 900 ml · Buen Día":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Buenos Sabores Aceite de girasol 900 ml · Buenos Sabores SIM-3223 · Almacén · Buenos Sabores 7799900032237 Unidad $ 4.610,00 Desactivar Aceite de girasol 900 ml · Buenos Sabores Editar Aceite de girasol 900 ml · Buenos Sabores":
+          - cell "Seleccionar Aceite de girasol 900 ml · Buenos Sabores":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Buenos Sabores"
+          - cell "Aceite de girasol 900 ml · Buenos Sabores SIM-3223 · Almacén · Buenos Sabores":
+            - strong: Aceite de girasol 900 ml · Buenos Sabores
+            - generic: SIM-3223 · Almacén · Buenos Sabores
+          - cell "7799900032237"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 4.610,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Buenos Sabores":
+            - button "Desactivar Aceite de girasol 900 ml · Buenos Sabores": Activo
+          - cell "Editar Aceite de girasol 900 ml · Buenos Sabores":
+            - button "Editar Aceite de girasol 900 ml · Buenos Sabores":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Campo Vivo Aceite de girasol 900 ml · Campo Vivo SIM-1200 · Almacén · Campo Vivo 7799900012000 Unidad $ 3.112,20 Desactivar Aceite de girasol 900 ml · Campo Vivo Editar Aceite de girasol 900 ml · Campo Vivo":
+          - cell "Seleccionar Aceite de girasol 900 ml · Campo Vivo":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Campo Vivo"
+          - cell "Aceite de girasol 900 ml · Campo Vivo SIM-1200 · Almacén · Campo Vivo":
+            - strong: Aceite de girasol 900 ml · Campo Vivo
+            - generic: SIM-1200 · Almacén · Campo Vivo
+          - cell "7799900012000"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.112,20"
+          - cell "Desactivar Aceite de girasol 900 ml · Campo Vivo":
+            - button "Desactivar Aceite de girasol 900 ml · Campo Vivo": Activo
+          - cell "Editar Aceite de girasol 900 ml · Campo Vivo":
+            - button "Editar Aceite de girasol 900 ml · Campo Vivo":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Cosecha Nueva Aceite de girasol 900 ml · Cosecha Nueva SIM-1914 · Almacén · Cosecha Nueva 7799900019146 Unidad $ 3.060,00 Desactivar Aceite de girasol 900 ml · Cosecha Nueva Editar Aceite de girasol 900 ml · Cosecha Nueva":
+          - cell "Seleccionar Aceite de girasol 900 ml · Cosecha Nueva":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Cosecha Nueva"
+          - cell "Aceite de girasol 900 ml · Cosecha Nueva SIM-1914 · Almacén · Cosecha Nueva":
+            - strong: Aceite de girasol 900 ml · Cosecha Nueva
+            - generic: SIM-1914 · Almacén · Cosecha Nueva
+          - cell "7799900019146"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.060,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Cosecha Nueva":
+            - button "Desactivar Aceite de girasol 900 ml · Cosecha Nueva": Activo
+          - cell "Editar Aceite de girasol 900 ml · Cosecha Nueva":
+            - button "Editar Aceite de girasol 900 ml · Cosecha Nueva":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Costa Clara Aceite de girasol 900 ml · Costa Clara SIM-2152 · Almacén · Costa Clara 7799900021521 Unidad $ 2.960,00 Desactivar Aceite de girasol 900 ml · Costa Clara Editar Aceite de girasol 900 ml · Costa Clara":
+          - cell "Seleccionar Aceite de girasol 900 ml · Costa Clara":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Costa Clara"
+          - cell "Aceite de girasol 900 ml · Costa Clara SIM-2152 · Almacén · Costa Clara":
+            - strong: Aceite de girasol 900 ml · Costa Clara
+            - generic: SIM-2152 · Almacén · Costa Clara
+          - cell "7799900021521"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 2.960,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Costa Clara":
+            - button "Desactivar Aceite de girasol 900 ml · Costa Clara": Activo
+          - cell "Editar Aceite de girasol 900 ml · Costa Clara":
+            - button "Editar Aceite de girasol 900 ml · Costa Clara":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Del Valle Aceite de girasol 900 ml · Del Valle SIM-2628 · Almacén · Del Valle 7799900026281 Unidad $ 3.940,00 Desactivar Aceite de girasol 900 ml · Del Valle Editar Aceite de girasol 900 ml · Del Valle":
+          - cell "Seleccionar Aceite de girasol 900 ml · Del Valle":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Del Valle"
+          - cell "Aceite de girasol 900 ml · Del Valle SIM-2628 · Almacén · Del Valle":
+            - strong: Aceite de girasol 900 ml · Del Valle
+            - generic: SIM-2628 · Almacén · Del Valle
+          - cell "7799900026281"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.940,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Del Valle":
+            - button "Desactivar Aceite de girasol 900 ml · Del Valle": Activo
+          - cell "Editar Aceite de girasol 900 ml · Del Valle":
+            - button "Editar Aceite de girasol 900 ml · Del Valle":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Don Pedro Aceite de girasol 900 ml · Don Pedro SIM-0962 · Almacén · Don Pedro 7799900009628 Unidad $ 5.617,71 Desactivar Aceite de girasol 900 ml · Don Pedro Editar Aceite de girasol 900 ml · Don Pedro":
+          - cell "Seleccionar Aceite de girasol 900 ml · Don Pedro":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Don Pedro"
+          - cell "Aceite de girasol 900 ml · Don Pedro SIM-0962 · Almacén · Don Pedro":
+            - strong: Aceite de girasol 900 ml · Don Pedro
+            - generic: SIM-0962 · Almacén · Don Pedro
+          - cell "7799900009628"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 5.617,71"
+          - cell "Desactivar Aceite de girasol 900 ml · Don Pedro":
+            - button "Desactivar Aceite de girasol 900 ml · Don Pedro": Activo
+          - cell "Editar Aceite de girasol 900 ml · Don Pedro":
+            - button "Editar Aceite de girasol 900 ml · Don Pedro":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · El Molino Aceite de girasol 900 ml · El Molino SIM-0724 · Almacén · El Molino 7799900007242 Unidad $ 5.108,07 Desactivar Aceite de girasol 900 ml · El Molino Editar Aceite de girasol 900 ml · El Molino":
+          - cell "Seleccionar Aceite de girasol 900 ml · El Molino":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · El Molino"
+          - cell "Aceite de girasol 900 ml · El Molino SIM-0724 · Almacén · El Molino":
+            - strong: Aceite de girasol 900 ml · El Molino
+            - generic: SIM-0724 · Almacén · El Molino
+          - cell "7799900007242"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 5.108,07"
+          - cell "Desactivar Aceite de girasol 900 ml · El Molino":
+            - button "Desactivar Aceite de girasol 900 ml · El Molino": Activo
+          - cell "Editar Aceite de girasol 900 ml · El Molino":
+            - button "Editar Aceite de girasol 900 ml · El Molino":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · El Ombú Aceite de girasol 900 ml · El Ombú SIM-2866 · Almacén · El Ombú 7799900028667 Unidad $ 3.160,00 Desactivar Aceite de girasol 900 ml · El Ombú Editar Aceite de girasol 900 ml · El Ombú":
+          - cell "Seleccionar Aceite de girasol 900 ml · El Ombú":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · El Ombú"
+          - cell "Aceite de girasol 900 ml · El Ombú SIM-2866 · Almacén · El Ombú":
+            - strong: Aceite de girasol 900 ml · El Ombú
+            - generic: SIM-2866 · Almacén · El Ombú
+          - cell "7799900028667"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.160,00"
+          - cell "Desactivar Aceite de girasol 900 ml · El Ombú":
+            - button "Desactivar Aceite de girasol 900 ml · El Ombú": Activo
+          - cell "Editar Aceite de girasol 900 ml · El Ombú":
+            - button "Editar Aceite de girasol 900 ml · El Ombú":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · El Trigal Aceite de girasol 900 ml · El Trigal SIM-1438 · Almacén · El Trigal 7799900014387 Unidad $ 3.870,00 Desactivar Aceite de girasol 900 ml · El Trigal Editar Aceite de girasol 900 ml · El Trigal":
+          - cell "Seleccionar Aceite de girasol 900 ml · El Trigal":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · El Trigal"
+          - cell "Aceite de girasol 900 ml · El Trigal SIM-1438 · Almacén · El Trigal":
+            - strong: Aceite de girasol 900 ml · El Trigal
+            - generic: SIM-1438 · Almacén · El Trigal
+          - cell "7799900014387"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.870,00"
+          - cell "Desactivar Aceite de girasol 900 ml · El Trigal":
+            - button "Desactivar Aceite de girasol 900 ml · El Trigal": Activo
+          - cell "Editar Aceite de girasol 900 ml · El Trigal":
+            - button "Editar Aceite de girasol 900 ml · El Trigal":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · La Abuela Aceite de girasol 900 ml · La Abuela SIM-1795 · Almacén · La Abuela 7799900017951 Unidad $ 3.370,00 Desactivar Aceite de girasol 900 ml · La Abuela Editar Aceite de girasol 900 ml · La Abuela":
+          - cell "Seleccionar Aceite de girasol 900 ml · La Abuela":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · La Abuela"
+          - cell "Aceite de girasol 900 ml · La Abuela SIM-1795 · Almacén · La Abuela":
+            - strong: Aceite de girasol 900 ml · La Abuela
+            - generic: SIM-1795 · Almacén · La Abuela
+          - cell "7799900017951"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.370,00"
+          - cell "Desactivar Aceite de girasol 900 ml · La Abuela":
+            - button "Desactivar Aceite de girasol 900 ml · La Abuela": Activo
+          - cell "Editar Aceite de girasol 900 ml · La Abuela":
+            - button "Editar Aceite de girasol 900 ml · La Abuela":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · La Colonia Aceite de girasol 900 ml · La Colonia SIM-1081 · Almacén · La Colonia 7799900010815 Unidad $ 2.890,00 Desactivar Aceite de girasol 900 ml · La Colonia Editar Aceite de girasol 900 ml · La Colonia":
+          - cell "Seleccionar Aceite de girasol 900 ml · La Colonia":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · La Colonia"
+          - cell "Aceite de girasol 900 ml · La Colonia SIM-1081 · Almacén · La Colonia":
+            - strong: Aceite de girasol 900 ml · La Colonia
+            - generic: SIM-1081 · Almacén · La Colonia
+          - cell "7799900010815"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 2.890,00"
+          - cell "Desactivar Aceite de girasol 900 ml · La Colonia":
+            - button "Desactivar Aceite de girasol 900 ml · La Colonia": Activo
+          - cell "Editar Aceite de girasol 900 ml · La Colonia":
+            - button "Editar Aceite de girasol 900 ml · La Colonia":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · La Cumbre Aceite de girasol 900 ml · La Cumbre SIM-2509 · Almacén · La Cumbre 7799900025093 Unidad $ 3.400,00 Desactivar Aceite de girasol 900 ml · La Cumbre Editar Aceite de girasol 900 ml · La Cumbre":
+          - cell "Seleccionar Aceite de girasol 900 ml · La Cumbre":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · La Cumbre"
+          - cell "Aceite de girasol 900 ml · La Cumbre SIM-2509 · Almacén · La Cumbre":
+            - strong: Aceite de girasol 900 ml · La Cumbre
+            - generic: SIM-2509 · Almacén · La Cumbre
+          - cell "7799900025093"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.400,00"
+          - cell "Desactivar Aceite de girasol 900 ml · La Cumbre":
+            - button "Desactivar Aceite de girasol 900 ml · La Cumbre": Activo
+          - cell "Editar Aceite de girasol 900 ml · La Cumbre":
+            - button "Editar Aceite de girasol 900 ml · La Cumbre":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · La Estrella Aceite de girasol 900 ml · La Estrella SIM-3104 · Almacén · La Estrella 7799900031049 Unidad $ 4.810,00 Desactivar Aceite de girasol 900 ml · La Estrella Editar Aceite de girasol 900 ml · La Estrella":
+          - cell "Seleccionar Aceite de girasol 900 ml · La Estrella":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · La Estrella"
+          - cell "Aceite de girasol 900 ml · La Estrella SIM-3104 · Almacén · La Estrella":
+            - strong: Aceite de girasol 900 ml · La Estrella
+            - generic: SIM-3104 · Almacén · La Estrella
+          - cell "7799900031049"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 4.810,00"
+          - cell "Desactivar Aceite de girasol 900 ml · La Estrella":
+            - button "Desactivar Aceite de girasol 900 ml · La Estrella": Activo
+          - cell "Editar Aceite de girasol 900 ml · La Estrella":
+            - button "Editar Aceite de girasol 900 ml · La Estrella":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · La Familia Aceite de girasol 900 ml · La Familia SIM-1557 · Almacén · La Familia 7799900015575 Unidad $ 3.490,00 Desactivar Aceite de girasol 900 ml · La Familia Editar Aceite de girasol 900 ml · La Familia":
+          - cell "Seleccionar Aceite de girasol 900 ml · La Familia":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · La Familia"
+          - cell "Aceite de girasol 900 ml · La Familia SIM-1557 · Almacén · La Familia":
+            - strong: Aceite de girasol 900 ml · La Familia
+            - generic: SIM-1557 · Almacén · La Familia
+          - cell "7799900015575"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.490,00"
+          - cell "Desactivar Aceite de girasol 900 ml · La Familia":
+            - button "Desactivar Aceite de girasol 900 ml · La Familia": Activo
+          - cell "Editar Aceite de girasol 900 ml · La Familia":
+            - button "Editar Aceite de girasol 900 ml · La Familia":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · La Huerta Aceite de girasol 900 ml · La Huerta SIM-0486 · Almacén · La Huerta 7799900004869 Unidad $ 6.023,11 Desactivar Aceite de girasol 900 ml · La Huerta Editar Aceite de girasol 900 ml · La Huerta":
+          - cell "Seleccionar Aceite de girasol 900 ml · La Huerta":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · La Huerta"
+          - cell "Aceite de girasol 900 ml · La Huerta SIM-0486 · Almacén · La Huerta":
+            - strong: Aceite de girasol 900 ml · La Huerta
+            - generic: SIM-0486 · Almacén · La Huerta
+          - cell "7799900004869"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 6.023,11"
+          - cell "Desactivar Aceite de girasol 900 ml · La Huerta":
+            - button "Desactivar Aceite de girasol 900 ml · La Huerta": Activo
+          - cell "Editar Aceite de girasol 900 ml · La Huerta":
+            - button "Editar Aceite de girasol 900 ml · La Huerta":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · La Pradera Aceite de girasol 900 ml · La Pradera SIM-2033 · Almacén · La Pradera 7799900020333 Unidad $ 4.760,00 Desactivar Aceite de girasol 900 ml · La Pradera Editar Aceite de girasol 900 ml · La Pradera":
+          - cell "Seleccionar Aceite de girasol 900 ml · La Pradera":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · La Pradera"
+          - cell "Aceite de girasol 900 ml · La Pradera SIM-2033 · Almacén · La Pradera":
+            - strong: Aceite de girasol 900 ml · La Pradera
+            - generic: SIM-2033 · Almacén · La Pradera
+          - cell "7799900020333"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 4.760,00"
+          - cell "Desactivar Aceite de girasol 900 ml · La Pradera":
+            - button "Desactivar Aceite de girasol 900 ml · La Pradera": Activo
+          - cell "Editar Aceite de girasol 900 ml · La Pradera":
+            - button "Editar Aceite de girasol 900 ml · La Pradera":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · La Reserva Aceite de girasol 900 ml · La Reserva SIM-3580 · Almacén · La Reserva 7799900035801 Unidad $ 4.970,00 Desactivar Aceite de girasol 900 ml · La Reserva Editar Aceite de girasol 900 ml · La Reserva":
+          - cell "Seleccionar Aceite de girasol 900 ml · La Reserva":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · La Reserva"
+          - cell "Aceite de girasol 900 ml · La Reserva SIM-3580 · Almacén · La Reserva":
+            - strong: Aceite de girasol 900 ml · La Reserva
+            - generic: SIM-3580 · Almacén · La Reserva
+          - cell "7799900035801"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 4.970,00"
+          - cell "Desactivar Aceite de girasol 900 ml · La Reserva":
+            - button "Desactivar Aceite de girasol 900 ml · La Reserva": Activo
+          - cell "Editar Aceite de girasol 900 ml · La Reserva":
+            - button "Editar Aceite de girasol 900 ml · La Reserva":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Las Sierras Aceite de girasol 900 ml · Las Sierras SIM-0843 · Almacén · Las Sierras 7799900008430 Unidad $ 3.498,04 Desactivar Aceite de girasol 900 ml · Las Sierras Editar Aceite de girasol 900 ml · Las Sierras":
+          - cell "Seleccionar Aceite de girasol 900 ml · Las Sierras":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Las Sierras"
+          - cell "Aceite de girasol 900 ml · Las Sierras SIM-0843 · Almacén · Las Sierras":
+            - strong: Aceite de girasol 900 ml · Las Sierras
+            - generic: SIM-0843 · Almacén · Las Sierras
+          - cell "7799900008430"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.498,04"
+          - cell "Desactivar Aceite de girasol 900 ml · Las Sierras":
+            - button "Desactivar Aceite de girasol 900 ml · Las Sierras": Activo
+          - cell "Editar Aceite de girasol 900 ml · Las Sierras":
+            - button "Editar Aceite de girasol 900 ml · Las Sierras":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Los Aromos Aceite de girasol 900 ml · Los Aromos SIM-0129 · Almacén · Los Aromos 7799900001295 Unidad $ 5.455,55 Desactivar Aceite de girasol 900 ml · Los Aromos Editar Aceite de girasol 900 ml · Los Aromos":
+          - cell "Seleccionar Aceite de girasol 900 ml · Los Aromos":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Los Aromos"
+          - cell "Aceite de girasol 900 ml · Los Aromos SIM-0129 · Almacén · Los Aromos":
+            - strong: Aceite de girasol 900 ml · Los Aromos
+            - generic: SIM-0129 · Almacén · Los Aromos
+          - cell "7799900001295"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 5.455,55"
+          - cell "Desactivar Aceite de girasol 900 ml · Los Aromos":
+            - button "Desactivar Aceite de girasol 900 ml · Los Aromos": Activo
+          - cell "Editar Aceite de girasol 900 ml · Los Aromos":
+            - button "Editar Aceite de girasol 900 ml · Los Aromos":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Los Aromos Aceite de girasol 900 ml · Los Aromos SIM-3699 · Almacén · Los Aromos 7799900036990 Unidad $ 2.920,00 Desactivar Aceite de girasol 900 ml · Los Aromos Editar Aceite de girasol 900 ml · Los Aromos":
+          - cell "Seleccionar Aceite de girasol 900 ml · Los Aromos":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Los Aromos"
+          - cell "Aceite de girasol 900 ml · Los Aromos SIM-3699 · Almacén · Los Aromos":
+            - strong: Aceite de girasol 900 ml · Los Aromos
+            - generic: SIM-3699 · Almacén · Los Aromos
+          - cell "7799900036990"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 2.920,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Los Aromos":
+            - button "Desactivar Aceite de girasol 900 ml · Los Aromos": Activo
+          - cell "Editar Aceite de girasol 900 ml · Los Aromos":
+            - button "Editar Aceite de girasol 900 ml · Los Aromos":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Mi Barrio Aceite de girasol 900 ml · Mi Barrio SIM-3342 · Almacén · Mi Barrio 7799900033425 Unidad $ 3.850,00 Desactivar Aceite de girasol 900 ml · Mi Barrio Editar Aceite de girasol 900 ml · Mi Barrio":
+          - cell "Seleccionar Aceite de girasol 900 ml · Mi Barrio":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Mi Barrio"
+          - cell "Aceite de girasol 900 ml · Mi Barrio SIM-3342 · Almacén · Mi Barrio":
+            - strong: Aceite de girasol 900 ml · Mi Barrio
+            - generic: SIM-3342 · Almacén · Mi Barrio
+          - cell "7799900033425"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.850,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Mi Barrio":
+            - button "Desactivar Aceite de girasol 900 ml · Mi Barrio": Activo
+          - cell "Editar Aceite de girasol 900 ml · Mi Barrio":
+            - button "Editar Aceite de girasol 900 ml · Mi Barrio":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Nueva Mesa Aceite de girasol 900 ml · Nueva Mesa SIM-1319 · Almacén · Nueva Mesa 7799900013199 Unidad $ 4.430,00 Desactivar Aceite de girasol 900 ml · Nueva Mesa Editar Aceite de girasol 900 ml · Nueva Mesa":
+          - cell "Seleccionar Aceite de girasol 900 ml · Nueva Mesa":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Nueva Mesa"
+          - cell "Aceite de girasol 900 ml · Nueva Mesa SIM-1319 · Almacén · Nueva Mesa":
+            - strong: Aceite de girasol 900 ml · Nueva Mesa
+            - generic: SIM-1319 · Almacén · Nueva Mesa
+          - cell "7799900013199"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 4.430,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Nueva Mesa":
+            - button "Desactivar Aceite de girasol 900 ml · Nueva Mesa": Activo
+          - cell "Editar Aceite de girasol 900 ml · Nueva Mesa":
+            - button "Editar Aceite de girasol 900 ml · Nueva Mesa":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Primavera Aceite de girasol 900 ml · Primavera SIM-2747 · Almacén · Primavera 7799900027479 Unidad $ 3.560,00 Desactivar Aceite de girasol 900 ml · Primavera Editar Aceite de girasol 900 ml · Primavera":
+          - cell "Seleccionar Aceite de girasol 900 ml · Primavera":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Primavera"
+          - cell "Aceite de girasol 900 ml · Primavera SIM-2747 · Almacén · Primavera":
+            - strong: Aceite de girasol 900 ml · Primavera
+            - generic: SIM-2747 · Almacén · Primavera
+          - cell "7799900027479"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.560,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Primavera":
+            - button "Desactivar Aceite de girasol 900 ml · Primavera": Activo
+          - cell "Editar Aceite de girasol 900 ml · Primavera":
+            - button "Editar Aceite de girasol 900 ml · Primavera":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Rincón Sur Aceite de girasol 900 ml · Rincón Sur SIM-2985 · Almacén · Rincón Sur 7799900029855 Unidad $ 4.260,00 Desactivar Aceite de girasol 900 ml · Rincón Sur Editar Aceite de girasol 900 ml · Rincón Sur":
+          - cell "Seleccionar Aceite de girasol 900 ml · Rincón Sur":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Rincón Sur"
+          - cell "Aceite de girasol 900 ml · Rincón Sur SIM-2985 · Almacén · Rincón Sur":
+            - strong: Aceite de girasol 900 ml · Rincón Sur
+            - generic: SIM-2985 · Almacén · Rincón Sur
+          - cell "7799900029855"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 4.260,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Rincón Sur":
+            - button "Desactivar Aceite de girasol 900 ml · Rincón Sur": Activo
+          - cell "Editar Aceite de girasol 900 ml · Rincón Sur":
+            - button "Editar Aceite de girasol 900 ml · Rincón Sur":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Santa Ana Aceite de girasol 900 ml · Santa Ana SIM-1676 · Almacén · Santa Ana 7799900016763 Unidad $ 3.360,00 Desactivar Aceite de girasol 900 ml · Santa Ana Editar Aceite de girasol 900 ml · Santa Ana":
+          - cell "Seleccionar Aceite de girasol 900 ml · Santa Ana":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Santa Ana"
+          - cell "Aceite de girasol 900 ml · Santa Ana SIM-1676 · Almacén · Santa Ana":
+            - strong: Aceite de girasol 900 ml · Santa Ana
+            - generic: SIM-1676 · Almacén · Santa Ana
+          - cell "7799900016763"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.360,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Santa Ana":
+            - button "Desactivar Aceite de girasol 900 ml · Santa Ana": Activo
+          - cell "Editar Aceite de girasol 900 ml · Santa Ana":
+            - button "Editar Aceite de girasol 900 ml · Santa Ana":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Santa Lucía Aceite de girasol 900 ml · Santa Lucía SIM-3818 · Almacén · Santa Lucía 7799900038185 Unidad $ 3.090,00 Desactivar Aceite de girasol 900 ml · Santa Lucía Editar Aceite de girasol 900 ml · Santa Lucía":
+          - cell "Seleccionar Aceite de girasol 900 ml · Santa Lucía":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Santa Lucía"
+          - cell "Aceite de girasol 900 ml · Santa Lucía SIM-3818 · Almacén · Santa Lucía":
+            - strong: Aceite de girasol 900 ml · Santa Lucía
+            - generic: SIM-3818 · Almacén · Santa Lucía
+          - cell "7799900038185"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.090,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Santa Lucía":
+            - button "Desactivar Aceite de girasol 900 ml · Santa Lucía": Activo
+          - cell "Editar Aceite de girasol 900 ml · Santa Lucía":
+            - button "Editar Aceite de girasol 900 ml · Santa Lucía":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Santa Lucía Aceite de girasol 900 ml · Santa Lucía SIM-0248 · Almacén · Santa Lucía 7799900002483 Unidad $ 3.173,73 Desactivar Aceite de girasol 900 ml · Santa Lucía Editar Aceite de girasol 900 ml · Santa Lucía":
+          - cell "Seleccionar Aceite de girasol 900 ml · Santa Lucía":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Santa Lucía"
+          - cell "Aceite de girasol 900 ml · Santa Lucía SIM-0248 · Almacén · Santa Lucía":
+            - strong: Aceite de girasol 900 ml · Santa Lucía
+            - generic: SIM-0248 · Almacén · Santa Lucía
+          - cell "7799900002483"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.173,73"
+          - cell "Desactivar Aceite de girasol 900 ml · Santa Lucía":
+            - button "Desactivar Aceite de girasol 900 ml · Santa Lucía": Activo
+          - cell "Editar Aceite de girasol 900 ml · Santa Lucía":
+            - button "Editar Aceite de girasol 900 ml · Santa Lucía":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Sol del Sur Aceite de girasol 900 ml · Sol del Sur SIM-0605 · Almacén · Sol del Sur 7799900006054 Unidad $ 5.258,64 Desactivar Aceite de girasol 900 ml · Sol del Sur Editar Aceite de girasol 900 ml · Sol del Sur":
+          - cell "Seleccionar Aceite de girasol 900 ml · Sol del Sur":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Sol del Sur"
+          - cell "Aceite de girasol 900 ml · Sol del Sur SIM-0605 · Almacén · Sol del Sur":
+            - strong: Aceite de girasol 900 ml · Sol del Sur
+            - generic: SIM-0605 · Almacén · Sol del Sur
+          - cell "7799900006054"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 5.258,64"
+          - cell "Desactivar Aceite de girasol 900 ml · Sol del Sur":
+            - button "Desactivar Aceite de girasol 900 ml · Sol del Sur": Activo
+          - cell "Editar Aceite de girasol 900 ml · Sol del Sur":
+            - button "Editar Aceite de girasol 900 ml · Sol del Sur":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Tierra Clara Aceite de girasol 900 ml · Tierra Clara SIM-3461 · Almacén · Tierra Clara 7799900034613 Unidad $ 3.600,00 Desactivar Aceite de girasol 900 ml · Tierra Clara Editar Aceite de girasol 900 ml · Tierra Clara":
+          - cell "Seleccionar Aceite de girasol 900 ml · Tierra Clara":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Tierra Clara"
+          - cell "Aceite de girasol 900 ml · Tierra Clara SIM-3461 · Almacén · Tierra Clara":
+            - strong: Aceite de girasol 900 ml · Tierra Clara
+            - generic: SIM-3461 · Almacén · Tierra Clara
+          - cell "7799900034613"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.600,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Tierra Clara":
+            - button "Desactivar Aceite de girasol 900 ml · Tierra Clara": Activo
+          - cell "Editar Aceite de girasol 900 ml · Tierra Clara":
+            - button "Editar Aceite de girasol 900 ml · Tierra Clara":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Tres Espigas Aceite de girasol 900 ml · Tres Espigas SIM-2271 · Almacén · Tres Espigas 7799900022719 Unidad $ 3.250,00 Desactivar Aceite de girasol 900 ml · Tres Espigas Editar Aceite de girasol 900 ml · Tres Espigas":
+          - cell "Seleccionar Aceite de girasol 900 ml · Tres Espigas":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Tres Espigas"
+          - cell "Aceite de girasol 900 ml · Tres Espigas SIM-2271 · Almacén · Tres Espigas":
+            - strong: Aceite de girasol 900 ml · Tres Espigas
+            - generic: SIM-2271 · Almacén · Tres Espigas
+          - cell "7799900022719"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 3.250,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Tres Espigas":
+            - button "Desactivar Aceite de girasol 900 ml · Tres Espigas": Activo
+          - cell "Editar Aceite de girasol 900 ml · Tres Espigas":
+            - button "Editar Aceite de girasol 900 ml · Tres Espigas":
+              - generic: Editar
+        - row "Seleccionar Aceite de girasol 900 ml · Villa del Sol Aceite de girasol 900 ml · Villa del Sol SIM-2390 · Almacén · Villa del Sol 7799900023907 Unidad $ 5.190,00 Desactivar Aceite de girasol 900 ml · Villa del Sol Editar Aceite de girasol 900 ml · Villa del Sol":
+          - cell "Seleccionar Aceite de girasol 900 ml · Villa del Sol":
+            - checkbox "Seleccionar Aceite de girasol 900 ml · Villa del Sol"
+          - cell "Aceite de girasol 900 ml · Villa del Sol SIM-2390 · Almacén · Villa del Sol":
+            - strong: Aceite de girasol 900 ml · Villa del Sol
+            - generic: SIM-2390 · Almacén · Villa del Sol
+          - cell "7799900023907"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 5.190,00"
+          - cell "Desactivar Aceite de girasol 900 ml · Villa del Sol":
+            - button "Desactivar Aceite de girasol 900 ml · Villa del Sol": Activo
+          - cell "Editar Aceite de girasol 900 ml · Villa del Sol":
+            - button "Editar Aceite de girasol 900 ml · Villa del Sol":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml Aceite de oliva 500 ml SIM-0011 · Almacén · Del Mercado 7799900000113 Unidad $ 10.656,28 Desactivar Aceite de oliva 500 ml Editar Aceite de oliva 500 ml":
+          - cell "Seleccionar Aceite de oliva 500 ml":
+            - checkbox "Seleccionar Aceite de oliva 500 ml"
+          - cell "Aceite de oliva 500 ml SIM-0011 · Almacén · Del Mercado":
+            - strong: Aceite de oliva 500 ml
+            - generic: SIM-0011 · Almacén · Del Mercado
+          - cell "7799900000113"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 10.656,28"
+          - cell "Desactivar Aceite de oliva 500 ml":
+            - button "Desactivar Aceite de oliva 500 ml": Activo
+          - cell "Editar Aceite de oliva 500 ml":
+            - button "Editar Aceite de oliva 500 ml":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · Buen Día Aceite de oliva 500 ml · Buen Día SIM-3938 · Almacén · Buen Día 7799900039380 Unidad $ 7.570,00 Desactivar Aceite de oliva 500 ml · Buen Día Editar Aceite de oliva 500 ml · Buen Día":
+          - cell "Seleccionar Aceite de oliva 500 ml · Buen Día":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · Buen Día"
+          - cell "Aceite de oliva 500 ml · Buen Día SIM-3938 · Almacén · Buen Día":
+            - strong: Aceite de oliva 500 ml · Buen Día
+            - generic: SIM-3938 · Almacén · Buen Día
+          - cell "7799900039380"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 7.570,00"
+          - cell "Desactivar Aceite de oliva 500 ml · Buen Día":
+            - button "Desactivar Aceite de oliva 500 ml · Buen Día": Activo
+          - cell "Editar Aceite de oliva 500 ml · Buen Día":
+            - button "Editar Aceite de oliva 500 ml · Buen Día":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · Buen Día Aceite de oliva 500 ml · Buen Día SIM-0368 · Almacén · Buen Día 7799900003688 Unidad $ 14.096,41 Desactivar Aceite de oliva 500 ml · Buen Día Editar Aceite de oliva 500 ml · Buen Día":
+          - cell "Seleccionar Aceite de oliva 500 ml · Buen Día":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · Buen Día"
+          - cell "Aceite de oliva 500 ml · Buen Día SIM-0368 · Almacén · Buen Día":
+            - strong: Aceite de oliva 500 ml · Buen Día
+            - generic: SIM-0368 · Almacén · Buen Día
+          - cell "7799900003688"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 14.096,41"
+          - cell "Desactivar Aceite de oliva 500 ml · Buen Día":
+            - button "Desactivar Aceite de oliva 500 ml · Buen Día": Activo
+          - cell "Editar Aceite de oliva 500 ml · Buen Día":
+            - button "Editar Aceite de oliva 500 ml · Buen Día":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · Buenos Sabores Aceite de oliva 500 ml · Buenos Sabores SIM-3224 · Almacén · Buenos Sabores 7799900032244 Unidad $ 9.240,00 Desactivar Aceite de oliva 500 ml · Buenos Sabores Editar Aceite de oliva 500 ml · Buenos Sabores":
+          - cell "Seleccionar Aceite de oliva 500 ml · Buenos Sabores":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · Buenos Sabores"
+          - cell "Aceite de oliva 500 ml · Buenos Sabores SIM-3224 · Almacén · Buenos Sabores":
+            - strong: Aceite de oliva 500 ml · Buenos Sabores
+            - generic: SIM-3224 · Almacén · Buenos Sabores
+          - cell "7799900032244"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 9.240,00"
+          - cell "Desactivar Aceite de oliva 500 ml · Buenos Sabores":
+            - button "Desactivar Aceite de oliva 500 ml · Buenos Sabores": Activo
+          - cell "Editar Aceite de oliva 500 ml · Buenos Sabores":
+            - button "Editar Aceite de oliva 500 ml · Buenos Sabores":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · Campo Vivo Aceite de oliva 500 ml · Campo Vivo SIM-1201 · Almacén · Campo Vivo 7799900012017 Unidad $ 14.728,80 Desactivar Aceite de oliva 500 ml · Campo Vivo Editar Aceite de oliva 500 ml · Campo Vivo":
+          - cell "Seleccionar Aceite de oliva 500 ml · Campo Vivo":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · Campo Vivo"
+          - cell "Aceite de oliva 500 ml · Campo Vivo SIM-1201 · Almacén · Campo Vivo":
+            - strong: Aceite de oliva 500 ml · Campo Vivo
+            - generic: SIM-1201 · Almacén · Campo Vivo
+          - cell "7799900012017"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 14.728,80"
+          - cell "Desactivar Aceite de oliva 500 ml · Campo Vivo":
+            - button "Desactivar Aceite de oliva 500 ml · Campo Vivo": Activo
+          - cell "Editar Aceite de oliva 500 ml · Campo Vivo":
+            - button "Editar Aceite de oliva 500 ml · Campo Vivo":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · Cosecha Nueva Aceite de oliva 500 ml · Cosecha Nueva SIM-1915 · Almacén · Cosecha Nueva 7799900019153 Unidad $ 9.680,00 Desactivar Aceite de oliva 500 ml · Cosecha Nueva Editar Aceite de oliva 500 ml · Cosecha Nueva":
+          - cell "Seleccionar Aceite de oliva 500 ml · Cosecha Nueva":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · Cosecha Nueva"
+          - cell "Aceite de oliva 500 ml · Cosecha Nueva SIM-1915 · Almacén · Cosecha Nueva":
+            - strong: Aceite de oliva 500 ml · Cosecha Nueva
+            - generic: SIM-1915 · Almacén · Cosecha Nueva
+          - cell "7799900019153"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 9.680,00"
+          - cell "Desactivar Aceite de oliva 500 ml · Cosecha Nueva":
+            - button "Desactivar Aceite de oliva 500 ml · Cosecha Nueva": Activo
+          - cell "Editar Aceite de oliva 500 ml · Cosecha Nueva":
+            - button "Editar Aceite de oliva 500 ml · Cosecha Nueva":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · Costa Clara Aceite de oliva 500 ml · Costa Clara SIM-2153 · Almacén · Costa Clara 7799900021538 Unidad $ 8.570,00 Desactivar Aceite de oliva 500 ml · Costa Clara Editar Aceite de oliva 500 ml · Costa Clara":
+          - cell "Seleccionar Aceite de oliva 500 ml · Costa Clara":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · Costa Clara"
+          - cell "Aceite de oliva 500 ml · Costa Clara SIM-2153 · Almacén · Costa Clara":
+            - strong: Aceite de oliva 500 ml · Costa Clara
+            - generic: SIM-2153 · Almacén · Costa Clara
+          - cell "7799900021538"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 8.570,00"
+          - cell "Desactivar Aceite de oliva 500 ml · Costa Clara":
+            - button "Desactivar Aceite de oliva 500 ml · Costa Clara": Activo
+          - cell "Editar Aceite de oliva 500 ml · Costa Clara":
+            - button "Editar Aceite de oliva 500 ml · Costa Clara":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · Del Valle Aceite de oliva 500 ml · Del Valle SIM-2629 · Almacén · Del Valle 7799900026298 Unidad $ 13.060,00 Desactivar Aceite de oliva 500 ml · Del Valle Editar Aceite de oliva 500 ml · Del Valle":
+          - cell "Seleccionar Aceite de oliva 500 ml · Del Valle":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · Del Valle"
+          - cell "Aceite de oliva 500 ml · Del Valle SIM-2629 · Almacén · Del Valle":
+            - strong: Aceite de oliva 500 ml · Del Valle
+            - generic: SIM-2629 · Almacén · Del Valle
+          - cell "7799900026298"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 13.060,00"
+          - cell "Desactivar Aceite de oliva 500 ml · Del Valle":
+            - button "Desactivar Aceite de oliva 500 ml · Del Valle": Activo
+          - cell "Editar Aceite de oliva 500 ml · Del Valle":
+            - button "Editar Aceite de oliva 500 ml · Del Valle":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · Don Pedro Aceite de oliva 500 ml · Don Pedro SIM-0963 · Almacén · Don Pedro 7799900009635 Unidad $ 13.864,75 Desactivar Aceite de oliva 500 ml · Don Pedro Editar Aceite de oliva 500 ml · Don Pedro":
+          - cell "Seleccionar Aceite de oliva 500 ml · Don Pedro":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · Don Pedro"
+          - cell "Aceite de oliva 500 ml · Don Pedro SIM-0963 · Almacén · Don Pedro":
+            - strong: Aceite de oliva 500 ml · Don Pedro
+            - generic: SIM-0963 · Almacén · Don Pedro
+          - cell "7799900009635"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 13.864,75"
+          - cell "Desactivar Aceite de oliva 500 ml · Don Pedro":
+            - button "Desactivar Aceite de oliva 500 ml · Don Pedro": Activo
+          - cell "Editar Aceite de oliva 500 ml · Don Pedro":
+            - button "Editar Aceite de oliva 500 ml · Don Pedro":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · El Molino Aceite de oliva 500 ml · El Molino SIM-0725 · Almacén · El Molino 7799900007259 Unidad $ 9.474,83 Desactivar Aceite de oliva 500 ml · El Molino Editar Aceite de oliva 500 ml · El Molino":
+          - cell "Seleccionar Aceite de oliva 500 ml · El Molino":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · El Molino"
+          - cell "Aceite de oliva 500 ml · El Molino SIM-0725 · Almacén · El Molino":
+            - strong: Aceite de oliva 500 ml · El Molino
+            - generic: SIM-0725 · Almacén · El Molino
+          - cell "7799900007259"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 9.474,83"
+          - cell "Desactivar Aceite de oliva 500 ml · El Molino":
+            - button "Desactivar Aceite de oliva 500 ml · El Molino": Activo
+          - cell "Editar Aceite de oliva 500 ml · El Molino":
+            - button "Editar Aceite de oliva 500 ml · El Molino":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · El Ombú Aceite de oliva 500 ml · El Ombú SIM-2867 · Almacén · El Ombú 7799900028674 Unidad $ 9.830,00 Desactivar Aceite de oliva 500 ml · El Ombú Editar Aceite de oliva 500 ml · El Ombú":
+          - cell "Seleccionar Aceite de oliva 500 ml · El Ombú":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · El Ombú"
+          - cell "Aceite de oliva 500 ml · El Ombú SIM-2867 · Almacén · El Ombú":
+            - strong: Aceite de oliva 500 ml · El Ombú
+            - generic: SIM-2867 · Almacén · El Ombú
+          - cell "7799900028674"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 9.830,00"
+          - cell "Desactivar Aceite de oliva 500 ml · El Ombú":
+            - button "Desactivar Aceite de oliva 500 ml · El Ombú": Activo
+          - cell "Editar Aceite de oliva 500 ml · El Ombú":
+            - button "Editar Aceite de oliva 500 ml · El Ombú":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · El Trigal Aceite de oliva 500 ml · El Trigal SIM-1439 · Almacén · El Trigal 7799900014394 Unidad $ 7.040,00 Desactivar Aceite de oliva 500 ml · El Trigal Editar Aceite de oliva 500 ml · El Trigal":
+          - cell "Seleccionar Aceite de oliva 500 ml · El Trigal":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · El Trigal"
+          - cell "Aceite de oliva 500 ml · El Trigal SIM-1439 · Almacén · El Trigal":
+            - strong: Aceite de oliva 500 ml · El Trigal
+            - generic: SIM-1439 · Almacén · El Trigal
+          - cell "7799900014394"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 7.040,00"
+          - cell "Desactivar Aceite de oliva 500 ml · El Trigal":
+            - button "Desactivar Aceite de oliva 500 ml · El Trigal": Activo
+          - cell "Editar Aceite de oliva 500 ml · El Trigal":
+            - button "Editar Aceite de oliva 500 ml · El Trigal":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · La Abuela Aceite de oliva 500 ml · La Abuela SIM-1796 · Almacén · La Abuela 7799900017968 Unidad $ 9.850,00 Desactivar Aceite de oliva 500 ml · La Abuela Editar Aceite de oliva 500 ml · La Abuela":
+          - cell "Seleccionar Aceite de oliva 500 ml · La Abuela":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · La Abuela"
+          - cell "Aceite de oliva 500 ml · La Abuela SIM-1796 · Almacén · La Abuela":
+            - strong: Aceite de oliva 500 ml · La Abuela
+            - generic: SIM-1796 · Almacén · La Abuela
+          - cell "7799900017968"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 9.850,00"
+          - cell "Desactivar Aceite de oliva 500 ml · La Abuela":
+            - button "Desactivar Aceite de oliva 500 ml · La Abuela": Activo
+          - cell "Editar Aceite de oliva 500 ml · La Abuela":
+            - button "Editar Aceite de oliva 500 ml · La Abuela":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · La Colonia Aceite de oliva 500 ml · La Colonia SIM-1082 · Almacén · La Colonia 7799900010822 Unidad $ 14.849,30 Desactivar Aceite de oliva 500 ml · La Colonia Editar Aceite de oliva 500 ml · La Colonia":
+          - cell "Seleccionar Aceite de oliva 500 ml · La Colonia":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · La Colonia"
+          - cell "Aceite de oliva 500 ml · La Colonia SIM-1082 · Almacén · La Colonia":
+            - strong: Aceite de oliva 500 ml · La Colonia
+            - generic: SIM-1082 · Almacén · La Colonia
+          - cell "7799900010822"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 14.849,30"
+          - cell "Desactivar Aceite de oliva 500 ml · La Colonia":
+            - button "Desactivar Aceite de oliva 500 ml · La Colonia": Activo
+          - cell "Editar Aceite de oliva 500 ml · La Colonia":
+            - button "Editar Aceite de oliva 500 ml · La Colonia":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · La Cumbre Aceite de oliva 500 ml · La Cumbre SIM-2510 · Almacén · La Cumbre 7799900025109 Unidad $ 9.240,00 Desactivar Aceite de oliva 500 ml · La Cumbre Editar Aceite de oliva 500 ml · La Cumbre":
+          - cell "Seleccionar Aceite de oliva 500 ml · La Cumbre":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · La Cumbre"
+          - cell "Aceite de oliva 500 ml · La Cumbre SIM-2510 · Almacén · La Cumbre":
+            - strong: Aceite de oliva 500 ml · La Cumbre
+            - generic: SIM-2510 · Almacén · La Cumbre
+          - cell "7799900025109"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 9.240,00"
+          - cell "Desactivar Aceite de oliva 500 ml · La Cumbre":
+            - button "Desactivar Aceite de oliva 500 ml · La Cumbre": Activo
+          - cell "Editar Aceite de oliva 500 ml · La Cumbre":
+            - button "Editar Aceite de oliva 500 ml · La Cumbre":
+              - generic: Editar
+        - row "Seleccionar Aceite de oliva 500 ml · La Estrella Aceite de oliva 500 ml · La Estrella SIM-3105 · Almacén · La Estrella 7799900031056 Unidad $ 12.220,00 Desactivar Aceite de oliva 500 ml · La Estrella Editar Aceite de oliva 500 ml · La Estrella":
+          - cell "Seleccionar Aceite de oliva 500 ml · La Estrella":
+            - checkbox "Seleccionar Aceite de oliva 500 ml · La Estrella"
+          - cell "Aceite de oliva 500 ml · La Estrella SIM-3105 · Almacén · La Estrella":
+            - strong: Aceite de oliva 500 ml · La Estrella
+            - generic: SIM-3105 · Almacén · La Estrella
+          - cell "7799900031056"
+          - cell "Unidad":
+            - generic: Unidad
+          - cell "$ 12.220,00"
+          - cell "Desactivar Aceite de oliva 500 ml · La Estrella":
+            - button "Desactivar Aceite de oliva 500 ml · La Estrella": Activo
+          - cell "Editar Aceite de oliva 500 ml · La Estrella":
+            - button "Editar Aceite de oliva 500 ml · La Estrella":
+              - generic: Editar
+    - button "Formato para la carga inicial"
+    - generic: Página 1
+    - button "Anterior" [disabled]
+    - button "Siguiente"
+  - generic: F2 Buscar F3 Nuevo Esc Volver
+  - dialog "Editar producto":
+    - heading "Editar producto" [level=2]
+    - button "Cerrar"
+    - text: Nombre del producto
+    - textbox "Nombre del producto": Aceite de girasol 900 ml
+    - text: Forma de venta
+    - combobox "Forma de venta":
+      - option "Por unidad" [selected]
+      - option "Por kilo"
+    - text: Precio de venta
+    - generic: $
+    - textbox "Precio de venta $ Precio por unidad":
+      - /placeholder: 0,00
+      - text: 4169,85
+    - generic: Precio por unidad
+    - text: Código de barras
+    - textbox "Código de barras":
+      - /placeholder: Escaneá o dejalo vacío para generarlo
+      - text: "7799900000106"
+    - generic "Más opciones Categoría, código interno y stock":
+      - generic: Más opciones
+      - generic: Categoría, código interno y stock
+    - text: Categoría
+    - combobox "Categoría":
+      - option "Sin categoría"
+      - option "Almacén" [selected]
+      - option "Bebidas"
+      - option "Congelados"
+      - option "Fiambrería"
+      - option "Galletitas y golosinas"
+      - option "Infusiones y desayuno"
+      - option "Lácteos"
+      - option "Limpieza"
+      - option "Panadería y huevos"
+      - option "Verdulería"
+    - text: Marca
+    - combobox "Marca":
+      - option "Sin marca"
+      - option "Buen Día"
+      - option "Buen Plato"
+      - option "Buenos Sabores"
+      - option "Campo Vivo"
+      - option "Campos del Sur"
+      - option "Cosecha Nueva"
+      - option "Costa Clara"
+      - option "Del Mercado" [selected]
+      - option "Del Valle"
+      - option "Don Pedro"
+      - option "Dulce Momento"
+      - option "El Molino"
+      - option "El Ombú"
+      - option "El Trigal"
+      - option "Hogar Claro"
+      - option "La Abuela"
+      - option "La Casona"
+      - option "La Colonia"
+      - option "La Cumbre"
+      - option "La Estancia"
+      - option "La Estrella"
+      - option "La Familia"
+      - option "La Huerta"
+      - option "La Pradera"
+      - option "La Reserva"
+      - option "Las Sierras"
+      - option "Los Aromos"
+      - option "Mi Barrio"
+      - option "Nueva Mesa"
+      - option "Primavera"
+      - option "Productores de Tandil"
+      - option "Rincón Sur"
+      - option "Santa Ana"
+      - option "Santa Lucía"
+      - option "Sierra Azul"
+      - option "Sol del Sur"
+      - option "Tierra Clara"
+      - option "Tres Espigas"
+      - option "Villa del Sol"
+    - text: Código interno
+    - textbox "Código interno":
+      - /placeholder: Se genera si queda vacío
+      - text: SIM-0010
+    - checkbox "Activo" [checked]
+    - generic: Activo
+    - checkbox "Controlar stock" [checked]
+    - generic: Controlar stock
+    - text: Mínimo para reponer (unidades)
+    - textbox "Mínimo para reponer (unidades)": "12"
+    - generic: Ctrl + S para guardar · Esc para volver
+    - button "Cancelar"
+    - button "Guardar producto"
+    - generic "Historial de cambios" [active]
+    - heading "Cambios del negocio" [level=1]
+    - button "Descargar Excel"
+    - text: Entidad
+    - combobox "Entidad":
+      - option "Todas"
+      - option "Producto" [selected]
+      - option "Precio"
+      - option "Stock"
+      - option "Venta"
+      - option "Turno"
+      - option "Configuración"
+    - text: Persona
+    - combobox "Persona":
+      - option "Todas" [selected]
+      - option "Andrea · Jefa del mercado"
+      - option "Diego Gómez · Fiambrería"
+      - option "Lucía Fernández · Caja mañana"
+      - option "Martín López · Caja tarde"
+    - text: Operación
+    - combobox "Operación":
+      - option "Todas" [selected]
+      - option "auth.bootstrap"
+      - option "auth.login"
+      - option "Cierre de caja"
+      - option "cash.movement"
+      - option "Apertura de caja"
+      - option "cash.partialRefund"
+      - option "cash.refund"
+      - option "checkout.cancelDraft"
+      - option "checkout.saveDraft"
+      - option "costs.setReference"
+      - option "customerAccounts.collect"
+      - option "customers.save"
+      - option "customers.setCredit"
+      - option "locations.assignTerminal"
+      - option "locations.save"
+      - option "lots.enable"
+      - option "lots.reconcile"
+      - option "Precios actualizados"
+      - option "Producto guardado"
+      - option "products.saveBrand"
+      - option "products.saveCategory"
+      - option "Estado del producto"
+      - option "promotions.save"
+      - option "purchases.receive"
+      - option "purchases.saveDraft"
+      - option "receipts.create"
+      - option "receipts.markPrinted"
+      - option "Venta confirmada"
+      - option "sales.return"
+      - option "Venta anulada"
+      - option "settings.features.save"
+      - option "settings.save"
+      - option "Conteo de stock"
+      - option "stock.opening"
+      - option "Movimiento de stock"
+      - option "supplierAccounts.pay"
+      - option "suppliers.save"
+      - option "terminals.save"
+      - option "transfers.cancel"
+      - option "transfers.dispatch"
+      - option "transfers.receive"
+      - option "users.save"
+    - text: Desde
+    - textbox "Desde"
+    - text: Hasta
+    - textbox "Hasta"
+    - table:
+      - rowgroup:
+        - row "Fecha y persona Operación Cambios":
+          - columnheader "Fecha y persona"
+          - columnheader "Operación"
+          - columnheader "Cambios"
+      - rowgroup:
+        - row "6/5/2026, 07:00:00 Andrea · Jefa del mercado Producto guardado Producto Registro anterior sin desglose Registro anterior sin desglose":
+          - cell "6/5/2026, 07:00:00 Andrea · Jefa del mercado":
+            - text: 6/5/2026, 07:00:00
+            - generic: Andrea · Jefa del mercado
+          - cell "Producto guardado Producto Registro anterior sin desglose":
+            - text: Producto guardado
+            - generic: Producto Registro anterior sin desglose
+          - cell "Registro anterior sin desglose"
+    - button "Anterior" [disabled]
+    - generic: Página 1
+    - button "Siguiente" [disabled]

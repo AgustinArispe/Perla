@@ -1,0 +1,183 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Compras" [level=1]
+  - tablist "Secciones de compras":
+    - button "Recibir": Recibir
+    - button "Historial": Historial
+    - button "Proveedores": Proveedores
+  - button "Exportar compras a Excel": Exportar Excel
+  - generic: "1"
+  - strong: Proveedor
+  - combobox "Proveedor"
+  - button "Nuevo": Nuevo
+  - generic: "2"
+  - strong: Productos
+  - textbox:
+    - /placeholder: Escanear código + Enter
+  - combobox "Producto para comprar" [expanded] [active]: arroz
+  - listbox "Producto para comprar":
+    - option "Arroz integral 1 kg 7799900000021" [selected]:
+      - strong: Arroz integral 1 kg
+      - generic: "7799900000021"
+    - option "Arroz integral 1 kg · Buen Día 7799900003596":
+      - strong: Arroz integral 1 kg · Buen Día
+      - generic: "7799900003596"
+    - option "Arroz integral 1 kg · Buen Día 7799900039298":
+      - strong: Arroz integral 1 kg · Buen Día
+      - generic: "7799900039298"
+    - option "Arroz integral 1 kg · Buenos Sabores 7799900032152":
+      - strong: Arroz integral 1 kg · Buenos Sabores
+      - generic: "7799900032152"
+    - option "Arroz integral 1 kg · Campo Vivo 7799900011928":
+      - strong: Arroz integral 1 kg · Campo Vivo
+      - generic: "7799900011928"
+    - option "Arroz integral 1 kg · Cosecha Nueva 7799900019061":
+      - strong: Arroz integral 1 kg · Cosecha Nueva
+      - generic: "7799900019061"
+    - option "Arroz integral 1 kg · Costa Clara 7799900021446":
+      - strong: Arroz integral 1 kg · Costa Clara
+      - generic: "7799900021446"
+    - option "Arroz integral 1 kg · Del Valle 7799900026205":
+      - strong: Arroz integral 1 kg · Del Valle
+      - generic: "7799900026205"
+    - option "Arroz integral 1 kg · Don Pedro 7799900009543":
+      - strong: Arroz integral 1 kg · Don Pedro
+      - generic: "7799900009543"
+    - option "Arroz integral 1 kg · El Molino 7799900007167":
+      - strong: Arroz integral 1 kg · El Molino
+      - generic: "7799900007167"
+    - option "Arroz integral 1 kg · El Ombú 7799900028582":
+      - strong: Arroz integral 1 kg · El Ombú
+      - generic: "7799900028582"
+    - option "Arroz integral 1 kg · El Trigal 7799900014301":
+      - strong: Arroz integral 1 kg · El Trigal
+      - generic: "7799900014301"
+    - option "Arroz integral 1 kg · La Abuela 7799900017876":
+      - strong: Arroz integral 1 kg · La Abuela
+      - generic: "7799900017876"
+    - option "Arroz integral 1 kg · La Colonia 7799900010730":
+      - strong: Arroz integral 1 kg · La Colonia
+      - generic: "7799900010730"
+    - option "Arroz integral 1 kg · La Cumbre 7799900025017":
+      - strong: Arroz integral 1 kg · La Cumbre
+      - generic: "7799900025017"
+    - option "Arroz integral 1 kg · La Estrella 7799900030967":
+      - strong: Arroz integral 1 kg · La Estrella
+      - generic: "7799900030967"
+    - option "Arroz integral 1 kg · La Familia 7799900015490":
+      - strong: Arroz integral 1 kg · La Familia
+      - generic: "7799900015490"
+    - option "Arroz integral 1 kg · La Huerta 7799900004784":
+      - strong: Arroz integral 1 kg · La Huerta
+      - generic: "7799900004784"
+    - option "Arroz integral 1 kg · La Pradera 7799900020258":
+      - strong: Arroz integral 1 kg · La Pradera
+      - generic: "7799900020258"
+    - option "Arroz integral 1 kg · La Reserva 7799900035726":
+      - strong: Arroz integral 1 kg · La Reserva
+      - generic: "7799900035726"
+    - option "Arroz integral 1 kg · Las Sierras 7799900008355":
+      - strong: Arroz integral 1 kg · Las Sierras
+      - generic: "7799900008355"
+    - option "Arroz integral 1 kg · Los Aromos 7799900001219":
+      - strong: Arroz integral 1 kg · Los Aromos
+      - generic: "7799900001219"
+    - option "Arroz integral 1 kg · Los Aromos 7799900036914":
+      - strong: Arroz integral 1 kg · Los Aromos
+      - generic: "7799900036914"
+    - option "Arroz integral 1 kg · Mi Barrio 7799900033340":
+      - strong: Arroz integral 1 kg · Mi Barrio
+      - generic: "7799900033340"
+    - option "Arroz integral 1 kg · Nueva Mesa 7799900013113":
+      - strong: Arroz integral 1 kg · Nueva Mesa
+      - generic: "7799900013113"
+    - option "Arroz integral 1 kg · Primavera 7799900027394":
+      - strong: Arroz integral 1 kg · Primavera
+      - generic: "7799900027394"
+    - option "Arroz integral 1 kg · Rincón Sur 7799900029770":
+      - strong: Arroz integral 1 kg · Rincón Sur
+      - generic: "7799900029770"
+    - option "Arroz integral 1 kg · Santa Ana 7799900016688":
+      - strong: Arroz integral 1 kg · Santa Ana
+      - generic: "7799900016688"
+    - option "Arroz integral 1 kg · Santa Lucía 7799900002407":
+      - strong: Arroz integral 1 kg · Santa Lucía
+      - generic: "7799900002407"
+    - option "Arroz integral 1 kg · Santa Lucía 7799900038109":
+      - strong: Arroz integral 1 kg · Santa Lucía
+      - generic: "7799900038109"
+    - button "Cerrar búsqueda"
+  - button "Nuevo producto": Nuevo producto
+  - complementary:
+    - generic: 0 productos
+    - generic: Total
+    - strong: $ 0,00
+    - button "Recibir compra" [disabled]
+    - button "Guardar borrador"
+    - status: Borrador guardado
+  - strong: Escaneá el primer producto

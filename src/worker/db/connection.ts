@@ -11,6 +11,7 @@ export function openDatabase(path: string): Database.Database {
   const database = new Database(path, { timeout: 5000 });
   try {
     database.pragma('foreign_keys = ON');
+    database.pragma('trusted_schema = OFF');
     database.pragma('journal_mode = WAL');
     database.pragma('synchronous = FULL');
     database.pragma('busy_timeout = 5000');
@@ -21,7 +22,7 @@ export function openDatabase(path: string): Database.Database {
         .prepare("SELECT name FROM sqlite_master WHERE name='schema_migrations'")
         .get();
       if (!table && database.prepare('SELECT name FROM sqlite_master LIMIT 1').get())
-        throw new DomainError('BACKUP_INVALID', 'El archivo no pertenece a una base de El Bocha.');
+        throw new DomainError('BACKUP_INVALID', 'El archivo no pertenece a una base de Perla Negra.');
       const current = table
         ? (database.prepare('SELECT MAX(version) AS version FROM schema_migrations').get() as {
             version: number | null;

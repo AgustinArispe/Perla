@@ -1,0 +1,603 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Stock" [level=1]
+  - searchbox "Buscar stock": Leche entera 1 L
+  - generic: F2
+  - text: Estado
+  - combobox "Estado":
+    - option "Todos" [selected]
+    - option "Para reponer"
+    - option "Sin conteo"
+    - option "Agotados"
+    - option "Bajo mínimo"
+    - option "Negativos"
+    - option "Disponibles"
+    - option "Sin control"
+  - text: Categoría
+  - combobox "Categoría":
+    - option "Todas" [selected]
+    - option "Almacén"
+    - option "Bebidas"
+    - option "Congelados"
+    - option "Fiambrería"
+    - option "Galletitas y golosinas"
+    - option "Infusiones y desayuno"
+    - option "Lácteos"
+    - option "Limpieza"
+    - option "Panadería y huevos"
+    - option "Verdulería"
+  - text: Marca
+  - combobox "Marca":
+    - option "Todas" [selected]
+    - option "Buen Día"
+    - option "Buen Plato"
+    - option "Buenos Sabores"
+    - option "Campo Vivo"
+    - option "Campos del Sur"
+    - option "Cosecha Nueva"
+    - option "Costa Clara"
+    - option "Del Mercado"
+    - option "Del Valle"
+    - option "Don Pedro"
+    - option "Dulce Momento"
+    - option "El Molino"
+    - option "El Ombú"
+    - option "El Trigal"
+    - option "Hogar Claro"
+    - option "La Abuela"
+    - option "La Casona"
+    - option "La Colonia"
+    - option "La Cumbre"
+    - option "La Estancia"
+    - option "La Estrella"
+    - option "La Familia"
+    - option "La Huerta"
+    - option "La Pradera"
+    - option "La Reserva"
+    - option "Las Sierras"
+    - option "Los Aromos"
+    - option "Mi Barrio"
+    - option "Nueva Mesa"
+    - option "Primavera"
+    - option "Productores de Tandil"
+    - option "Rincón Sur"
+    - option "Santa Ana"
+    - option "Santa Lucía"
+    - option "Sierra Azul"
+    - option "Sol del Sur"
+    - option "Tierra Clara"
+    - option "Tres Espigas"
+    - option "Villa del Sol"
+  - button "Mis vistas": Mis vistas
+  - button "Exportar stock a Excel": Exportar Excel
+  - strong: "34"
+  - text: productos
+  - table:
+    - rowgroup:
+      - row "Producto Existencia Mínimo Estado Acciones":
+        - columnheader "Producto"
+        - columnheader "Existencia"
+        - columnheader "Mínimo"
+        - columnheader "Estado"
+        - columnheader "Acciones":
+          - generic: Acciones
+    - rowgroup:
+      - row "Leche entera 1 L SIM-0036 · Por unidad 88 u. 12 u. Disponible Contar Leche entera 1 L Registrar movimiento de Leche entera 1 L Ver movimientos de Leche entera 1 L Administrar lotes de Leche entera 1 L":
+        - cell "Leche entera 1 L SIM-0036 · Por unidad":
+          - strong: Leche entera 1 L
+          - generic: SIM-0036 · Por unidad
+        - cell "88 u."
+        - cell "12 u."
+        - cell "Disponible":
+          - generic: Disponible
+        - cell "Contar Leche entera 1 L Registrar movimiento de Leche entera 1 L Ver movimientos de Leche entera 1 L Administrar lotes de Leche entera 1 L":
+          - button "Contar Leche entera 1 L": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L"
+          - button "Ver movimientos de Leche entera 1 L"
+          - button "Administrar lotes de Leche entera 1 L": Lotes
+      - row "Leche entera 1 L · Buen Día SIM-3963 · Por unidad — 12 u. Sin control Contar Leche entera 1 L · Buen Día Registrar movimiento de Leche entera 1 L · Buen Día Ver movimientos de Leche entera 1 L · Buen Día":
+        - cell "Leche entera 1 L · Buen Día SIM-3963 · Por unidad":
+          - strong: Leche entera 1 L · Buen Día
+          - generic: SIM-3963 · Por unidad
+        - cell "—"
+        - cell "12 u."
+        - cell "Sin control":
+          - generic: Sin control
+        - cell "Contar Leche entera 1 L · Buen Día Registrar movimiento de Leche entera 1 L · Buen Día Ver movimientos de Leche entera 1 L · Buen Día":
+          - button "Contar Leche entera 1 L · Buen Día" [disabled]: Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · Buen Día" [disabled]
+          - button "Ver movimientos de Leche entera 1 L · Buen Día"
+      - row "Leche entera 1 L · Buen Día SIM-0393 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · Buen Día Registrar movimiento de Leche entera 1 L · Buen Día Ver movimientos de Leche entera 1 L · Buen Día Administrar lotes de Leche entera 1 L · Buen Día":
+        - cell "Leche entera 1 L · Buen Día SIM-0393 · Por unidad":
+          - strong: Leche entera 1 L · Buen Día
+          - generic: SIM-0393 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · Buen Día Registrar movimiento de Leche entera 1 L · Buen Día Ver movimientos de Leche entera 1 L · Buen Día Administrar lotes de Leche entera 1 L · Buen Día":
+          - button "Contar Leche entera 1 L · Buen Día": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · Buen Día"
+          - button "Ver movimientos de Leche entera 1 L · Buen Día"
+          - button "Administrar lotes de Leche entera 1 L · Buen Día": Lotes
+      - row "Leche entera 1 L · Buenos Sabores SIM-3249 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · Buenos Sabores Registrar movimiento de Leche entera 1 L · Buenos Sabores Ver movimientos de Leche entera 1 L · Buenos Sabores Administrar lotes de Leche entera 1 L · Buenos Sabores":
+        - cell "Leche entera 1 L · Buenos Sabores SIM-3249 · Por unidad":
+          - strong: Leche entera 1 L · Buenos Sabores
+          - generic: SIM-3249 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · Buenos Sabores Registrar movimiento de Leche entera 1 L · Buenos Sabores Ver movimientos de Leche entera 1 L · Buenos Sabores Administrar lotes de Leche entera 1 L · Buenos Sabores":
+          - button "Contar Leche entera 1 L · Buenos Sabores": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · Buenos Sabores"
+          - button "Ver movimientos de Leche entera 1 L · Buenos Sabores"
+          - button "Administrar lotes de Leche entera 1 L · Buenos Sabores": Lotes
+      - row "Leche entera 1 L · Campo Vivo SIM-1226 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · Campo Vivo Registrar movimiento de Leche entera 1 L · Campo Vivo Ver movimientos de Leche entera 1 L · Campo Vivo Administrar lotes de Leche entera 1 L · Campo Vivo":
+        - cell "Leche entera 1 L · Campo Vivo SIM-1226 · Por unidad":
+          - strong: Leche entera 1 L · Campo Vivo
+          - generic: SIM-1226 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · Campo Vivo Registrar movimiento de Leche entera 1 L · Campo Vivo Ver movimientos de Leche entera 1 L · Campo Vivo Administrar lotes de Leche entera 1 L · Campo Vivo":
+          - button "Contar Leche entera 1 L · Campo Vivo": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · Campo Vivo"
+          - button "Ver movimientos de Leche entera 1 L · Campo Vivo"
+          - button "Administrar lotes de Leche entera 1 L · Campo Vivo": Lotes
+      - row "Leche entera 1 L · Cosecha Nueva SIM-1940 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · Cosecha Nueva Registrar movimiento de Leche entera 1 L · Cosecha Nueva Ver movimientos de Leche entera 1 L · Cosecha Nueva Administrar lotes de Leche entera 1 L · Cosecha Nueva":
+        - cell "Leche entera 1 L · Cosecha Nueva SIM-1940 · Por unidad":
+          - strong: Leche entera 1 L · Cosecha Nueva
+          - generic: SIM-1940 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · Cosecha Nueva Registrar movimiento de Leche entera 1 L · Cosecha Nueva Ver movimientos de Leche entera 1 L · Cosecha Nueva Administrar lotes de Leche entera 1 L · Cosecha Nueva":
+          - button "Contar Leche entera 1 L · Cosecha Nueva": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · Cosecha Nueva"
+          - button "Ver movimientos de Leche entera 1 L · Cosecha Nueva"
+          - button "Administrar lotes de Leche entera 1 L · Cosecha Nueva": Lotes
+      - row "Leche entera 1 L · Costa Clara SIM-2178 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · Costa Clara Registrar movimiento de Leche entera 1 L · Costa Clara Ver movimientos de Leche entera 1 L · Costa Clara Administrar lotes de Leche entera 1 L · Costa Clara":
+        - cell "Leche entera 1 L · Costa Clara SIM-2178 · Por unidad":
+          - strong: Leche entera 1 L · Costa Clara
+          - generic: SIM-2178 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · Costa Clara Registrar movimiento de Leche entera 1 L · Costa Clara Ver movimientos de Leche entera 1 L · Costa Clara Administrar lotes de Leche entera 1 L · Costa Clara":
+          - button "Contar Leche entera 1 L · Costa Clara": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · Costa Clara"
+          - button "Ver movimientos de Leche entera 1 L · Costa Clara"
+          - button "Administrar lotes de Leche entera 1 L · Costa Clara": Lotes
+      - row "Leche entera 1 L · Del Valle SIM-2654 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · Del Valle Registrar movimiento de Leche entera 1 L · Del Valle Ver movimientos de Leche entera 1 L · Del Valle Administrar lotes de Leche entera 1 L · Del Valle":
+        - cell "Leche entera 1 L · Del Valle SIM-2654 · Por unidad":
+          - strong: Leche entera 1 L · Del Valle
+          - generic: SIM-2654 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · Del Valle Registrar movimiento de Leche entera 1 L · Del Valle Ver movimientos de Leche entera 1 L · Del Valle Administrar lotes de Leche entera 1 L · Del Valle":
+          - button "Contar Leche entera 1 L · Del Valle": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · Del Valle"
+          - button "Ver movimientos de Leche entera 1 L · Del Valle"
+          - button "Administrar lotes de Leche entera 1 L · Del Valle": Lotes
+      - row "Leche entera 1 L · Don Pedro SIM-0988 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · Don Pedro Registrar movimiento de Leche entera 1 L · Don Pedro Ver movimientos de Leche entera 1 L · Don Pedro Administrar lotes de Leche entera 1 L · Don Pedro":
+        - cell "Leche entera 1 L · Don Pedro SIM-0988 · Por unidad":
+          - strong: Leche entera 1 L · Don Pedro
+          - generic: SIM-0988 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · Don Pedro Registrar movimiento de Leche entera 1 L · Don Pedro Ver movimientos de Leche entera 1 L · Don Pedro Administrar lotes de Leche entera 1 L · Don Pedro":
+          - button "Contar Leche entera 1 L · Don Pedro": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · Don Pedro"
+          - button "Ver movimientos de Leche entera 1 L · Don Pedro"
+          - button "Administrar lotes de Leche entera 1 L · Don Pedro": Lotes
+      - row "Leche entera 1 L · El Molino SIM-0750 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · El Molino Registrar movimiento de Leche entera 1 L · El Molino Ver movimientos de Leche entera 1 L · El Molino Administrar lotes de Leche entera 1 L · El Molino":
+        - cell "Leche entera 1 L · El Molino SIM-0750 · Por unidad":
+          - strong: Leche entera 1 L · El Molino
+          - generic: SIM-0750 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · El Molino Registrar movimiento de Leche entera 1 L · El Molino Ver movimientos de Leche entera 1 L · El Molino Administrar lotes de Leche entera 1 L · El Molino":
+          - button "Contar Leche entera 1 L · El Molino": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · El Molino"
+          - button "Ver movimientos de Leche entera 1 L · El Molino"
+          - button "Administrar lotes de Leche entera 1 L · El Molino": Lotes
+      - row "Leche entera 1 L · El Ombú SIM-2892 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · El Ombú Registrar movimiento de Leche entera 1 L · El Ombú Ver movimientos de Leche entera 1 L · El Ombú Administrar lotes de Leche entera 1 L · El Ombú":
+        - cell "Leche entera 1 L · El Ombú SIM-2892 · Por unidad":
+          - strong: Leche entera 1 L · El Ombú
+          - generic: SIM-2892 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · El Ombú Registrar movimiento de Leche entera 1 L · El Ombú Ver movimientos de Leche entera 1 L · El Ombú Administrar lotes de Leche entera 1 L · El Ombú":
+          - button "Contar Leche entera 1 L · El Ombú": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · El Ombú"
+          - button "Ver movimientos de Leche entera 1 L · El Ombú"
+          - button "Administrar lotes de Leche entera 1 L · El Ombú": Lotes
+      - row "Leche entera 1 L · El Trigal SIM-1464 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · El Trigal Registrar movimiento de Leche entera 1 L · El Trigal Ver movimientos de Leche entera 1 L · El Trigal Administrar lotes de Leche entera 1 L · El Trigal":
+        - cell "Leche entera 1 L · El Trigal SIM-1464 · Por unidad":
+          - strong: Leche entera 1 L · El Trigal
+          - generic: SIM-1464 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · El Trigal Registrar movimiento de Leche entera 1 L · El Trigal Ver movimientos de Leche entera 1 L · El Trigal Administrar lotes de Leche entera 1 L · El Trigal":
+          - button "Contar Leche entera 1 L · El Trigal": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · El Trigal"
+          - button "Ver movimientos de Leche entera 1 L · El Trigal"
+          - button "Administrar lotes de Leche entera 1 L · El Trigal": Lotes
+      - row "Leche entera 1 L · La Abuela SIM-1821 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · La Abuela Registrar movimiento de Leche entera 1 L · La Abuela Ver movimientos de Leche entera 1 L · La Abuela Administrar lotes de Leche entera 1 L · La Abuela":
+        - cell "Leche entera 1 L · La Abuela SIM-1821 · Por unidad":
+          - strong: Leche entera 1 L · La Abuela
+          - generic: SIM-1821 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · La Abuela Registrar movimiento de Leche entera 1 L · La Abuela Ver movimientos de Leche entera 1 L · La Abuela Administrar lotes de Leche entera 1 L · La Abuela":
+          - button "Contar Leche entera 1 L · La Abuela": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · La Abuela"
+          - button "Ver movimientos de Leche entera 1 L · La Abuela"
+          - button "Administrar lotes de Leche entera 1 L · La Abuela": Lotes
+      - row "Leche entera 1 L · La Colonia SIM-1107 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · La Colonia Registrar movimiento de Leche entera 1 L · La Colonia Ver movimientos de Leche entera 1 L · La Colonia Administrar lotes de Leche entera 1 L · La Colonia":
+        - cell "Leche entera 1 L · La Colonia SIM-1107 · Por unidad":
+          - strong: Leche entera 1 L · La Colonia
+          - generic: SIM-1107 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · La Colonia Registrar movimiento de Leche entera 1 L · La Colonia Ver movimientos de Leche entera 1 L · La Colonia Administrar lotes de Leche entera 1 L · La Colonia":
+          - button "Contar Leche entera 1 L · La Colonia": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · La Colonia"
+          - button "Ver movimientos de Leche entera 1 L · La Colonia"
+          - button "Administrar lotes de Leche entera 1 L · La Colonia": Lotes
+      - row "Leche entera 1 L · La Cumbre SIM-2535 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · La Cumbre Registrar movimiento de Leche entera 1 L · La Cumbre Ver movimientos de Leche entera 1 L · La Cumbre Administrar lotes de Leche entera 1 L · La Cumbre":
+        - cell "Leche entera 1 L · La Cumbre SIM-2535 · Por unidad":
+          - strong: Leche entera 1 L · La Cumbre
+          - generic: SIM-2535 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · La Cumbre Registrar movimiento de Leche entera 1 L · La Cumbre Ver movimientos de Leche entera 1 L · La Cumbre Administrar lotes de Leche entera 1 L · La Cumbre":
+          - button "Contar Leche entera 1 L · La Cumbre": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · La Cumbre"
+          - button "Ver movimientos de Leche entera 1 L · La Cumbre"
+          - button "Administrar lotes de Leche entera 1 L · La Cumbre": Lotes
+      - row "Leche entera 1 L · La Estrella SIM-3130 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · La Estrella Registrar movimiento de Leche entera 1 L · La Estrella Ver movimientos de Leche entera 1 L · La Estrella Administrar lotes de Leche entera 1 L · La Estrella":
+        - cell "Leche entera 1 L · La Estrella SIM-3130 · Por unidad":
+          - strong: Leche entera 1 L · La Estrella
+          - generic: SIM-3130 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · La Estrella Registrar movimiento de Leche entera 1 L · La Estrella Ver movimientos de Leche entera 1 L · La Estrella Administrar lotes de Leche entera 1 L · La Estrella":
+          - button "Contar Leche entera 1 L · La Estrella": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · La Estrella"
+          - button "Ver movimientos de Leche entera 1 L · La Estrella"
+          - button "Administrar lotes de Leche entera 1 L · La Estrella": Lotes
+      - row "Leche entera 1 L · La Familia SIM-1583 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · La Familia Registrar movimiento de Leche entera 1 L · La Familia Ver movimientos de Leche entera 1 L · La Familia Administrar lotes de Leche entera 1 L · La Familia":
+        - cell "Leche entera 1 L · La Familia SIM-1583 · Por unidad":
+          - strong: Leche entera 1 L · La Familia
+          - generic: SIM-1583 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · La Familia Registrar movimiento de Leche entera 1 L · La Familia Ver movimientos de Leche entera 1 L · La Familia Administrar lotes de Leche entera 1 L · La Familia":
+          - button "Contar Leche entera 1 L · La Familia": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · La Familia"
+          - button "Ver movimientos de Leche entera 1 L · La Familia"
+          - button "Administrar lotes de Leche entera 1 L · La Familia": Lotes
+      - row "Leche entera 1 L · La Huerta SIM-0512 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · La Huerta Registrar movimiento de Leche entera 1 L · La Huerta Ver movimientos de Leche entera 1 L · La Huerta Administrar lotes de Leche entera 1 L · La Huerta":
+        - cell "Leche entera 1 L · La Huerta SIM-0512 · Por unidad":
+          - strong: Leche entera 1 L · La Huerta
+          - generic: SIM-0512 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · La Huerta Registrar movimiento de Leche entera 1 L · La Huerta Ver movimientos de Leche entera 1 L · La Huerta Administrar lotes de Leche entera 1 L · La Huerta":
+          - button "Contar Leche entera 1 L · La Huerta": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · La Huerta"
+          - button "Ver movimientos de Leche entera 1 L · La Huerta"
+          - button "Administrar lotes de Leche entera 1 L · La Huerta": Lotes
+      - row "Leche entera 1 L · La Pradera SIM-2059 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · La Pradera Registrar movimiento de Leche entera 1 L · La Pradera Ver movimientos de Leche entera 1 L · La Pradera Administrar lotes de Leche entera 1 L · La Pradera":
+        - cell "Leche entera 1 L · La Pradera SIM-2059 · Por unidad":
+          - strong: Leche entera 1 L · La Pradera
+          - generic: SIM-2059 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · La Pradera Registrar movimiento de Leche entera 1 L · La Pradera Ver movimientos de Leche entera 1 L · La Pradera Administrar lotes de Leche entera 1 L · La Pradera":
+          - button "Contar Leche entera 1 L · La Pradera": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · La Pradera"
+          - button "Ver movimientos de Leche entera 1 L · La Pradera"
+          - button "Administrar lotes de Leche entera 1 L · La Pradera": Lotes
+      - row "Leche entera 1 L · La Reserva SIM-3606 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · La Reserva Registrar movimiento de Leche entera 1 L · La Reserva Ver movimientos de Leche entera 1 L · La Reserva Administrar lotes de Leche entera 1 L · La Reserva":
+        - cell "Leche entera 1 L · La Reserva SIM-3606 · Por unidad":
+          - strong: Leche entera 1 L · La Reserva
+          - generic: SIM-3606 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · La Reserva Registrar movimiento de Leche entera 1 L · La Reserva Ver movimientos de Leche entera 1 L · La Reserva Administrar lotes de Leche entera 1 L · La Reserva":
+          - button "Contar Leche entera 1 L · La Reserva": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · La Reserva"
+          - button "Ver movimientos de Leche entera 1 L · La Reserva"
+          - button "Administrar lotes de Leche entera 1 L · La Reserva": Lotes
+      - row "Leche entera 1 L · Las Sierras SIM-0869 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · Las Sierras Registrar movimiento de Leche entera 1 L · Las Sierras Ver movimientos de Leche entera 1 L · Las Sierras Administrar lotes de Leche entera 1 L · Las Sierras":
+        - cell "Leche entera 1 L · Las Sierras SIM-0869 · Por unidad":
+          - strong: Leche entera 1 L · Las Sierras
+          - generic: SIM-0869 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · Las Sierras Registrar movimiento de Leche entera 1 L · Las Sierras Ver movimientos de Leche entera 1 L · Las Sierras Administrar lotes de Leche entera 1 L · Las Sierras":
+          - button "Contar Leche entera 1 L · Las Sierras": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · Las Sierras"
+          - button "Ver movimientos de Leche entera 1 L · Las Sierras"
+          - button "Administrar lotes de Leche entera 1 L · Las Sierras": Lotes
+      - row "Leche entera 1 L · Los Aromos SIM-3725 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · Los Aromos Registrar movimiento de Leche entera 1 L · Los Aromos Ver movimientos de Leche entera 1 L · Los Aromos Administrar lotes de Leche entera 1 L · Los Aromos":
+        - cell "Leche entera 1 L · Los Aromos SIM-3725 · Por unidad":
+          - strong: Leche entera 1 L · Los Aromos
+          - generic: SIM-3725 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · Los Aromos Registrar movimiento de Leche entera 1 L · Los Aromos Ver movimientos de Leche entera 1 L · Los Aromos Administrar lotes de Leche entera 1 L · Los Aromos":
+          - button "Contar Leche entera 1 L · Los Aromos": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · Los Aromos"
+          - button "Ver movimientos de Leche entera 1 L · Los Aromos"
+          - button "Administrar lotes de Leche entera 1 L · Los Aromos": Lotes
+      - row "Leche entera 1 L · Los Aromos SIM-0155 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · Los Aromos Registrar movimiento de Leche entera 1 L · Los Aromos Ver movimientos de Leche entera 1 L · Los Aromos Administrar lotes de Leche entera 1 L · Los Aromos":
+        - cell "Leche entera 1 L · Los Aromos SIM-0155 · Por unidad":
+          - strong: Leche entera 1 L · Los Aromos
+          - generic: SIM-0155 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · Los Aromos Registrar movimiento de Leche entera 1 L · Los Aromos Ver movimientos de Leche entera 1 L · Los Aromos Administrar lotes de Leche entera 1 L · Los Aromos":
+          - button "Contar Leche entera 1 L · Los Aromos": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · Los Aromos"
+          - button "Ver movimientos de Leche entera 1 L · Los Aromos"
+          - button "Administrar lotes de Leche entera 1 L · Los Aromos": Lotes
+      - row "Leche entera 1 L · Mi Barrio SIM-3368 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · Mi Barrio Registrar movimiento de Leche entera 1 L · Mi Barrio Ver movimientos de Leche entera 1 L · Mi Barrio Administrar lotes de Leche entera 1 L · Mi Barrio":
+        - cell "Leche entera 1 L · Mi Barrio SIM-3368 · Por unidad":
+          - strong: Leche entera 1 L · Mi Barrio
+          - generic: SIM-3368 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · Mi Barrio Registrar movimiento de Leche entera 1 L · Mi Barrio Ver movimientos de Leche entera 1 L · Mi Barrio Administrar lotes de Leche entera 1 L · Mi Barrio":
+          - button "Contar Leche entera 1 L · Mi Barrio": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · Mi Barrio"
+          - button "Ver movimientos de Leche entera 1 L · Mi Barrio"
+          - button "Administrar lotes de Leche entera 1 L · Mi Barrio": Lotes
+      - row "Leche entera 1 L · Nueva Mesa SIM-1345 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · Nueva Mesa Registrar movimiento de Leche entera 1 L · Nueva Mesa Ver movimientos de Leche entera 1 L · Nueva Mesa Administrar lotes de Leche entera 1 L · Nueva Mesa":
+        - cell "Leche entera 1 L · Nueva Mesa SIM-1345 · Por unidad":
+          - strong: Leche entera 1 L · Nueva Mesa
+          - generic: SIM-1345 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · Nueva Mesa Registrar movimiento de Leche entera 1 L · Nueva Mesa Ver movimientos de Leche entera 1 L · Nueva Mesa Administrar lotes de Leche entera 1 L · Nueva Mesa":
+          - button "Contar Leche entera 1 L · Nueva Mesa": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · Nueva Mesa"
+          - button "Ver movimientos de Leche entera 1 L · Nueva Mesa"
+          - button "Administrar lotes de Leche entera 1 L · Nueva Mesa": Lotes
+      - row "Leche entera 1 L · Primavera SIM-2773 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · Primavera Registrar movimiento de Leche entera 1 L · Primavera Ver movimientos de Leche entera 1 L · Primavera Administrar lotes de Leche entera 1 L · Primavera":
+        - cell "Leche entera 1 L · Primavera SIM-2773 · Por unidad":
+          - strong: Leche entera 1 L · Primavera
+          - generic: SIM-2773 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · Primavera Registrar movimiento de Leche entera 1 L · Primavera Ver movimientos de Leche entera 1 L · Primavera Administrar lotes de Leche entera 1 L · Primavera":
+          - button "Contar Leche entera 1 L · Primavera": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · Primavera"
+          - button "Ver movimientos de Leche entera 1 L · Primavera"
+          - button "Administrar lotes de Leche entera 1 L · Primavera": Lotes
+      - row "Leche entera 1 L · Rincón Sur SIM-3011 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · Rincón Sur Registrar movimiento de Leche entera 1 L · Rincón Sur Ver movimientos de Leche entera 1 L · Rincón Sur Administrar lotes de Leche entera 1 L · Rincón Sur":
+        - cell "Leche entera 1 L · Rincón Sur SIM-3011 · Por unidad":
+          - strong: Leche entera 1 L · Rincón Sur
+          - generic: SIM-3011 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · Rincón Sur Registrar movimiento de Leche entera 1 L · Rincón Sur Ver movimientos de Leche entera 1 L · Rincón Sur Administrar lotes de Leche entera 1 L · Rincón Sur":
+          - button "Contar Leche entera 1 L · Rincón Sur": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · Rincón Sur"
+          - button "Ver movimientos de Leche entera 1 L · Rincón Sur"
+          - button "Administrar lotes de Leche entera 1 L · Rincón Sur": Lotes
+      - row "Leche entera 1 L · Santa Ana SIM-1702 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · Santa Ana Registrar movimiento de Leche entera 1 L · Santa Ana Ver movimientos de Leche entera 1 L · Santa Ana Administrar lotes de Leche entera 1 L · Santa Ana":
+        - cell "Leche entera 1 L · Santa Ana SIM-1702 · Por unidad":
+          - strong: Leche entera 1 L · Santa Ana
+          - generic: SIM-1702 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · Santa Ana Registrar movimiento de Leche entera 1 L · Santa Ana Ver movimientos de Leche entera 1 L · Santa Ana Administrar lotes de Leche entera 1 L · Santa Ana":
+          - button "Contar Leche entera 1 L · Santa Ana": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · Santa Ana"
+          - button "Ver movimientos de Leche entera 1 L · Santa Ana"
+          - button "Administrar lotes de Leche entera 1 L · Santa Ana": Lotes
+      - row "Leche entera 1 L · Santa Lucía SIM-0274 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · Santa Lucía Registrar movimiento de Leche entera 1 L · Santa Lucía Ver movimientos de Leche entera 1 L · Santa Lucía Administrar lotes de Leche entera 1 L · Santa Lucía":
+        - cell "Leche entera 1 L · Santa Lucía SIM-0274 · Por unidad":
+          - strong: Leche entera 1 L · Santa Lucía
+          - generic: SIM-0274 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · Santa Lucía Registrar movimiento de Leche entera 1 L · Santa Lucía Ver movimientos de Leche entera 1 L · Santa Lucía Administrar lotes de Leche entera 1 L · Santa Lucía":
+          - button "Contar Leche entera 1 L · Santa Lucía": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · Santa Lucía"
+          - button "Ver movimientos de Leche entera 1 L · Santa Lucía"
+          - button "Administrar lotes de Leche entera 1 L · Santa Lucía": Lotes
+      - row "Leche entera 1 L · Santa Lucía SIM-3844 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · Santa Lucía Registrar movimiento de Leche entera 1 L · Santa Lucía Ver movimientos de Leche entera 1 L · Santa Lucía Administrar lotes de Leche entera 1 L · Santa Lucía":
+        - cell "Leche entera 1 L · Santa Lucía SIM-3844 · Por unidad":
+          - strong: Leche entera 1 L · Santa Lucía
+          - generic: SIM-3844 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · Santa Lucía Registrar movimiento de Leche entera 1 L · Santa Lucía Ver movimientos de Leche entera 1 L · Santa Lucía Administrar lotes de Leche entera 1 L · Santa Lucía":
+          - button "Contar Leche entera 1 L · Santa Lucía": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · Santa Lucía"
+          - button "Ver movimientos de Leche entera 1 L · Santa Lucía"
+          - button "Administrar lotes de Leche entera 1 L · Santa Lucía": Lotes
+      - row "Leche entera 1 L · Sol del Sur SIM-0631 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · Sol del Sur Registrar movimiento de Leche entera 1 L · Sol del Sur Ver movimientos de Leche entera 1 L · Sol del Sur Administrar lotes de Leche entera 1 L · Sol del Sur":
+        - cell "Leche entera 1 L · Sol del Sur SIM-0631 · Por unidad":
+          - strong: Leche entera 1 L · Sol del Sur
+          - generic: SIM-0631 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · Sol del Sur Registrar movimiento de Leche entera 1 L · Sol del Sur Ver movimientos de Leche entera 1 L · Sol del Sur Administrar lotes de Leche entera 1 L · Sol del Sur":
+          - button "Contar Leche entera 1 L · Sol del Sur": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · Sol del Sur"
+          - button "Ver movimientos de Leche entera 1 L · Sol del Sur"
+          - button "Administrar lotes de Leche entera 1 L · Sol del Sur": Lotes
+      - row "Leche entera 1 L · Tierra Clara SIM-3487 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · Tierra Clara Registrar movimiento de Leche entera 1 L · Tierra Clara Ver movimientos de Leche entera 1 L · Tierra Clara Administrar lotes de Leche entera 1 L · Tierra Clara":
+        - cell "Leche entera 1 L · Tierra Clara SIM-3487 · Por unidad":
+          - strong: Leche entera 1 L · Tierra Clara
+          - generic: SIM-3487 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · Tierra Clara Registrar movimiento de Leche entera 1 L · Tierra Clara Ver movimientos de Leche entera 1 L · Tierra Clara Administrar lotes de Leche entera 1 L · Tierra Clara":
+          - button "Contar Leche entera 1 L · Tierra Clara": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · Tierra Clara"
+          - button "Ver movimientos de Leche entera 1 L · Tierra Clara"
+          - button "Administrar lotes de Leche entera 1 L · Tierra Clara": Lotes
+      - row "Leche entera 1 L · Tres Espigas SIM-2297 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · Tres Espigas Registrar movimiento de Leche entera 1 L · Tres Espigas Ver movimientos de Leche entera 1 L · Tres Espigas Administrar lotes de Leche entera 1 L · Tres Espigas":
+        - cell "Leche entera 1 L · Tres Espigas SIM-2297 · Por unidad":
+          - strong: Leche entera 1 L · Tres Espigas
+          - generic: SIM-2297 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · Tres Espigas Registrar movimiento de Leche entera 1 L · Tres Espigas Ver movimientos de Leche entera 1 L · Tres Espigas Administrar lotes de Leche entera 1 L · Tres Espigas":
+          - button "Contar Leche entera 1 L · Tres Espigas": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · Tres Espigas"
+          - button "Ver movimientos de Leche entera 1 L · Tres Espigas"
+          - button "Administrar lotes de Leche entera 1 L · Tres Espigas": Lotes
+      - row "Leche entera 1 L · Villa del Sol SIM-2416 · Por unidad 0 u. 12 u. Agotado Contar Leche entera 1 L · Villa del Sol Registrar movimiento de Leche entera 1 L · Villa del Sol Ver movimientos de Leche entera 1 L · Villa del Sol Administrar lotes de Leche entera 1 L · Villa del Sol":
+        - cell "Leche entera 1 L · Villa del Sol SIM-2416 · Por unidad":
+          - strong: Leche entera 1 L · Villa del Sol
+          - generic: SIM-2416 · Por unidad
+        - cell "0 u."
+        - cell "12 u."
+        - cell "Agotado":
+          - generic: Agotado
+        - cell "Contar Leche entera 1 L · Villa del Sol Registrar movimiento de Leche entera 1 L · Villa del Sol Ver movimientos de Leche entera 1 L · Villa del Sol Administrar lotes de Leche entera 1 L · Villa del Sol":
+          - button "Contar Leche entera 1 L · Villa del Sol": Contar stock
+          - button "Registrar movimiento de Leche entera 1 L · Villa del Sol"
+          - button "Ver movimientos de Leche entera 1 L · Villa del Sol"
+          - button "Administrar lotes de Leche entera 1 L · Villa del Sol": Lotes
+  - generic: Página 1
+  - button "Anterior" [disabled]
+  - button "Siguiente" [disabled]
+  - generic: F2 Buscar Esc Volver
+  - dialog "Lotes · Leche entera 1 L":
+    - heading "Lotes · Leche entera 1 L" [level=2]
+    - button "Cerrar" [active]
+    - article:
+      - strong: SIM-LECHE-ULTIMA-ENTREGA
+      - generic: Vence 9/10/2026
+      - strong: 88 u.
+      - generic: Disponible
+      - button "Bloquear"

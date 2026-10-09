@@ -1,0 +1,3 @@
+CREATE INDEX stock_transfers_from_status ON stock_transfers(from_location_id,status);
+CREATE INDEX stock_transfers_to_status ON stock_transfers(to_location_id,status);
+CREATE INDEX location_balances_location_quantity ON location_inventory_balances(location_id,quantity_base,product_id);

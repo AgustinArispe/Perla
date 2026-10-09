@@ -1,3 +1,5 @@
+import { EntityActivity } from '../../components/EntityActivity';
+import { ExportButton } from '../../components/ExportButton';
 import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
@@ -11,6 +13,9 @@ import { formatStock } from '../../../domain/inventory';
 import { Dialog } from '../../components/Dialog';
 import { api, unwrap, errorMessage } from '../../api';
 import { paymentLabels } from '../checkout/PaymentDialog';
+import type { SaleReceipt } from '../../../shared/receipts';
+import { ReceiptPrint } from '../receipts/ReceiptPrint';
+import { ReturnDialog } from './ReturnDialog';
 const timestamp = (value: string) =>
   new Intl.DateTimeFormat('es-AR', {
     dateStyle: 'short',
@@ -20,10 +25,14 @@ const timestamp = (value: string) =>
 export function SaleDetailView({
   saleId,
   userId,
+  profitabilityEnabled = false,
+  returnsEnabled = false,
   onClose,
 }: {
   saleId: string;
   userId: string;
+  profitabilityEnabled?: boolean;
+  returnsEnabled?: boolean;
   onClose: () => void;
 }) {
   const client = useQueryClient();
@@ -46,12 +55,19 @@ export function SaleDetailView({
     [preview, setPreview] = useState<VoidPreview | null>(null),
     [busy, setBusy] = useState(false),
     [error, setError] = useState(initial.error);
+  const [receipt, setReceipt] = useState<SaleReceipt | null>(null);
+  const [showReturn, setShowReturn] = useState(false);
   const detail = useQuery({
     queryKey: ['sale-detail', saleId],
     queryFn: async () => unwrap(await api().sales.detail(saleId)),
     retry: false,
   });
   const sale = detail.data;
+  const returns = useQuery({
+    queryKey: ['sale-returns', saleId],
+    queryFn: async () => unwrap(await api().sales.returns(saleId)),
+    retry: false,
+  });
   function confirmed(value: SaleDetail) {
     try {
       localStorage.removeItem(key);
@@ -125,6 +141,18 @@ export function SaleDetailView({
       setBusy(false);
     }
   }
+  async function createReceipt() {
+    if (!sale || busy) return;
+    setBusy(true);
+    setError('');
+    try {
+      setReceipt(unwrap(await api().receipts.create({ saleId: sale.id, format: 'THERMAL_80' })));
+    } catch (failure) {
+      setError(errorMessage(failure));
+    } finally {
+      setBusy(false);
+    }
+  }
   return (
     <Dialog
       title={sale ? `Venta N.º ${sale.number}` : 'Detalle de venta'}
@@ -133,6 +161,8 @@ export function SaleDetailView({
       wide
     >
       <div className="sale-detail">
+        <ExportButton dataset="saleDetail" filters={{ saleId }} />
+        <EntityActivity entityType="sale" entityId={saleId} />
         {(error || detail.isError) && (
           <div className="alert error" role="alert">
             {error || errorMessage(detail.error)}
@@ -160,6 +190,7 @@ export function SaleDetailView({
                   <th>Precio</th>
                   <th>Descuento</th>
                   <th>Neto</th>
+                  {profitabilityEnabled && <th>Margen bruto</th>}
                 </tr>
               </thead>
               <tbody>
@@ -176,6 +207,18 @@ export function SaleDetailView({
                     </td>
                     <td>{formatMoney(item.discountCents)}</td>
                     <td>{formatMoney(item.netCents)}</td>
+                    {profitabilityEnabled && (
+                      <td>
+                        {item.costCents === null ? (
+                          <span className="cost-missing">Sin costo</span>
+                        ) : (
+                          <>
+                            <strong>{formatMoney(item.netCents - item.costCents)}</strong>
+                            <small>Costo {formatMoney(item.costCents)}</small>
+                          </>
+                        )}
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>
@@ -188,6 +231,17 @@ export function SaleDetailView({
                 Descuento <strong>{formatMoney(sale.discountCents)}</strong>
               </span>
             </div>
+            {Boolean(sale.promotions?.length) && (
+              <section className="sale-promotions-summary">
+                <h3>Promociones aplicadas</h3>
+                {sale.promotions?.map((promotion) => (
+                  <div key={`${promotion.promotionId}:${promotion.revision}`}>
+                    <span>{promotion.name}</span>
+                    <strong>−{formatMoney(promotion.discountCents)}</strong>
+                  </div>
+                ))}
+              </section>
+            )}
             <h3>Medios de pago</h3>
             <div className="sale-payments">
               {sale.payments.map((p, i) => (
@@ -220,14 +274,46 @@ export function SaleDetailView({
                 )}
               </div>
             ))}
+            {Boolean(returns.data?.length) && (
+              <section className="sale-returns-summary">
+                <h3>Devoluciones</h3>
+                {returns.data?.map((item) => (
+                  <div key={item.id}>
+                    <span>
+                      N.º {item.number} · {timestamp(item.createdAt)} ·{' '}
+                      {paymentLabels[item.refundMethod]}
+                    </span>
+                    <strong>−{formatMoney(item.totalCents)}</strong>
+                  </div>
+                ))}
+              </section>
+            )}
             {sale.status === 'COMPLETED' && !showVoid && (
-              <button
-                className="button secondary"
-                disabled={busy || Boolean(initial.error)}
-                onClick={() => void prepare()}
-              >
-                Anular venta
-              </button>
+              <div className="dialog-actions">
+                <button
+                  className="button secondary"
+                  disabled={busy}
+                  onClick={() => void createReceipt()}
+                >
+                  Imprimir comprobante
+                </button>
+                {returnsEnabled && (
+                  <button
+                    className="button secondary"
+                    disabled={busy || Boolean(initial.error)}
+                    onClick={() => setShowReturn(true)}
+                  >
+                    Registrar devolución
+                  </button>
+                )}
+                <button
+                  className="button secondary"
+                  disabled={busy || Boolean(initial.error)}
+                  onClick={() => void prepare()}
+                >
+                  Anular venta
+                </button>
+              </div>
             )}
             {showVoid && sale.status === 'COMPLETED' && (
               <div className="void-form">
@@ -289,6 +375,8 @@ export function SaleDetailView({
           </>
         )}
       </div>
+      {receipt && <ReceiptPrint receipt={receipt} onClose={() => setReceipt(null)} />}
+      {showReturn && <ReturnDialog saleId={saleId} onClose={() => setShowReturn(false)} />}
     </Dialog>
   );
 }

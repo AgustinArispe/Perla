@@ -1,0 +1,436 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Histórico" [level=1]
+  - paragraph: Ventas guardadas y anulaciones
+  - text: Desde
+  - textbox "Desde"
+  - text: Hasta
+  - textbox "Hasta"
+  - text: Estado
+  - combobox "Estado":
+    - option "Todas" [selected]
+    - option "Completadas"
+    - option "Anuladas"
+  - button "Mis vistas": Mis vistas
+  - button "Exportar ventas a Excel": Exportar Excel
+  - table:
+    - rowgroup:
+      - row "Venta Fecha Estado Total":
+        - columnheader "Venta"
+        - columnheader "Fecha"
+        - columnheader "Estado"
+        - columnheader "Total"
+        - columnheader
+    - rowgroup:
+      - row "N.º 13813 05/10/2026 Completada $ 22.472,42 Ver venta 13813":
+        - cell "N.º 13813":
+          - strong: N.º 13813
+        - cell "05/10/2026"
+        - cell "Completada"
+        - cell "$ 22.472,42":
+          - strong: $ 22.472,42
+        - cell "Ver venta 13813":
+          - button "Ver venta 13813": Ver detalle
+      - row "N.º 13812 05/10/2026 Completada $ 44.451,01 Ver venta 13812":
+        - cell "N.º 13812":
+          - strong: N.º 13812
+        - cell "05/10/2026"
+        - cell "Completada"
+        - cell "$ 44.451,01":
+          - strong: $ 44.451,01
+        - cell "Ver venta 13812":
+          - button "Ver venta 13812": Ver detalle
+      - row "N.º 13811 05/10/2026 Completada $ 40.389,53 Ver venta 13811":
+        - cell "N.º 13811":
+          - strong: N.º 13811
+        - cell "05/10/2026"
+        - cell "Completada"
+        - cell "$ 40.389,53":
+          - strong: $ 40.389,53
+        - cell "Ver venta 13811":
+          - button "Ver venta 13811": Ver detalle
+      - row "N.º 13810 05/10/2026 Completada $ 14.146,61 Ver venta 13810":
+        - cell "N.º 13810":
+          - strong: N.º 13810
+        - cell "05/10/2026"
+        - cell "Completada"
+        - cell "$ 14.146,61":
+          - strong: $ 14.146,61
+        - cell "Ver venta 13810":
+          - button "Ver venta 13810": Ver detalle
+      - row "N.º 13809 05/10/2026 Completada $ 26.409,08 Ver venta 13809":
+        - cell "N.º 13809":
+          - strong: N.º 13809
+        - cell "05/10/2026"
+        - cell "Completada"
+        - cell "$ 26.409,08":
+          - strong: $ 26.409,08
+        - cell "Ver venta 13809":
+          - button "Ver venta 13809": Ver detalle
+      - row "N.º 13808 05/10/2026 Completada $ 46.032,22 Ver venta 13808":
+        - cell "N.º 13808":
+          - strong: N.º 13808
+        - cell "05/10/2026"
+        - cell "Completada"
+        - cell "$ 46.032,22":
+          - strong: $ 46.032,22
+        - cell "Ver venta 13808":
+          - button "Ver venta 13808": Ver detalle
+      - row "N.º 13807 05/10/2026 Completada $ 34.091,65 Ver venta 13807":
+        - cell "N.º 13807":
+          - strong: N.º 13807
+        - cell "05/10/2026"
+        - cell "Completada"
+        - cell "$ 34.091,65":
+          - strong: $ 34.091,65
+        - cell "Ver venta 13807":
+          - button "Ver venta 13807": Ver detalle
+      - row "N.º 13806 05/10/2026 Completada $ 31.649,40 Ver venta 13806":
+        - cell "N.º 13806":
+          - strong: N.º 13806
+        - cell "05/10/2026"
+        - cell "Completada"
+        - cell "$ 31.649,40":
+          - strong: $ 31.649,40
+        - cell "Ver venta 13806":
+          - button "Ver venta 13806": Ver detalle
+      - row "N.º 13805 05/10/2026 Completada $ 36.855,76 Ver venta 13805":
+        - cell "N.º 13805":
+          - strong: N.º 13805
+        - cell "05/10/2026"
+        - cell "Completada"
+        - cell "$ 36.855,76":
+          - strong: $ 36.855,76
+        - cell "Ver venta 13805":
+          - button "Ver venta 13805": Ver detalle
+      - row "N.º 13804 05/10/2026 Completada $ 44.482,76 Ver venta 13804":
+        - cell "N.º 13804":
+          - strong: N.º 13804
+        - cell "05/10/2026"
+        - cell "Completada"
+        - cell "$ 44.482,76":
+          - strong: $ 44.482,76
+        - cell "Ver venta 13804":
+          - button "Ver venta 13804": Ver detalle
+      - row "N.º 13803 05/10/2026 Completada $ 24.290,41 Ver venta 13803":
+        - cell "N.º 13803":
+          - strong: N.º 13803
+        - cell "05/10/2026"
+        - cell "Completada"
+        - cell "$ 24.290,41":
+          - strong: $ 24.290,41
+        - cell "Ver venta 13803":
+          - button "Ver venta 13803": Ver detalle
+      - row "N.º 13802 05/10/2026 Completada $ 14.662,58 Ver venta 13802":
+        - cell "N.º 13802":
+          - strong: N.º 13802
+        - cell "05/10/2026"
+        - cell "Completada"
+        - cell "$ 14.662,58":
+          - strong: $ 14.662,58
+        - cell "Ver venta 13802":
+          - button "Ver venta 13802": Ver detalle
+      - row "N.º 13801 05/10/2026 Completada $ 26.029,34 Ver venta 13801":
+        - cell "N.º 13801":
+          - strong: N.º 13801
+        - cell "05/10/2026"
+        - cell "Completada"
+        - cell "$ 26.029,34":
+          - strong: $ 26.029,34
+        - cell "Ver venta 13801":
+          - button "Ver venta 13801": Ver detalle
+      - row "N.º 13800 05/10/2026 Completada $ 45.985,79 Ver venta 13800":
+        - cell "N.º 13800":
+          - strong: N.º 13800
+        - cell "05/10/2026"
+        - cell "Completada"
+        - cell "$ 45.985,79":
+          - strong: $ 45.985,79
+        - cell "Ver venta 13800":
+          - button "Ver venta 13800": Ver detalle
+      - row "N.º 13799 05/10/2026 Completada $ 35.660,30 Ver venta 13799":
+        - cell "N.º 13799":
+          - strong: N.º 13799
+        - cell "05/10/2026"
+        - cell "Completada"
+        - cell "$ 35.660,30":
+          - strong: $ 35.660,30
+        - cell "Ver venta 13799":
+          - button "Ver venta 13799": Ver detalle
+      - row "N.º 13798 05/10/2026 Completada $ 37.767,39 Ver venta 13798":
+        - cell "N.º 13798":
+          - strong: N.º 13798
+        - cell "05/10/2026"
+        - cell "Completada"
+        - cell "$ 37.767,39":
+          - strong: $ 37.767,39
+        - cell "Ver venta 13798":
+          - button "Ver venta 13798": Ver detalle
+      - row "N.º 13797 05/10/2026 Completada $ 23.670,51 Ver venta 13797":
+        - cell "N.º 13797":
+          - strong: N.º 13797
+        - cell "05/10/2026"
+        - cell "Completada"
+        - cell "$ 23.670,51":
+          - strong: $ 23.670,51
+        - cell "Ver venta 13797":
+          - button "Ver venta 13797": Ver detalle
+      - row "N.º 13796 05/10/2026 Completada $ 18.067,25 Ver venta 13796":
+        - cell "N.º 13796":
+          - strong: N.º 13796
+        - cell "05/10/2026"
+        - cell "Completada"
+        - cell "$ 18.067,25":
+          - strong: $ 18.067,25
+        - cell "Ver venta 13796":
+          - button "Ver venta 13796": Ver detalle
+      - row "N.º 13795 05/10/2026 Completada $ 35.638,81 Ver venta 13795":
+        - cell "N.º 13795":
+          - strong: N.º 13795
+        - cell "05/10/2026"
+        - cell "Completada"
+        - cell "$ 35.638,81":
+          - strong: $ 35.638,81
+        - cell "Ver venta 13795":
+          - button "Ver venta 13795": Ver detalle
+      - row "N.º 13794 05/10/2026 Completada $ 33.928,20 Ver venta 13794":
+        - cell "N.º 13794":
+          - strong: N.º 13794
+        - cell "05/10/2026"
+        - cell "Completada"
+        - cell "$ 33.928,20":
+          - strong: $ 33.928,20
+        - cell "Ver venta 13794":
+          - button "Ver venta 13794": Ver detalle
+  - generic: 13813 ventas · Página 1
+  - button "Anterior" [disabled]
+  - button "Siguiente"
+  - dialog "Venta N.º 13813":
+    - heading "Venta N.º 13813" [level=2]
+    - button "Cerrar"
+    - button "Exportar detalle de venta a Excel": Exportar Excel
+    - generic "Historial de cambios"
+    - strong: Completada
+    - paragraph: 5/10/26, 7:05 p. m.
+    - paragraph:
+      - text: "Atendió:"
+      - strong: Martín López · Caja tarde
+    - strong: $ 22.472,42
+    - table:
+      - rowgroup:
+        - row "Producto Cantidad Precio Descuento Neto Margen bruto":
+          - columnheader "Producto"
+          - columnheader "Cantidad"
+          - columnheader "Precio"
+          - columnheader "Descuento"
+          - columnheader "Neto"
+          - columnheader "Margen bruto"
+      - rowgroup:
+        - row "Pizza muzzarella 7799900000861 2 u. $ 5.559,81 $ 0,00 $ 11.119,62 $ 3.730,07 Costo $ 7.389,55":
+          - cell "Pizza muzzarella 7799900000861":
+            - strong: Pizza muzzarella
+            - generic: "7799900000861"
+          - cell "2 u."
+          - cell "$ 5.559,81"
+          - cell "$ 0,00"
+          - cell "$ 11.119,62"
+          - cell "$ 3.730,07 Costo $ 7.389,55":
+            - strong: $ 3.730,07
+            - generic: Costo $ 7.389,55
+        - row "Atún al natural 170 g 7799900000175 1 u. $ 4.401,51 $ 0,00 $ 4.401,51 $ 1.472,83 Costo $ 2.928,68":
+          - cell "Atún al natural 170 g 7799900000175":
+            - strong: Atún al natural 170 g
+            - generic: "7799900000175"
+          - cell "1 u."
+          - cell "$ 4.401,51"
+          - cell "$ 0,00"
+          - cell "$ 4.401,51"
+          - cell "$ 1.472,83 Costo $ 2.928,68":
+            - strong: $ 1.472,83
+            - generic: Costo $ 2.928,68
+        - row "Sal fina 500 g 7799900000090 2 u. $ 1.042,47 $ 0,00 $ 2.084,94 $ 698,00 Costo $ 1.386,94":
+          - cell "Sal fina 500 g 7799900000090":
+            - strong: Sal fina 500 g
+            - generic: "7799900000090"
+          - cell "2 u."
+          - cell "$ 1.042,47"
+          - cell "$ 0,00"
+          - cell "$ 2.084,94"
+          - cell "$ 698,00 Costo $ 1.386,94":
+            - strong: $ 698,00
+            - generic: Costo $ 1.386,94
+        - row "Batata · Sol del Sur SIM-0699 0,900 kg $ 2.386,08 / kg $ 107,37 $ 2.040,10 $ 851,13 Costo $ 1.188,97":
+          - cell "Batata · Sol del Sur SIM-0699":
+            - strong: Batata · Sol del Sur
+            - generic: SIM-0699
+          - cell "0,900 kg"
+          - cell "$ 2.386,08 / kg"
+          - cell "$ 107,37"
+          - cell "$ 2.040,10"
+          - cell "$ 851,13 Costo $ 1.188,97":
+            - strong: $ 851,13
+            - generic: Costo $ 1.188,97
+        - row "Morrón rojo · Buenos Sabores SIM-3324 0,500 kg $ 5.950,00 / kg $ 148,75 $ 2.826,25 $ 981,75 Costo $ 1.844,50":
+          - cell "Morrón rojo · Buenos Sabores SIM-3324":
+            - strong: Morrón rojo · Buenos Sabores
+            - generic: SIM-3324
+          - cell "0,500 kg"
+          - cell "$ 5.950,00 / kg"
+          - cell "$ 148,75"
+          - cell "$ 2.826,25"
+          - cell "$ 981,75 Costo $ 1.844,50":
+            - strong: $ 981,75
+            - generic: Costo $ 1.844,50
+    - text: Subtotal
+    - strong: $ 22.728,54
+    - text: Descuento
+    - strong: $ 256,12
+    - heading "Promociones aplicadas" [level=3]
+    - generic: "Verdulería: 5% de descuento"
+    - strong: −$ 256,12
+    - heading "Medios de pago" [level=3]
+    - paragraph:
+      - strong: Débito · $ 22.472,42
+    - heading "Registro de la venta" [level=3]
+    - generic: 5/10/26, 7:05 p. m. · Venta guardada
+    - strong: Venta finalizada
+    - button "Imprimir comprobante"
+    - button "Registrar devolución"
+    - button "Anular venta"
+    - dialog "Registrar devolución":
+      - heading "Registrar devolución" [level=2]
+      - button "Cerrar"
+      - article:
+        - strong: Pizza muzzarella
+        - generic: "Disponible para devolver: 2 u."
+        - text: Cantidad
+        - textbox "Cantidad a devolver de Pizza muzzarella":
+          - /placeholder: "0"
+        - button "Todo"
+        - text: Destino
+        - combobox "Destino":
+          - option "Vuelve al stock" [selected]
+          - option "Se descarta"
+      - article:
+        - strong: Atún al natural 170 g
+        - generic: "Disponible para devolver: 1 u."
+        - text: Cantidad
+        - textbox "Cantidad a devolver de Atún al natural 170 g":
+          - /placeholder: "0"
+        - button "Todo"
+        - text: Destino
+        - combobox "Destino":
+          - option "Vuelve al stock" [selected]
+          - option "Se descarta"
+      - article:
+        - strong: Sal fina 500 g
+        - generic: "Disponible para devolver: 2 u."
+        - text: Cantidad
+        - textbox "Cantidad a devolver de Sal fina 500 g":
+          - /placeholder: "0"
+        - button "Todo"
+        - text: Destino
+        - combobox "Destino":
+          - option "Vuelve al stock" [selected]
+          - option "Se descarta"
+      - article:
+        - strong: Batata · Sol del Sur
+        - generic: "Disponible para devolver: 0,900 kg"
+        - text: Cantidad
+        - textbox "Cantidad a devolver de Batata · Sol del Sur":
+          - /placeholder: 0,000
+        - button "Todo"
+        - text: Destino
+        - combobox "Destino":
+          - option "Vuelve al stock" [selected]
+          - option "Se descarta"
+      - article:
+        - strong: Morrón rojo · Buenos Sabores
+        - generic: "Disponible para devolver: 0,500 kg"
+        - text: Cantidad
+        - textbox "Cantidad a devolver de Morrón rojo · Buenos Sabores":
+          - /placeholder: 0,000
+        - button "Todo"
+        - text: Destino
+        - combobox "Destino":
+          - option "Vuelve al stock" [selected]
+          - option "Se descarta"
+      - generic: Reintegro estimado
+      - strong: $ 0,00
+      - text: Medio de reintegro
+      - combobox "Medio de reintegro" [active]:
+        - option "Efectivo" [selected]
+        - option "Débito"
+        - option "Crédito"
+        - option "Transferencia"
+        - option "Otro"
+      - text: Motivo
+      - textbox "Motivo":
+        - /placeholder: "Ej.: Producto devuelto"
+      - button "Cancelar"
+      - button "Confirmar devolución" [disabled]

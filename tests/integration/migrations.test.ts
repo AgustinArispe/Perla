@@ -4,6 +4,66 @@ import { describe, expect, it } from 'vitest';
 import { migrate, MIGRATIONS, SCHEMA_VERSION } from '../../src/worker/db/migrations';
 
 describe('migraciones trazables', () => {
+  it('crea compras y proveedores desactivados por defecto con vínculos de stock', () => {
+    const db = new Database(':memory:');
+    try {
+      db.pragma('foreign_keys=ON');
+      migrate(db);
+      const tables = db
+        .prepare(
+          "SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'purchase%' OR name='suppliers'",
+        )
+        .all() as { name: string }[];
+      expect(tables.map((row) => row.name).sort()).toEqual([
+        'purchase_drafts',
+        'purchase_events',
+        'purchase_items',
+        'purchases',
+        'suppliers',
+      ]);
+      expect(
+        db
+          .prepare("SELECT enabled FROM business_features WHERE feature_key='SUPPLIERS_PURCHASES'")
+          .get(),
+      ).toEqual({ enabled: 0 });
+      const stockColumns = db.pragma('table_info(stock_movements)') as { name: string }[];
+      expect(stockColumns.map((column) => column.name)).toEqual(
+        expect.arrayContaining(['purchase_id', 'purchase_item_id']),
+      );
+      expect(db.pragma('foreign_key_check')).toEqual([]);
+    } finally {
+      db.close();
+    }
+  });
+  it('actualiza los nombres anteriores sin reemplazar nombres personalizados ni repetir la revisión', () => {
+    for (const [before, after] of [
+      ['El Bocha', 'Perla Negra'],
+      ['El Bocha · Demo', 'Perla Negra'],
+      ['El Perla', 'Perla Negra'],
+      ['Mi comercio', 'Mi comercio'],
+    ]) {
+      const db = new Database(':memory:');
+      try {
+        migrate(
+          db,
+          MIGRATIONS.filter((migration) => migration.version <= 10),
+        );
+        db.prepare('UPDATE business_settings SET business_name=?').run(before);
+        migrate(db);
+        const settings = db.prepare('SELECT business_name,revision FROM business_settings').get();
+        expect(settings).toEqual({
+          business_name: after,
+          revision: before === after ? 1 : before === 'El Perla' ? 2 : 3,
+        });
+        migrate(db);
+        expect(db.prepare('SELECT business_name,revision FROM business_settings').get()).toEqual(
+          settings,
+        );
+      } finally {
+        db.close();
+      }
+    }
+  });
   it('acepta checksum legacy CRLF y lo normaliza para mover la base entre Windows y Linux', () => {
     const db = new Database(':memory:');
     try {
@@ -71,13 +131,20 @@ describe('migraciones trazables', () => {
         1,
         Date.now() + 60000,
       );
-      const users = db.prepare('SELECT * FROM users').all();
+      const users = db.prepare('SELECT * FROM users').all() as Record<string, unknown>[];
       migrate(db);
-      expect(db.prepare('SELECT * FROM users').all()).toEqual(users);
+      expect(db.prepare('SELECT * FROM users').all()).toEqual(
+        users.map((user) => ({ ...user, system_admin: 0 })),
+      );
       expect(db.prepare('SELECT count(*) AS n FROM auth_sessions').get()).toEqual({ n: 0 });
       expect(db.prepare('SELECT max(version) AS version FROM schema_migrations').get()).toEqual({
-        version: 6,
+        version: SCHEMA_VERSION,
       });
+      expect(
+        (db.pragma('table_info(users)') as { name: string }[]).some(
+          (column) => column.name === 'system_admin',
+        ),
+      ).toBe(true);
       expect(db.pragma('foreign_key_check')).toEqual([]);
     } finally {
       db.close();

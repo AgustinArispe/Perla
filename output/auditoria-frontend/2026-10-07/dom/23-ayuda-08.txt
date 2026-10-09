@@ -1,0 +1,94 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Ayuda" [level=1]
+  - text: Buscar en la ayuda
+  - searchbox "Buscar en la ayuda"
+  - navigation "Temas de ayuda":
+    - button "Caja y ventas"
+    - button "Efectivo y cierre de caja"
+    - button "Productos"
+    - button "Stock"
+    - button "Proveedores y compras"
+    - button "Promociones"
+    - button "Clientes y cuenta corriente"
+    - button "Histórico y anulaciones" [active] [pressed]
+    - button "Resumen mensual"
+    - button "Usuarios y configuración"
+    - button "Copias de seguridad"
+    - button "Cuenta y alcance"
+    - button "Ubicaciones y traslados"
+  - article:
+    - heading "Histórico y anulaciones" [level=2]
+    - heading "Consultar una venta" [level=3]
+    - paragraph: Filtrá por fechas y estado. Ver detalle muestra los productos, cantidades, precios guardados, descuento y pagos de esa venta. Las fechas corresponden al horario de Argentina.
+    - heading "Anular una venta confirmada" [level=3]
+    - paragraph: La anulación conserva la operación original y registra el motivo. Reintegra el stock; si hubo un conteo posterior, revisá el aviso antes de continuar. Si devuelve efectivo, el reintegro se registra en la caja abierta correspondiente. No cambia el arqueo de una caja que ya se cerró.
+    - heading "Devolver parte de una venta" [level=3]
+    - paragraph: En el detalle de la venta elegí Registrar devolución. Indicá la cantidad, si vuelve a la venta o queda como merma, el medio del reintegro y el motivo. El sistema conserva lo ya devuelto y no permite superar la cantidad original. Un reintegro en efectivo necesita una caja abierta.
+    - heading "Revisar turnos y actividad" [level=3]
+    - paragraph: Turnos muestra las aperturas, cierres, efectivo esperado, contado y diferencia. Ver caja permite consultar los movimientos. Actividad registra quién hizo cada operación para facilitar el seguimiento.

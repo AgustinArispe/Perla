@@ -1,0 +1,123 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Compras" [level=1]
+  - tablist "Secciones de compras":
+    - button "Recibir": Recibir
+    - button "Historial": Historial
+    - button "Proveedores": Proveedores
+  - button "Exportar compras a Excel": Exportar Excel
+  - generic: "1"
+  - strong: Proveedor
+  - combobox "Proveedor" [expanded]
+  - listbox "Proveedor":
+    - option "Almacén · Distribuidor local":
+      - strong: Almacén · Distribuidor local
+    - option "Bebidas · Distribuidor local" [selected]:
+      - strong: Bebidas · Distribuidor local
+    - option "Congelados · Distribuidor local":
+      - strong: Congelados · Distribuidor local
+    - option "Fiambrería · Distribuidor local":
+      - strong: Fiambrería · Distribuidor local
+    - option "Galletitas y golosinas · Distribuidor local":
+      - strong: Galletitas y golosinas · Distribuidor local
+    - option "Infusiones y desayuno · Distribuidor local":
+      - strong: Infusiones y desayuno · Distribuidor local
+    - option "Lácteos · Distribuidor local":
+      - strong: Lácteos · Distribuidor local
+    - option "Limpieza · Distribuidor local":
+      - strong: Limpieza · Distribuidor local
+    - option "Panadería y huevos · Distribuidor local":
+      - strong: Panadería y huevos · Distribuidor local
+    - option "Verdulería · Distribuidor local":
+      - strong: Verdulería · Distribuidor local
+    - button "Cerrar búsqueda"
+  - button "Nuevo": Nuevo
+  - generic: "2"
+  - strong: Productos
+  - textbox:
+    - /placeholder: Escanear código + Enter
+  - combobox "Producto para comprar"
+  - button "Nuevo producto": Nuevo producto
+  - complementary:
+    - generic: 0 productos
+    - generic: Total
+    - strong: $ 0,00
+    - button "Recibir compra" [disabled]
+    - button "Guardar borrador"
+    - status: Borrador guardado
+  - strong: Escaneá el primer producto
+  - dialog "Nuevo proveedor":
+    - heading "Nuevo proveedor" [level=2]
+    - button "Cerrar"
+    - generic: Nombre
+    - textbox "Nombre" [active]
+    - generic: Teléfono
+    - textbox "Teléfono"
+    - button "Más datos"
+    - button "Cancelar"
+    - button "Guardar proveedor"

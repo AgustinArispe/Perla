@@ -34,7 +34,8 @@ export class WebWorkerClient implements Executor {
           entry.resolve(m.result);
         }
       });
-      this.worker.on('error', () => {
+      this.worker.on('error', (error) => {
+        if (process.env.NODE_ENV !== 'production') console.error(error);
         this.fail();
         reject(new Error('No se pudo iniciar la base de datos.'));
       });

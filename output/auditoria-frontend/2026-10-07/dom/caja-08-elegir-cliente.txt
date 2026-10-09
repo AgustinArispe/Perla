@@ -1,0 +1,240 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - strong: Caja abierta · Caja 1 · Lucía
+  - button "Ingreso / retiro"
+  - button "Cerrar caja"
+  - heading "Caja" [level=1]
+  - generic: Escanear código
+  - generic: Borrador al día
+  - textbox "Escanear código":
+    - /placeholder: Código de barras + Enter
+  - generic: F2
+  - button "Buscar producto · F3": Buscar producto · F3
+  - button "Producto por kilo · F6": Producto por kilo · F6
+  - generic: Escaneo listo
+  - table:
+    - rowgroup:
+      - row "Producto Cantidad Precio Importe":
+        - columnheader "Producto"
+        - columnheader "Cantidad"
+        - columnheader "Precio"
+        - columnheader "Importe"
+        - columnheader
+    - rowgroup:
+      - row "Arroz largo fino 1 kg 7799900000014 Restar Arroz largo fino 1 kg Cambiar cantidad de Arroz largo fino 1 kg Sumar Arroz largo fino 1 kg $ 2.084,92 $ 4.169,84 Quitar Arroz largo fino 1 kg":
+        - cell "Arroz largo fino 1 kg 7799900000014":
+          - strong: Arroz largo fino 1 kg
+          - generic: "7799900000014"
+        - cell "Restar Arroz largo fino 1 kg Cambiar cantidad de Arroz largo fino 1 kg Sumar Arroz largo fino 1 kg":
+          - button "Restar Arroz largo fino 1 kg": −
+          - button "Cambiar cantidad de Arroz largo fino 1 kg": "2"
+          - button "Sumar Arroz largo fino 1 kg": +
+        - cell "$ 2.084,92"
+        - cell "$ 4.169,84":
+          - strong: $ 4.169,84
+        - cell "Quitar Arroz largo fino 1 kg":
+          - button "Quitar Arroz largo fino 1 kg": Quitar
+      - row "Jamón cocido SIM-0087 · Porción Cambiar cantidad de Jamón cocido $ 16.795,23 / kg $ 4.198,81 Quitar Jamón cocido":
+        - cell "Jamón cocido SIM-0087 · Porción":
+          - strong: Jamón cocido
+          - generic: SIM-0087 · Porción
+        - cell "Cambiar cantidad de Jamón cocido":
+          - button "Cambiar cantidad de Jamón cocido": 0,250 kg
+        - cell "$ 16.795,23 / kg":
+          - text: $ 16.795,23
+          - generic: / kg
+        - cell "$ 4.198,81":
+          - strong: $ 4.198,81
+        - cell "Quitar Jamón cocido":
+          - button "Quitar Jamón cocido": Quitar
+      - row "Tomate SIM-0101 · Porción Cambiar cantidad de Tomate $ 2.664,06 / kg $ 3.037,03 Antes $ 3.196,87 Quitar Tomate":
+        - cell "Tomate SIM-0101 · Porción":
+          - strong: Tomate
+          - generic: SIM-0101 · Porción
+        - cell "Cambiar cantidad de Tomate":
+          - button "Cambiar cantidad de Tomate": 1,200 kg
+        - cell "$ 2.664,06 / kg":
+          - text: $ 2.664,06
+          - generic: / kg
+        - cell "$ 3.037,03 Antes $ 3.196,87":
+          - strong: $ 3.037,03
+          - generic: Antes $ 3.196,87
+        - cell "Quitar Tomate":
+          - button "Quitar Tomate": Quitar
+  - complementary:
+    - heading "Venta en curso" [level=2]
+    - term: Subtotal
+    - definition: $ 11.565,52
+    - term: Promociones
+    - definition: $ 159,84
+    - status:
+      - strong: Ahorrás $ 159,84
+      - generic: "Verdulería: 5% de descuento"
+    - button "Descuento manual · F4"
+    - button "Elegir cliente": Elegir cliente
+    - generic: Total
+    - strong: $ 11.405,68
+    - button "Cobrar · F8": Cobrar · F8
+    - button "Cancelar venta en curso"
+  - dialog "Cliente de la venta":
+    - heading "Cliente de la venta" [level=2]
+    - button "Cerrar"
+    - combobox "Cliente" [expanded] [active]
+    - listbox "Cliente":
+      - option "Ana Torres Disponible $ 362.868,54" [selected]:
+        - strong: Ana Torres
+        - generic: Disponible $ 362.868,54
+      - option "Beatriz Acosta Disponible $ 205.221,33":
+        - strong: Beatriz Acosta
+        - generic: Disponible $ 205.221,33
+      - option "Beatriz Acosta · Comercio Disponible $ 542.438,13":
+        - strong: Beatriz Acosta · Comercio
+        - generic: Disponible $ 542.438,13
+      - option "Beatriz Aguirre Disponible $ 329.323,23":
+        - strong: Beatriz Aguirre
+        - generic: Disponible $ 329.323,23
+      - option "Beatriz Benítez Disponible $ 368.247,72":
+        - strong: Beatriz Benítez
+        - generic: Disponible $ 368.247,72
+      - option "Beatriz Medina Disponible $ 610.790,97":
+        - strong: Beatriz Medina
+        - generic: Disponible $ 610.790,97
+      - option "Beatriz Navarro Disponible $ 396.778,70":
+        - strong: Beatriz Navarro
+        - generic: Disponible $ 396.778,70
+      - option "Beatriz Ríos Disponible $ 203.822,15":
+        - strong: Beatriz Ríos
+        - generic: Disponible $ 203.822,15
+      - option "Beatriz Sosa Disponible $ 637.442,02":
+        - strong: Beatriz Sosa
+        - generic: Disponible $ 637.442,02
+      - option "Beatriz Vega Disponible $ 394.009,23":
+        - strong: Beatriz Vega
+        - generic: Disponible $ 394.009,23
+      - option "Carlos García Disponible $ 661.164,62":
+        - strong: Carlos García
+        - generic: Disponible $ 661.164,62
+      - option "Carolina Suárez Disponible $ 310.081,86":
+        - strong: Carolina Suárez
+        - generic: Disponible $ 310.081,86
+      - option "Claudia Acosta Disponible $ 708.263,00":
+        - strong: Claudia Acosta
+        - generic: Disponible $ 708.263,00
+      - option "Claudia Aguirre Disponible $ 542.959,55":
+        - strong: Claudia Aguirre
+        - generic: Disponible $ 542.959,55
+      - option "Claudia Benítez Disponible $ 706.638,26":
+        - strong: Claudia Benítez
+        - generic: Disponible $ 706.638,26
+      - option "Claudia Medina Disponible $ 587.158,94":
+        - strong: Claudia Medina
+        - generic: Disponible $ 587.158,94
+      - option "Claudia Navarro Disponible $ 545.470,07":
+        - strong: Claudia Navarro
+        - generic: Disponible $ 545.470,07
+      - option "Claudia Ríos Disponible $ 523.266,64":
+        - strong: Claudia Ríos
+        - generic: Disponible $ 523.266,64
+      - option "Claudia Sosa Disponible $ 682.119,06":
+        - strong: Claudia Sosa
+        - generic: Disponible $ 682.119,06
+      - option "Claudia Vega Disponible $ 797.918,10":
+        - strong: Claudia Vega
+        - generic: Disponible $ 797.918,10
+      - option "Daniel Castro Disponible $ 767.317,70":
+        - strong: Daniel Castro
+        - generic: Disponible $ 767.317,70
+      - option "Elena Martínez Disponible $ 215.908,74":
+        - strong: Elena Martínez
+        - generic: Disponible $ 215.908,74
+      - option "Gustavo Acosta Disponible $ 278.137,63":
+        - strong: Gustavo Acosta
+        - generic: Disponible $ 278.137,63
+      - option "Gustavo Aguirre Disponible $ 357.991,11":
+        - strong: Gustavo Aguirre
+        - generic: Disponible $ 357.991,11
+      - option "Gustavo Benítez Disponible $ 460.655,94":
+        - strong: Gustavo Benítez
+        - generic: Disponible $ 460.655,94
+      - option "Gustavo Medina Disponible $ 258.468,60":
+        - strong: Gustavo Medina
+        - generic: Disponible $ 258.468,60
+      - option "Gustavo Navarro Disponible $ 328.866,65":
+        - strong: Gustavo Navarro
+        - generic: Disponible $ 328.866,65
+      - option "Gustavo Ríos Disponible $ 259.011,30":
+        - strong: Gustavo Ríos
+        - generic: Disponible $ 259.011,30
+      - option "Gustavo Sosa Disponible $ 757.865,32":
+        - strong: Gustavo Sosa
+        - generic: Disponible $ 757.865,32
+      - option "Gustavo Vega Disponible $ 742.809,97":
+        - strong: Gustavo Vega
+        - generic: Disponible $ 742.809,97
+      - button "Cerrar búsqueda"
+    - button "Consumidor final"

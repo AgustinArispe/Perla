@@ -1,5 +1,5 @@
 appId: ar.com.arispe.elbocha
-productName: El Bocha POS
+productName: Perla Negra POS
 npmRebuild: false
 directories:
   output: release
@@ -9,6 +9,7 @@ files:
 asarUnpack:
   - node_modules/better-sqlite3/**/*
 win:
+  icon: build/perla-negra.ico
   target:
     - target: nsis
       arch: [x64]

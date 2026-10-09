@@ -1,10 +1,33 @@
+import { openModule } from './navigation-helper';
 import { test, expect } from '@playwright/test';
 test('web real: módulos, terminal, venta escaneada y consulta', async ({ page }) => {
   await page.goto('/');
+  await page.screenshot({ path: 'tmp/frontend-login.png', fullPage: true });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.screenshot({ path: 'tmp/frontend-login-mobile.png', fullPage: true });
+  await page.setViewportSize({ width: 1280, height: 720 });
   await page.getByLabel('Usuario', { exact: true }).fill('jefe');
   await page.getByLabel('Contraseña', { exact: true }).fill('Prueba-Web-Bocha-2026!');
   await page.getByRole('button', { name: 'Ingresar', exact: true }).click();
   await expect(page.getByRole('navigation', { name: 'Módulos' })).toBeVisible();
+  const sidebar = page.locator('.sidebar');
+  await page.getByRole('button', { name: 'Colapsar menú', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Expandir menú', exact: true })).toHaveAttribute(
+    'aria-expanded',
+    'false',
+  );
+  await expect.poll(async () => (await sidebar.boundingBox())!.width).toBeLessThan(100);
+  await page.reload();
+  await expect(page.getByRole('button', { name: 'Expandir menú', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Expandir menú', exact: true }).click();
+  await expect.poll(async () => (await sidebar.boundingBox())!.width).toBeGreaterThan(200);
+  const shellGeometry = await page.evaluate(() => {
+    const sidebarRect = document.querySelector('.sidebar')!.getBoundingClientRect();
+    const workspaceRect = document.querySelector('.workspace')!.getBoundingClientRect();
+    return { sidebarRight: sidebarRect.right, workspaceLeft: workspaceRect.left };
+  });
+  expect(shellGeometry.workspaceLeft).toBe(shellGeometry.sidebarRight);
+  expect(await sidebar.evaluate((el) => getComputedStyle(el).borderRightWidth)).toBe('1px');
   const seed = await page.evaluate(async () => {
     const session = (await (await fetch('/api/v1/auth/session')).json()).value;
     async function post(path: string, body: unknown) {
@@ -32,6 +55,7 @@ test('web real: módulos, terminal, venta escaneada y consulta', async ({ page }
   });
   expect(seed.name).toBe('Arroz largo fino');
   await page.reload();
+  await openModule(page, 'Caja');
   await page
     .getByRole('combobox', { name: 'Terminal', exact: true })
     .selectOption({ label: 'Caja principal' });
@@ -40,12 +64,22 @@ test('web real: módulos, terminal, venta escaneada y consulta', async ({ page }
   await page.getByRole('button', { name: 'Abrir caja', exact: true }).click();
   const scanner = page.locator('.scanner-field input');
   await expect(scanner).toBeFocused();
+  await expect(page.locator('.checkout-scan')).toHaveClass(/scanner-ready/);
   await scanner.fill('077900001');
   await scanner.press('Enter');
   await expect(page.locator('.checkout-lines')).toContainText('Arroz largo fino');
   await scanner.fill('077900001');
   await scanner.press('Enter');
   await expect(page.locator('.checkout-total')).toContainText('3.000');
+  expect(
+    await page
+      .getByRole('button', { name: 'Quitar Arroz largo fino', exact: true })
+      .evaluate((button) => {
+        const buttonRect = button.getBoundingClientRect();
+        const cartRect = button.closest('.checkout-cart')!.getBoundingClientRect();
+        return buttonRect.left >= cartRect.left && buttonRect.right <= cartRect.right;
+      }),
+  ).toBe(true);
   await page.route('**/api/v1/cash/current?*', (route) => route.abort());
   await page.getByRole('button', { name: 'Ingreso / retiro', exact: true }).click();
   const cashDialog = page.getByRole('dialog');
@@ -62,11 +96,55 @@ test('web real: módulos, terminal, venta escaneada y consulta', async ({ page }
   await page.screenshot({ path: 'tmp/frontend-caja.png', fullPage: true });
   await page.keyboard.press('F8');
   await expect(page.getByRole('dialog')).toBeVisible();
+  await expect(page.getByRole('textbox', { name: 'Efectivo recibido 1' })).toBeFocused();
+  await expect(page.locator('.payment-balance')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Dividir pago' }).click();
+  await expect(page.getByRole('textbox', { name: 'Importe aplicado 1' })).toHaveValue('1500,00');
+  await expect(page.getByRole('textbox', { name: 'Importe aplicado 2' })).toHaveValue('1500,00');
+  await expect(page.locator('.payment-balance')).toContainText('Pago completo');
+  await page.getByRole('button', { name: 'Quitar pago 2' }).click();
+  await expect(page.getByRole('textbox', { name: 'Importe aplicado 1' })).toHaveCount(0);
+  await expect(page.getByRole('textbox', { name: 'Efectivo recibido 1' })).toHaveValue('3000,00');
+  await page.getByRole('textbox', { name: 'Efectivo recibido 1' }).fill('2500');
+  await expect(page.locator('.payment-balance')).toContainText('Falta efectivo $ 500,00');
+  await page.getByRole('textbox', { name: 'Efectivo recibido 1' }).fill('3000');
+  expect((await page.getByRole('dialog').boundingBox())!.width).toBeGreaterThanOrEqual(600);
+  await page.screenshot({ path: 'tmp/frontend-cobrar.png', fullPage: false });
+  const debit = page.getByRole('button', { name: 'Débito', exact: true });
+  await debit.click();
+  await expect(debit).toHaveAttribute('aria-pressed', 'true');
+  await page.getByRole('button', { name: 'Efectivo', exact: true }).click();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.screenshot({ path: 'tmp/frontend-cobrar-mobile.png', fullPage: false });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.getByRole('textbox', { name: 'Efectivo recibido 1' }).fill('4000');
+  await expect(page.locator('.payment-change-inline')).toContainText('Vuelto $ 1.000');
+  await expect(page.locator('.payment-balance-change')).toHaveCount(0);
+  await page.getByRole('textbox', { name: 'Efectivo recibido 1' }).fill('3000');
+  await page.setViewportSize({ width: 1280, height: 720 });
   await page.getByRole('button', { name: /Confirmar venta/ }).click();
   await expect(page.locator('.sale-confirmed')).toBeVisible();
+  const receiptDialog = page.getByRole('dialog', { name: 'Comprobante de venta' });
+  await expect(receiptDialog).toBeVisible();
+  await receiptDialog
+    .locator('.dialog-footer')
+    .getByRole('button', { name: 'Cerrar', exact: true })
+    .click();
+  await expect(receiptDialog).not.toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.getByRole('button', { name: 'Expandir menú' })).toBeVisible();
+  await expect(page.getByRole('navigation', { name: 'Módulos' })).not.toBeVisible();
+  await page.getByRole('button', { name: 'Expandir menú' }).click();
+  await expect(page.getByRole('navigation', { name: 'Módulos' })).toBeVisible();
+  await page.getByRole('button', { name: 'Colapsar menú' }).click();
   await page.screenshot({ path: 'tmp/frontend-mobile.png', fullPage: true });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  const mobileCheckout = await page.locator('.checkout-layout').evaluate((layout) => {
+    const cart = layout.querySelector('.checkout-cart')!.getBoundingClientRect();
+    const totals = layout.querySelector('.checkout-totals')!.getBoundingClientRect();
+    return { cartBottom: cart.bottom, totalsTop: totals.top };
+  });
+  expect(mobileCheckout.totalsTop).toBeGreaterThanOrEqual(mobileCheckout.cartBottom);
   await page.setViewportSize({ width: 1280, height: 720 });
   for (const name of [
     'Productos',
@@ -79,16 +157,89 @@ test('web real: módulos, terminal, venta escaneada y consulta', async ({ page }
     'Configuración',
     'Backups',
   ]) {
-    await page
-      .getByRole('navigation', { name: 'Módulos' })
-      .getByRole('button', { name, exact: true })
-      .click();
+    await openModule(page, name);
     await expect(page.locator('main h1')).toBeVisible();
     await expect(page.locator('main [aria-busy="true"]')).toHaveCount(0);
-    if (name === 'Resumen mensual') await expect(page.locator('.dashboard-metrics')).toBeVisible();
+    if (name === 'Resumen mensual') {
+      await expect(page.locator('.dashboard-metrics')).toBeVisible();
+      await expect(page.locator('.dashboard-metrics article')).toHaveCount(3);
+      await expect(page.locator('.unused-payment-methods')).toContainText('Medios sin ventas (4)');
+      await expect(page.getByRole('button', { name: /^Ver inventario actual/ })).toBeVisible();
+      const monthInput = page.getByLabel('Mes', { exact: true });
+      const activeMonth = await monthInput.inputValue();
+      await monthInput.fill('2025-01');
+      await expect(page.locator('.dashboard-empty-chart')).toContainText('Todavía no hay ventas');
+      await expect(page.locator('.daily-chart')).toHaveCount(0);
+      await monthInput.fill(activeMonth);
+      await expect(page.locator('.daily-chart')).toBeVisible();
+      await page.setViewportSize({ width: 390, height: 844 });
+      const chartOverflows = await page
+        .locator('.daily-chart')
+        .evaluate((chart) => chart.scrollWidth > chart.clientWidth);
+      if (chartOverflows)
+        await expect
+          .poll(() => page.locator('.daily-chart').evaluate((chart) => chart.scrollLeft))
+          .toBeGreaterThan(0);
+      await page.screenshot({ path: 'tmp/frontend-dashboard-mobile.png', fullPage: true });
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+        true,
+      );
+      await page.setViewportSize({ width: 1280, height: 720 });
+    }
     await expect(page.locator('main')).not.toContainText('Origen no permitido');
     await page.screenshot({ path: 'tmp/frontend-' + name + '.png', fullPage: true });
+    await page.setViewportSize({ width: 390, height: 844 });
+    await expect(page.locator('main h1')).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+      true,
+    );
+    await page.screenshot({ path: 'tmp/frontend-mobile-' + name + '.png', fullPage: true });
+    await page.getByRole('button', { name: 'Expandir menú', exact: true }).click();
+    await expect(
+      page.locator('.sidebar-bottom').getByRole('button', { name: 'Ayuda', exact: true }),
+    ).toHaveAccessibleName('Ayuda');
+    await expect(
+      page
+        .getByRole('navigation', { name: 'Módulos' })
+        .getByRole('button', { name: 'Productos', exact: true })
+        .locator('span')
+        .last(),
+    ).toBeVisible();
+    await page.getByRole('button', { name: 'Colapsar menú', exact: true }).click();
+    if (name === 'Productos') {
+      await page.getByRole('button', { name: 'Expandir menú', exact: true }).click();
+      await expect(page.locator('.workspace')).toHaveAttribute('inert', '');
+      await page.keyboard.press('Escape');
+      await expect(page.getByRole('button', { name: 'Expandir menú', exact: true })).toBeFocused();
+      await expect(page.locator('.workspace')).not.toHaveAttribute('inert', '');
+      await page.getByRole('button', { name: 'Expandir menú', exact: true }).click();
+      await page
+        .getByRole('button', { name: 'Cerrar menú', exact: true })
+        .click({ position: { x: 365, y: 100 } });
+      await expect(page.getByRole('button', { name: 'Expandir menú', exact: true })).toBeVisible();
+    }
+    await page.setViewportSize({ width: 1280, height: 720 });
+    if (name === 'Productos') {
+      await page.getByRole('button', { name: /Nuevo producto/ }).click();
+      const productDialog = page.getByRole('dialog');
+      await expect(productDialog.getByLabel('Nombre del producto')).toBeVisible();
+      await expect(productDialog.getByLabel('Nombre del producto')).toBeFocused();
+      await expect(productDialog.getByLabel('Código interno')).not.toBeVisible();
+      await page.screenshot({ path: 'tmp/frontend-producto-nuevo.png' });
+      await productDialog.getByText('Más opciones').click();
+      await expect(productDialog.getByLabel('Código interno')).toBeVisible();
+      await page.setViewportSize({ width: 390, height: 844 });
+      await page.screenshot({ path: 'tmp/frontend-producto-mobile.png' });
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+        true,
+      );
+      await page.setViewportSize({ width: 1280, height: 720 });
+      await productDialog.getByRole('button', { name: 'Cancelar' }).click();
+    }
   }
+  await page.locator('.sidebar').getByRole('button', { name: 'Ayuda', exact: true }).click();
+  await page.getByRole('searchbox', { name: 'Buscar en la ayuda' }).fill('vuelto');
+  await expect(page.locator('.help-page article h3')).toHaveText('Descuentos y cobro');
   await page.getByRole('navigation').getByRole('button', { name: 'Caja', exact: true }).click();
   await page.getByRole('button', { name: 'Cerrar caja', exact: true }).click();
   const closing = page.getByRole('dialog');
@@ -96,7 +247,8 @@ test('web real: módulos, terminal, venta escaneada y consulta', async ({ page }
   await expect(closing.getByLabel('Efectivo contado', { exact: true })).toBeFocused();
   await closing.getByRole('button', { name: 'Cerrar caja', exact: true }).click();
   await expect(page.locator('main')).toContainText('Caja cerrada · Diferencia $ 0,00');
-  await page.getByRole('navigation').getByRole('button', { name: 'Backups', exact: true }).click();
+  await expect(page.locator('.status-message')).toContainText('Caja cerrada · Diferencia $ 0,00');
+  await openModule(page, 'Backups');
   await page.getByRole('button', { name: 'Crear copia', exact: true }).click();
   const manual = page
     .getByRole('row')
@@ -106,7 +258,7 @@ test('web real: módulos, terminal, venta escaneada y consulta', async ({ page }
   const downloaded = page.waitForEvent('download');
   await manual.getByRole('button', { name: /Descargar copia/ }).click();
   const file = await downloaded;
-  expect(file.suggestedFilename()).toContain('.bocha');
+  expect(file.suggestedFilename()).toContain('.backup');
   const filePath = await file.path();
   expect(filePath).not.toBeNull();
   await page.getByLabel('Archivo de copia', { exact: true }).setInputFiles(filePath!);
@@ -123,7 +275,7 @@ test('web: permisos de vendedor y supervisor', async ({ page }) => {
   await page.getByLabel('Contraseña', { exact: true }).fill('Prueba-Web-Bocha-2026!');
   await page.getByRole('button', { name: 'Ingresar', exact: true }).click();
   await expect(page.getByRole('navigation', { name: 'Módulos' })).toBeVisible();
-  await page.getByRole('navigation').getByRole('button', { name: 'Usuarios', exact: true }).click();
+  await openModule(page, 'Usuarios');
   for (const [username, role] of [
     ['vendedor', 'SELLER'],
     ['supervisor', 'SUPERVISOR'],
@@ -137,6 +289,7 @@ test('web: permisos de vendedor y supervisor', async ({ page }) => {
     await dialog.getByRole('button', { name: 'Guardar usuario', exact: true }).click();
     await expect(dialog).not.toBeVisible();
   }
+  await page.getByRole('button', { name: 'Mi cuenta', exact: true }).click();
   await page.getByRole('button', { name: 'Cerrar sesión', exact: true }).click();
   for (const username of ['vendedor', 'supervisor']) {
     await page.getByLabel('Usuario', { exact: true }).fill(username);
@@ -144,8 +297,13 @@ test('web: permisos de vendedor y supervisor', async ({ page }) => {
     await page.getByRole('button', { name: 'Ingresar', exact: true }).click();
     const nav = page.getByRole('navigation', { name: 'Módulos' });
     await expect(nav).toBeVisible();
-    await expect(nav.getByRole('button', { name: 'Resumen mensual', exact: true })).toHaveCount(0);
+    await expect(nav.getByRole('button', { name: 'Resultados', exact: true })).toHaveCount(0);
     await expect(nav.getByRole('button', { name: 'Usuarios', exact: true })).toHaveCount(0);
+    await page.locator('.sidebar').getByRole('button', { name: 'Ayuda', exact: true }).click();
+    await expect(page.getByRole('heading', { name: 'Caja y ventas', exact: true })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'Usuarios y configuración', exact: true }),
+    ).toHaveCount(0);
     if (username === 'vendedor') await expect(nav.getByRole('button')).toHaveCount(1);
     else await expect(nav.getByRole('button', { name: 'Stock', exact: true })).toBeVisible();
     expect(
@@ -153,6 +311,7 @@ test('web: permisos de vendedor y supervisor', async ({ page }) => {
         async () => (await fetch('/api/v1/dashboard/monthly?month=2026-09')).status,
       ),
     ).toBe(403);
+    await page.getByRole('button', { name: 'Mi cuenta', exact: true }).click();
     await page.getByRole('button', { name: 'Cerrar sesión', exact: true }).click();
     await expect(page.getByRole('button', { name: 'Ingresar', exact: true })).toBeVisible();
   }

@@ -24,6 +24,10 @@ export default defineConfig({
     root: 'src/renderer',
     server: { host: '127.0.0.1', port: 5174, strictPort: true },
     plugins: [react(), developmentCsp()],
-    build: { minify: true, rollupOptions: { input: resolve('src/renderer/index.html') } },
+    build: {
+      minify: true,
+      assetsInlineLimit: 0,
+      rollupOptions: { input: resolve('src/renderer/index.html') },
+    },
   },
 });

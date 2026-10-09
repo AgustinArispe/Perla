@@ -1,16 +1,20 @@
 import { useState } from 'react';
 import type { DraftRecord } from '../../../shared/catalog';
-import { parseArs, moneyInput } from '../../../domain/values';
+import { parseArs, moneyInput, formatMoney } from '../../../domain/values';
 import { Dialog } from '../../components/Dialog';
 import { errorMessage } from '../../api';
 export function DiscountDialog({
   discount,
   onApply,
   onClose,
+  automaticDiscountCents = 0,
+  automaticPromotionNames = [],
 }: {
   discount: DraftRecord['body']['discount'];
   onApply: (discount: DraftRecord['body']['discount']) => void;
   onClose: () => void;
+  automaticDiscountCents?: number;
+  automaticPromotionNames?: string[];
 }) {
   const [type, setType] = useState(discount.type),
     [value, setValue] = useState(
@@ -39,6 +43,13 @@ export function DiscountDialog({
           }
         }}
       >
+        {automaticDiscountCents > 0 && type !== 'NONE' && (
+          <div className="manual-discount-warning" role="status">
+            <strong>El carrito ya ahorra {formatMoney(automaticDiscountCents)}</strong>
+            <span>{automaticPromotionNames.join(' · ')}</span>
+            <small>Al aplicar este descuento manual, esas promociones se reemplazan.</small>
+          </div>
+        )}
         <label className="field">
           Tipo de descuento
           <select

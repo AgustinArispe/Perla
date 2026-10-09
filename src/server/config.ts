@@ -1,5 +1,20 @@
 import { resolve } from 'node:path';
 import { isIP } from 'node:net';
+
+function readInteger(
+  value: string | undefined,
+  name: string,
+  fallback: number,
+  min: number,
+  max: number,
+) {
+  if (value === undefined || value === '') return fallback;
+  const parsed = Number(value);
+  if (!Number.isInteger(parsed) || parsed < min || parsed > max)
+    throw new Error(`${name} debe ser un número entero entre ${min} y ${max}.`);
+  return parsed;
+}
+
 export function readServerConfig(env: Record<string, string | undefined> = process.env) {
   const production = env.NODE_ENV === 'production';
   const origin = env.BOCHA_PUBLIC_ORIGIN ?? (production ? '' : 'http://localhost:3000');
@@ -36,6 +51,22 @@ export function readServerConfig(env: Record<string, string | undefined> = proce
     throw new Error('Configurá únicamente la red del proxy confiable.');
   const port = Number(env.BOCHA_PORT ?? 3000);
   if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error('Puerto inválido.');
+  const sessionIdleMinutes = readInteger(
+      env.BOCHA_SESSION_IDLE_MINUTES,
+      'BOCHA_SESSION_IDLE_MINUTES',
+      30,
+      5,
+      240,
+    ),
+    sessionMaxHours = readInteger(
+      env.BOCHA_SESSION_MAX_HOURS,
+      'BOCHA_SESSION_MAX_HOURS',
+      8,
+      1,
+      24,
+    );
+  if (sessionMaxHours * 60 < sessionIdleMinutes)
+    throw new Error('La duración máxima de sesión debe ser mayor al tiempo de inactividad.');
   return {
     production,
     origin,
@@ -45,6 +76,8 @@ export function readServerConfig(env: Record<string, string | undefined> = proce
     databasePath: resolve(env.BOCHA_DATABASE_PATH ?? '.data/web/bocha.sqlite'),
     backupDirectory: resolve(env.BOCHA_BACKUP_DIRECTORY ?? '.data/web/backups'),
     backupKey: Buffer.from(hex, 'hex'),
+    sessionIdleTimeoutMs: sessionIdleMinutes * 60_000,
+    sessionMaxLifetimeMs: sessionMaxHours * 60 * 60_000,
     appVersion: '0.1.0',
   };
 }

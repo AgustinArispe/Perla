@@ -1,0 +1,94 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Ayuda" [level=1]
+  - text: Buscar en la ayuda
+  - searchbox "Buscar en la ayuda"
+  - navigation "Temas de ayuda":
+    - button "Caja y ventas"
+    - button "Efectivo y cierre de caja"
+    - button "Productos"
+    - button "Stock"
+    - button "Proveedores y compras"
+    - button "Promociones"
+    - button "Clientes y cuenta corriente" [active] [pressed]
+    - button "Histórico y anulaciones"
+    - button "Resumen mensual"
+    - button "Usuarios y configuración"
+    - button "Copias de seguridad"
+    - button "Cuenta y alcance"
+    - button "Ubicaciones y traslados"
+  - article:
+    - heading "Clientes y cuenta corriente" [level=2]
+    - heading "Identificar una venta" [level=3]
+    - paragraph: "En Cobrar podés elegir un cliente sin cambiar el medio de pago. Es opcional: la venta habitual puede seguir como Consumidor final."
+    - heading "Vender a cuenta" [level=3]
+    - paragraph: Dejar a cuenta aparece únicamente para clientes autorizados y muestra el límite disponible. Al confirmar, la venta queda registrada y el importe pasa a saldo pendiente; no se cuenta como efectivo ni tarjeta recibida.
+    - heading "Registrar un cobro" [level=3]
+    - paragraph: En Clientes abrí Ver cuenta y registrá un cobro total o parcial. El sistema lo aplica a las ventas más antiguas. Efectivo necesita una caja abierta y aumenta el efectivo esperado; otros medios no modifican el cajón. El cobro reduce deuda y no crea otra venta.
+    - heading "Devoluciones y anulaciones" [level=3]
+    - paragraph: Una devolución cancela primero el saldo pendiente y reintegra sólo la parte que ya se había cobrado. Una anulación conserva la trazabilidad y cualquier crédito a favor del cliente.

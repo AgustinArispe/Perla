@@ -1,0 +1,369 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Controles operativos" [level=1]
+  - paragraph: Conteos, vencimientos y revisión de cierres.
+  - button "Volver"
+  - tablist "Controles":
+    - tab "Hacer conteo" [selected]
+    - tab "Vencimientos"
+    - tab "Con diferencias"
+  - heading "Salón de ventas" [level=2]
+  - paragraph: 1 de 166 artículos contados · Guardado 10:41:13
+  - button "Guardar y salir"
+  - button "Exportar Excel"
+  - text: Escanear o buscar
+  - textbox "Escanear o buscar" [active]:
+    - /placeholder: Código, nombre o SKU
+  - table:
+    - rowgroup:
+      - row "Elegir Artículo Cantidad física Diferencia Estado":
+        - columnheader "Elegir"
+        - columnheader "Artículo"
+        - columnheader "Cantidad física"
+        - columnheader "Diferencia"
+        - columnheader "Estado"
+    - rowgroup:
+      - row "Elegir Hamburguesas x4 Hamburguesas x4 SIM-0081 · unidades 105 Guardar 0 un. Contado":
+        - cell "Elegir Hamburguesas x4":
+          - checkbox "Elegir Hamburguesas x4"
+        - cell "Hamburguesas x4 SIM-0081 · unidades":
+          - strong: Hamburguesas x4
+          - generic: SIM-0081 · unidades
+        - cell "105 Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4": "105"
+          - button "Guardar"
+        - cell "0 un."
+        - cell "Contado"
+      - row "Elegir Hamburguesas x4 · Buen Día Hamburguesas x4 · Buen Día SIM-0438 · unidades Guardar — Sin contar":
+        - cell "Elegir Hamburguesas x4 · Buen Día":
+          - checkbox "Elegir Hamburguesas x4 · Buen Día" [disabled]
+        - cell "Hamburguesas x4 · Buen Día SIM-0438 · unidades":
+          - strong: Hamburguesas x4 · Buen Día
+          - generic: SIM-0438 · unidades
+        - cell "Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4 · Buen Día"
+          - button "Guardar"
+        - cell "—"
+        - cell "Sin contar"
+      - row "Elegir Hamburguesas x4 · Buenos Sabores Hamburguesas x4 · Buenos Sabores SIM-3294 · unidades Guardar — Sin contar":
+        - cell "Elegir Hamburguesas x4 · Buenos Sabores":
+          - checkbox "Elegir Hamburguesas x4 · Buenos Sabores" [disabled]
+        - cell "Hamburguesas x4 · Buenos Sabores SIM-3294 · unidades":
+          - strong: Hamburguesas x4 · Buenos Sabores
+          - generic: SIM-3294 · unidades
+        - cell "Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4 · Buenos Sabores"
+          - button "Guardar"
+        - cell "—"
+        - cell "Sin contar"
+      - row "Elegir Hamburguesas x4 · Campo Vivo Hamburguesas x4 · Campo Vivo SIM-1271 · unidades Guardar — Sin contar":
+        - cell "Elegir Hamburguesas x4 · Campo Vivo":
+          - checkbox "Elegir Hamburguesas x4 · Campo Vivo" [disabled]
+        - cell "Hamburguesas x4 · Campo Vivo SIM-1271 · unidades":
+          - strong: Hamburguesas x4 · Campo Vivo
+          - generic: SIM-1271 · unidades
+        - cell "Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4 · Campo Vivo"
+          - button "Guardar"
+        - cell "—"
+        - cell "Sin contar"
+      - row "Elegir Hamburguesas x4 · Cosecha Nueva Hamburguesas x4 · Cosecha Nueva SIM-1985 · unidades Guardar — Sin contar":
+        - cell "Elegir Hamburguesas x4 · Cosecha Nueva":
+          - checkbox "Elegir Hamburguesas x4 · Cosecha Nueva" [disabled]
+        - cell "Hamburguesas x4 · Cosecha Nueva SIM-1985 · unidades":
+          - strong: Hamburguesas x4 · Cosecha Nueva
+          - generic: SIM-1985 · unidades
+        - cell "Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4 · Cosecha Nueva"
+          - button "Guardar"
+        - cell "—"
+        - cell "Sin contar"
+      - row "Elegir Hamburguesas x4 · Costa Clara Hamburguesas x4 · Costa Clara SIM-2223 · unidades Guardar — Sin contar":
+        - cell "Elegir Hamburguesas x4 · Costa Clara":
+          - checkbox "Elegir Hamburguesas x4 · Costa Clara" [disabled]
+        - cell "Hamburguesas x4 · Costa Clara SIM-2223 · unidades":
+          - strong: Hamburguesas x4 · Costa Clara
+          - generic: SIM-2223 · unidades
+        - cell "Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4 · Costa Clara"
+          - button "Guardar"
+        - cell "—"
+        - cell "Sin contar"
+      - row "Elegir Hamburguesas x4 · Del Valle Hamburguesas x4 · Del Valle SIM-2699 · unidades Guardar — Sin contar":
+        - cell "Elegir Hamburguesas x4 · Del Valle":
+          - checkbox "Elegir Hamburguesas x4 · Del Valle" [disabled]
+        - cell "Hamburguesas x4 · Del Valle SIM-2699 · unidades":
+          - strong: Hamburguesas x4 · Del Valle
+          - generic: SIM-2699 · unidades
+        - cell "Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4 · Del Valle"
+          - button "Guardar"
+        - cell "—"
+        - cell "Sin contar"
+      - row "Elegir Hamburguesas x4 · Don Pedro Hamburguesas x4 · Don Pedro SIM-1033 · unidades Guardar — Sin contar":
+        - cell "Elegir Hamburguesas x4 · Don Pedro":
+          - checkbox "Elegir Hamburguesas x4 · Don Pedro" [disabled]
+        - cell "Hamburguesas x4 · Don Pedro SIM-1033 · unidades":
+          - strong: Hamburguesas x4 · Don Pedro
+          - generic: SIM-1033 · unidades
+        - cell "Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4 · Don Pedro"
+          - button "Guardar"
+        - cell "—"
+        - cell "Sin contar"
+      - row "Elegir Hamburguesas x4 · El Molino Hamburguesas x4 · El Molino SIM-0795 · unidades Guardar — Sin contar":
+        - cell "Elegir Hamburguesas x4 · El Molino":
+          - checkbox "Elegir Hamburguesas x4 · El Molino" [disabled]
+        - cell "Hamburguesas x4 · El Molino SIM-0795 · unidades":
+          - strong: Hamburguesas x4 · El Molino
+          - generic: SIM-0795 · unidades
+        - cell "Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4 · El Molino"
+          - button "Guardar"
+        - cell "—"
+        - cell "Sin contar"
+      - row "Elegir Hamburguesas x4 · El Ombú Hamburguesas x4 · El Ombú SIM-2937 · unidades Guardar — Sin contar":
+        - cell "Elegir Hamburguesas x4 · El Ombú":
+          - checkbox "Elegir Hamburguesas x4 · El Ombú" [disabled]
+        - cell "Hamburguesas x4 · El Ombú SIM-2937 · unidades":
+          - strong: Hamburguesas x4 · El Ombú
+          - generic: SIM-2937 · unidades
+        - cell "Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4 · El Ombú"
+          - button "Guardar"
+        - cell "—"
+        - cell "Sin contar"
+      - row "Elegir Hamburguesas x4 · El Trigal Hamburguesas x4 · El Trigal SIM-1509 · unidades Guardar — Sin contar":
+        - cell "Elegir Hamburguesas x4 · El Trigal":
+          - checkbox "Elegir Hamburguesas x4 · El Trigal" [disabled]
+        - cell "Hamburguesas x4 · El Trigal SIM-1509 · unidades":
+          - strong: Hamburguesas x4 · El Trigal
+          - generic: SIM-1509 · unidades
+        - cell "Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4 · El Trigal"
+          - button "Guardar"
+        - cell "—"
+        - cell "Sin contar"
+      - row "Elegir Hamburguesas x4 · La Abuela Hamburguesas x4 · La Abuela SIM-1866 · unidades Guardar — Sin contar":
+        - cell "Elegir Hamburguesas x4 · La Abuela":
+          - checkbox "Elegir Hamburguesas x4 · La Abuela" [disabled]
+        - cell "Hamburguesas x4 · La Abuela SIM-1866 · unidades":
+          - strong: Hamburguesas x4 · La Abuela
+          - generic: SIM-1866 · unidades
+        - cell "Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4 · La Abuela"
+          - button "Guardar"
+        - cell "—"
+        - cell "Sin contar"
+      - row "Elegir Hamburguesas x4 · La Colonia Hamburguesas x4 · La Colonia SIM-1152 · unidades Guardar — Sin contar":
+        - cell "Elegir Hamburguesas x4 · La Colonia":
+          - checkbox "Elegir Hamburguesas x4 · La Colonia" [disabled]
+        - cell "Hamburguesas x4 · La Colonia SIM-1152 · unidades":
+          - strong: Hamburguesas x4 · La Colonia
+          - generic: SIM-1152 · unidades
+        - cell "Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4 · La Colonia"
+          - button "Guardar"
+        - cell "—"
+        - cell "Sin contar"
+      - row "Elegir Hamburguesas x4 · La Cumbre Hamburguesas x4 · La Cumbre SIM-2580 · unidades Guardar — Sin contar":
+        - cell "Elegir Hamburguesas x4 · La Cumbre":
+          - checkbox "Elegir Hamburguesas x4 · La Cumbre" [disabled]
+        - cell "Hamburguesas x4 · La Cumbre SIM-2580 · unidades":
+          - strong: Hamburguesas x4 · La Cumbre
+          - generic: SIM-2580 · unidades
+        - cell "Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4 · La Cumbre"
+          - button "Guardar"
+        - cell "—"
+        - cell "Sin contar"
+      - row "Elegir Hamburguesas x4 · La Estrella Hamburguesas x4 · La Estrella SIM-3175 · unidades Guardar — Sin contar":
+        - cell "Elegir Hamburguesas x4 · La Estrella":
+          - checkbox "Elegir Hamburguesas x4 · La Estrella" [disabled]
+        - cell "Hamburguesas x4 · La Estrella SIM-3175 · unidades":
+          - strong: Hamburguesas x4 · La Estrella
+          - generic: SIM-3175 · unidades
+        - cell "Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4 · La Estrella"
+          - button "Guardar"
+        - cell "—"
+        - cell "Sin contar"
+      - row "Elegir Hamburguesas x4 · La Familia Hamburguesas x4 · La Familia SIM-1628 · unidades Guardar — Sin contar":
+        - cell "Elegir Hamburguesas x4 · La Familia":
+          - checkbox "Elegir Hamburguesas x4 · La Familia" [disabled]
+        - cell "Hamburguesas x4 · La Familia SIM-1628 · unidades":
+          - strong: Hamburguesas x4 · La Familia
+          - generic: SIM-1628 · unidades
+        - cell "Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4 · La Familia"
+          - button "Guardar"
+        - cell "—"
+        - cell "Sin contar"
+      - row "Elegir Hamburguesas x4 · La Huerta Hamburguesas x4 · La Huerta SIM-0557 · unidades Guardar — Sin contar":
+        - cell "Elegir Hamburguesas x4 · La Huerta":
+          - checkbox "Elegir Hamburguesas x4 · La Huerta" [disabled]
+        - cell "Hamburguesas x4 · La Huerta SIM-0557 · unidades":
+          - strong: Hamburguesas x4 · La Huerta
+          - generic: SIM-0557 · unidades
+        - cell "Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4 · La Huerta"
+          - button "Guardar"
+        - cell "—"
+        - cell "Sin contar"
+      - row "Elegir Hamburguesas x4 · La Pradera Hamburguesas x4 · La Pradera SIM-2104 · unidades Guardar — Sin contar":
+        - cell "Elegir Hamburguesas x4 · La Pradera":
+          - checkbox "Elegir Hamburguesas x4 · La Pradera" [disabled]
+        - cell "Hamburguesas x4 · La Pradera SIM-2104 · unidades":
+          - strong: Hamburguesas x4 · La Pradera
+          - generic: SIM-2104 · unidades
+        - cell "Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4 · La Pradera"
+          - button "Guardar"
+        - cell "—"
+        - cell "Sin contar"
+      - row "Elegir Hamburguesas x4 · La Reserva Hamburguesas x4 · La Reserva SIM-3651 · unidades Guardar — Sin contar":
+        - cell "Elegir Hamburguesas x4 · La Reserva":
+          - checkbox "Elegir Hamburguesas x4 · La Reserva" [disabled]
+        - cell "Hamburguesas x4 · La Reserva SIM-3651 · unidades":
+          - strong: Hamburguesas x4 · La Reserva
+          - generic: SIM-3651 · unidades
+        - cell "Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4 · La Reserva"
+          - button "Guardar"
+        - cell "—"
+        - cell "Sin contar"
+      - row "Elegir Hamburguesas x4 · Las Sierras Hamburguesas x4 · Las Sierras SIM-0914 · unidades Guardar — Sin contar":
+        - cell "Elegir Hamburguesas x4 · Las Sierras":
+          - checkbox "Elegir Hamburguesas x4 · Las Sierras" [disabled]
+        - cell "Hamburguesas x4 · Las Sierras SIM-0914 · unidades":
+          - strong: Hamburguesas x4 · Las Sierras
+          - generic: SIM-0914 · unidades
+        - cell "Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4 · Las Sierras"
+          - button "Guardar"
+        - cell "—"
+        - cell "Sin contar"
+      - row "Elegir Hamburguesas x4 · Los Aromos Hamburguesas x4 · Los Aromos SIM-0200 · unidades Guardar — Sin contar":
+        - cell "Elegir Hamburguesas x4 · Los Aromos":
+          - checkbox "Elegir Hamburguesas x4 · Los Aromos" [disabled]
+        - cell "Hamburguesas x4 · Los Aromos SIM-0200 · unidades":
+          - strong: Hamburguesas x4 · Los Aromos
+          - generic: SIM-0200 · unidades
+        - cell "Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4 · Los Aromos"
+          - button "Guardar"
+        - cell "—"
+        - cell "Sin contar"
+      - row "Elegir Hamburguesas x4 · Los Aromos Hamburguesas x4 · Los Aromos SIM-3770 · unidades Guardar — Sin contar":
+        - cell "Elegir Hamburguesas x4 · Los Aromos":
+          - checkbox "Elegir Hamburguesas x4 · Los Aromos" [disabled]
+        - cell "Hamburguesas x4 · Los Aromos SIM-3770 · unidades":
+          - strong: Hamburguesas x4 · Los Aromos
+          - generic: SIM-3770 · unidades
+        - cell "Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4 · Los Aromos"
+          - button "Guardar"
+        - cell "—"
+        - cell "Sin contar"
+      - row "Elegir Hamburguesas x4 · Mi Barrio Hamburguesas x4 · Mi Barrio SIM-3413 · unidades Guardar — Sin contar":
+        - cell "Elegir Hamburguesas x4 · Mi Barrio":
+          - checkbox "Elegir Hamburguesas x4 · Mi Barrio" [disabled]
+        - cell "Hamburguesas x4 · Mi Barrio SIM-3413 · unidades":
+          - strong: Hamburguesas x4 · Mi Barrio
+          - generic: SIM-3413 · unidades
+        - cell "Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4 · Mi Barrio"
+          - button "Guardar"
+        - cell "—"
+        - cell "Sin contar"
+      - row "Elegir Hamburguesas x4 · Nueva Mesa Hamburguesas x4 · Nueva Mesa SIM-1390 · unidades Guardar — Sin contar":
+        - cell "Elegir Hamburguesas x4 · Nueva Mesa":
+          - checkbox "Elegir Hamburguesas x4 · Nueva Mesa" [disabled]
+        - cell "Hamburguesas x4 · Nueva Mesa SIM-1390 · unidades":
+          - strong: Hamburguesas x4 · Nueva Mesa
+          - generic: SIM-1390 · unidades
+        - cell "Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4 · Nueva Mesa"
+          - button "Guardar"
+        - cell "—"
+        - cell "Sin contar"
+      - row "Elegir Hamburguesas x4 · Primavera Hamburguesas x4 · Primavera SIM-2818 · unidades Guardar — Sin contar":
+        - cell "Elegir Hamburguesas x4 · Primavera":
+          - checkbox "Elegir Hamburguesas x4 · Primavera" [disabled]
+        - cell "Hamburguesas x4 · Primavera SIM-2818 · unidades":
+          - strong: Hamburguesas x4 · Primavera
+          - generic: SIM-2818 · unidades
+        - cell "Guardar":
+          - spinbutton "Cantidad física de Hamburguesas x4 · Primavera"
+          - button "Guardar"
+        - cell "—"
+        - cell "Sin contar"
+  - button "Anterior" [disabled]
+  - generic: Página 1
+  - button "Siguiente"
+  - button "Revisar 0 artículos" [disabled]

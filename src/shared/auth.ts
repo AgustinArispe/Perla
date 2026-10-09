@@ -1,5 +1,5 @@
 import { z } from 'zod';
-export const RoleSchema = z.enum(['SELLER', 'SUPERVISOR', 'OWNER']);
+export const RoleSchema = z.enum(['SELLER', 'SUPERVISOR', 'OWNER', 'ADMIN']);
 export type Role = z.infer<typeof RoleSchema>;
 const username = z
   .string()
@@ -10,8 +10,24 @@ const username = z
   .regex(/^[a-z0-9._-]+$/, 'Usá letras, números, punto o guion para el usuario.');
 export const PasswordSchema = z
   .string()
-  .min(15, 'La contraseña debe tener al menos 15 caracteres.')
-  .max(128);
+  .min(8, 'La contraseña debe tener al menos 8 caracteres.')
+  .max(128)
+  .regex(/[A-Z]/, 'La contraseña debe incluir una mayúscula.')
+  .regex(/[^A-Za-z0-9]/, 'La contraseña debe incluir un carácter especial.')
+  .refine((value) => !/(.)\1{7,}/.test(value), {
+    message: 'Elegí una contraseña que no repita el mismo carácter muchas veces.',
+  });
+export const AdminPasswordSchema = z
+  .string()
+  .min(16, 'La contraseña del administrador debe tener al menos 16 caracteres.')
+  .max(128)
+  .regex(/[A-Z]/, 'La contraseña debe incluir una mayúscula.')
+  .regex(/[a-z]/, 'La contraseña debe incluir una minúscula.')
+  .regex(/[0-9]/, 'La contraseña debe incluir un número.')
+  .regex(/[^A-Za-z0-9]/, 'La contraseña debe incluir un carácter especial.')
+  .refine((value) => !/(.)\1{7,}/.test(value), {
+    message: 'Elegí una contraseña que no repita el mismo carácter muchas veces.',
+  });
 export const BootstrapSchema = z.strictObject({
   username,
   name: z.string().trim().min(2).max(100),
@@ -36,10 +52,12 @@ export const ChangePasswordSchema = z.strictObject({
   currentPassword: z.string().min(1).max(128),
   newPassword: PasswordSchema,
 });
+export const UnlockUserSchema = z.strictObject({ username });
 export type BootstrapInput = z.infer<typeof BootstrapSchema>;
 export type LoginInput = z.infer<typeof LoginSchema>;
 export type UserSaveInput = z.infer<typeof UserSaveSchema>;
 export type ChangePasswordInput = z.infer<typeof ChangePasswordSchema>;
+export type UnlockUserInput = z.infer<typeof UnlockUserSchema>;
 export interface User {
   id: string;
   username: string;

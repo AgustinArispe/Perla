@@ -27,10 +27,12 @@ const columns = [
   'unidad',
   'activo',
   'categoria',
+  'marca',
   'stock_inicial',
   'stock_minimo',
 ];
-export const CSV_TEMPLATE = `${columns.join(';')}\nALM-001;0123456789012;Leche entera 1 L;1.500,00;UNIT;si;Lácteos;;5\nFIAM-001;;Jamón cocido;12.000,00;KG;si;Fiambres;;0,500\n`;
+const legacyColumns = columns.filter((column) => column !== 'marca');
+export const CSV_TEMPLATE = `${columns.join(';')}\nCONS-001;0123456789012;Atún en lata 170 g;3.500,00;UNIT;si;Conservas;;;5\nPESC-001;;Merluza fresca;11.000,00;KG;si;Pescados;;;0,500\n`;
 interface Pending {
   preview: ImportPreview;
   entries: ImportEntry[];
@@ -103,11 +105,9 @@ export class CatalogImporter {
       records = [];
     }
     const header = records.shift()?.record;
-    if (
-      !header ||
-      header.length !== columns.length ||
-      header.some((value, index) => value !== columns[index])
-    ) {
+    const hasBrandColumn = Boolean(header && header.length === columns.length && header.every((value, index) => value === columns[index]));
+    const legacyHeader = Boolean(header && header.length === legacyColumns.length && header.every((value, index) => value === legacyColumns[index]));
+    if (!hasBrandColumn && !legacyHeader) {
       if (!preview.errors.length)
         preview.errors.push({ row: 1, message: `Las columnas deben ser: ${columns.join(', ')}.` });
       records = [];
@@ -124,7 +124,7 @@ export class CatalogImporter {
     for (const { record, info } of records) {
       const row = info.lines;
       try {
-        if (record.length !== columns.length)
+        if (record.length !== (hasBrandColumn ? columns.length : legacyColumns.length))
           throw new DomainError(
             'VALIDATION',
             'La cantidad de columnas no coincide con el encabezado.',
@@ -137,9 +137,15 @@ export class CatalogImporter {
           unit = '',
           active = '',
           category = '',
-          opening = '',
-          minimum = '',
         ] = record;
+        let brand = record[7] ?? '';
+        let opening = record[8] ?? '';
+        let minimum = record[9] ?? '';
+        if (!hasBrandColumn) {
+          minimum = opening;
+          opening = brand;
+          brand = '';
+        }
         const saleUnit = unit.toUpperCase();
         if (saleUnit !== 'KG' && saleUnit !== 'UNIT')
           throw new DomainError('VALIDATION', 'La unidad debe ser UNIT o KG.');
@@ -157,6 +163,7 @@ export class CatalogImporter {
           name,
           priceCents: parseArs(price),
           category: category || null,
+          brand: brand || null,
           saleUnit,
           active: ['si', 'true', '1'].includes(state),
           trackStock: true,

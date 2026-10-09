@@ -1,0 +1,714 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes" [active]:
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Clientes" [level=1]
+  - button "Nuevo cliente": Nuevo cliente
+  - textbox:
+    - /placeholder: Buscar por nombre, teléfono o email
+  - generic: 80 clientes
+  - button "Exportar clientes a Excel": Exportar Excel
+  - button "Mis vistas": Mis vistas
+  - article:
+    - generic: A
+    - strong: Ana Torres
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 14,25
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: B
+    - strong: Beatriz Acosta
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 3.469,17
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: B
+    - strong: Beatriz Acosta · Comercio
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 6,31
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: B
+    - strong: Beatriz Aguirre
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 273,18
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: B
+    - strong: Beatriz Benítez
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 0,00
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: B
+    - strong: Beatriz Medina
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 3.087,99
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: B
+    - strong: Beatriz Navarro
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 11,95
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: B
+    - strong: Beatriz Ríos
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 4,01
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: B
+    - strong: Beatriz Sosa
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 0,00
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: B
+    - strong: Beatriz Vega
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 189,72
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: C
+    - strong: Carlos García
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 178,02
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: C
+    - strong: Carolina Suárez
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 712,27
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: C
+    - strong: Claudia Acosta
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 7,37
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: C
+    - strong: Claudia Aguirre
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 8.281,21
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: C
+    - strong: Claudia Benítez
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 515,87
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: C
+    - strong: Claudia Medina
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 0,47
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: C
+    - strong: Claudia Navarro
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 2.034,12
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: C
+    - strong: Claudia Ríos
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 5.913,71
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: C
+    - strong: Claudia Sosa
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 0,00
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: C
+    - strong: Claudia Vega
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 583,70
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: D
+    - strong: Daniel Castro
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 3.876,36
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: E
+    - strong: Elena Martínez
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 40,54
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: G
+    - strong: Gustavo Acosta
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 12,87
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: G
+    - strong: Gustavo Aguirre
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 301,30
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: G
+    - strong: Gustavo Benítez
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 6,58
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: G
+    - strong: Gustavo Medina
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 68,07
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: G
+    - strong: Gustavo Navarro
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 15.691,90
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: G
+    - strong: Gustavo Ríos
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 2.257,76
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: G
+    - strong: Gustavo Sosa
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 0,00
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: G
+    - strong: Gustavo Vega
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 2.903,81
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: H
+    - strong: Héctor Acosta
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 24.257,10
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: H
+    - strong: Héctor Aguirre
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 1.373,14
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: H
+    - strong: Héctor Benítez
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 45,28
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: H
+    - strong: Héctor Medina
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 0,07
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: H
+    - strong: Héctor Navarro
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 1,08
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: H
+    - strong: Héctor Ríos
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 32,99
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: H
+    - strong: Héctor Sosa
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 9.268,07
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: H
+    - strong: Héctor Vega
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 483,28
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: J
+    - strong: Jorge Fernández
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 377,78
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: L
+    - strong: Laura Gómez
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 7,08
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: M
+    - strong: Marcelo Acosta
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 4,39
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: M
+    - strong: Marcelo Acosta · Comercio
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 314,28
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: M
+    - strong: Marcelo Aguirre
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 0,13
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: M
+    - strong: Marcelo Benítez
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 69,41
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: M
+    - strong: Marcelo Medina
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 56,04
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: M
+    - strong: Marcelo Navarro
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 13,70
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: M
+    - strong: Marcelo Ríos
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 70,02
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: M
+    - strong: Marcelo Sosa
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 2.866,24
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: M
+    - strong: Marcelo Vega
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 1.218,85
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: M
+    - strong: María López
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 0,02
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: P
+    - strong: Pablo Díaz
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 1.914,09
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: P
+    - strong: Patricia Acosta
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 53,14
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: P
+    - strong: Patricia Acosta · Comercio
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 0,03
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: P
+    - strong: Patricia Aguirre
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 2.877,97
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: P
+    - strong: Patricia Benítez
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 0,40
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: P
+    - strong: Patricia Medina
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 362,72
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: P
+    - strong: Patricia Navarro
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 1.720,13
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: P
+    - strong: Patricia Ríos
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 10.556,94
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: P
+    - strong: Patricia Sosa
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 2.314,88
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: P
+    - strong: Patricia Vega
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 0,41
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: R
+    - strong: Raúl Acosta
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 949,17
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: R
+    - strong: Raúl Acosta · Comercio
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 0,00
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: R
+    - strong: Raúl Aguirre
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 659,78
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: R
+    - strong: Raúl Benítez
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 0,00
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: R
+    - strong: Raúl Medina
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 2,07
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: R
+    - strong: Raúl Navarro
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 324,93
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: R
+    - strong: Raúl Ríos
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 94,44
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: R
+    - strong: Raúl Sosa
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 11.001,61
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: R
+    - strong: Raúl Vega
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 1,68
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: R
+    - strong: Roberto Pérez
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 0,17
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: S
+    - strong: Silvia Acosta
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 4.441,85
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: S
+    - strong: Silvia Aguirre
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 0,20
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: S
+    - strong: Silvia Benítez
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 7.983,58
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: S
+    - strong: Silvia Medina
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 196,83
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: S
+    - strong: Silvia Navarro
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 2.676,20
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: S
+    - strong: Silvia Ríos
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 9.632,66
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: S
+    - strong: Silvia Sosa
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 0,00
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: S
+    - strong: Silvia Vega
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 315,12
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: S
+    - strong: Sofía Romero
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 0,01
+    - button "Ver cuenta"
+    - button "Editar"
+  - article:
+    - generic: V
+    - strong: Valeria Molina
+    - generic: Sin datos de contacto
+    - generic: Saldo
+    - strong: $ 0,01
+    - button "Ver cuenta"
+    - button "Editar"

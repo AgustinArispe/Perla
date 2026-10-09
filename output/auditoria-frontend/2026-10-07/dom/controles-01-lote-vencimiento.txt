@@ -1,0 +1,104 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Controles operativos" [level=1]
+  - paragraph: Conteos, vencimientos y revisión de cierres.
+  - button "Volver"
+  - tablist "Controles":
+    - tab "Hacer conteo"
+    - tab "Vencimientos" [selected]
+    - tab "Con diferencias"
+  - text: Período
+  - combobox "Período":
+    - option "Vencidos"
+    - option "Esta semana" [selected]
+    - option "Este mes"
+    - option "Todos"
+  - text: Ubicación
+  - combobox "Ubicación":
+    - option "Todas" [selected]
+    - option "Salón de ventas"
+    - option "Cámara de frío"
+    - option "Depósito central"
+    - option "Depósito de reserva"
+  - button "Exportar Excel"
+  - article:
+    - strong: Leche entera 1 L · Lote SIM-LECHE-ULTIMA-ENTREGA
+    - paragraph: Salón de ventas · 88 un. · Vence 2026-10-09 · Activo
+    - button "Abrir lote"
+  - button "Anterior" [disabled]
+  - generic: Página 1 · 1 resultados
+  - button "Siguiente" [disabled]
+  - dialog "Lote SIM-LECHE-ULTIMA-ENTREGA":
+    - heading "Lote SIM-LECHE-ULTIMA-ENTREGA" [level=2]
+    - button "Cerrar" [active]
+    - heading "Leche entera 1 L" [level=2]
+    - paragraph: "Ubicación: Salón de ventas"
+    - paragraph: "Cantidad: 88 un."
+    - paragraph: "Vencimiento: 2026-10-09"
+    - paragraph: Bloquear el lote impide venderlo en todas sus ubicaciones.
+    - button "Bloquear lote"

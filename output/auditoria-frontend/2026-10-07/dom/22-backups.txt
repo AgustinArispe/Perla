@@ -1,0 +1,90 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups" [active]:
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Copias de seguridad" [level=1]
+  - button "Crear copia"
+  - generic: Última copia
+  - strong: 7/10/26, 7:46 a. m.
+  - generic: Diaria
+  - heading "Copias disponibles" [level=2]
+  - table:
+    - rowgroup:
+      - row "Fecha Tipo Tamaño Acciones":
+        - columnheader "Fecha"
+        - columnheader "Tipo"
+        - columnheader "Tamaño"
+        - columnheader "Acciones"
+    - rowgroup:
+      - row "7/10/26, 7:46 a. m. Diaria 66.487,4 KB Descargar copia del 7/10/26, 7:46 a. m. Revisar copia del 7/10/26, 7:46 a. m.":
+        - cell "7/10/26, 7:46 a. m.":
+          - strong: 7/10/26, 7:46 a. m.
+        - cell "Diaria"
+        - cell "66.487,4 KB"
+        - cell "Descargar copia del 7/10/26, 7:46 a. m. Revisar copia del 7/10/26, 7:46 a. m.":
+          - button "Descargar copia del 7/10/26, 7:46 a. m.": Descargar
+          - button "Revisar copia del 7/10/26, 7:46 a. m.": Revisar para restaurar
+  - generic "Subir una copia existente"

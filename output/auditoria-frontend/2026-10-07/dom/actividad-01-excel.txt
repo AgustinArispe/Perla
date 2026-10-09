@@ -1,0 +1,264 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - button "Registro general"
+  - button "Cambios detallados"
+  - button "Mis vistas": Mis vistas
+  - button "Exportar actividad a Excel": Exportar Excel
+  - dialog "Exportar actividad":
+    - heading "Exportar actividad" [level=2]
+    - button "Cerrar"
+    - text: Desde
+    - textbox "Desde" [active]
+    - text: Hasta
+    - textbox "Hasta"
+    - text: Operación
+    - textbox "Operación":
+      - /placeholder: Todas
+    - paragraph: Incluye todos los resultados de los filtros, no solo esta página.
+    - generic "Guardar estos filtros"
+    - button "Volver"
+    - button "Descargar Excel"
+  - heading "Actividad" [level=1]
+  - text: Desde
+  - textbox "Desde"
+  - text: Hasta
+  - textbox "Hasta"
+  - text: Operación
+  - combobox "Operación":
+    - option "Todas" [selected]
+    - option "Carrito guardado"
+    - option "Carrito descartado"
+    - option "Apertura de caja"
+    - option "Cierre de caja"
+    - option "Movimiento de efectivo"
+    - option "Reintegro"
+    - option "Venta"
+    - option "Anulación de venta"
+    - option "Devolución de venta"
+    - option "Producto guardado"
+    - option "Estado de producto"
+    - option "Movimiento de stock"
+    - option "Conteo de stock"
+    - option "Stock inicial"
+    - option "Configuración"
+    - option "Funciones actualizadas"
+    - option "Terminal guardada"
+    - option "Usuario guardado"
+    - option "Inicio de sesión"
+    - option "Cierre de sesión"
+    - option "Cambio de contraseña"
+    - option "Acceso destrabado"
+    - option "Administrador creado"
+    - option "Restauración de copia"
+    - option "Copia de seguridad"
+    - option "Proveedor guardado"
+    - option "Estado de proveedor"
+    - option "Borrador de compra guardado"
+    - option "Borrador de compra descartado"
+    - option "Compra recibida"
+    - option "Compra anulada"
+    - option "Costo de referencia actualizado"
+    - option "Precios actualizados"
+    - option "Promoción guardada"
+  - button "Actualizar"
+  - table:
+    - rowgroup:
+      - row "Fecha Usuario Operación Detalle":
+        - columnheader "Fecha"
+        - columnheader "Usuario"
+        - columnheader "Operación"
+        - columnheader "Detalle"
+    - rowgroup:
+      - row "7/10/26, 9:21 a. m. Andrea · Jefa del mercado receipts.create Registro fc247285":
+        - cell "7/10/26, 9:21 a. m."
+        - cell "Andrea · Jefa del mercado"
+        - cell "receipts.create"
+        - cell "Registro fc247285"
+      - row "7/10/26, 9:12 a. m. Andrea · Jefa del mercado Inicio de sesión Registro 42b46bb9":
+        - cell "7/10/26, 9:12 a. m."
+        - cell "Andrea · Jefa del mercado"
+        - cell "Inicio de sesión"
+        - cell "Registro 42b46bb9"
+      - row "7/10/26, 8:34 a. m. Andrea · Jefa del mercado Inicio de sesión Registro 42b46bb9":
+        - cell "7/10/26, 8:34 a. m."
+        - cell "Andrea · Jefa del mercado"
+        - cell "Inicio de sesión"
+        - cell "Registro 42b46bb9"
+      - row "7/10/26, 7:50 a. m. Andrea · Jefa del mercado Funciones actualizadas Registro 1":
+        - cell "7/10/26, 7:50 a. m."
+        - cell "Andrea · Jefa del mercado"
+        - cell "Funciones actualizadas"
+        - cell "Registro 1"
+      - row "7/10/26, 7:47 a. m. Andrea · Jefa del mercado Inicio de sesión Registro 42b46bb9":
+        - cell "7/10/26, 7:47 a. m."
+        - cell "Andrea · Jefa del mercado"
+        - cell "Inicio de sesión"
+        - cell "Registro 42b46bb9"
+      - row "6/10/26, 11:29 p. m. Andrea · Jefa del mercado Inicio de sesión Registro 42b46bb9":
+        - cell "6/10/26, 11:29 p. m."
+        - cell "Andrea · Jefa del mercado"
+        - cell "Inicio de sesión"
+        - cell "Registro 42b46bb9"
+      - row "6/10/26, 11:21 p. m. Andrea · Jefa del mercado Inicio de sesión Registro 42b46bb9":
+        - cell "6/10/26, 11:21 p. m."
+        - cell "Andrea · Jefa del mercado"
+        - cell "Inicio de sesión"
+        - cell "Registro 42b46bb9"
+      - row "6/10/26, 7:10 p. m. Andrea · Jefa del mercado Inicio de sesión Registro 42b46bb9":
+        - cell "6/10/26, 7:10 p. m."
+        - cell "Andrea · Jefa del mercado"
+        - cell "Inicio de sesión"
+        - cell "Registro 42b46bb9"
+      - row "6/10/26, 7:07 p. m. Andrea · Jefa del mercado Precios actualizados Registro a050654f":
+        - cell "6/10/26, 7:07 p. m."
+        - cell "Andrea · Jefa del mercado"
+        - cell "Precios actualizados"
+        - cell "Registro a050654f"
+      - row "6/10/26, 7:06 p. m. Andrea · Jefa del mercado Inicio de sesión Registro 42b46bb9":
+        - cell "6/10/26, 7:06 p. m."
+        - cell "Andrea · Jefa del mercado"
+        - cell "Inicio de sesión"
+        - cell "Registro 42b46bb9"
+      - row "6/10/26, 7:05 p. m. Andrea · Jefa del mercado Inicio de sesión Registro 42b46bb9":
+        - cell "6/10/26, 7:05 p. m."
+        - cell "Andrea · Jefa del mercado"
+        - cell "Inicio de sesión"
+        - cell "Registro 42b46bb9"
+      - row "6/10/26, 7:00 p. m. Andrea · Jefa del mercado Inicio de sesión Registro 42b46bb9":
+        - cell "6/10/26, 7:00 p. m."
+        - cell "Andrea · Jefa del mercado"
+        - cell "Inicio de sesión"
+        - cell "Registro 42b46bb9"
+      - row "6/10/26, 6:46 p. m. Andrea · Jefa del mercado Borrador de compra guardado Registro 42b46bb9":
+        - cell "6/10/26, 6:46 p. m."
+        - cell "Andrea · Jefa del mercado"
+        - cell "Borrador de compra guardado"
+        - cell "Registro 42b46bb9"
+      - row "6/10/26, 6:46 p. m. Andrea · Jefa del mercado Inicio de sesión Registro 42b46bb9":
+        - cell "6/10/26, 6:46 p. m."
+        - cell "Andrea · Jefa del mercado"
+        - cell "Inicio de sesión"
+        - cell "Registro 42b46bb9"
+      - row "6/10/26, 6:40 p. m. Andrea · Jefa del mercado Inicio de sesión Registro 42b46bb9":
+        - cell "6/10/26, 6:40 p. m."
+        - cell "Andrea · Jefa del mercado"
+        - cell "Inicio de sesión"
+        - cell "Registro 42b46bb9"
+      - row "6/10/26, 5:08 p. m. Andrea · Jefa del mercado transfers.receive Registro a814c2b5":
+        - cell "6/10/26, 5:08 p. m."
+        - cell "Andrea · Jefa del mercado"
+        - cell "transfers.receive"
+        - cell "Registro a814c2b5"
+      - row "6/10/26, 5:08 p. m. Andrea · Jefa del mercado transfers.dispatch Registro a814c2b5":
+        - cell "6/10/26, 5:08 p. m."
+        - cell "Andrea · Jefa del mercado"
+        - cell "transfers.dispatch"
+        - cell "Registro a814c2b5"
+      - row "6/10/26, 5:08 p. m. Andrea · Jefa del mercado transfers.receive Registro a9bc14d2":
+        - cell "6/10/26, 5:08 p. m."
+        - cell "Andrea · Jefa del mercado"
+        - cell "transfers.receive"
+        - cell "Registro a9bc14d2"
+      - row "6/10/26, 5:08 p. m. Andrea · Jefa del mercado transfers.dispatch Registro a9bc14d2":
+        - cell "6/10/26, 5:08 p. m."
+        - cell "Andrea · Jefa del mercado"
+        - cell "transfers.dispatch"
+        - cell "Registro a9bc14d2"
+      - row "6/10/26, 5:08 p. m. Andrea · Jefa del mercado transfers.cancel Registro 9fbabc60":
+        - cell "6/10/26, 5:08 p. m."
+        - cell "Andrea · Jefa del mercado"
+        - cell "transfers.cancel"
+        - cell "Registro 9fbabc60"
+      - row "6/10/26, 5:08 p. m. Andrea · Jefa del mercado transfers.dispatch Registro 9fbabc60":
+        - cell "6/10/26, 5:08 p. m."
+        - cell "Andrea · Jefa del mercado"
+        - cell "transfers.dispatch"
+        - cell "Registro 9fbabc60"
+      - row "6/10/26, 5:08 p. m. Andrea · Jefa del mercado transfers.dispatch Registro d816828d":
+        - cell "6/10/26, 5:08 p. m."
+        - cell "Andrea · Jefa del mercado"
+        - cell "transfers.dispatch"
+        - cell "Registro d816828d"
+      - row "6/10/26, 5:08 p. m. Andrea · Jefa del mercado transfers.dispatch Registro 56dc244f":
+        - cell "6/10/26, 5:08 p. m."
+        - cell "Andrea · Jefa del mercado"
+        - cell "transfers.dispatch"
+        - cell "Registro 56dc244f"
+      - row "6/10/26, 5:08 p. m. Andrea · Jefa del mercado Carrito guardado Registro 42b46bb9":
+        - cell "6/10/26, 5:08 p. m."
+        - cell "Andrea · Jefa del mercado"
+        - cell "Carrito guardado"
+        - cell "Registro 42b46bb9"
+      - row "6/10/26, 5:08 p. m. Lucía Fernández · Caja mañana Apertura de caja Registro f7251ab6":
+        - cell "6/10/26, 5:08 p. m."
+        - cell "Lucía Fernández · Caja mañana"
+        - cell "Apertura de caja"
+        - cell "Registro f7251ab6"
+  - button "Anterior" [disabled]
+  - generic: Página 1
+  - button "Siguiente"

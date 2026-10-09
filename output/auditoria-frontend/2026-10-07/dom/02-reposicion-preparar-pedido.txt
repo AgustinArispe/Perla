@@ -1,0 +1,474 @@
+- complementary:
+  - strong: Perla Negra
+  - generic: Pescados y mariscos
+  - button "Colapsar menú" [expanded]
+  - navigation "Módulos":
+    - generic: Operación
+    - button "Inicio":
+      - generic: Inicio
+    - button "Caja":
+      - generic: Caja
+    - button "Comprobantes":
+      - generic: Comprobantes
+    - generic: Gestión
+    - button "Reposición":
+      - generic: Reposición
+    - button "Controles":
+      - generic: Controles
+    - button "Productos":
+      - generic: Productos
+    - button "Stock":
+      - generic: Stock
+    - button "Compras":
+      - generic: Compras
+    - button "Proveedores":
+      - generic: Proveedores
+    - button "Ubicaciones":
+      - generic: Ubicaciones
+    - button "Clientes":
+      - generic: Clientes
+    - button "Promociones":
+      - generic: Promociones
+    - button "Histórico":
+      - generic: Histórico
+    - button "Turnos":
+      - generic: Turnos
+    - generic: Administración
+    - button "Revisión":
+      - generic: Revisión
+    - button "Agenda":
+      - generic: Agenda
+    - button "Resumen semanal":
+      - generic: Resumen semanal
+    - button "Resumen mensual":
+      - generic: Resumen mensual
+    - button "Configuración":
+      - generic: Configuración
+    - button "Usuarios":
+      - generic: Usuarios
+    - button "Actividad":
+      - generic: Actividad
+    - button "Backups":
+      - generic: Backups
+  - button "Ayuda":
+    - generic: Ayuda
+  - generic "Andrea · Jefa del mercado · Jefe":
+    - generic: A
+    - strong: Andrea · Jefa del mercado
+    - generic: Jefe
+  - button "Cambiar contraseña":
+    - generic: Cambiar contraseña
+  - button "Cerrar sesión":
+    - generic: Cerrar sesión
+- banner:
+  - button "Notificaciones, 27 pendientes":
+    - generic: "27"
+  - generic: Conectado
+- main:
+  - heading "Preparar compra" [level=1]
+  - paragraph: Calculá faltantes y seguí la mercadería pendiente.
+  - button "Volver"
+  - tablist "Reposición":
+    - tab "Sugerencias" [selected]
+    - tab "Pedidos pendientes"
+  - text: Ubicación
+  - combobox "Ubicación":
+    - option "Salón de ventas" [selected]
+    - option "Cámara de frío"
+    - option "Depósito central"
+    - option "Depósito de reserva"
+  - text: Buscar
+  - textbox "Buscar"
+  - text: Días de cobertura
+  - spinbutton "Días de cobertura": "7"
+  - text: Mostrar
+  - combobox "Mostrar":
+    - option "Para comprar o revisar" [selected]
+    - option "Todos los productos"
+  - generic "Detalle del cálculo y calendario"
+  - button "Descargar Excel seleccionado"
+  - paragraph: Configurá los días de apertura para calcular demanda. Mientras tanto se usa el mínimo conocido.
+  - paragraph: 852 productos · horizonte hasta 2026-10-14
+  - table:
+    - rowgroup:
+      - row "Seleccionar página Producto Disponible Objetivo En camino Comprar Motivo":
+        - columnheader "Seleccionar página":
+          - checkbox "Seleccionar página"
+        - columnheader "Producto"
+        - columnheader "Disponible"
+        - columnheader "Objetivo"
+        - columnheader "En camino"
+        - columnheader "Comprar"
+        - columnheader "Motivo"
+    - rowgroup:
+      - row "Elegir Aceite de girasol 900 ml · Buenos Sabores Aceite de girasol 900 ml · Buenos Sabores unidades 1 12 0 11 Sin historial":
+        - cell "Elegir Aceite de girasol 900 ml · Buenos Sabores":
+          - checkbox "Elegir Aceite de girasol 900 ml · Buenos Sabores" [checked] [active]
+        - cell "Aceite de girasol 900 ml · Buenos Sabores unidades":
+          - text: Aceite de girasol 900 ml · Buenos Sabores
+          - generic: unidades
+        - cell "1"
+        - cell "12"
+        - cell "0"
+        - cell "11":
+          - textbox "Comprar Aceite de girasol 900 ml · Buenos Sabores": "11"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+      - row "Elegir Aceite de girasol 900 ml · Costa Clara Aceite de girasol 900 ml · Costa Clara unidades 2 12 0 10 Sin historial":
+        - cell "Elegir Aceite de girasol 900 ml · Costa Clara":
+          - checkbox "Elegir Aceite de girasol 900 ml · Costa Clara"
+        - cell "Aceite de girasol 900 ml · Costa Clara unidades":
+          - text: Aceite de girasol 900 ml · Costa Clara
+          - generic: unidades
+        - cell "2"
+        - cell "12"
+        - cell "0"
+        - cell "10":
+          - textbox "Comprar Aceite de girasol 900 ml · Costa Clara": "10"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+      - row "Elegir Aceite de girasol 900 ml · La Colonia Aceite de girasol 900 ml · La Colonia unidades 0 12 0 12 Sin historial":
+        - cell "Elegir Aceite de girasol 900 ml · La Colonia":
+          - checkbox "Elegir Aceite de girasol 900 ml · La Colonia"
+        - cell "Aceite de girasol 900 ml · La Colonia unidades":
+          - text: Aceite de girasol 900 ml · La Colonia
+          - generic: unidades
+        - cell "0"
+        - cell "12"
+        - cell "0"
+        - cell "12":
+          - textbox "Comprar Aceite de girasol 900 ml · La Colonia": "12"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+      - row "Elegir Aceite de oliva 500 ml · Del Valle Aceite de oliva 500 ml · Del Valle unidades 4 12 0 8 Sin historial":
+        - cell "Elegir Aceite de oliva 500 ml · Del Valle":
+          - checkbox "Elegir Aceite de oliva 500 ml · Del Valle"
+        - cell "Aceite de oliva 500 ml · Del Valle unidades":
+          - text: Aceite de oliva 500 ml · Del Valle
+          - generic: unidades
+        - cell "4"
+        - cell "12"
+        - cell "0"
+        - cell "8":
+          - textbox "Comprar Aceite de oliva 500 ml · Del Valle": "8"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+      - row "Elegir Aceite de oliva 500 ml · La Familia Aceite de oliva 500 ml · La Familia unidades 4 12 0 8 Sin historial":
+        - cell "Elegir Aceite de oliva 500 ml · La Familia":
+          - checkbox "Elegir Aceite de oliva 500 ml · La Familia"
+        - cell "Aceite de oliva 500 ml · La Familia unidades":
+          - text: Aceite de oliva 500 ml · La Familia
+          - generic: unidades
+        - cell "4"
+        - cell "12"
+        - cell "0"
+        - cell "8":
+          - textbox "Comprar Aceite de oliva 500 ml · La Familia": "8"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+      - row "Elegir Aceite de oliva 500 ml · La Huerta Aceite de oliva 500 ml · La Huerta unidades 0 12 0 12 Sin historial":
+        - cell "Elegir Aceite de oliva 500 ml · La Huerta":
+          - checkbox "Elegir Aceite de oliva 500 ml · La Huerta"
+        - cell "Aceite de oliva 500 ml · La Huerta unidades":
+          - text: Aceite de oliva 500 ml · La Huerta
+          - generic: unidades
+        - cell "0"
+        - cell "12"
+        - cell "0"
+        - cell "12":
+          - textbox "Comprar Aceite de oliva 500 ml · La Huerta": "12"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+      - row "Elegir Aceite de oliva 500 ml · Los Aromos Aceite de oliva 500 ml · Los Aromos unidades 4 12 0 8 Sin historial":
+        - cell "Elegir Aceite de oliva 500 ml · Los Aromos":
+          - checkbox "Elegir Aceite de oliva 500 ml · Los Aromos"
+        - cell "Aceite de oliva 500 ml · Los Aromos unidades":
+          - text: Aceite de oliva 500 ml · Los Aromos
+          - generic: unidades
+        - cell "4"
+        - cell "12"
+        - cell "0"
+        - cell "8":
+          - textbox "Comprar Aceite de oliva 500 ml · Los Aromos": "8"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+      - row "Elegir Agua mineral 1,5 L · Campo Vivo Agua mineral 1,5 L · Campo Vivo unidades 3 12 0 9 Sin historial":
+        - cell "Elegir Agua mineral 1,5 L · Campo Vivo":
+          - checkbox "Elegir Agua mineral 1,5 L · Campo Vivo"
+        - cell "Agua mineral 1,5 L · Campo Vivo unidades":
+          - text: Agua mineral 1,5 L · Campo Vivo
+          - generic: unidades
+        - cell "3"
+        - cell "12"
+        - cell "0"
+        - cell "9":
+          - textbox "Comprar Agua mineral 1,5 L · Campo Vivo": "9"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+      - row "Elegir Agua mineral 1,5 L · Los Aromos Agua mineral 1,5 L · Los Aromos unidades 0 12 0 12 Sin historial":
+        - cell "Elegir Agua mineral 1,5 L · Los Aromos":
+          - checkbox "Elegir Agua mineral 1,5 L · Los Aromos"
+        - cell "Agua mineral 1,5 L · Los Aromos unidades":
+          - text: Agua mineral 1,5 L · Los Aromos
+          - generic: unidades
+        - cell "0"
+        - cell "12"
+        - cell "0"
+        - cell "12":
+          - textbox "Comprar Agua mineral 1,5 L · Los Aromos": "12"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+      - row "Elegir Agua mineral 1,5 L · Mi Barrio Agua mineral 1,5 L · Mi Barrio unidades 1 12 0 11 Sin historial":
+        - cell "Elegir Agua mineral 1,5 L · Mi Barrio":
+          - checkbox "Elegir Agua mineral 1,5 L · Mi Barrio"
+        - cell "Agua mineral 1,5 L · Mi Barrio unidades":
+          - text: Agua mineral 1,5 L · Mi Barrio
+          - generic: unidades
+        - cell "1"
+        - cell "12"
+        - cell "0"
+        - cell "11":
+          - textbox "Comprar Agua mineral 1,5 L · Mi Barrio": "11"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+      - row "Elegir Agua mineral 1,5 L · Tres Espigas Agua mineral 1,5 L · Tres Espigas unidades 2 12 0 10 Sin historial":
+        - cell "Elegir Agua mineral 1,5 L · Tres Espigas":
+          - checkbox "Elegir Agua mineral 1,5 L · Tres Espigas"
+        - cell "Agua mineral 1,5 L · Tres Espigas unidades":
+          - text: Agua mineral 1,5 L · Tres Espigas
+          - generic: unidades
+        - cell "2"
+        - cell "12"
+        - cell "0"
+        - cell "10":
+          - textbox "Comprar Agua mineral 1,5 L · Tres Espigas": "10"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+      - row "Elegir Agua mineral 2 L · Primavera Agua mineral 2 L · Primavera unidades 5 12 0 7 Sin historial":
+        - cell "Elegir Agua mineral 2 L · Primavera":
+          - checkbox "Elegir Agua mineral 2 L · Primavera"
+        - cell "Agua mineral 2 L · Primavera unidades":
+          - text: Agua mineral 2 L · Primavera
+          - generic: unidades
+        - cell "5"
+        - cell "12"
+        - cell "0"
+        - cell "7":
+          - textbox "Comprar Agua mineral 2 L · Primavera": "7"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+      - row "Elegir Agua mineral 2 L · Santa Ana Agua mineral 2 L · Santa Ana unidades 5 12 0 7 Sin historial":
+        - cell "Elegir Agua mineral 2 L · Santa Ana":
+          - checkbox "Elegir Agua mineral 2 L · Santa Ana"
+        - cell "Agua mineral 2 L · Santa Ana unidades":
+          - text: Agua mineral 2 L · Santa Ana
+          - generic: unidades
+        - cell "5"
+        - cell "12"
+        - cell "0"
+        - cell "7":
+          - textbox "Comprar Agua mineral 2 L · Santa Ana": "7"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+      - row "Elegir Agua mineral 2 L · Santa Lucía Agua mineral 2 L · Santa Lucía unidades 2 12 0 10 Sin historial":
+        - cell "Elegir Agua mineral 2 L · Santa Lucía":
+          - checkbox "Elegir Agua mineral 2 L · Santa Lucía"
+        - cell "Agua mineral 2 L · Santa Lucía unidades":
+          - text: Agua mineral 2 L · Santa Lucía
+          - generic: unidades
+        - cell "2"
+        - cell "12"
+        - cell "0"
+        - cell "10":
+          - textbox "Comprar Agua mineral 2 L · Santa Lucía": "10"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+      - row "Elegir Agua mineral 2 L · Sol del Sur Agua mineral 2 L · Sol del Sur unidades 0 12 0 12 Sin historial":
+        - cell "Elegir Agua mineral 2 L · Sol del Sur":
+          - checkbox "Elegir Agua mineral 2 L · Sol del Sur"
+        - cell "Agua mineral 2 L · Sol del Sur unidades":
+          - text: Agua mineral 2 L · Sol del Sur
+          - generic: unidades
+        - cell "0"
+        - cell "12"
+        - cell "0"
+        - cell "12":
+          - textbox "Comprar Agua mineral 2 L · Sol del Sur": "12"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+      - row "Elegir Agua saborizada pomelo 1,5 L · Nueva Mesa Agua saborizada pomelo 1,5 L · Nueva Mesa unidades 5 12 0 7 Sin historial":
+        - cell "Elegir Agua saborizada pomelo 1,5 L · Nueva Mesa":
+          - checkbox "Elegir Agua saborizada pomelo 1,5 L · Nueva Mesa"
+        - cell "Agua saborizada pomelo 1,5 L · Nueva Mesa unidades":
+          - text: Agua saborizada pomelo 1,5 L · Nueva Mesa
+          - generic: unidades
+        - cell "5"
+        - cell "12"
+        - cell "0"
+        - cell "7":
+          - textbox "Comprar Agua saborizada pomelo 1,5 L · Nueva Mesa": "7"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+      - row "Elegir Agua saborizada pomelo 1,5 L · Santa Lucía Agua saborizada pomelo 1,5 L · Santa Lucía unidades 0 12 0 12 Sin historial":
+        - cell "Elegir Agua saborizada pomelo 1,5 L · Santa Lucía":
+          - checkbox "Elegir Agua saborizada pomelo 1,5 L · Santa Lucía"
+        - cell "Agua saborizada pomelo 1,5 L · Santa Lucía unidades":
+          - text: Agua saborizada pomelo 1,5 L · Santa Lucía
+          - generic: unidades
+        - cell "0"
+        - cell "12"
+        - cell "0"
+        - cell "12":
+          - textbox "Comprar Agua saborizada pomelo 1,5 L · Santa Lucía": "12"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+      - row "Elegir Agua saborizada pomelo 1,5 L · Tierra Clara Agua saborizada pomelo 1,5 L · Tierra Clara unidades 2 12 0 10 Sin historial":
+        - cell "Elegir Agua saborizada pomelo 1,5 L · Tierra Clara":
+          - checkbox "Elegir Agua saborizada pomelo 1,5 L · Tierra Clara"
+        - cell "Agua saborizada pomelo 1,5 L · Tierra Clara unidades":
+          - text: Agua saborizada pomelo 1,5 L · Tierra Clara
+          - generic: unidades
+        - cell "2"
+        - cell "12"
+        - cell "0"
+        - cell "10":
+          - textbox "Comprar Agua saborizada pomelo 1,5 L · Tierra Clara": "10"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+      - row "Elegir Agua saborizada pomelo 1,5 L · Villa del Sol Agua saborizada pomelo 1,5 L · Villa del Sol unidades 1 12 0 11 Sin historial":
+        - cell "Elegir Agua saborizada pomelo 1,5 L · Villa del Sol":
+          - checkbox "Elegir Agua saborizada pomelo 1,5 L · Villa del Sol"
+        - cell "Agua saborizada pomelo 1,5 L · Villa del Sol unidades":
+          - text: Agua saborizada pomelo 1,5 L · Villa del Sol
+          - generic: unidades
+        - cell "1"
+        - cell "12"
+        - cell "0"
+        - cell "11":
+          - textbox "Comprar Agua saborizada pomelo 1,5 L · Villa del Sol": "11"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+      - row "Elegir Alfajor chocolate triple · El Molino Alfajor chocolate triple · El Molino unidades 0 12 0 12 Sin historial":
+        - cell "Elegir Alfajor chocolate triple · El Molino":
+          - checkbox "Elegir Alfajor chocolate triple · El Molino"
+        - cell "Alfajor chocolate triple · El Molino unidades":
+          - text: Alfajor chocolate triple · El Molino
+          - generic: unidades
+        - cell "0"
+        - cell "12"
+        - cell "0"
+        - cell "12":
+          - textbox "Comprar Alfajor chocolate triple · El Molino": "12"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+      - row "Elegir Alfajor chocolate triple · El Ombú Alfajor chocolate triple · El Ombú unidades 2 12 0 10 Sin historial":
+        - cell "Elegir Alfajor chocolate triple · El Ombú":
+          - checkbox "Elegir Alfajor chocolate triple · El Ombú"
+        - cell "Alfajor chocolate triple · El Ombú unidades":
+          - text: Alfajor chocolate triple · El Ombú
+          - generic: unidades
+        - cell "2"
+        - cell "12"
+        - cell "0"
+        - cell "10":
+          - textbox "Comprar Alfajor chocolate triple · El Ombú": "10"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+      - row "Elegir Alfajor chocolate triple · La Abuela Alfajor chocolate triple · La Abuela unidades 3 12 0 9 Sin historial":
+        - cell "Elegir Alfajor chocolate triple · La Abuela":
+          - checkbox "Elegir Alfajor chocolate triple · La Abuela"
+        - cell "Alfajor chocolate triple · La Abuela unidades":
+          - text: Alfajor chocolate triple · La Abuela
+          - generic: unidades
+        - cell "3"
+        - cell "12"
+        - cell "0"
+        - cell "9":
+          - textbox "Comprar Alfajor chocolate triple · La Abuela": "9"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+      - row "Elegir Alfajor dulce de leche · Campo Vivo Alfajor dulce de leche · Campo Vivo unidades 1 12 0 11 Sin historial":
+        - cell "Elegir Alfajor dulce de leche · Campo Vivo":
+          - checkbox "Elegir Alfajor dulce de leche · Campo Vivo"
+        - cell "Alfajor dulce de leche · Campo Vivo unidades":
+          - text: Alfajor dulce de leche · Campo Vivo
+          - generic: unidades
+        - cell "1"
+        - cell "12"
+        - cell "0"
+        - cell "11":
+          - textbox "Comprar Alfajor dulce de leche · Campo Vivo": "11"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+      - row "Elegir Alfajor dulce de leche · Los Aromos Alfajor dulce de leche · Los Aromos unidades 0 12 0 12 Sin historial":
+        - cell "Elegir Alfajor dulce de leche · Los Aromos":
+          - checkbox "Elegir Alfajor dulce de leche · Los Aromos"
+        - cell "Alfajor dulce de leche · Los Aromos unidades":
+          - text: Alfajor dulce de leche · Los Aromos
+          - generic: unidades
+        - cell "0"
+        - cell "12"
+        - cell "0"
+        - cell "12":
+          - textbox "Comprar Alfajor dulce de leche · Los Aromos": "12"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+      - row "Elegir Alfajor dulce de leche · Mi Barrio Alfajor dulce de leche · Mi Barrio unidades 1 12 0 11 Sin historial":
+        - cell "Elegir Alfajor dulce de leche · Mi Barrio":
+          - checkbox "Elegir Alfajor dulce de leche · Mi Barrio"
+        - cell "Alfajor dulce de leche · Mi Barrio unidades":
+          - text: Alfajor dulce de leche · Mi Barrio
+          - generic: unidades
+        - cell "1"
+        - cell "12"
+        - cell "0"
+        - cell "11":
+          - textbox "Comprar Alfajor dulce de leche · Mi Barrio": "11"
+        - cell "Sin historial":
+          - text: Sin historial
+          - generic "Ver detalle"
+  - button "Anterior" [disabled]
+  - generic: 1–25
+  - button "Siguiente"
+  - heading "Preparar 1 productos" [level=2]
+  - text: Proveedor
+  - combobox "Proveedor":
+    - option "Agrupar por proveedor habitual" [selected]
+    - option "Almacén · Distribuidor local"
+    - option "Bebidas · Distribuidor local"
+    - option "Congelados · Distribuidor local"
+    - option "Fiambrería · Distribuidor local"
+    - option "Galletitas y golosinas · Distribuidor local"
+    - option "Infusiones y desayuno · Distribuidor local"
+    - option "Limpieza · Distribuidor local"
+    - option "Lácteos · Distribuidor local"
+    - option "Panadería y huevos · Distribuidor local"
+    - option "Verdulería · Distribuidor local"
+  - text: Llegada prevista (opcional)
+  - textbox "Llegada prevista (opcional)"
+  - paragraph: Los costos propuestos son estimaciones. La deuda y el stock se registran al recibir.
+  - button "Preparar pedido"

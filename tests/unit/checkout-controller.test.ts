@@ -3,6 +3,23 @@ import { randomUUID } from 'node:crypto';
 import { CheckoutController } from '../../src/renderer/features/checkout/controller';
 import type { BochaApi } from '../../src/shared/contracts';
 import type { Product, DraftRecord } from '../../src/shared/catalog';
+
+const unitProduct = (): Product => ({
+  id: randomUUID(),
+  sku: 'RAPIDO',
+  barcode: '779000000001',
+  name: 'Producto rápido',
+  priceCents: 1000,
+  saleUnit: 'UNIT',
+  category: null,
+  active: true,
+  trackStock: false,
+  minStockBase: 0,
+  revision: 1,
+  stockInitialized: false,
+  createdAt: 'now',
+  updatedAt: 'now',
+});
 it('rechaza cambio de unidad al actualizar un carrito por peso', async () => {
   const p: Product = {
     id: randomUUID(),
@@ -220,5 +237,96 @@ it('bloquea captura y consultas superpuestas al recuperar un cobro pendiente', a
   await resume;
   expect(controller.getSnapshot()).toMatchObject({ mode: 'SCAN', pendingScans: 0 });
   expect(controller.getSnapshot().body.lines).toHaveLength(1);
+  controller.dispose();
+});
+it('reutiliza el producto escaneado y confirma un cobro rápido sin esperar un borrador pendiente', async () => {
+  const product = unitProduct();
+  let lookups = 0,
+    saves = 0,
+    sales = 0;
+  const sale = {
+    id: randomUUID(),
+    number: 1,
+    totalCents: 3000,
+    payments: [],
+  } as unknown as import('../../src/shared/sales').SaleDetail;
+  const backend = {
+    products: {
+      findByBarcode: async () => {
+        lookups++;
+        return { ok: true, value: product };
+      },
+    },
+    checkout: {
+      getDraft: async () => ({ ok: true, value: null }),
+      saveDraft: async () => {
+        saves++;
+        throw new Error('El cobro rápido no debe guardar un borrador pendiente.');
+      },
+    },
+    sales: {
+      complete: async () => {
+        sales++;
+        return { ok: true, value: sale };
+      },
+    },
+  } as unknown as BochaApi;
+  const controller = new CheckoutController(backend, randomUUID(), {
+    getItem: () => null,
+    setItem: () => {},
+    removeItem: () => {},
+  });
+  const settle = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
+  await controller.initialize();
+  controller.scan(product.barcode!);
+  await settle();
+  controller.scan(product.barcode!);
+  await settle();
+  controller.scan(product.barcode!);
+  await settle();
+  expect(lookups).toBe(1);
+  expect(controller.getSnapshot().body.lines[0]?.quantityBase).toBe(3);
+  await controller.openPayment();
+  await controller.pay([{ method: 'CASH', amountCents: 3000, tenderedCents: 3000 }]);
+  expect(saves).toBe(0);
+  expect(sales).toBe(1);
+  expect(controller.getSnapshot()).toMatchObject({ mode: 'SCAN', lastSale: sale });
+  controller.dispose();
+});
+it('vuelve a guardar el carrito si un cobro rápido es rechazado', async () => {
+  const product = unitProduct();
+  let saves = 0;
+  const backend = {
+    products: {
+      findByBarcode: async () => ({ ok: true, value: product }),
+      get: async () => ({ ok: true, value: product }),
+    },
+    checkout: {
+      getDraft: async () => ({ ok: true, value: null }),
+      saveDraft: async (input: import('../../src/shared/catalog').SaveDraftInput) => {
+        saves++;
+        return { ok: true, value: { body: input.body, revision: 1, updatedAt: 'now' } };
+      },
+    },
+    sales: {
+      complete: async () => ({
+        ok: false,
+        error: { code: 'VALIDATION', message: 'Pago inválido', retryable: false },
+      }),
+    },
+  } as unknown as BochaApi;
+  const controller = new CheckoutController(backend, randomUUID(), {
+    getItem: () => null,
+    setItem: () => {},
+    removeItem: () => {},
+  });
+  await controller.initialize();
+  controller.scan(product.barcode!);
+  await new Promise<void>((resolve) => setTimeout(resolve, 0));
+  await controller.openPayment();
+  await controller.pay([{ method: 'CASH', amountCents: 1000, tenderedCents: 1000 }]);
+  await new Promise<void>((resolve) => setTimeout(resolve, 350));
+  expect(saves).toBe(1);
+  expect(controller.getSnapshot()).toMatchObject({ mode: 'SCAN', pendingSale: null });
   controller.dispose();
 });
