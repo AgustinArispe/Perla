@@ -1,6 +1,6 @@
 import { TaxonomyCreateDialog } from './TaxonomyManager';
 import { EntityActivity } from '../../components/EntityActivity';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import type { FormEvent, KeyboardEvent } from 'react';
 import type { Product } from '../../../shared/catalog';
@@ -8,16 +8,20 @@ import { ProductSaveSchema } from '../../../shared/catalog';
 import { parseArs, parseQuantity, moneyInput, quantityInput } from '../../../domain/values';
 import { api, errorMessage, unwrap } from '../../api';
 import { Dialog } from '../../components/Dialog';
+import { Icon } from '../../components/Icon';
+import { ZodError } from 'zod';
 
 export function ProductForm({
   product,
   onClose,
   onSaved,
+  onSaveAnother,
   costsEnabled,
 }: {
   product: Product | null;
   onClose: () => void;
   onSaved: (product: Product) => void;
+  onSaveAnother?: (product: Product) => void;
   costsEnabled: boolean;
 }) {
   const [taxonomyCreate, setTaxonomyCreate] = useState<'category' | 'brand' | null>(null);
@@ -25,7 +29,10 @@ export function ProductForm({
   const [brandId, setBrandId] = useState(product?.brandId ?? '');
   const [extrasOpen, setExtrasOpen] = useState(Boolean(product));
   const [unit, setUnit] = useState<'UNIT' | 'KG'>(product?.saleUnit ?? 'UNIT');
-  const [generatedSku] = useState(() => `ART-${crypto.randomUUID().slice(0, 8).toUpperCase()}`);
+  const generatedSku = useRef(`ART-${crypto.randomUUID().slice(0, 8).toUpperCase()}`);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [notice, setNotice] = useState('');
+  const [savedDraft, setSavedDraft] = useState<Product | null>(null);
   const [busy, setBusy] = useState(false);
   const [trackStock, setTrackStock] = useState(product?.trackStock ?? true);
   const [error, setError] = useState('');
@@ -44,12 +51,29 @@ export function ProductForm({
     event.preventDefault();
     if (busy) return;
     const data = new FormData(event.currentTarget);
+    const another =
+      !product &&
+      Boolean(onSaveAnother) &&
+      (event.nativeEvent as SubmitEvent).submitter?.getAttribute('name') === 'saveAnother';
     setError('');
+    setNotice('');
     try {
+      const currentProduct = savedDraft ?? product;
       const barcode = String(data.get('barcode') ?? '').trim() || null;
-      const sku = String(data.get('sku') ?? '').trim() || barcode || generatedSku;
+      const sku =
+        String(data.get('sku') ?? '').trim() ||
+        currentProduct?.sku ||
+        barcode ||
+        generatedSku.current;
+      const referenceCost = String(data.get('referenceCost') ?? '').trim();
+      const referenceCostCents =
+        costsEnabled && !trackStock && referenceCost ? parseArs(referenceCost) : null;
+      if (referenceCostCents !== null && referenceCostCents <= 0)
+        throw new Error('El costo de referencia debe ser mayor a cero.');
       const input = ProductSaveSchema.parse({
-        ...(product ? { id: product.id, expectedRevision: product.revision } : {}),
+        ...(currentProduct
+          ? { id: currentProduct.id, expectedRevision: currentProduct.revision }
+          : {}),
         sku,
         barcode,
         name: data.get('name'),
@@ -65,19 +89,41 @@ export function ProductForm({
       });
       setBusy(true);
       const saved = unwrap(await api().products.save(input));
-      const referenceCost = String(data.get('referenceCost') ?? '').trim();
-      if (costsEnabled && !trackStock && referenceCost)
+      setSavedDraft(saved);
+      if (referenceCostCents !== null)
         unwrap(
           await api().costs.setReference({
             productId: saved.id,
-            unitCostCents: parseArs(referenceCost),
+            unitCostCents: referenceCostCents,
             expectedRevision: cost.data?.revision ?? 0,
           }),
         );
-      onSaved(saved);
+      if (another) {
+        onSaveAnother!(saved);
+        setSavedDraft(null);
+        generatedSku.current = `ART-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
+        for (const name of ['name', 'price', 'barcode', 'sku', 'referenceCost']) {
+          const field = formRef.current?.elements.namedItem(name);
+          if (field instanceof HTMLInputElement) field.value = '';
+        }
+        setNotice(`${saved.name}: guardado. Podés cargar el siguiente.`);
+        requestAnimationFrame(() =>
+          formRef.current?.querySelector<HTMLInputElement>('[name="name"]')?.focus(),
+        );
+      } else onSaved(saved);
     } catch (failure) {
-      setExtrasOpen(true);
-      setError(errorMessage(failure));
+      if (failure instanceof ZodError) {
+        const issue = failure.issues[0];
+        setError(issue?.message ?? 'Revisá los datos del producto.');
+        const names: Record<string, string> = { priceCents: 'price', minStockBase: 'minimum' };
+        const path = String(issue?.path[0] ?? '');
+        const name = names[path] ?? path;
+        if (['minimum', 'sku'].includes(name)) setExtrasOpen(true);
+        requestAnimationFrame(() => {
+          const field = formRef.current?.elements.namedItem(name);
+          if (field instanceof HTMLElement) field.focus();
+        });
+      } else setError(errorMessage(failure));
     } finally {
       setBusy(false);
     }
@@ -86,6 +132,30 @@ export function ProductForm({
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') {
       event.preventDefault();
       if (!busy) event.currentTarget.requestSubmit();
+      return;
+    }
+    if (
+      event.key === 'Enter' &&
+      !event.nativeEvent.isComposing &&
+      event.target instanceof HTMLInputElement &&
+      event.target.type !== 'checkbox'
+    ) {
+      event.preventDefault();
+      const fields = Array.from(event.currentTarget.elements).filter(
+        (item): item is HTMLInputElement | HTMLSelectElement =>
+          (item instanceof HTMLInputElement || item instanceof HTMLSelectElement) &&
+          !item.disabled &&
+          item.type !== 'checkbox' &&
+          !item.closest('details:not([open])') &&
+          item.getClientRects().length > 0,
+      );
+      const index = fields.indexOf(event.target);
+      const next = fields[index + 1];
+      if (next) next.focus();
+      else
+        event.currentTarget
+          .querySelector<HTMLButtonElement>('button[type="submit"].primary')
+          ?.focus();
     }
   }
   return (
@@ -96,8 +166,19 @@ export function ProductForm({
         busy={busy}
         className="product-dialog"
       >
-        <form className="product-form" onSubmit={(event) => void save(event)} onKeyDown={keyboard}>
+        <form
+          ref={formRef}
+          className="product-form"
+          onSubmit={(event) => void save(event)}
+          onKeyDown={keyboard}
+        >
           <div className="dialog-body">
+            {notice && (
+              <p className="product-save-notice" role="status">
+                <Icon name="check" />
+                {notice}
+              </p>
+            )}
             {error && (
               <div className="alert error" role="alert">
                 {error}
@@ -116,18 +197,7 @@ export function ProductForm({
                     data-dialog-focus
                   />
                 </label>
-                <div className="form-grid">
-                  <label className="field">
-                    Forma de venta
-                    <select
-                      name="unit"
-                      value={unit}
-                      onChange={(event) => setUnit(event.target.value as 'UNIT' | 'KG')}
-                    >
-                      <option value="UNIT">Por unidad</option>
-                      <option value="KG">Por kilo</option>
-                    </select>
-                  </label>
+                <div className="form-grid product-price-row">
                   <label className="field">
                     Precio de venta
                     <div className="money-field">
@@ -142,21 +212,29 @@ export function ProductForm({
                     </div>
                     <small>{unit === 'KG' ? 'Precio por kilo' : 'Precio por unidad'}</small>
                   </label>
+                  <label className="field">
+                    Forma de venta
+                    <select
+                      name="unit"
+                      value={unit}
+                      onChange={(event) => setUnit(event.target.value as 'UNIT' | 'KG')}
+                    >
+                      <option value="UNIT">Por unidad</option>
+                      <option value="KG">Por kilo</option>
+                    </select>
+                  </label>
                 </div>
                 <label className="field">
                   Código de barras
                   <input
                     name="barcode"
+                    aria-label="Código de barras"
                     maxLength={64}
                     defaultValue={product?.barcode ?? ''}
-                    placeholder="Escaneá o dejalo vacío para generarlo"
+                    placeholder="Escaneá el código del envase"
                     autoComplete="off"
                   />
-                  {!product && (
-                    <small>
-                      Si no tiene código de fábrica, se genera uno y queda una etiqueta pendiente.
-                    </small>
-                  )}
+                  {!product && <small>Sin código: Perla genera uno al guardar.</small>}
                 </label>
               </div>
               <details
@@ -166,53 +244,58 @@ export function ProductForm({
               >
                 <summary>
                   <span>Más opciones</span>
-                  <small>Categoría, código interno y stock</small>
+                  <small>Clasificación y control de stock</small>
+                  <Icon name="arrow" />
                 </summary>
                 <div className="product-options-body">
                   <div className="form-grid">
-                    <label className="field">
-                      Categoría
-                      <select
-                        name="categoryId"
-                        value={categoryId}
-                        onChange={(event) => setCategoryId(event.target.value)}
-                      >
-                        <option value="">Sin categoría</option>
-                        {taxonomy.data?.categories.map((item) => (
-                          <option key={item.id} value={item.id}>
-                            {item.name}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                    <label className="field">
-                      Marca
-                      <select
-                        name="brandId"
-                        value={brandId}
-                        onChange={(event) => setBrandId(event.target.value)}
-                      >
-                        <option value="">Sin marca</option>
-                        {taxonomy.data?.brands.map((item) => (
-                          <option key={item.id} value={item.id}>
-                            {item.name}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                    <div className="product-taxonomy-actions">
+                    <div className="product-taxonomy-field">
+                      <label className="field">
+                        Categoría
+                        <select
+                          name="categoryId"
+                          value={categoryId}
+                          onChange={(event) => setCategoryId(event.target.value)}
+                        >
+                          <option value="">Sin categoría</option>
+                          {taxonomy.data?.categories.map((item) => (
+                            <option key={item.id} value={item.id}>
+                              {item.name}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
                       <button
                         type="button"
                         className="button quiet small"
                         onClick={() => setTaxonomyCreate('category')}
                       >
+                        <Icon name="plus" />
                         Nueva categoría
                       </button>
+                    </div>
+                    <div className="product-taxonomy-field">
+                      <label className="field">
+                        Marca
+                        <select
+                          name="brandId"
+                          value={brandId}
+                          onChange={(event) => setBrandId(event.target.value)}
+                        >
+                          <option value="">Sin marca</option>
+                          {taxonomy.data?.brands.map((item) => (
+                            <option key={item.id} value={item.id}>
+                              {item.name}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
                       <button
                         type="button"
                         className="button quiet small"
                         onClick={() => setTaxonomyCreate('brand')}
                       >
+                        <Icon name="plus" />
                         Nueva marca
                       </button>
                     </div>
@@ -279,11 +362,16 @@ export function ProductForm({
               </details>
             </fieldset>
           </div>
-          <div className="dialog-footer">
-            <span className="shortcut-note">Ctrl + S para guardar · Esc para volver</span>
+          <div className="dialog-footer product-form-footer">
+            <span className="shortcut-note">Ctrl + S para guardar</span>
             <button type="button" className="button secondary" onClick={onClose} disabled={busy}>
               Cancelar
             </button>
+            {!product && onSaveAnother && (
+              <button type="submit" name="saveAnother" className="button secondary" disabled={busy}>
+                Guardar y cargar otro
+              </button>
+            )}
             <button type="submit" className="button primary" disabled={busy}>
               {busy ? 'Guardando…' : 'Guardar producto'}
             </button>

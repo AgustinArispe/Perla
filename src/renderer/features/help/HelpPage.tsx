@@ -262,7 +262,11 @@ export const helpTopics: Topic[] = [
       },
       {
         title: 'Control interno',
-        text: 'Perla Negra registra ventas y existencias para uso interno. No emite facturas ni comprobantes fiscales ni se integra con ARCA. Los datos de la demo son ficticios y están destinados a pruebas.',
+        text: 'Perla ayuda a Perla Negra a registrar ventas y existencias para uso interno. No emite facturas ni comprobantes fiscales ni se integra con ARCA. Los datos de la demo son ficticios y están destinados a pruebas.',
+      },
+      {
+        title: 'Qué es Perla',
+        text: 'Perla es el programa de gestión. Perla Negra es el comercio que lo utiliza. La perla del símbolo representa lo valioso de cada negocio; su forma marina acompaña el movimiento cotidiano de ventas, productos y personas.',
       },
     ],
   },

@@ -114,12 +114,42 @@ export const ExcelFiltersSchema = z.strictObject({
   operation: z.string().max(100).optional(),
 });
 export type ExcelFilters = z.infer<typeof ExcelFiltersSchema>;
+export const ExcelSelectionSchema = z
+  .array(z.string().regex(/^[a-f0-9]{64}$/))
+  .min(1)
+  .max(5000)
+  .refine((keys) => new Set(keys).size === keys.length, 'No repitas filas en la selección.');
+export const ExcelPageSchema = z.strictObject({
+  sheet: z.number().int().min(0).default(0),
+  offset: z.number().int().min(0).default(0),
+  limit: z.number().int().min(1).max(100).default(50),
+});
+export interface ExcelPreview {
+  sheets: { name: string; total: number }[];
+  sheet: number;
+  columns: string[];
+  items: { key: string; cells: string[] }[];
+  total: number;
+  suggestedSelection: string[];
+}
 export const ExcelRequestSchema = z
   .strictObject({
     dataset: z.enum(Object.keys(excelTitles) as [ExcelDataset, ...ExcelDataset[]]),
     filters: ExcelFiltersSchema.default({}),
+    selection: ExcelSelectionSchema.optional(),
+    selectedIds: z
+      .array(z.uuid())
+      .min(1)
+      .max(5000)
+      .refine((ids) => new Set(ids).size === ids.length, 'No repitas filas.')
+      .optional(),
   })
   .superRefine((v, c) => {
+    if (v.selectedIds && (v.dataset !== 'products' || v.selection || Object.keys(v.filters).length))
+      c.addIssue({
+        code: 'custom',
+        message: 'La selección del catálogo se exporta por sus productos, sin filtros adicionales.',
+      });
     for (const k of Object.keys(v.filters))
       if (
         !excelFilterKeys[v.dataset].includes(k) &&
@@ -154,3 +184,8 @@ export const ExcelRequestSchema = z
     if (v.filters.fromDate && v.filters.toDate && v.filters.fromDate > v.filters.toDate)
       c.addIssue({ code: 'custom', message: 'Revisá las fechas.' });
   });
+export const ExcelPreviewRequestSchema = z.strictObject({
+  request: ExcelRequestSchema,
+  page: ExcelPageSchema.default({ sheet: 0, offset: 0, limit: 50 }),
+  initialIds: z.array(z.uuid()).max(5000).optional(),
+});

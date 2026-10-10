@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { api, errorMessage, unwrap } from '../../api';
-import { PerlaNegraLogo } from '../../components/PerlaNegraLogo';
+import { PerlaLockup } from '../../components/PerlaBrand';
 export function Login({
   initialized: accountInitialized,
   onSignedIn,
@@ -37,24 +37,21 @@ export function Login({
   }
   return (
     <div className="auth-screen">
-      <section className="auth-brand-panel" aria-label="Perla Negra, pescados y mariscos">
+      <section className="auth-brand-panel" aria-label="Perla, gestión para tu comercio">
         <div className="auth-brand-top">
           <span className="auth-brand-line" aria-hidden="true" />
           <div>
-            <strong>Perla Negra</strong>
-            <span>Sistema interno</span>
+            <strong>Perla</strong>
+            <span>Gestión para tu comercio</span>
           </div>
         </div>
         <div className="auth-brand-center">
-          <span className="auth-brand-mark">
-            <PerlaNegraLogo />
-          </span>
-          <strong className="auth-brand-name">Perla Negra</strong>
-          <span className="auth-brand-descriptor">Pescados y mariscos</span>
+          <PerlaLockup />
+          <span className="auth-brand-descriptor">Tu negocio en orden</span>
         </div>
         <div className="auth-brand-footer">
-          <span>Control de ventas y stock</span>
-          <strong>Pescados y mariscos</strong>
+          <span>Ventas, mercadería y decisiones en un solo lugar</span>
+          <strong>Perla Negra · Pescados y mariscos</strong>
         </div>
       </section>
       <section className="auth-form-panel">

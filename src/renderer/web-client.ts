@@ -309,7 +309,7 @@ export const webApi: BochaApi = {
   },
 };
 
-export async function downloadExcel(input: {dataset:import('../shared/excel').ExcelDataset;filters:import('../shared/excel').ExcelFilters}) {
+export async function downloadExcel(input: {dataset:import('../shared/excel').ExcelDataset;filters:import('../shared/excel').ExcelFilters;selection?:string[];selectedIds?:string[]}) {
  const response=await fetch('/api/v1/exports/excel',{method:'POST',credentials:'same-origin',headers:headers('POST'),body:JSON.stringify(input)});
  if(!response.ok){const result=await readResult<never>(response);if(!result.ok)throw new Error(result.error.message);}
  const filename=response.headers.get('content-disposition')?.match(/filename="([^"]+)"/)?.[1]??`perla-negra-${input.dataset}.xlsx`;

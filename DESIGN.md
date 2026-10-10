@@ -1,10 +1,14 @@
 # Perla Negra · identidad visual
 
+## Inicio operativo — 10 de octubre de 2026
+
+El inicio combina un resumen de ventas de hoy y semana, pendientes desplegables, cajas y saldos abiertos. Navy destaca el resultado, latón las acciones y cantidades que requieren atención; el resto conserva superficies claras y aire. Los datos principales se ven sin desplegar listas; el detalle se consulta al pedirlo. Las métricas respetan permisos y módulos habilitados, explican su período y no mezclan saldos actuales con ventas. En móvil las columnas se apilan y los importes pueden ocupar más de una línea.
+
 ## Marca del producto Perla — 9 de octubre de 2026
 
 Perla es el nombre elegido para el software; Perla Negra identifica al comercio. La [documentación de marca](docs/documentacion/01-producto-y-alcance.md#9-perla-nombre-identidad-y-significado-de-marca) recoge el significado del nombre y del símbolo, la paleta y la historia: «Cada negocio tiene algo valioso. Perla te ayuda a cuidarlo, ordenarlo y hacerlo crecer».
 
-La [propuesta gráfica v9](output/branding/perla-logo-grafico-v9.png) combina una cinta marina abierta con una perla dorada y lettering futurista. Las letras fueron generadas dentro de la imagen: no corresponden a una fuente identificada ni a Manrope o Cinzel. El conjunto sigue en exploración y su incorporación a la aplicación está pendiente. Las reglas siguientes describen la identidad de Perla Negra implementada hasta ahora.
+La [propuesta gráfica v9](output/branding/perla-logo-grafico-v9.png) combina una cinta marina abierta con una perla dorada y lettering futurista. Las letras fueron generadas dentro de la imagen: no corresponden a una fuente identificada ni a Manrope o Cinzel. Se incorpora en el ingreso como marca completa. En navegación y reporte mensual, el símbolo tiene una adaptación vectorial completa, sin recorte ni recuadro: marfil y latón sobre el menú oscuro, tinta y latón sobre superficies claras. Perla identifica el producto; Perla Negra identifica el comercio, incluso en los comprobantes. El favicon traduce la forma y los colores del símbolo a un formato vectorial pequeño. En pantalla se conserva Manrope para los textos operativos, sin intentar recrear el lettering original con una tipografía diferente.
 
 ## Dirección vigente — 1 de octubre de 2026
 
@@ -27,6 +31,12 @@ La capa de marca es perla.css. En móvil el contenido ocupa todo el ancho y el m
 Migración 012: actualiza solo los nombres anteriores por defecto a Perla Negra. Los nombres personalizados y los comprobantes históricos se conservan. Los identificadores técnicos antiguos de archivos y datos permanecen para conservar compatibilidad.
 
 ## Referencia histórica de PULSE
+
+La tipografía operativa vigente se centraliza en `src/renderer/styles/typography.css`: Manrope 500 para lectura y campos, 600 para acciones y etiquetas, 700 para títulos y énfasis. Navegación, contenido y diálogos comparten la familia. Los importes conservan numerales tabulares y los códigos conservan su tratamiento técnico.
+
+### Secciones del menú lateral
+
+Trabajo diario, Mercadería, Negocio y Administración tienen encabezados desplegables independientes. El encabezado completo es un botón con flecha, foco visible y `aria-expanded`. Cada usuario conserva sus preferencias en este navegador. Si se cierra el grupo activo, el encabezado muestra el nombre de la pantalla en dorado. Navegar desde otro circuito conserva el estado elegido: sólo tocar el encabezado abre o cierra el grupo. El modo compacto muestra únicamente los cuatro iconos de sección, con superficies navy y detalles dorados. Tocar un icono expande el sidebar y abre esa sección; las demás conservan su preferencia. El menú móvil conserva los mismos grupos.
 
 La primera versión usó PULSE como base: precisa, luminosa y profesional, con energía contenida. Este registro explica decisiones heredadas; la dirección vigente es la identidad Perla Negra definida arriba.
 

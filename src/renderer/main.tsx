@@ -13,6 +13,8 @@ import './styles/tokens.css';
 import './styles/pulse.css';
 import './styles/perla.css';
 import './styles/operational.css';
+import './styles/typography.css';
+import './styles/home.css';
 
 const client = new QueryClient();
 ReactDOM.createRoot(document.getElementById('root')!).render(

@@ -28,6 +28,7 @@ import type { PaymentInput } from '../../../shared/sales';
 import type { SaleReceipt } from '../../../shared/receipts';
 import { Icon } from '../../components/Icon';
 import { ReceiptPrint } from '../receipts/ReceiptPrint';
+import { ScannerTest } from '../settings/ScannerTest';
 export type LeaveGuard = (() => Promise<void>) | null;
 export function Checkout({
   user,
@@ -69,6 +70,8 @@ export function Checkout({
     [error, setError] = useState(''),
     [weightOnly, setWeightOnly] = useState(false),
     [receipt, setReceipt] = useState<SaleReceipt | null>(null);
+  const [lastScan, setLastScan] = useState<Date | null>(null);
+  const [scannerTestOpen, setScannerTestOpen] = useState(false);
   const scanner = useRef<HTMLInputElement>(null);
   const preparedReceiptFor = useRef<string | null>(null);
   const receiptWasOpen = useRef(false);
@@ -243,6 +246,7 @@ export function Checkout({
                     event.preventDefault();
                     const captured = event.currentTarget.value;
                     setCode('');
+                    if (captured.trim()) setLastScan(new Date());
                     controller.scan(captured);
                   }
                 }}
@@ -251,6 +255,13 @@ export function Checkout({
               <span>F2</span>
             </div>
             <div className="checkout-tools">
+              <button
+                className="button secondary"
+                disabled={!ready}
+                onClick={() => setScannerTestOpen(true)}
+              >
+                {lastScan ? 'Probar conexión de nuevo' : 'Probar conexión del lector'}
+              </button>
               <button
                 className="button secondary"
                 disabled={!editable}
@@ -277,7 +288,9 @@ export function Checkout({
                 {state.pendingScans
                   ? `${state.pendingScans} lecturas pendientes`
                   : ready
-                    ? 'Escaneo listo'
+                    ? lastScan
+                      ? `Lector OK · Última lectura ${lastScan.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })}`
+                      : 'Lector sin verificar · Listo para escanear'
                     : 'Escaneo suspendido'}
               </span>
             </div>
@@ -543,6 +556,11 @@ export function Checkout({
           onClose={() => controller.closeModal()}
           onSelect={(product) => controller.selectProduct(product)}
         />
+      )}
+      {scannerTestOpen && (
+        <Dialog title="Probar lector" onClose={() => setScannerTestOpen(false)}>
+          <ScannerTest compact onVerified={setLastScan} />
+        </Dialog>
       )}
       {state.mode === 'DISCOUNT' && (
         <DiscountDialog

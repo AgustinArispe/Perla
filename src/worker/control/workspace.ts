@@ -13,6 +13,7 @@ import { DomainError } from '../../shared/errors';
 import { FeatureService } from '../features/service';
 import { hasPermission } from '../../domain/permissions';
 import { comparisonPeriods } from '../reports/period';
+import { MonthlyReports } from '../reports/queries';
 const operations: Record<string, string> = {
   products: 'products.save',
   stock: 'stock.search',
@@ -289,6 +290,58 @@ export class WorkspaceControlService {
           });
       }
     }
-    return { groups: groups.slice(0, 5), generatedAt: new Date().toISOString() };
+    const now = new Date();
+    const day = comparisonPeriods({ preset: 'TODAY' }, now).from;
+    const reports = new MonthlyReports(this.db);
+    const week = comparisonPeriods({ preset: 'WEEK' }, now);
+    const overview =
+      flags.MONTHLY_DASHBOARD && hasPermission(actor.role, 'dashboard.monthly')
+        ? {
+            businessDate: day,
+            weekFrom: week.from,
+            today: reports.compare({ preset: 'TODAY' }, now).current,
+            week: reports.compare({ preset: 'WEEK' }, now).current,
+            lastSaleDate: (
+              this.db
+                .prepare("SELECT MAX(business_date) date FROM sales WHERE status='COMPLETED'")
+                .get() as { date: string | null }
+            ).date,
+          }
+        : null;
+    const registers = this.db
+      .prepare(
+        `SELECT t.id,t.name,u.name operator,s.opened_at_utc openedAt
+      FROM terminals t LEFT JOIN register_shifts s ON s.terminal_id=t.id AND s.status='OPEN'
+      LEFT JOIN users u ON u.id=s.opened_by WHERE t.active=1 ORDER BY t.name,t.id`,
+      )
+      .all() as ControlHome['registers'];
+    const balance = (table: string, enabled: boolean) =>
+      enabled
+        ? (this.db
+            .prepare(
+              `SELECT COALESCE(SUM(balance_cents),0) total,
+          COALESCE(SUM(CASE WHEN due_on<? THEN balance_cents ELSE 0 END),0) overdue
+          FROM ${table} WHERE status='OPEN' AND balance_cents>0`,
+            )
+            .get(day) as { total: number; overdue: number })
+        : { total: 0, overdue: 0 };
+    let accounts: ControlHome['accounts'] = null;
+    if (['OWNER', 'ADMIN'].includes(actor.role) && (flags.CUSTOMERS || flags.SUPPLIER_ACCOUNTS)) {
+      const receivable = balance('customer_receivables', flags.CUSTOMERS);
+      const payable = balance('supplier_payables', flags.SUPPLIER_ACCOUNTS);
+      accounts = {
+        receivableCents: receivable.total,
+        payableCents: payable.total,
+        overdueReceivableCents: receivable.overdue,
+        overduePayableCents: payable.overdue,
+      };
+    }
+    return {
+      groups: groups.slice(0, 5),
+      generatedAt: now.toISOString(),
+      overview,
+      registers,
+      accounts,
+    };
   }
 }

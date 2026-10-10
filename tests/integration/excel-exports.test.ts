@@ -8,6 +8,7 @@ import { createServer } from '../../src/server/app';
 import { ServerRuntime } from '../../src/server/runtime';
 import { AuthService } from '../../src/worker/auth/service';
 import { Application } from '../../src/worker/application';
+import type { ExcelPreview } from '../../src/shared/excel';
 
 test('Excel incluye todas las páginas filtradas, importes numéricos y códigos como texto', async () => {
   const dir = mkdtempSync(join(tmpdir(), 'pos-xlsx-'));
@@ -60,6 +61,102 @@ test('Excel incluye todas las páginas filtradas, importes numéricos y códigos
     expect(sheet.getCell('G2').value).toBe(123.45);
     expect(sheet.views[0]?.state).toBe('frozen');
     expect(workbook.getWorksheet('Filtros')).toBeTruthy();
+    expect(workbook.creator).toBe('Perla');
+    expect(workbook.getWorksheet('Perla')!.getCell('D2').value).toBe('Perla');
+    expect(workbook.getWorksheet('Perla')!.getImages()).toHaveLength(1);
+    const request = { dataset: 'products', filters: { status: 'ALL' } };
+    const selectedProducts = runtime.database
+      .prepare("SELECT id FROM products WHERE sku IN ('EXCEL-1','EXCEL-54') ORDER BY sku")
+      .all() as { id: string }[];
+    const fromList = await runtime.request(
+      'exports.excel',
+      {
+        dataset: 'products',
+        filters: {},
+        selectedIds: selectedProducts.map(({ id }) => id),
+      },
+      grant.sessionToken,
+    );
+    if (!fromList.ok) throw new Error(fromList.error.message);
+    const listBook = new ExcelJS.Workbook();
+    await listBook.xlsx.load((fromList.value as { content: Buffer }).content as never);
+    expect(listBook.getWorksheet('Productos')!.getColumn(1).values.filter(Boolean)).toEqual([
+      'Producto',
+      'Prueba Excel 001',
+      'Prueba Excel 054',
+    ]);
+    for (const selectedIds of [
+      [],
+      [selectedProducts[0]!.id, selectedProducts[0]!.id],
+      [randomUUID()],
+    ]) {
+      expect(
+        (
+          await runtime.request(
+            'exports.excel',
+            { dataset: 'products', filters: {}, selectedIds },
+            grant.sessionToken,
+          )
+        ).ok,
+      ).toBe(false);
+    }
+    const first = await runtime.request(
+      'exports.preview',
+      { request, page: { sheet: 0, offset: 0, limit: 50 } },
+      grant.sessionToken,
+    );
+    const second = await runtime.request(
+      'exports.preview',
+      { request, page: { sheet: 0, offset: 50, limit: 50 } },
+      grant.sessionToken,
+    );
+    if (!first.ok || !second.ok) throw new Error('Falló la vista previa');
+    const page1 = first.value as ExcelPreview;
+    const page2 = second.value as ExcelPreview;
+    expect(page1.total).toBe(105);
+    const selection = [page1.items[2]!.key, page2.items[4]!.key];
+    const chosen = await runtime.request(
+      'exports.excel',
+      { ...request, selection },
+      grant.sessionToken,
+    );
+    if (!chosen.ok) throw new Error(chosen.error.message);
+    const chosenBook = new ExcelJS.Workbook();
+    await chosenBook.xlsx.load((chosen.value as { content: Buffer }).content as never);
+    const chosenSheet = chosenBook.getWorksheet('Productos')!;
+    expect(chosenSheet.rowCount).toBe(3);
+    expect(chosenSheet.getColumn(1).values).toContain(page1.items[2]!.cells[0]);
+    expect(chosenSheet.getColumn(1).values).toContain(page2.items[4]!.cells[0]);
+    expect(chosenBook.getWorksheet('Filtros')!.getColumn(2).values).toContain(
+      'Solo filas seleccionadas',
+    );
+    for (const selection of [[], ['0'.repeat(64)], [page1.items[2]!.key, page1.items[2]!.key]])
+      expect(
+        (await runtime.request('exports.excel', { ...request, selection }, grant.sessionToken)).ok,
+      ).toBe(false);
+    expect(
+      (
+        await runtime.request(
+          'exports.excel',
+          { dataset: 'stock', filters: {}, selection },
+          grant.sessionToken,
+        )
+      ).ok,
+    ).toBe(false);
+    expect(
+      (
+        await runtime.request(
+          'exports.excel',
+          { ...request, filters: { query: 'No coincide' }, selection },
+          grant.sessionToken,
+        )
+      ).ok,
+    ).toBe(false);
+    runtime.database.prepare("UPDATE products SET price_cents=12346 WHERE sku='EXCEL-2'").run();
+    expect(
+      (await runtime.request('exports.excel', { ...request, selection }, grant.sessionToken)).ok,
+    ).toBe(false);
+    runtime.database.prepare("UPDATE products SET price_cents=12345 WHERE sku='EXCEL-2'").run();
     const filtered = await runtime.request(
       'exports.excel',
       { dataset: 'products', filters: { query: 'Excel 001', status: 'ALL' } },
@@ -136,6 +233,24 @@ test('Excel incluye todas las páginas filtradas, importes numéricos y códigos
       active: true,
     });
     const login = auth.login({ username: supervisor.username, password: 'Prueba-Super-2026!' });
+    expect(
+      (
+        await runtime.request(
+          'exports.preview',
+          { request: { dataset: 'users', filters: {} } },
+          login.sessionToken,
+        )
+      ).ok,
+    ).toBe(false);
+    expect(
+      (
+        await runtime.request(
+          'exports.preview',
+          { request: { dataset: 'products', filters: {} } },
+          null,
+        )
+      ).ok,
+    ).toBe(false);
     expect(
       (
         await runtime.request(
@@ -278,6 +393,12 @@ test('Excel incluye todas las páginas filtradas, importes numéricos y códigos
         grant.sessionToken,
       );
       expect(result.ok, result.ok ? dataset : result.error.message).toBe(true);
+      const preview = await runtime.request(
+        'exports.preview',
+        { request: { dataset, filters: {} } },
+        grant.sessionToken,
+      );
+      expect(preview.ok, preview.ok ? dataset : preview.error.message).toBe(true);
     }
     const simultaneous = await Promise.all([
       runtime.request('exports.excel', { dataset: 'products', filters: {} }, grant.sessionToken),

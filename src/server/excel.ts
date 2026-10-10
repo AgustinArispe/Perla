@@ -2,6 +2,7 @@ import ExcelJS from 'exceljs';
 import type Database from 'better-sqlite3';
 import {
   ExcelRequestSchema,
+  ExcelPreviewRequestSchema,
   excelTitles,
   excelMultipleKeys,
   type ExcelFilters,
@@ -11,6 +12,8 @@ import { DomainError } from '../shared/errors';
 import { normalizeSearch } from '../domain/values';
 import { MonthlyReports } from '../worker/reports/queries';
 import { FeatureService } from '../worker/features/service';
+import { previewExportRows, selectExportRows } from './export-selection';
+import { brandWorkbook, styleExcelSheet } from './excel-brand';
 
 type Row = Record<string, unknown>;
 type Call = (operation: string, payload: unknown) => unknown;
@@ -810,17 +813,46 @@ function collectSelections(
   return sheets;
 }
 
+export function previewExcel(db: Database.Database, raw: unknown, call: Call) {
+  const input = ExcelPreviewRequestSchema.parse(raw);
+  const sheets = db.transaction(() =>
+    collectSelections(db, input.request.dataset, input.request.filters, call),
+  )();
+  return previewExportRows(sheets, input.request.dataset, input.page, input.initialIds);
+}
 export async function exportExcel(db: Database.Database, raw: unknown, call: Call) {
   const input = ExcelRequestSchema.parse(raw);
-  const sheets = db.transaction(() => collectSelections(db, input.dataset, input.filters, call))();
+  const allSheets = db.transaction(() =>
+    input.selectedIds
+      ? [
+          {
+            name: 'Productos',
+            columns: productColumns,
+            rows: input.selectedIds.map((productId) => call('products.get', { productId }) as Row),
+          },
+        ]
+      : collectSelections(db, input.dataset, input.filters, call),
+  )();
+  const sheets = selectExportRows(allSheets, input.dataset, input.selection);
   if (sheets.reduce((sum, s) => sum + s.rows.length, 0) > MAX)
     throw new DomainError(
       'VALIDATION',
       'Hay más de 50.000 filas. Acotá los filtros para exportar.',
     );
   const workbook = new ExcelJS.Workbook();
-  workbook.creator = 'Perla Negra POS';
+  workbook.creator = 'Perla';
   workbook.created = new Date();
+  const business = (call('settings.get', {}) as { businessName: string }).businessName;
+  brandWorkbook(workbook, {
+    title: excelTitles[input.dataset],
+    business,
+    scope: input.selectedIds
+      ? 'Productos elegidos en el catálogo, entre búsquedas y páginas'
+      : input.selection
+        ? 'Filas elegidas dentro de los filtros aplicados'
+        : 'Todos los resultados de los filtros aplicados',
+    rows: sheets.reduce((n, s) => n + s.rows.length, 0),
+  });
   for (const data of sheets) {
     const sheet = workbook.addWorksheet(data.name, { views: [{ state: 'frozen', ySplit: 1 }] });
     const columns = data.columns.map((text) => {
@@ -899,16 +931,16 @@ export async function exportExcel(db: Database.Database, raw: unknown, call: Cal
       if (index > 1) {
         row.height = 22;
         if (index % 2 === 0)
-          row.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF3F6F9' } };
+          row.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF7F4ED' } };
       }
     });
+    styleExcelSheet(sheet);
   }
   const context = workbook.addWorksheet('Filtros');
   context.columns = [
     { header: 'Detalle', key: 'key', width: 30 },
     { header: 'Valor', key: 'value', width: 70 },
   ];
-  const business = (call('settings.get', {}) as { businessName: string }).businessName;
   context.addRow(['Negocio', business]);
   context.addRow(['Módulo', excelTitles[input.dataset]]);
   context.addRow([
@@ -916,6 +948,12 @@ export async function exportExcel(db: Database.Database, raw: unknown, call: Cal
     new Date().toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires' }),
   ]);
   context.addRow(['Filas', sheets.reduce((n, s) => n + s.rows.length, 0)]);
+  context.addRow([
+    'Alcance',
+    input.selection || input.selectedIds
+      ? 'Solo filas seleccionadas'
+      : 'Todos los resultados filtrados',
+  ]);
   for (const [key, value] of Object.entries(input.filters)) {
     let text: unknown = value;
     if (Array.isArray(value)) {
@@ -999,10 +1037,11 @@ export async function exportExcel(db: Database.Database, raw: unknown, call: Cal
     ]);
   }
   context.getRow(1).font = { bold: true };
+  styleExcelSheet(context);
   const content = Buffer.from(await workbook.xlsx.writeBuffer());
   return {
     content,
     mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    filename: `perla-negra-${input.dataset}-${new Date().toISOString().slice(0, 10)}.xlsx`,
+    filename: `perla-${input.dataset}-${new Date().toISOString().slice(0, 10)}.xlsx`,
   };
 }

@@ -61,13 +61,17 @@ export function ReceiptPrint({ receipt, onClose }: { receipt: SaleReceipt; onClo
         </div>
         {sale.promotions?.length ? (
           <div className="receipt-promotions">
-            <span>Subtotal <strong>{formatMoney(sale.subtotalCents)}</strong></span>
+            <span>
+              Subtotal <strong>{formatMoney(sale.subtotalCents)}</strong>
+            </span>
             {sale.promotions.map((promotion) => (
               <span key={`${promotion.promotionId}:${promotion.revision}`}>
                 {promotion.name} <strong>−{formatMoney(promotion.discountCents)}</strong>
               </span>
             ))}
-            <span>Ahorro total <strong>−{formatMoney(sale.discountCents)}</strong></span>
+            <span>
+              Ahorro total <strong>−{formatMoney(sale.discountCents)}</strong>
+            </span>
           </div>
         ) : null}
         <div className="receipt-total">
@@ -81,10 +85,16 @@ export function ReceiptPrint({ receipt, onClose }: { receipt: SaleReceipt; onClo
             </span>
           ))}
           {Boolean(sale.onAccountCents) && (
-            <span>A cuenta{sale.customerName ? ` · ${sale.customerName}` : ''} · {formatMoney(sale.onAccountCents!)}</span>
+            <span>
+              A cuenta{sale.customerName ? ` · ${sale.customerName}` : ''} ·{' '}
+              {formatMoney(sale.onAccountCents!)}
+            </span>
           )}
         </div>
-        <footer>Gracias por tu compra</footer>
+        <footer>
+          Gracias por tu compra
+          <small>Gestionado con Perla</small>
+        </footer>
       </div>
       <div className="dialog-footer no-print">
         <button className="button secondary" onClick={onClose}>

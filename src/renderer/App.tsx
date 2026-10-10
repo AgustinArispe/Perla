@@ -11,6 +11,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useRef, useState } from 'react';
 import { api, unwrap, errorMessage } from './api';
 import { Icon } from './components/Icon';
+import { SidebarGroup } from './components/SidebarGroup';
 import { ProductList } from './features/products/ProductList';
 import { StockList } from './features/stock/StockList';
 import { Login } from './features/auth/Login';
@@ -29,7 +30,8 @@ import { BackupsPage } from './features/backups/BackupsPage';
 import { useEffect } from 'react';
 import { HelpPage } from './features/help/HelpPage';
 import { ReceiptQueue } from './features/receipts/ReceiptQueue';
-import { PerlaNegraLogo } from './components/PerlaNegraLogo';
+import { PerlaMark } from './components/PerlaBrand';
+import { ControlExportHost } from './components/ControlExportHost';
 import type { FeatureStatus } from '../shared/features';
 import { webValue } from './web-client';
 import { SupplierList } from './features/purchases/SupplierList';
@@ -390,12 +392,10 @@ function Workspace({
       <aside className="sidebar" ref={sidebarRef}>
         <div className="sidebar-header">
           <div className="brand">
-            <span className="brand-mark">
-              <PerlaNegraLogo />
-            </span>
+            <PerlaMark className="brand-mark" />
             <div className="brand-text">
-              <strong>Perla Negra</strong>
-              <span>Pescados y mariscos</span>
+              <strong>Perla</strong>
+              <span title="Perla Negra · Pescados y mariscos">Perla Negra</span>
             </div>
           </div>
           <button
@@ -415,8 +415,23 @@ function Workspace({
             const entries = visibleNavigation.filter((entry) => entry.group === group);
             if (!entries.length) return null;
             return (
-              <div className="nav-group" key={group}>
-                <span className="nav-label">{group}</span>
+              <SidebarGroup
+                key={group}
+                title={group}
+                userId={user.id}
+                compact={menuCollapsed && !narrow}
+                onCompactOpen={() => {
+                  setCollapsed(false);
+                  try {
+                    localStorage.setItem('bocha-sidebar-collapsed', 'false');
+                  } catch {
+                    /* Navigation stays usable without storage. */
+                  }
+                }}
+                activeTitle={
+                  currentNavigation?.group === group ? currentNavigation.title : undefined
+                }
+              >
                 {entries.map((entry) => (
                   <button
                     key={entry.title}
@@ -437,7 +452,7 @@ function Workspace({
                     <span>{entry.title}</span>
                   </button>
                 ))}
-              </div>
+              </SidebarGroup>
             );
           })}
         </nav>
@@ -496,10 +511,14 @@ function Workspace({
       <div className="workspace" inert={narrow && mobileMenuOpen}>
         <header className="topbar">
           <span className="module-title">
-            <Icon
-              name={sections.find(([, title]) => title === currentSection)?.[0] ?? 'cash'}
-              size={18}
-            />
+            {narrow ? (
+              <PerlaMark className="topbar-brand-mark" />
+            ) : (
+              <Icon
+                name={sections.find(([, title]) => title === currentSection)?.[0] ?? 'cash'}
+                size={18}
+              />
+            )}
             {currentNavigation?.title ?? currentSection}
           </span>
           <div className="topbar-actions">
@@ -587,7 +606,8 @@ function Workspace({
                     ...(id ? { id } : {}),
                     ...(locationId ? { locationId } : {}),
                   });
-                  if (area === 'module') void navigate('Caja');
+                  if (area === 'module')
+                    void navigate(action === 'Resumen mensual' ? 'Resumen mensual' : 'Caja');
                   else if (area === 'operations')
                     void (action === 'agenda'
                       ? navigate('Agenda')
@@ -775,13 +795,14 @@ function Workspace({
           )}
         </main>
         <footer className="app-footer">
-          <span>Perla Negra · Pescados y mariscos</span>
+          <span>Perla · Gestión para tu comercio</span>
           <span>
             {desktop && status.data
               ? `SQLite ${status.data.sqliteVersion} · Datos locales`
               : 'Control interno'}
           </span>
         </footer>
+        <ControlExportHost />
       </div>
     </div>
   );

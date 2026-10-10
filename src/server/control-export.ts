@@ -1,15 +1,41 @@
 import ExcelJS from 'exceljs';
 import { DomainError } from '../shared/errors';
+import { brandWorkbook, styleExcelSheet } from './excel-brand';
+import { previewExportRows, selectExportRows } from './export-selection';
 type Sheet = { name: string; columns: string[]; rows: (unknown[] | Record<string, unknown>)[] };
-export async function controlExcel(raw: unknown) {
+export function previewControlExcel(
+  raw: unknown,
+  page: { sheet: number; offset: number; limit: number },
+) {
+  const value = raw as { sheets: Sheet[] };
+  return previewExportRows(
+    value.sheets.filter((sheet) => sheet.name !== 'Filtros'),
+    'control',
+    page,
+  );
+}
+export async function controlExcel(raw: unknown, selection?: string[], business = '') {
   const value = raw as { title?: string; sheets?: Sheet[] };
   if (!Array.isArray(value?.sheets) || !value.sheets.length)
     throw new DomainError('VALIDATION', 'No hay datos para exportar.');
   const book = new ExcelJS.Workbook();
-  book.creator = 'Perla Negra';
+  const data = selectExportRows(
+    value.sheets.filter((sheet) => sheet.name !== 'Filtros'),
+    'control',
+    selection,
+  );
+  const sheets = [...data, ...value.sheets.filter((sheet) => sheet.name === 'Filtros')];
+  brandWorkbook(book, {
+    title: value.title ?? data[0]?.name ?? 'Información del comercio',
+    business,
+    scope: selection
+      ? 'Solo filas elegidas dentro de los filtros aplicados'
+      : 'Todos los resultados de los filtros aplicados',
+    rows: data.reduce((n, s) => n + s.rows.length, 0),
+  });
   book.created = new Date();
   let total = 0;
-  for (const sheet of value.sheets) {
+  for (const sheet of sheets) {
     total += sheet.rows.length;
     if (total > 50000)
       throw new DomainError('VALIDATION', 'Acotá los filtros a menos de 50.000 filas.');
@@ -32,9 +58,10 @@ export async function controlExcel(raw: unknown) {
       from: { row: 1, column: 1 },
       to: { row: ws.rowCount, column: sheet.columns.length },
     };
+    styleExcelSheet(ws);
   }
   return {
-    filename: `Perla-Negra-${new Date().toISOString().slice(0, 10)}.xlsx`,
+    filename: `Perla-${new Date().toISOString().slice(0, 10)}.xlsx`,
     base64: Buffer.from(await book.xlsx.writeBuffer()).toString('base64'),
   };
 }

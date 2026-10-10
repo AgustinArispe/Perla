@@ -1,12 +1,22 @@
 import { CommercialFilterSchema } from './commercial-control';
 import { z } from 'zod';
-import { ExcelRequestSchema, type ExcelDataset, type ExcelFilters } from './excel';
+import {
+  ExcelRequestSchema,
+  ExcelSelectionSchema,
+  ExcelPageSchema,
+  type ExcelDataset,
+  type ExcelFilters,
+} from './excel';
 export const ControlRequestSchema = z.strictObject({
   area: z.enum(['workspace', 'replenishment', 'commercial', 'operations']),
   action: z.string().min(1).max(50),
   input: z.unknown().default({}),
 });
 export type ControlRequest = z.infer<typeof ControlRequestSchema>;
+export const ControlExportRequestSchema = ControlRequestSchema.extend({
+  selection: ExcelSelectionSchema.optional(),
+  page: ExcelPageSchema.optional(),
+});
 export type SavedViewModule = ExcelDataset | 'commercial' | 'agenda';
 export const SavedViewSchema = z
   .strictObject({
@@ -69,4 +79,18 @@ export interface ControlPending {
 export interface ControlHome {
   groups: ControlPending[];
   generatedAt: string;
+  overview: null | {
+    businessDate: string;
+    weekFrom: string;
+    today: import('./reports').ReportTotals;
+    week: import('./reports').ReportTotals;
+    lastSaleDate: string | null;
+  };
+  registers: { id: string; name: string; operator: string | null; openedAt: string | null }[];
+  accounts: null | {
+    receivableCents: number;
+    payableCents: number;
+    overdueReceivableCents: number;
+    overduePayableCents: number;
+  };
 }

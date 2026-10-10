@@ -1,8 +1,11 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { createPortal } from 'react-dom';
 import { api, unwrap } from '../api';
 import { useState } from 'react';
 import { Dialog } from './Dialog';
 import { Icon } from './Icon';
+import { ExportRowPicker } from './ExportRowPicker';
+import type { ExcelPreview } from '../../shared/excel';
 import type { AuthStatus } from '../../shared/auth';
 import { downloadExcel, webValue } from '../web-client';
 import { controlValue } from '../features/control/client';
@@ -51,12 +54,16 @@ export function ExportButton({
   dataset,
   filters = {},
   label = 'Exportar Excel',
+  selectedIds,
 }: {
   dataset: ExcelDataset;
   filters?: ExcelFilters;
   label?: string;
+  selectedIds?: string[];
 }) {
   const [open, setOpen] = useState(false);
+  const [downloading, setDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState('');
   const client = useQueryClient();
   if (client.getQueryData<AuthStatus>(['auth-status'])?.user?.role === 'SELLER') return null;
   return (
@@ -65,12 +72,43 @@ export function ExportButton({
         type="button"
         className="button secondary export-open"
         aria-label={`Exportar ${excelTitles[dataset].toLowerCase()} a Excel`}
-        onClick={() => setOpen(true)}
+        disabled={downloading}
+        onClick={async () => {
+          if (dataset !== 'products' || !selectedIds?.length) {
+            setOpen(true);
+            return;
+          }
+          setDownloading(true);
+          setDownloadError('');
+          try {
+            await downloadExcel({ dataset, filters: {}, selectedIds });
+          } catch (error) {
+            setDownloadError(errorMessage(error));
+          } finally {
+            setDownloading(false);
+          }
+        }}
       >
         <Icon name="download" size={17} />
-        {label}
+        {downloading
+          ? 'Preparando Excel…'
+          : selectedIds?.length
+            ? `Exportar selección (${selectedIds.length})`
+            : label}
       </button>
-      {open && <ExportDialog dataset={dataset} initial={filters} onClose={() => setOpen(false)} />}
+      {downloadError && (
+        <span className="alert error" role="alert">
+          {downloadError}
+        </span>
+      )}
+      {open && (
+        <ExportDialog
+          dataset={dataset}
+          initial={filters}
+          selectedIds={selectedIds ?? []}
+          onClose={() => setOpen(false)}
+        />
+      )}
     </span>
   );
 }
@@ -78,10 +116,12 @@ export function ExportDialog({
   dataset,
   initial,
   onClose,
+  selectedIds = [],
 }: {
   dataset: ExcelDataset;
   initial: ExcelFilters;
   onClose: () => void;
+  selectedIds?: string[];
 }) {
   const [filters, setFilters] = useState<ExcelFilters>(() => {
     const next: Record<string, unknown> = Object.fromEntries(
@@ -102,6 +142,9 @@ export function ExportDialog({
   const [viewName, setViewName] = useState('');
   const [saved, setSaved] = useState(false);
   const [adjusting, setAdjusting] = useState(false);
+  const [selection, setSelection] = useState<string[] | undefined>(
+    selectedIds.length ? [] : undefined,
+  );
   const supportsViews = [
     'products',
     'stock',
@@ -181,14 +224,20 @@ export function ExportDialog({
       : statusKey === 'view'
         ? ['ALL', 'CURRENT', 'SCHEDULED', 'OTHER']
         : options;
-  const update = (key: keyof ExcelFilters, value: unknown) =>
+  const update = (key: keyof ExcelFilters, value: unknown) => {
+    setSelection(undefined);
     setFilters((current) => {
       const next = { ...current, [key]: value };
       if (value === '' || (Array.isArray(value) && value.length === 0)) delete next[key];
       return next;
     });
+  };
   async function run() {
     if (busy) return;
+    if (selection && !selection.length) {
+      setError('Elegí al menos una fila o exportá todos los resultados.');
+      return;
+    }
     if (dataset === 'inventory' && !filters.locationIds?.length) {
       setAdjusting(true);
       setError('Elegí al menos una ubicación.');
@@ -197,7 +246,7 @@ export function ExportDialog({
     setBusy(true);
     setError('');
     try {
-      await downloadExcel({ dataset, filters });
+      await downloadExcel({ dataset, filters, ...(selection ? { selection } : {}) });
       onClose();
     } catch (e) {
       setError(errorMessage(e));
@@ -205,8 +254,14 @@ export function ExportDialog({
       setBusy(false);
     }
   }
-  return (
-    <Dialog title={`Exportar ${excelTitles[dataset].toLowerCase()}`} onClose={onClose} busy={busy}>
+  return createPortal(
+    <Dialog
+      title={`Exportar ${excelTitles[dataset].toLowerCase()}`}
+      onClose={onClose}
+      busy={busy}
+      size={selection ? 'wide' : 'regular'}
+      className="export-dialog"
+    >
       <form
         className="checkout-modal export-form"
         onInvalidCapture={(event) => {
@@ -219,290 +274,308 @@ export function ExportDialog({
           void run();
         }}
       >
-        <div className="export-scope" aria-label="Alcance de la exportación">
-          <strong>{excelTitles[dataset]}</strong>
-          <dl className="export-scope-values">
-            {Object.entries(filters)
-              .filter(
-                ([, value]) =>
-                  value !== undefined &&
-                  value !== '' &&
-                  value !== false &&
-                  (!Array.isArray(value) || value.length > 0),
-              )
-              .map(([key, value]) => {
-                const names: Record<string, string> = {
-                  query: 'Búsqueda',
-                  categoryIds: 'Categorías',
-                  brandIds: 'Marcas',
-                  locationIds: 'Ubicaciones',
-                  statuses: 'Estados',
-                  filters: 'Stock',
-                  views: 'Vigencia',
-                  fromDate: 'Desde',
-                  toDate: 'Hasta',
-                  from: 'Desde',
-                  to: 'Hasta',
-                  month: 'Mes',
-                  preset: 'Período',
-                  terminalIds: 'Cajas',
-                  roles: 'Roles',
-                  rank: 'Orden',
-                  operation: 'Operación',
-                  includeInactive: 'Inactivos',
-                };
-                const entities =
-                  key === 'categoryIds'
-                    ? taxonomy.data?.categories
-                    : key === 'brandIds'
-                      ? taxonomy.data?.brands
-                      : key === 'locationIds'
-                        ? locations.data
-                        : key === 'terminalIds'
-                          ? terminals.data
-                          : undefined;
-                const describe = (item: unknown) =>
-                  entities?.find((entity) => entity.id === item)?.name ??
-                  labels[String(item)] ??
-                  (entities ? 'Opción seleccionada' : String(item));
-                return (
-                  <div key={key}>
-                    <dt>{names[key] ?? key}</dt>
-                    <dd>
-                      {Array.isArray(value)
-                        ? value.map(describe).join(', ')
-                        : value === true
-                          ? 'Incluidos'
-                          : describe(value)}
-                    </dd>
-                  </div>
-                );
-              })}
-          </dl>
-          {Object.keys(filters).length === 0 && <p>Todos los resultados.</p>}
-          <p className="subtle-note">
-            Incluye todos los resultados de los filtros, no solo esta página.
-          </p>
-          <button
-            type="button"
-            className="button secondary"
-            aria-expanded={adjusting}
-            aria-controls="export-adjustment"
-            disabled={busy}
-            onClick={() => setAdjusting(!adjusting)}
-          >
-            {adjusting ? 'Cerrar ajuste de filtros' : 'Ajustar filtros'}
-          </button>
-        </div>
-        <fieldset
-          id="export-adjustment"
-          hidden={!adjusting}
-          disabled={busy}
-          className="plain-fields"
-        >
-          {keys.includes('query') && (
-            <label className="field">
-              Buscar
-              <input
-                value={filters.query ?? ''}
-                onChange={(e) => update('query', e.target.value)}
-                placeholder="Todos los resultados"
-              />
-            </label>
-          )}
-          {keys.includes('categoryId') && (
-            <div className="form-grid">
-              <ExportMultiSelect
-                title="Categorías"
-                options={taxonomy.data?.categories ?? []}
-                selected={filters.categoryIds ?? []}
-                onChange={(value) => update('categoryIds', value)}
-              />
-              <ExportMultiSelect
-                title="Marcas"
-                options={taxonomy.data?.brands ?? []}
-                selected={filters.brandIds ?? []}
-                onChange={(value) => update('brandIds', value)}
-              />
-            </div>
-          )}
-          {keys.includes('locationId') && (
-            <ExportMultiSelect
-              title="Ubicaciones"
-              options={locations.data ?? []}
-              selected={filters.locationIds ?? []}
-              onChange={(value) => update('locationIds', value)}
-            />
-          )}
-          {keys.includes('fromDate') && (
-            <div className="form-grid">
-              <label className="field">
-                Desde
-                <input
-                  type="date"
-                  value={filters.fromDate ?? ''}
-                  onChange={(e) => update('fromDate', e.target.value)}
-                  max={filters.toDate}
-                />
-              </label>
-              <label className="field">
-                Hasta
-                <input
-                  type="date"
-                  value={filters.toDate ?? ''}
-                  onChange={(e) => update('toDate', e.target.value)}
-                  min={filters.fromDate}
-                />
-              </label>
-            </div>
-          )}
-          {keys.includes('month') && (
-            <label className="field">
-              Mes
-              <input
-                type="month"
-                required
-                value={filters.month ?? ''}
-                onChange={(e) => update('month', e.target.value)}
-              />
-            </label>
-          )}
-          {statusKey && (
-            <ExportMultiSelect
-              title="Estados"
-              options={statusOptions
-                .filter((value) => value !== 'ALL')
-                .map((id) => ({ id, name: labels[id] ?? id }))}
-              selected={(filters[excelMultipleKeys[statusKey]] ?? []) as string[]}
-              onChange={(value) => update(excelMultipleKeys[statusKey], value)}
-            />
-          )}
-          {keys.includes('includeInactive') && (
-            <label className="checkbox-label">
-              <input
-                type="checkbox"
-                checked={filters.includeInactive ?? false}
-                onChange={(e) => update('includeInactive', e.target.checked)}
-              />
-              Incluir productos inactivos
-            </label>
-          )}
-          {keys.includes('terminalId') && (
-            <ExportMultiSelect
-              title="Cajas"
-              options={terminals.data ?? []}
-              selected={filters.terminalIds ?? []}
-              onChange={(value) => update('terminalIds', value)}
-            />
-          )}
-          {keys.includes('operation') && (
-            <label className="field">
-              Operación
-              <input
-                value={filters.operation ?? ''}
-                onChange={(e) => update('operation', e.target.value)}
-                placeholder="Todas"
-              />
-            </label>
-          )}
-          {keys.includes('preset') && (
-            <>
-              <label className="field">
-                Período
-                <select
-                  value={filters.preset ?? 'MONTH'}
-                  onChange={(e) => update('preset', e.target.value as ExcelFilters['preset'])}
-                >
-                  <option value="TODAY">Hoy</option>
-                  <option value="WEEK">Semana</option>
-                  <option value="MONTH">Mes</option>
-                  <option value="CUSTOM">Rango</option>
-                </select>
-              </label>
-              {filters.preset === 'CUSTOM' && (
-                <div className="form-grid">
-                  <label className="field">
-                    Desde
-                    <input
-                      required
-                      type="date"
-                      value={filters.from ?? ''}
-                      max={filters.to}
-                      onChange={(e) => update('from', e.target.value)}
-                    />
-                  </label>
-                  <label className="field">
-                    Hasta
-                    <input
-                      required
-                      type="date"
-                      value={filters.to ?? ''}
-                      min={filters.from}
-                      onChange={(e) => update('to', e.target.value)}
-                    />
-                  </label>
-                </div>
-              )}
-            </>
-          )}
-          {keys.includes('role') && (
-            <ExportMultiSelect
-              title="Roles"
-              options={[
-                { id: 'OWNER', name: 'Jefe' },
-                { id: 'ADMIN', name: 'Administrador' },
-                { id: 'SUPERVISOR', name: 'Supervisor' },
-                { id: 'SELLER', name: 'Vendedor' },
-              ]}
-              selected={filters.roles ?? []}
-              onChange={(value) => update('roles', value)}
-            />
-          )}
-          {keys.includes('rank') && (
-            <label className="field">
-              Ordenar por
-              <select
-                value={filters.rank ?? 'revenue'}
-                onChange={(e) => update('rank', e.target.value)}
-              >
-                {['revenue', 'units', 'kilos'].map((value) => (
-                  <option key={value} value={value}>
-                    {labels[value]}
-                  </option>
-                ))}
-              </select>
-            </label>
-          )}
-        </fieldset>
-        {error && (
-          <div className="alert error" role="alert">
-            {error}
-          </div>
-        )}
-        {supportsViews && (
-          <details>
-            <summary>Guardar estos filtros</summary>
-            <label className="field">
-              Nombre
-              <input
-                value={viewName}
-                maxLength={60}
-                onChange={(e) => {
-                  setViewName(e.target.value);
-                  setSaved(false);
-                }}
-              />
-            </label>
+        <div className="export-content">
+          <div className="export-scope" aria-label="Alcance de la exportación">
+            <strong>{excelTitles[dataset]}</strong>
+            <dl className="export-scope-values">
+              {Object.entries(filters)
+                .filter(
+                  ([, value]) =>
+                    value !== undefined &&
+                    value !== '' &&
+                    value !== false &&
+                    (!Array.isArray(value) || value.length > 0),
+                )
+                .map(([key, value]) => {
+                  const names: Record<string, string> = {
+                    query: 'Búsqueda',
+                    categoryIds: 'Categorías',
+                    brandIds: 'Marcas',
+                    locationIds: 'Ubicaciones',
+                    statuses: 'Estados',
+                    filters: 'Stock',
+                    views: 'Vigencia',
+                    fromDate: 'Desde',
+                    toDate: 'Hasta',
+                    from: 'Desde',
+                    to: 'Hasta',
+                    month: 'Mes',
+                    preset: 'Período',
+                    terminalIds: 'Cajas',
+                    roles: 'Roles',
+                    rank: 'Orden',
+                    operation: 'Operación',
+                    includeInactive: 'Inactivos',
+                  };
+                  const entities =
+                    key === 'categoryIds'
+                      ? taxonomy.data?.categories
+                      : key === 'brandIds'
+                        ? taxonomy.data?.brands
+                        : key === 'locationIds'
+                          ? locations.data
+                          : key === 'terminalIds'
+                            ? terminals.data
+                            : undefined;
+                  const describe = (item: unknown) =>
+                    entities?.find((entity) => entity.id === item)?.name ??
+                    labels[String(item)] ??
+                    (entities ? 'Opción seleccionada' : String(item));
+                  return (
+                    <div key={key}>
+                      <dt>{names[key] ?? key}</dt>
+                      <dd>
+                        {Array.isArray(value)
+                          ? value.map(describe).join(', ')
+                          : value === true
+                            ? 'Incluidos'
+                            : describe(value)}
+                      </dd>
+                    </div>
+                  );
+                })}
+            </dl>
+            {Object.keys(filters).length === 0 && <p>Todos los resultados.</p>}
+            <p className="subtle-note">
+              {selection
+                ? 'Se exportan solo las filas elegidas. Cambiar filtros reinicia la selección.'
+                : 'Incluye todos los resultados de los filtros, no solo esta página.'}
+            </p>
             <button
               type="button"
               className="button secondary"
-              disabled={busy || !viewName.trim() || saved}
-              onClick={() => void saveFilters()}
+              aria-expanded={adjusting}
+              aria-controls="export-adjustment"
+              disabled={busy}
+              onClick={() => setAdjusting(!adjusting)}
             >
-              {saved ? 'Vista guardada' : 'Guardar vista'}
+              {adjusting ? 'Cerrar ajuste de filtros' : 'Ajustar filtros'}
             </button>
-          </details>
-        )}
+          </div>
+          <ExportRowPicker
+            key={JSON.stringify(filters)}
+            source={JSON.stringify({ dataset, filters, selectedIds })}
+            selection={selection}
+            onChange={setSelection}
+            initialIds={selectedIds}
+            load={(page) =>
+              webValue<ExcelPreview>('/exports/preview', 'POST', {
+                request: { dataset, filters },
+                page,
+                initialIds: selectedIds,
+              })
+            }
+          />
+          <fieldset
+            id="export-adjustment"
+            hidden={!adjusting}
+            disabled={busy}
+            className="plain-fields"
+          >
+            {keys.includes('query') && (
+              <label className="field">
+                Buscar
+                <input
+                  value={filters.query ?? ''}
+                  onChange={(e) => update('query', e.target.value)}
+                  placeholder="Todos los resultados"
+                />
+              </label>
+            )}
+            {keys.includes('categoryId') && (
+              <div className="form-grid">
+                <ExportMultiSelect
+                  title="Categorías"
+                  options={taxonomy.data?.categories ?? []}
+                  selected={filters.categoryIds ?? []}
+                  onChange={(value) => update('categoryIds', value)}
+                />
+                <ExportMultiSelect
+                  title="Marcas"
+                  options={taxonomy.data?.brands ?? []}
+                  selected={filters.brandIds ?? []}
+                  onChange={(value) => update('brandIds', value)}
+                />
+              </div>
+            )}
+            {keys.includes('locationId') && (
+              <ExportMultiSelect
+                title="Ubicaciones"
+                options={locations.data ?? []}
+                selected={filters.locationIds ?? []}
+                onChange={(value) => update('locationIds', value)}
+              />
+            )}
+            {keys.includes('fromDate') && (
+              <div className="form-grid">
+                <label className="field">
+                  Desde
+                  <input
+                    type="date"
+                    value={filters.fromDate ?? ''}
+                    onChange={(e) => update('fromDate', e.target.value)}
+                    max={filters.toDate}
+                  />
+                </label>
+                <label className="field">
+                  Hasta
+                  <input
+                    type="date"
+                    value={filters.toDate ?? ''}
+                    onChange={(e) => update('toDate', e.target.value)}
+                    min={filters.fromDate}
+                  />
+                </label>
+              </div>
+            )}
+            {keys.includes('month') && (
+              <label className="field">
+                Mes
+                <input
+                  type="month"
+                  required
+                  value={filters.month ?? ''}
+                  onChange={(e) => update('month', e.target.value)}
+                />
+              </label>
+            )}
+            {statusKey && (
+              <ExportMultiSelect
+                title="Estados"
+                options={statusOptions
+                  .filter((value) => value !== 'ALL')
+                  .map((id) => ({ id, name: labels[id] ?? id }))}
+                selected={(filters[excelMultipleKeys[statusKey]] ?? []) as string[]}
+                onChange={(value) => update(excelMultipleKeys[statusKey], value)}
+              />
+            )}
+            {keys.includes('includeInactive') && (
+              <label className="checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={filters.includeInactive ?? false}
+                  onChange={(e) => update('includeInactive', e.target.checked)}
+                />
+                Incluir productos inactivos
+              </label>
+            )}
+            {keys.includes('terminalId') && (
+              <ExportMultiSelect
+                title="Cajas"
+                options={terminals.data ?? []}
+                selected={filters.terminalIds ?? []}
+                onChange={(value) => update('terminalIds', value)}
+              />
+            )}
+            {keys.includes('operation') && (
+              <label className="field">
+                Operación
+                <input
+                  value={filters.operation ?? ''}
+                  onChange={(e) => update('operation', e.target.value)}
+                  placeholder="Todas"
+                />
+              </label>
+            )}
+            {keys.includes('preset') && (
+              <>
+                <label className="field">
+                  Período
+                  <select
+                    value={filters.preset ?? 'MONTH'}
+                    onChange={(e) => update('preset', e.target.value as ExcelFilters['preset'])}
+                  >
+                    <option value="TODAY">Hoy</option>
+                    <option value="WEEK">Semana</option>
+                    <option value="MONTH">Mes</option>
+                    <option value="CUSTOM">Rango</option>
+                  </select>
+                </label>
+                {filters.preset === 'CUSTOM' && (
+                  <div className="form-grid">
+                    <label className="field">
+                      Desde
+                      <input
+                        required
+                        type="date"
+                        value={filters.from ?? ''}
+                        max={filters.to}
+                        onChange={(e) => update('from', e.target.value)}
+                      />
+                    </label>
+                    <label className="field">
+                      Hasta
+                      <input
+                        required
+                        type="date"
+                        value={filters.to ?? ''}
+                        min={filters.from}
+                        onChange={(e) => update('to', e.target.value)}
+                      />
+                    </label>
+                  </div>
+                )}
+              </>
+            )}
+            {keys.includes('role') && (
+              <ExportMultiSelect
+                title="Roles"
+                options={[
+                  { id: 'OWNER', name: 'Jefe' },
+                  { id: 'ADMIN', name: 'Administrador' },
+                  { id: 'SUPERVISOR', name: 'Supervisor' },
+                  { id: 'SELLER', name: 'Vendedor' },
+                ]}
+                selected={filters.roles ?? []}
+                onChange={(value) => update('roles', value)}
+              />
+            )}
+            {keys.includes('rank') && (
+              <label className="field">
+                Ordenar por
+                <select
+                  value={filters.rank ?? 'revenue'}
+                  onChange={(e) => update('rank', e.target.value)}
+                >
+                  {['revenue', 'units', 'kilos'].map((value) => (
+                    <option key={value} value={value}>
+                      {labels[value]}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+          </fieldset>
+          {error && (
+            <div className="alert error" role="alert">
+              {error}
+            </div>
+          )}
+          {supportsViews && (
+            <details>
+              <summary>Guardar estos filtros</summary>
+              <label className="field">
+                Nombre
+                <input
+                  value={viewName}
+                  maxLength={60}
+                  onChange={(e) => {
+                    setViewName(e.target.value);
+                    setSaved(false);
+                  }}
+                />
+              </label>
+              <button
+                type="button"
+                className="button secondary"
+                disabled={busy || !viewName.trim() || saved}
+                onClick={() => void saveFilters()}
+              >
+                {saved ? 'Vista guardada' : 'Guardar vista'}
+              </button>
+            </details>
+          )}
+        </div>
         <div className="dialog-actions">
           <button type="button" className="button secondary" disabled={busy} onClick={onClose}>
             Volver
@@ -512,7 +585,8 @@ export function ExportDialog({
           </button>
         </div>
       </form>
-    </Dialog>
+    </Dialog>,
+    document.body,
   );
 }
 

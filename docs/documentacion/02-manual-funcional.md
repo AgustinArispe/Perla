@@ -14,6 +14,10 @@ Antes de vender se elige una terminal disponible. Abrir caja registra el efectiv
 
 ## 2. Inicio: tareas que necesitan atención
 
+Inicio combina actividad y próximos pasos. Cuando el perfil tiene permiso y el módulo de resultados está habilitado, muestra las ventas netas de hoy, cantidad de ventas, ticket promedio y acumulado de la semana. Usa la fecha comercial de Argentina y los mismos cálculos del informe: las devoluciones confirmadas reducen el neto; las ventas anuladas no se cuentan. La fecha de la última venta da contexto a los días sin actividad.
+
+El panel de cajas muestra las terminales activas, si tienen un turno abierto y quién lo abrió. Jefe y administrador también pueden consultar saldos abiertos actuales de clientes y proveedores, con importes vencidos. Estos saldos no representan ventas del día. Los avisos se despliegan por área para ver una muestra y acceder al listado completo, sin llenar Inicio con miles de registros. Los accesos Vender, Hacer conteo, Ver resultados y Revisar cuentas llevan al circuito correspondiente. El resumen se actualiza cada minuto y admite actualización manual, con aviso y reintento si falla la consulta.
+
 Inicio organiza pendientes en grupos con un total y una muestra limitada. Las categorías incluyen vencimientos, reposición, diferencias de caja, obligaciones de cobro/pago y revisión de precios. El usuario entra al módulo correspondiente para trabajar el conjunto completo. El panel no pretende mostrar miles de productos en una sola lista.
 
 “Vender” lleva a Caja. El acceso a conteos inicia la revisión de inventario cuando está habilitada. El total de un grupo es una cantidad de pendientes, no necesariamente dinero ni operaciones nuevas del día. Una muestra breve no significa que los restantes registros hayan desaparecido.
@@ -119,6 +123,8 @@ El catálogo contiene nombre, SKU, identificadores, unidad de venta, precio, est
 Un producto puede desactivarse cuando deja de venderse. Desactivarlo es preferible a borrar su identidad, porque ventas, compras y movimientos históricos siguen referenciándolo. El precio se cambia mediante revisión controlada, y el stock se modifica por movimientos, no reemplazando un número sin explicación.
 
 Si el artículo trae código, se registra el leído del envase. Si no lo trae, el sistema puede proponer un código interno y generar una etiqueta. Ese código identifica el producto dentro de la instalación; no es una alta automática en un registro comercial internacional ni descarga datos del fabricante.
+
+En el formulario, Enter avanza entre campos sin guardar automáticamente; esto evita que el Enter enviado por el lector confirme el alta. Guardar producto termina la carga. Guardar y cargar otro, disponible desde el catálogo, conserva categoría, marca, forma de venta y configuración de stock, limpia nombre, precio e identificadores y vuelve al nombre del siguiente artículo. Ctrl + S guarda el producto. En pantallas pequeñas las acciones permanecen visibles mientras el contenido del formulario se desplaza.
 
 ### Importación masiva
 

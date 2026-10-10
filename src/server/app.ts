@@ -211,7 +211,7 @@ export async function createServer(
             .header('content-disposition', `attachment; filename="${value.filename}"`)
             .send(Buffer.from(value.content));
         }
-        if (operation.startsWith('exports.')) {
+        if (operation.startsWith('exports.') && operation !== 'exports.preview') {
           const value = result.value as { content: string; mimeType: string; filename: string };
           return reply
             .type(value.mimeType)
@@ -347,6 +347,7 @@ export async function createServer(
   route('GET', '/api/v1/dashboard/comparison', 'dashboard.compare', query);
   route('POST', '/api/v1/control', 'control.execute');
   route('POST', '/api/v1/control/export', 'control.export');
+  route('POST', '/api/v1/control/export-preview', 'control.exportPreview');
   route('GET', '/api/v1/notifications', 'notifications.list', () => null);
   route('POST', '/api/v1/notifications/read', 'notifications.markRead');
   route('GET', '/api/v1/stock', 'stock.search', (r) => ({ limit: 50, ...query(r) }));
@@ -395,6 +396,7 @@ export async function createServer(
   ] as const)
     route(method, `/api/v1/${url}`, op, (r) => (method === 'GET' ? query(r) : r.body));
   route('POST', '/api/v1/exports/excel', 'exports.excel');
+  route('POST', '/api/v1/exports/preview', 'exports.preview');
   for (const kind of ['products', 'sales', 'stock', 'sale-items', 'shifts', 'purchases'])
     route('GET', `/api/v1/exports/${kind}`, `exports.${kind}`, query);
   route('GET', '/api/v1/backups', 'backups.list', () => ({}));

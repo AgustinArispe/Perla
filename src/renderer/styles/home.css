@@ -1,0 +1,326 @@
+.home-workspace {
+  max-width: 1600px;
+}
+.home-heading p {
+  margin: 6px 0 0;
+  color: var(--ink-soft);
+}
+.home-heading {
+  margin-bottom: 24px;
+}
+.home-day {
+  display: grid;
+  grid-template-columns: 1.65fr 1fr;
+  overflow: hidden;
+  margin-bottom: 24px;
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow-panel);
+}
+.home-day-main {
+  padding: 28px 32px;
+  background: var(--navy-dark);
+  color: #f5f3ec;
+}
+.home-day-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 14px;
+}
+.home-day-label > span {
+  color: var(--brass-light);
+  font-weight: 700;
+}
+.home-day-label time {
+  color: #c4ced2;
+}
+.home-day-amount {
+  display: block;
+  margin: 16px 0 24px;
+  font-size: 42px;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.home-day-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 48px;
+  margin: 0;
+}
+.home-day-details dt {
+  color: #c4ced2;
+  font-size: 12px;
+}
+.home-day-details dd {
+  margin: 6px 0 0;
+  font-size: 22px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.home-day-main > p {
+  margin: 22px 0 0;
+  color: #c4ced2;
+  font-size: 12px;
+}
+.home-week {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 28px 32px;
+}
+.home-workspace h2 {
+  margin: 0;
+  font-size: 18px;
+}
+.home-week > span {
+  margin-top: 6px;
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+.home-week > strong {
+  margin-top: 18px;
+  font-size: 28px;
+  line-height: 1.25;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.home-week > p {
+  margin: 8px 0 12px;
+}
+.home-week > small {
+  color: var(--ink-soft);
+}
+.home-workspace .text-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  min-height: 36px;
+  padding: 0;
+  color: #76551f;
+  text-align: left;
+}
+.home-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(280px, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.home-attention,
+.home-registers,
+.home-accounts {
+  padding: 24px;
+}
+.home-section-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-bottom: 16px;
+}
+.home-section-heading > span {
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+.home-side {
+  display: grid;
+  gap: 20px;
+  min-width: 0;
+}
+.home-pending {
+  border-top: 1px solid var(--line);
+}
+.home-pending > summary {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 0;
+  cursor: pointer;
+  list-style: none;
+}
+.home-pending > summary::-webkit-details-marker {
+  display: none;
+}
+.home-pending > summary:hover .home-pending-copy > strong {
+  color: #76551f;
+}
+.home-pending > summary:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+.home-pending-count {
+  flex-shrink: 0;
+  min-width: 64px;
+  color: #76551f;
+  font-size: 22px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.home-pending-copy {
+  display: grid;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+.home-pending-copy > strong {
+  font-size: 14px;
+}
+.home-pending-copy > small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.home-pending summary > .coolicon {
+  flex-shrink: 0;
+  color: var(--ink-soft);
+  transform: rotate(90deg);
+}
+.home-pending[open] summary > .coolicon {
+  transform: rotate(-90deg);
+}
+.home-pending-body {
+  padding: 0 0 20px 80px;
+}
+.home-pending-body .control-pending-item {
+  padding-inline: 0;
+}
+.home-pending-body > p {
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+.home-attention-footer {
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.home-register {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+}
+.home-register > span:first-child {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+.home-register small {
+  color: var(--ink-soft);
+}
+.home-register .pill {
+  flex-shrink: 0;
+}
+.home-accounts dl {
+  margin: 20px 0;
+}
+.home-accounts dl > div {
+  display: grid;
+  gap: 6px;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+.home-accounts dt {
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+.home-accounts dd {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.home-accounts > small {
+  display: block;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+.home-overdue {
+  color: var(--danger);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.home-clear {
+  padding: 20px 0;
+}
+.home-clear > .coolicon {
+  color: var(--green);
+  margin-bottom: 12px;
+}
+.home-clear strong {
+  display: block;
+}
+.home-clear p {
+  max-width: 54ch;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.home-updated {
+  margin: 20px 0 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+.home-loading {
+  min-height: 240px;
+  padding: 32px;
+  border-radius: 12px;
+  background: var(--surface-subtle);
+  color: var(--ink-soft);
+}
+@media (max-width: 1100px) {
+  .home-day,
+  .home-columns {
+    grid-template-columns: minmax(0, 1.4fr) minmax(260px, 1fr);
+    gap: 16px;
+  }
+  .home-day {
+    gap: 0;
+  }
+  .home-day-main,
+  .home-week {
+    padding: 24px;
+  }
+  .home-day-amount {
+    font-size: 34px;
+  }
+  .home-week > strong {
+    font-size: 24px;
+  }
+}
+@media (max-width: 760px) {
+  .home-day,
+  .home-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .home-day-main,
+  .home-week,
+  .home-attention,
+  .home-registers,
+  .home-accounts {
+    padding: 20px;
+  }
+  .home-day-amount {
+    font-size: 32px;
+  }
+  .home-pending-count {
+    min-width: 50px;
+    font-size: 19px;
+  }
+  .home-pending > summary {
+    gap: 12px;
+  }
+  .home-pending-body {
+    padding-left: 0;
+  }
+  .home-heading .heading-actions {
+    width: auto;
+  }
+}

@@ -1,6 +1,74 @@
 import { openModule } from './navigation-helper';
 import { test, expect } from '@playwright/test';
 
+test('Alta de productos: escanear no guarda y permite cargar varios sin perder clasificación', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.getByLabel('Usuario', { exact: true }).fill('jefe');
+  await page.getByLabel('Contraseña', { exact: true }).fill('Prueba-Web-Bocha-2026!');
+  await page.getByRole('button', { name: 'Ingresar', exact: true }).click();
+  await openModule(page, 'Productos');
+  await page.getByRole('button', { name: /Nuevo producto/ }).click();
+  const dialog = page.getByRole('dialog', { name: 'Nuevo producto', exact: true });
+  const suffix = Date.now().toString();
+  let writes = 0;
+  page.on('request', (request) => {
+    if (request.method() === 'POST' && new URL(request.url()).pathname === '/api/v1/products')
+      writes++;
+  });
+  await dialog.getByLabel('Nombre del producto').fill(`Carga fluida A ${suffix}`);
+  await dialog.getByLabel('Precio de venta').fill('1500');
+  await dialog.getByLabel('Código de barras', { exact: true }).fill(`SCAN-${suffix}`);
+  await dialog.getByLabel('Código de barras', { exact: true }).press('Enter');
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByRole('button', { name: 'Guardar producto', exact: true })).toBeFocused();
+  expect(writes).toBe(0);
+  await dialog.getByText('Más opciones', { exact: true }).click();
+  await dialog.getByRole('button', { name: 'Nueva categoría', exact: true }).click();
+  const category = page.getByRole('dialog', { name: 'Nueva categoría', exact: true });
+  await category.getByLabel('Nombre', { exact: true }).fill(`Categoría fluida ${suffix}`);
+  await category.getByRole('button', { name: 'Guardar y seleccionar', exact: true }).click();
+  await expect(category).not.toBeVisible();
+  const categoryId = await dialog
+    .getByRole('combobox', { name: 'Categoría', exact: true })
+    .inputValue();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(
+    dialog.getByRole('button', { name: 'Guardar producto', exact: true }),
+  ).toBeInViewport({ ratio: 1 });
+  await expect(
+    dialog.getByRole('button', { name: 'Guardar y cargar otro', exact: true }),
+  ).toBeInViewport({ ratio: 1 });
+  await dialog.getByRole('button', { name: 'Guardar y cargar otro', exact: true }).click();
+  await expect(dialog.getByRole('status')).toContainText('guardado');
+  await expect(dialog.getByLabel('Nombre del producto')).toHaveValue('');
+  await expect(dialog.getByLabel('Nombre del producto')).toBeFocused();
+  await expect(dialog.getByLabel('Precio de venta')).toHaveValue('');
+  await expect(dialog.getByLabel('Código de barras', { exact: true })).toHaveValue('');
+  await expect(dialog.getByRole('combobox', { name: 'Categoría', exact: true })).toHaveValue(
+    categoryId,
+  );
+  await dialog.getByLabel('Nombre del producto').fill(`Carga fluida B ${suffix}`);
+  await dialog.getByLabel('Precio de venta').fill('1700');
+  await dialog.getByRole('button', { name: 'Guardar y cargar otro', exact: true }).click();
+  await expect(dialog.getByRole('status')).toContainText(`Carga fluida B ${suffix}`);
+  await dialog.getByLabel('Nombre del producto').fill(`Carga fluida C ${suffix}`);
+  await dialog.getByLabel('Precio de venta').fill('1800');
+  await dialog.getByRole('button', { name: 'Guardar producto', exact: true }).click();
+  await expect(dialog).not.toBeVisible();
+  expect(writes).toBe(3);
+  const saved = await page.evaluate(async (query) => {
+    const result = await (
+      await fetch(`/api/v1/products?query=${encodeURIComponent(query)}&limit=50`)
+    ).json();
+    return result.value.items as { id: string; sku: string; categoryId: string }[];
+  }, suffix);
+  expect(saved).toHaveLength(3);
+  expect(new Set(saved.map((product) => product.sku)).size).toBe(3);
+  expect(saved.every((product) => product.categoryId === categoryId)).toBe(true);
+});
+
 test('Excel conserva el alcance al abrir y cerrar el ajuste de filtros', async ({ page }) => {
   await page.goto('/');
   await page.getByLabel('Usuario', { exact: true }).fill('jefe');

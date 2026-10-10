@@ -1,13 +1,13 @@
-import { ControlRequestSchema } from '../shared/control';
+import { ControlExportRequestSchema } from '../shared/control';
 import {
   captureAuditState,
   recordMutationAudit,
   CommercialControlService,
 } from '../worker/control/commercial';
 
-import { controlExcel } from './control-export';
+import { controlExcel, previewControlExcel } from './control-export';
 
-import { exportExcel } from './excel';
+import { exportExcel, previewExcel } from './excel';
 
 import { createHash } from 'node:crypto';
 
@@ -290,14 +290,20 @@ export class ServerRuntime implements Executor {
       };
     }
 
-    if (operation === 'control.export') {
-      const exportInput = ControlRequestSchema.parse(payload);
+    if (operation === 'control.export' || operation === 'control.exportPreview') {
+      const exporter = this.auth.requireUser(token);
+      if (!['OWNER', 'ADMIN', 'SUPERVISOR'].includes(exporter.role))
+        throw new DomainError('FORBIDDEN', 'No tenés permiso para exportar información.');
+      const parsed = ControlExportRequestSchema.parse(payload);
+      const { selection, page, ...exportInput } = parsed;
       if (
         !['export', 'exportWeekly', 'exportActivity'].includes(exportInput.action) ||
         exportInput.area === 'workspace'
       )
         throw new DomainError('VALIDATION', 'Seleccioná una exportación válida.');
       const result = this.app.dispatch('control.execute', exportInput, token);
+      if (operation === 'control.exportPreview')
+        return previewControlExcel(result, page ?? { sheet: 0, offset: 0, limit: 50 });
 
       if (this.exportingExcel)
         throw new DomainError(
@@ -308,17 +314,27 @@ export class ServerRuntime implements Executor {
       this.exportingExcel = true;
 
       try {
-        return await controlExcel(result);
+        const actor = this.auth.requireUser(token);
+        const business = this.operations.execute('settings.get', {}, actor) as {
+          businessName: string;
+        };
+        return await controlExcel(result, selection, business.businessName);
       } finally {
         this.exportingExcel = false;
       }
     }
 
-    if (operation === 'exports.excel') {
+    if (operation === 'exports.excel' || operation === 'exports.preview') {
       const actor = this.auth.requireUser(token);
 
       if (!['OWNER', 'ADMIN', 'SUPERVISOR'].includes(actor.role))
         throw new DomainError('FORBIDDEN', 'No tenés permiso para exportar información.');
+      if (operation === 'exports.preview')
+        return previewExcel(this.database, payload, (op, input) =>
+          Object.hasOwn(OperationSchemas, op)
+            ? this.operations.execute(op, input, actor)
+            : this.app.dispatch(op, input, token),
+        );
 
       if (this.exportingExcel)
         throw new DomainError(

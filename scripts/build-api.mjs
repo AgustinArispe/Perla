@@ -1,5 +1,5 @@
 import { build } from 'esbuild';
-import { readFile } from 'node:fs/promises';
+import { readFile, mkdir, copyFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 await build({
   entryPoints: ['src/server/index.ts', 'src/server/worker.ts', 'src/server/cli.ts'],
@@ -25,3 +25,5 @@ await build({
     },
   ],
 });
+await mkdir('dist/api/assets', { recursive: true });
+await copyFile('src/server/assets/perla-symbol.png', 'dist/api/assets/perla-symbol.png');

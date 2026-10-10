@@ -105,6 +105,8 @@ Los 24 datasets principales son: usuarios, productos, stock, clientes, proveedor
 
 Existen además exportaciones del módulo Control, como reposición, revisión comercial, operaciones, actividad estructurada y resumen semanal. No se incluyen en el conteo de los 24 datasets de `excelTitles` porque usan otro contrato y endpoint.
 
+Los archivos incorporan una portada `Perla` con el logo, el nombre del comercio, la fecha, el alcance y la cantidad de filas. Los encabezados usan azul profundo y detalles en dorado; las hojas de datos mantienen sus encabezados en la primera fila, filtros y formatos numéricos para seguir trabajando en Excel.
+
 ## 13. Filtros simples y múltiples
 
 El diálogo parte de los filtros de la pantalla. Permite elegir varias categorías, marcas, estados, roles, terminales, ubicaciones u operaciones según el dataset. No todas las combinaciones tienen sentido en todos los módulos, por lo que el esquema rechaza filtros ajenos.
@@ -118,6 +120,16 @@ Se rechazan opciones duplicadas y combinaciones simultáneas de clave simple y m
 La exportación recorre páginas o utiliza consultas de reporte para reunir coincidencias. La pantalla puede mostrar 50 registros mientras el archivo contiene cientos. El máximo principal es 50.000 filas sumadas entre hojas. Si se supera, el servidor pide acotar; no corta silenciosamente y presenta el resultado como completo.
 
 Se prepara un Excel a la vez en el runtime. Si otro está en proceso, aparece un error temporal. Esa protección cuida memoria y evita compresiones simultáneas; no significa que una planilla grande no tenga costo de CPU y lectura SQL.
+
+### Exportar filas elegidas
+
+En Productos, la selección se hace directamente en el catálogo. Las casillas conservan las marcas al buscar otros productos, cambiar filtros o pasar de página. Una barra muestra el total seleccionado y permite limpiar las marcas. `Exportar selección` descarga esos productos directamente, incluyendo los que no aparecen en la búsqueda actual. El servidor recupera los datos actuales por identificador y comprueba permisos; la última búsqueda no restringe la selección acumulada.
+
+Sin filas marcadas, `Exportar Excel` permite exportar todas las coincidencias de los filtros. En los demás reportes se mantiene el diálogo: `Todos los resultados` conserva ese alcance y `Elegir filas` abre una vista previa paginada con selección entre páginas y hojas.
+
+La selección admite hasta 5.000 filas y requiere al menos una. En la vista previa del diálogo, cambiar los filtros reinicia las marcas; en el catálogo de Productos se conservan para poder reunir productos de distintas búsquedas. La selección mediante vista previa está disponible tanto en los 24 datasets principales como en las exportaciones del módulo Control.
+
+El servidor vuelve a comprobar permisos, filtros e identidad de las filas antes de generar el archivo. Si un registro seleccionado cambió o ya no pertenece al resultado, solicita actualizar la selección; no exporta silenciosamente otro registro. La hoja `Filtros` conserva el contexto y la portada indica si el archivo contiene todas las coincidencias o sólo filas elegidas.
 
 ## 15. Vistas guardadas
 

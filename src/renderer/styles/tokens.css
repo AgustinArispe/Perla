@@ -1517,6 +1517,86 @@ input[type='checkbox'] {
   bottom: 0;
   z-index: 1;
 }
+.scanner-test {
+  grid-column: 1 / -1;
+  max-width: 780px;
+}
+
+.scanner-test-compact {
+  padding: 20px 24px 24px;
+}
+
+.scanner-test-heading,
+.scanner-test-result,
+.scanner-test-input-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.scanner-test-heading {
+  margin-bottom: 30px;
+}
+
+.scanner-test-heading p,
+.scanner-test-note {
+  color: var(--ink-soft);
+}
+
+.scanner-test-indicator {
+  flex: none;
+  color: var(--brass, var(--amber));
+  font-weight: 700;
+}
+
+.scanner-test-indicator.verified {
+  color: var(--green-strong);
+  background: var(--green-soft);
+  padding: 8px 12px;
+  border-radius: 999px;
+}
+
+.scanner-test-input-row {
+  margin-top: 8px;
+}
+
+.scanner-test-input-row input {
+  flex: 1;
+  min-width: 0;
+}
+
+.scanner-test-result {
+  align-items: flex-start;
+  margin-top: 26px;
+  padding: 20px;
+  border-radius: 12px;
+  background: var(--surface-subtle);
+}
+
+.scanner-test-result > div {
+  display: grid;
+  gap: 6px;
+}
+
+.scanner-test-code {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.scanner-test-note {
+  margin-top: 24px;
+}
+
+@media (max-width: 640px) {
+  .scanner-test-heading,
+  .scanner-test-result,
+  .scanner-test-input-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
 .settings-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);

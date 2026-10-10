@@ -305,6 +305,7 @@ export function ProductList({ canChangePrices = false }: { canChangePrices?: boo
           />
           <ExportButton
             dataset="products"
+            selectedIds={Object.keys(selected)}
             filters={{
               query: search,
               status,
@@ -323,11 +324,25 @@ export function ProductList({ canChangePrices = false }: { canChangePrices?: boo
           </span>
           <span aria-live="polite">{products.isFetching ? 'Buscando…' : ''}</span>
         </div>
+        {Object.keys(selected).length > 0 && (
+          <div className="catalog-selection-bar" role="status">
+            <strong>
+              {Object.keys(selected).length}{' '}
+              {Object.keys(selected).length === 1
+                ? 'producto seleccionado'
+                : 'productos seleccionados'}
+            </strong>
+            <span>Podés seguir buscando: tu selección se conserva.</span>
+            <button className="button secondary" onClick={() => setSelected({})}>
+              Limpiar selección
+            </button>
+          </div>
+        )}
         <div className={`table-scroll ${products.isPlaceholderData ? 'refreshing' : ''}`}>
           <table>
             <thead>
               <tr>
-                {canChangePrices && (
+                {
                   <th className="selection-cell">
                     <input
                       type="checkbox"
@@ -336,6 +351,7 @@ export function ProductList({ canChangePrices = false }: { canChangePrices?: boo
                         Boolean(products.data?.items.length) &&
                         products.data!.items.every((product) => selected[product.id])
                       }
+                      disabled={products.isFetching || query !== search}
                       onChange={(event) =>
                         setSelected((current) => {
                           const next = { ...current };
@@ -343,12 +359,13 @@ export function ProductList({ canChangePrices = false }: { canChangePrices?: boo
                             if (event.target.checked) next[product.id] = product;
                             else delete next[product.id];
                           }
+                          if (Object.keys(next).length > 5000) return current;
                           return next;
                         })
                       }
                     />
                   </th>
-                )}
+                }
                 <th>Producto</th>
                 <th>Código de barras</th>
                 <th>Venta</th>
@@ -361,13 +378,17 @@ export function ProductList({ canChangePrices = false }: { canChangePrices?: boo
             </thead>
             <tbody>
               {(query === search ? products.data?.items : [])?.map((product) => (
-                <tr key={product.id}>
-                  {canChangePrices && (
+                <tr
+                  key={product.id}
+                  className={selected[product.id] ? 'catalog-row-selected' : undefined}
+                >
+                  {
                     <td className="selection-cell">
                       <input
                         type="checkbox"
                         aria-label={`Seleccionar ${product.name}`}
                         checked={Boolean(selected[product.id])}
+                        disabled={!selected[product.id] && Object.keys(selected).length >= 5000}
                         onChange={(event) =>
                           setSelected((current) => {
                             const next = { ...current };
@@ -378,7 +399,7 @@ export function ProductList({ canChangePrices = false }: { canChangePrices?: boo
                         }
                       />
                     </td>
-                  )}
+                  }
                   <td>
                     <strong>{product.name}</strong>
                     <small>
@@ -479,28 +500,30 @@ export function ProductList({ canChangePrices = false }: { canChangePrices?: boo
           <button className="text-button" onClick={() => setFormat(!format)}>
             Formato para la carga inicial
           </button>
-          {!!products.data?.total && <div className="pagination">
-            <span>Página {pages.length}</span>
-            <button
-              className="button secondary small"
-              disabled={pages.length === 1 || products.isFetching || search !== query}
-              onClick={() => setPages(pages.slice(0, -1))}
-            >
-              Anterior
-            </button>
-            <button
-              className="button secondary small"
-              disabled={
-                !products.data?.nextCursor ||
-                products.isFetching ||
-                products.isPlaceholderData ||
-                search !== query
-              }
-              onClick={() => setPages([...pages, products.data!.nextCursor!])}
-            >
-              Siguiente
-            </button>
-          </div>}
+          {!!products.data?.total && (
+            <div className="pagination">
+              <span>Página {pages.length}</span>
+              <button
+                className="button secondary small"
+                disabled={pages.length === 1 || products.isFetching || search !== query}
+                onClick={() => setPages(pages.slice(0, -1))}
+              >
+                Anterior
+              </button>
+              <button
+                className="button secondary small"
+                disabled={
+                  !products.data?.nextCursor ||
+                  products.isFetching ||
+                  products.isPlaceholderData ||
+                  search !== query
+                }
+                onClick={() => setPages([...pages, products.data!.nextCursor!])}
+              >
+                Siguiente
+              </button>
+            </div>
+          )}
         </div>
       </section>
       {format && (
@@ -540,6 +563,11 @@ export function ProductList({ canChangePrices = false }: { canChangePrices?: boo
           product={editor}
           costsEnabled={costsEnabled}
           onClose={closeEditor}
+          onSaveAnother={(product) => {
+            setNotice(`${product.name}: guardado.`);
+            void client.invalidateQueries({ queryKey: ['products'] });
+            void client.invalidateQueries({ queryKey: ['product-labels'] });
+          }}
           onSaved={(product) => {
             setNotice(`${product.name}: guardado.`);
             void client.invalidateQueries({ queryKey: ['products'] });

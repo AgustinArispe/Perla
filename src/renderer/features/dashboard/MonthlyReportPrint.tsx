@@ -2,7 +2,7 @@ import type { MonthlyReport } from '../../../shared/reports';
 import { formatMoney } from '../../../domain/values';
 import { formatStock } from '../../../domain/inventory';
 import { paymentLabels } from '../checkout/PaymentDialog';
-import { PerlaNegraLogo } from '../../components/PerlaNegraLogo';
+import { PerlaMark } from '../../components/PerlaBrand';
 
 const dateFormat = new Intl.DateTimeFormat('es-AR', {
   day: '2-digit',
@@ -35,10 +35,10 @@ export function MonthlyReportPrint({
       <main className="monthly-report-print">
         <header className="report-header">
           <div className="report-mark">
-            <PerlaNegraLogo />
+            <PerlaMark />
           </div>
           <div>
-            <span>PERLA NEGRA · REPORTE INTERNO</span>
+            <span>PERLA · REPORTE PARA PERLA NEGRA</span>
             <h1 id="report-title">Resumen mensual</h1>
             <p>
               {dateFormat.format(new Date(`${report.period.from}T12:00:00Z`))} al{' '}
@@ -219,7 +219,7 @@ export function MonthlyReportPrint({
           </section>
         </div>
         <footer className="report-footer">
-          Perla Negra · Reporte interno de gestión · Valores expresados en pesos argentinos
+          Perla · Reporte para Perla Negra · Valores expresados en pesos argentinos
         </footer>
       </main>
     </div>

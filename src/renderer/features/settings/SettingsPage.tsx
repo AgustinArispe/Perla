@@ -1,16 +1,17 @@
-import { useState, type FormEvent } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { OperationSchemas } from "../../../shared/operations";
-import { api, errorMessage, unwrap } from "../../api";
-import type { Location } from "../../../shared/locations";
-import { Dialog } from "../../components/Dialog";
-import { downloadFile, webValue } from "../../web-client";
-import { FeaturesPanel } from "./FeaturesPanel";
+import { useState, type FormEvent } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { OperationSchemas } from '../../../shared/operations';
+import { api, errorMessage, unwrap } from '../../api';
+import type { Location } from '../../../shared/locations';
+import { Dialog } from '../../components/Dialog';
+import { downloadFile, webValue } from '../../web-client';
+import { FeaturesPanel } from './FeaturesPanel';
+import { ScannerTest } from './ScannerTest';
 
-type Method = "CASH" | "DEBIT" | "CREDIT" | "TRANSFER" | "OTHER";
+type Method = 'CASH' | 'DEBIT' | 'CREDIT' | 'TRANSFER' | 'OTHER';
 interface Settings {
   businessName: string;
-  currency: "ARS";
+  currency: 'ARS';
   paymentMethods: Method[];
   revision: number;
 }
@@ -23,11 +24,11 @@ interface Terminal {
   locationName: string | null;
 }
 const methods: Record<Method, string> = {
-  CASH: "Efectivo",
-  DEBIT: "Débito",
-  CREDIT: "Crédito",
-  TRANSFER: "Transferencia",
-  OTHER: "Otro",
+  CASH: 'Efectivo',
+  DEBIT: 'Débito',
+  CREDIT: 'Crédito',
+  TRANSFER: 'Transferencia',
+  OTHER: 'Otro',
 };
 
 export function SettingsPage({
@@ -35,23 +36,23 @@ export function SettingsPage({
 }: {
   onOpenPurchaseHistory?: (() => void) | undefined;
 }) {
-  const [tab, setTab] = useState("Negocio");
+  const [tab, setTab] = useState('Negocio');
   const client = useQueryClient();
   const settings = useQuery({
-    queryKey: ["settings"],
-    queryFn: () => webValue<Settings>("/settings"),
+    queryKey: ['settings'],
+    queryFn: () => webValue<Settings>('/settings'),
   });
   const terminals = useQuery({
-    queryKey: ["terminals"],
-    queryFn: () => webValue<Terminal[]>("/terminals"),
+    queryKey: ['terminals'],
+    queryFn: () => webValue<Terminal[]>('/terminals'),
   });
   const locations = useQuery({
-    queryKey: ["locations"],
+    queryKey: ['locations'],
     queryFn: async () => unwrap(await api().locations.list()),
     retry: false,
   });
   const [editing, setEditing] = useState<Terminal | null | undefined>();
-  const [notice, setNotice] = useState("");
+  const [notice, setNotice] = useState('');
   return (
     <>
       <div className="page-heading">
@@ -74,11 +75,8 @@ export function SettingsPage({
       )}
       {settings.isError && (
         <div className="alert error" role="alert">
-          {errorMessage(settings.error)}{" "}
-          <button
-            className="button secondary small"
-            onClick={() => void settings.refetch()}
-          >
+          {errorMessage(settings.error)}{' '}
+          <button className="button secondary small" onClick={() => void settings.refetch()}>
             Reintentar
           </button>
         </div>
@@ -89,12 +87,12 @@ export function SettingsPage({
         </div>
       )}
       <div className="settings-tabs" role="tablist" aria-label="Configuración">
-        {["Negocio", "Funciones", "Terminales", "Exportar"].map((item) => (
+        {['Negocio', 'Funciones', 'Terminales', 'Lector', 'Exportar'].map((item) => (
           <button
             key={item}
             role="tab"
             aria-selected={tab === item}
-            className={tab === item ? "selected" : ""}
+            className={tab === item ? 'selected' : ''}
             onClick={() => setTab(item)}
           >
             {item}
@@ -102,40 +100,32 @@ export function SettingsPage({
         ))}
       </div>
       <div className="settings-layout" role="tabpanel" aria-label={tab}>
-        {settings.data && tab === "Negocio" && (
+        {settings.data && tab === 'Negocio' && (
           <BusinessForm
             key={settings.data.revision}
             settings={settings.data}
             onSaved={async () => {
-              setNotice("Configuración guardada.");
-              await client.invalidateQueries({ queryKey: ["settings"] });
+              setNotice('Configuración guardada.');
+              await client.invalidateQueries({ queryKey: ['settings'] });
             }}
           />
         )}
-        {tab === "Funciones" && (
-          <FeaturesPanel onOpenPurchaseHistory={onOpenPurchaseHistory} />
-        )}
-        {tab === "Terminales" && (
+        {tab === 'Funciones' && <FeaturesPanel onOpenPurchaseHistory={onOpenPurchaseHistory} />}
+        {tab === 'Terminales' && (
           <section
             className="dashboard-panel settings-terminals"
             aria-labelledby="terminal-heading"
           >
             <div className="page-heading">
               <h2 id="terminal-heading">Terminales</h2>
-              <button
-                className="button primary"
-                onClick={() => setEditing(null)}
-              >
+              <button className="button primary" onClick={() => setEditing(null)}>
                 Crear terminal
               </button>
             </div>
             {terminals.isError && (
               <div className="alert error" role="alert">
-                {errorMessage(terminals.error)}{" "}
-                <button
-                  className="button secondary small"
-                  onClick={() => void terminals.refetch()}
-                >
+                {errorMessage(terminals.error)}{' '}
+                <button className="button secondary small" onClick={() => void terminals.refetch()}>
                   Reintentar
                 </button>
               </div>
@@ -158,12 +148,8 @@ export function SettingsPage({
                       <td>
                         <strong>{terminal.name}</strong>
                       </td>
-                      <td>{terminal.active ? "Activa" : "Inactiva"}</td>
-                      {locations.data && (
-                        <td>
-                          {terminal.locationName ?? "Ubicación principal"}
-                        </td>
-                      )}
+                      <td>{terminal.active ? 'Activa' : 'Inactiva'}</td>
+                      {locations.data && <td>{terminal.locationName ?? 'Ubicación principal'}</td>}
                       <td>
                         <button
                           className="button secondary small"
@@ -177,13 +163,10 @@ export function SettingsPage({
                   ))}
                   {!terminals.isError && !terminals.data?.length && (
                     <tr>
-                      <td
-                        colSpan={locations.data ? 4 : 3}
-                        className="empty-table"
-                      >
+                      <td colSpan={locations.data ? 4 : 3} className="empty-table">
                         {terminals.isPending
-                          ? "Cargando terminales…"
-                          : "Creá una terminal para operar la caja."}
+                          ? 'Cargando terminales…'
+                          : 'Creá una terminal para operar la caja.'}
                       </td>
                     </tr>
                   )}
@@ -192,7 +175,8 @@ export function SettingsPage({
             </div>
           </section>
         )}
-        {tab === "Exportar" && <Exports />}
+        {tab === 'Exportar' && <Exports />}
+        {tab === 'Lector' && <ScannerTest />}
       </div>
       {editing !== undefined && (
         <TerminalForm
@@ -201,8 +185,8 @@ export function SettingsPage({
           onClose={() => setEditing(undefined)}
           onSaved={async () => {
             setEditing(undefined);
-            await client.invalidateQueries({ queryKey: ["terminals"] });
-            await client.invalidateQueries({ queryKey: ["active-terminals"] });
+            await client.invalidateQueries({ queryKey: ['terminals'] });
+            await client.invalidateQueries({ queryKey: ['active-terminals'] });
           }}
         />
       )}
@@ -210,31 +194,25 @@ export function SettingsPage({
   );
 }
 
-function BusinessForm({
-  settings,
-  onSaved,
-}: {
-  settings: Settings;
-  onSaved: () => Promise<void>;
-}) {
+function BusinessForm({ settings, onSaved }: { settings: Settings; onSaved: () => Promise<void> }) {
   const [busy, setBusy] = useState(false),
-    [error, setError] = useState(""),
+    [error, setError] = useState(''),
     [saved, setSaved] = useState(false);
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (busy) return;
     const data = new FormData(event.currentTarget);
     setBusy(true);
-    setError("");
+    setError('');
     setSaved(false);
     try {
-      const input = OperationSchemas["settings.save"].parse({
+      const input = OperationSchemas['settings.save'].parse({
         expectedRevision: settings.revision,
-        businessName: data.get("businessName"),
-        currency: "ARS",
-        paymentMethods: data.getAll("paymentMethods"),
+        businessName: data.get('businessName'),
+        currency: 'ARS',
+        paymentMethods: data.getAll('paymentMethods'),
       });
-      await webValue("/settings", "PUT", input);
+      await webValue('/settings', 'PUT', input);
       setSaved(true);
       await onSaved();
     } catch (failure) {
@@ -249,7 +227,7 @@ function BusinessForm({
       <form className="user-form" onSubmit={(event) => void submit(event)}>
         <fieldset
           disabled={busy}
-          style={{ border: 0, padding: 0, margin: 0, display: "grid", gap: 16 }}
+          style={{ border: 0, padding: 0, margin: 0, display: 'grid', gap: 16 }}
         >
           <label className="field">
             Nombre del negocio
@@ -291,7 +269,7 @@ function BusinessForm({
         )}
         <div>
           <button className="button primary" disabled={busy}>
-            {busy ? "Guardando…" : "Guardar configuración"}
+            {busy ? 'Guardando…' : 'Guardar configuración'}
           </button>
         </div>
       </form>
@@ -311,23 +289,21 @@ function TerminalForm({
   onSaved: () => Promise<void>;
 }) {
   const [busy, setBusy] = useState(false),
-    [error, setError] = useState("");
+    [error, setError] = useState('');
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (busy) return;
     const data = new FormData(event.currentTarget);
     setBusy(true);
-    setError("");
+    setError('');
     try {
-      const input = OperationSchemas["terminals.save"].parse({
-        ...(terminal
-          ? { id: terminal.id, expectedRevision: terminal.revision }
-          : {}),
-        name: data.get("name"),
-        active: data.get("active") === "on",
+      const input = OperationSchemas['terminals.save'].parse({
+        ...(terminal ? { id: terminal.id, expectedRevision: terminal.revision } : {}),
+        name: data.get('name'),
+        active: data.get('active') === 'on',
       });
-      const saved = await webValue<Terminal>("/terminals", "POST", input);
-      const locationId = String(data.get("locationId") ?? "");
+      const saved = await webValue<Terminal>('/terminals', 'POST', input);
+      const locationId = String(data.get('locationId') ?? '');
       if (locationId)
         unwrap(
           await api().locations.assignTerminal({
@@ -343,11 +319,7 @@ function TerminalForm({
     }
   }
   return (
-    <Dialog
-      title={terminal ? "Editar terminal" : "Crear terminal"}
-      busy={busy}
-      onClose={onClose}
-    >
+    <Dialog title={terminal ? 'Editar terminal' : 'Crear terminal'} busy={busy} onClose={onClose}>
       <form className="user-form" onSubmit={(event) => void submit(event)}>
         <label className="field">
           Nombre
@@ -365,15 +337,10 @@ function TerminalForm({
             Ubicación
             <select
               name="locationId"
-              defaultValue={
-                terminal?.locationId ??
-                locations.find((item) => item.isDefault)?.id
-              }
+              defaultValue={terminal?.locationId ?? locations.find((item) => item.isDefault)?.id}
             >
               {locations
-                .filter(
-                  (item) => item.active || item.id === terminal?.locationId,
-                )
+                .filter((item) => item.active || item.id === terminal?.locationId)
                 .map((item) => (
                   <option key={item.id} value={item.id}>
                     {item.name}
@@ -397,16 +364,11 @@ function TerminalForm({
           </div>
         )}
         <div className="dialog-actions">
-          <button
-            type="button"
-            className="button secondary"
-            disabled={busy}
-            onClick={onClose}
-          >
+          <button type="button" className="button secondary" disabled={busy} onClick={onClose}>
             Volver
           </button>
           <button className="button primary" disabled={busy}>
-            {busy ? "Guardando…" : "Guardar terminal"}
+            {busy ? 'Guardando…' : 'Guardar terminal'}
           </button>
         </div>
       </form>
@@ -415,31 +377,31 @@ function TerminalForm({
 }
 
 function Exports() {
-  const today = new Date().toLocaleDateString("en-CA", {
-    timeZone: "America/Argentina/Buenos_Aires",
+  const today = new Date().toLocaleDateString('en-CA', {
+    timeZone: 'America/Argentina/Buenos_Aires',
   });
   const [busy, setBusy] = useState(false),
-    [error, setError] = useState(""),
+    [error, setError] = useState(''),
     [saved, setSaved] = useState(false);
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (busy) return;
     const data = new FormData(event.currentTarget);
     setBusy(true);
-    setError("");
+    setError('');
     setSaved(false);
     try {
-      const kind = String(data.get("kind")) as
-        "products" | "sales" | "stock" | "sale-items" | "shifts" | "purchases";
+      const kind = String(data.get('kind')) as
+        'products' | 'sales' | 'stock' | 'sale-items' | 'shifts' | 'purchases';
       const input = OperationSchemas[`exports.${kind}`].parse({
-        fromDate: data.get("fromDate"),
-        toDate: data.get("toDate"),
+        fromDate: data.get('fromDate'),
+        toDate: data.get('toDate'),
         limit: 10000,
-        offset: (Number(data.get("page")) - 1) * 10000,
+        offset: (Number(data.get('page')) - 1) * 10000,
       });
       await downloadFile(
         `/exports/${kind}?${new URLSearchParams(Object.entries(input).map(([key, value]) => [key, String(value)]))}`,
-        `${kind}-${input.fromDate}-${input.toDate}-parte-${data.get("page")}.csv`,
+        `${kind}-${input.fromDate}-${input.toDate}-parte-${data.get('page')}.csv`,
       );
       setSaved(true);
     } catch (failure) {
@@ -454,7 +416,7 @@ function Exports() {
       <form className="user-form" onSubmit={(event) => void submit(event)}>
         <fieldset
           disabled={busy}
-          style={{ border: 0, padding: 0, margin: 0, display: "grid", gap: 16 }}
+          style={{ border: 0, padding: 0, margin: 0, display: 'grid', gap: 16 }}
         >
           <label className="field">
             Datos
@@ -470,12 +432,7 @@ function Exports() {
           <div className="form-grid">
             <label className="field">
               Desde
-              <input
-                type="date"
-                name="fromDate"
-                defaultValue={today.slice(0, 8) + "01"}
-                required
-              />
+              <input type="date" name="fromDate" defaultValue={today.slice(0, 8) + '01'} required />
             </label>
             <label className="field">
               Hasta
@@ -484,24 +441,15 @@ function Exports() {
           </div>
           <label className="field">
             Parte del archivo
-            <input
-              type="number"
-              name="page"
-              min={1}
-              max={101}
-              step={1}
-              defaultValue={1}
-              required
-            />
+            <input type="number" name="page" min={1} max={101} step={1} defaultValue={1} required />
             <small>
-              Cada parte contiene hasta 10.000 registros. Para continuar,
-              descargá la siguiente parte.
+              Cada parte contiene hasta 10.000 registros. Para continuar, descargá la siguiente
+              parte.
             </small>
           </label>
         </fieldset>
         <p className="subtle-note">
-          Período de hasta 366 días. Los productos se filtran por fecha de
-          actualización.
+          Período de hasta 366 días. Los productos se filtran por fecha de actualización.
         </p>
         {error && (
           <div className="alert error" role="alert">
@@ -515,7 +463,7 @@ function Exports() {
         )}
         <div>
           <button className="button primary" disabled={busy}>
-            {busy ? "Descargando…" : "Descargar CSV"}
+            {busy ? 'Descargando…' : 'Descargar CSV'}
           </button>
         </div>
       </form>

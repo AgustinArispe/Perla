@@ -3,9 +3,15 @@ const port = Number(process.env.BOCHA_WEB_TEST_PORT ?? '3087');
 if (!Number.isInteger(port) || port < 1024 || port > 65521)
   throw new Error('Puerto de prueba inválido.');
 const scenarios = [
+  { name: 'home', port: port + 15, testMatch: '**/home-summary.spec.ts' },
   { name: 'modules-control-tools', port: port, testMatch: '**/control-tools.spec.ts' },
   { name: 'modules-excel-export', port: port + 8, testMatch: '**/excel-export.spec.ts' },
-  { name: 'modules-frontend-interactions', port: port + 9, testMatch: '**/frontend-interactions.spec.ts' },
+  {
+    name: 'modules-frontend-interactions',
+    port: port + 9,
+    testMatch: '**/frontend-interactions.spec.ts',
+  },
+  { name: 'sidebar', port: port + 14, testMatch: '**/sidebar-groups.spec.ts' },
   { name: 'modules-modules', port: port + 10, testMatch: '**/modules.spec.ts' },
   { name: 'modules-notifications', port: port + 11, testMatch: '**/notifications.spec.ts' },
   { name: 'modules-promotions', port: port + 12, testMatch: '**/promotions.spec.ts' },
