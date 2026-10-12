@@ -97,9 +97,13 @@ export function FeaturesPanel({
           <p>Activá solamente las herramientas que necesitás.</p>
         </div>
       </div>
-      {query.isPending && <p className="muted">Cargando funciones…</p>}
+      {query.isPending && (
+        <p className="muted" role="status">
+          Cargando funciones…
+        </p>
+      )}
       {query.isError && (
-        <div className="alert error">
+        <div className="alert error" role="alert">
           {errorMessage(query.error)}{' '}
           <button className="button secondary" onClick={() => void query.refetch()}>
             Reintentar
@@ -107,46 +111,51 @@ export function FeaturesPanel({
         </div>
       )}
       <div className="feature-list">
-        {featureGroups.map((group) => (
-          <section className="commerce-feature-group" key={group.title}>
-            <h3>{group.title}</h3>
-            {query.data?.features
-              .filter((feature) => group.keys.includes(feature.key))
-              .map((feature) => (
-                <div className="feature-row" key={feature.key}>
-                  <div>
-                    <strong>{feature.name}</strong>
-                    <small>{feature.description}</small>
+        {query.data &&
+          featureGroups.map((group) => (
+            <section className="commerce-feature-group" key={group.title}>
+              <h3>{group.title}</h3>
+              {query.data?.features
+                .filter((feature) => group.keys.includes(feature.key))
+                .map((feature) => (
+                  <div className="feature-row" key={feature.key}>
+                    <div>
+                      <strong>{feature.name}</strong>
+                      <small>{feature.description}</small>
+                    </div>
+                    <button
+                      type="button"
+                      className={`feature-switch ${enabled?.[feature.key] ? 'enabled' : ''}`}
+                      role="switch"
+                      aria-checked={Boolean(enabled?.[feature.key])}
+                      aria-label={feature.name}
+                      disabled={busy}
+                      onClick={() => toggle(feature.key)}
+                    >
+                      <span />
+                      {enabled?.[feature.key] ? 'Activa' : 'Pausada'}
+                    </button>
+                    {feature.key === 'SUPPLIERS_PURCHASES' &&
+                      !enabled?.SUPPLIERS_PURCHASES &&
+                      onOpenPurchaseHistory && (
+                        <button
+                          className="button quiet small"
+                          type="button"
+                          onClick={onOpenPurchaseHistory}
+                        >
+                          Ver registros
+                        </button>
+                      )}
                   </div>
-                  <button
-                    type="button"
-                    className={`feature-switch ${enabled?.[feature.key] ? 'enabled' : ''}`}
-                    role="switch"
-                    aria-checked={Boolean(enabled?.[feature.key])}
-                    aria-label={feature.name}
-                    disabled={busy}
-                    onClick={() => toggle(feature.key)}
-                  >
-                    <span />
-                    {enabled?.[feature.key] ? 'Activa' : 'Pausada'}
-                  </button>
-                  {feature.key === 'SUPPLIERS_PURCHASES' &&
-                    !enabled?.SUPPLIERS_PURCHASES &&
-                    onOpenPurchaseHistory && (
-                      <button
-                        className="button quiet small"
-                        type="button"
-                        onClick={onOpenPurchaseHistory}
-                      >
-                        Ver registros
-                      </button>
-                    )}
-                </div>
-              ))}
-          </section>
-        ))}
+                ))}
+            </section>
+          ))}
       </div>
-      {error && <div className="alert error">{error}</div>}
+      {error && (
+        <div className="alert error" role="alert">
+          {error}
+        </div>
+      )}
       {changed && (
         <div className="feature-actions">
           <button className="button secondary" type="button" onClick={() => setDraft(null)}>

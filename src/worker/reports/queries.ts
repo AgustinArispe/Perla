@@ -20,6 +20,20 @@ const integer = (v: bigint | string | null | undefined) => {
 };
 const ratio = (amount: number, base: number) =>
   base ? integer((BigInt(amount) * 10000n) / BigInt(base)) : 0;
+// Every branch uses its own movement date. Return lines retain the original sale's
+// product identity and the cost captured when the return was confirmed.
+const movementLines = `WITH movements AS (
+  SELECT i.product_id,i.unit,i.name,i.category_name,i.quantity_base quantity,i.net_cents net,
+    i.cost_cents cost,s.business_date date,s.number sale_number,i.position,i.id movement_id
+  FROM sale_items i JOIN sales s ON s.id=i.sale_id
+  WHERE s.status='COMPLETED' AND s.business_date BETWEEN ? AND ?
+  UNION ALL
+  SELECT i.product_id,i.unit,i.name,i.category_name,-ri.quantity_base,-ri.net_cents,
+    -ri.cost_cents,sr.business_date,s.number,i.position,ri.id
+  FROM sale_return_items ri JOIN sale_returns sr ON sr.id=ri.return_id
+  JOIN sale_items i ON i.id=ri.sale_item_id JOIN sales s ON s.id=i.sale_id
+  WHERE sr.status='CONFIRMED' AND sr.business_date BETWEEN ? AND ?
+)`;
 export class MonthlyReports {
   constructor(private readonly db: Database.Database) {}
   private rows(sql: string, ...args: string[]): Row[] {
@@ -55,11 +69,41 @@ export class MonthlyReports {
       voidedCents: integer(r.void_net),
     };
   }
+  private daily(from: string, to: string): MonthlyReport['daily'] {
+    const rows = this.rows(
+      `SELECT date,SUM(net) net,SUM(count) count FROM (
+        SELECT business_date date,total_cents net,1 count FROM sales
+        WHERE status='COMPLETED' AND business_date BETWEEN ? AND ?
+        UNION ALL
+        SELECT sr.business_date,-ri.net_cents,0 FROM sale_return_items ri
+        JOIN sale_returns sr ON sr.id=ri.return_id
+        WHERE sr.status='CONFIRMED' AND sr.business_date BETWEEN ? AND ?
+      ) GROUP BY date`,
+      from,
+      to,
+      from,
+      to,
+    );
+    const byDate = new Map(rows.map((row) => [String(row.date), row]));
+    const start = new Date(`${from}T00:00:00Z`).getTime();
+    const end = new Date(`${to}T00:00:00Z`).getTime();
+    return Array.from({ length: (end - start) / 86400000 + 1 }, (_, index) => {
+      const date = new Date(start + index * 86400000).toISOString().slice(0, 10);
+      const row = byDate.get(date);
+      return { date, netCents: integer(row?.net), saleCount: integer(row?.count) };
+    });
+  }
   period(from: string, to: string) {
     return this.db.transaction(() => {
       const profit = this.rows(
-        `WITH returned AS (SELECT ri.sale_item_id,SUM(ri.net_cents) net,SUM(CASE WHEN ri.cost_cents IS NOT NULL THEN ri.cost_cents ELSE 0 END) cost,SUM(ri.quantity_base) quantity FROM sale_return_items ri JOIN sale_returns sr ON sr.id=ri.return_id WHERE sr.status='CONFIRMED' GROUP BY ri.sale_item_id)
-         SELECT COALESCE(SUM(CASE WHEN i.cost_cents IS NOT NULL THEN i.cost_cents-COALESCE(r.cost,0) ELSE 0 END),0) cost,COALESCE(SUM(CASE WHEN i.cost_cents IS NOT NULL THEN i.net_cents-COALESCE(r.net,0) ELSE 0 END),0) covered,COUNT(CASE WHEN i.cost_cents IS NULL AND i.quantity_base>COALESCE(r.quantity,0) THEN 1 END) missing FROM sale_items i JOIN sales s ON s.id=i.sale_id LEFT JOIN returned r ON r.sale_item_id=i.id WHERE s.status='COMPLETED' AND s.business_date BETWEEN ? AND ?`,
+        `${movementLines}
+         SELECT COALESCE(SUM(cost),0) cost,
+           COALESCE(SUM(CASE WHEN cost IS NOT NULL THEN net ELSE 0 END),0) covered,
+           COALESCE(SUM(ABS(net)),0) movement_net,
+           COALESCE(SUM(CASE WHEN cost IS NOT NULL THEN ABS(net) ELSE 0 END),0) covered_movement_net,
+           COUNT(CASE WHEN cost IS NULL THEN 1 END) missing FROM movements`,
+        from,
+        to,
         from,
         to,
       )[0]!;
@@ -72,7 +116,11 @@ export class MonthlyReports {
           knownCostCents,
           coveredNetCents,
           grossMarginCents: coveredNetCents - knownCostCents,
-          coverageBasisPoints: ratio(coveredNetCents, totals.netCents),
+          coverageBasisPoints: ratio(
+            integer(profit.covered_movement_net),
+            integer(profit.movement_net),
+          ),
+          coverageBasis: 'ABSOLUTE_MOVEMENT_NET' as const,
           missingLineCount: integer(profit.missing),
         },
       };
@@ -106,7 +154,7 @@ export class MonthlyReports {
         ...args,
       );
       const refundRows = this.rows(
-        `SELECT f.method,SUM(f.amount_cents) amount FROM sale_return_refunds f JOIN sale_returns r ON r.id=f.return_id WHERE r.status='CONFIRMED' AND r.local_month=? AND r.business_date BETWEEN ? AND ? GROUP BY f.method`,
+        `SELECT f.method,SUM(f.amount_cents) amount,COUNT(DISTINCT f.return_id) count FROM sale_return_refunds f JOIN sale_returns r ON r.id=f.return_id WHERE r.status='CONFIRMED' AND r.local_month=? AND r.business_date BETWEEN ? AND ? GROUP BY f.method`,
         ...args,
       );
       const payments = (['CASH', 'DEBIT', 'CREDIT', 'TRANSFER', 'OTHER'] as const).map((method) => {
@@ -118,13 +166,22 @@ export class MonthlyReports {
           method,
           amountCents,
           saleCount,
+          refundCount: integer(refund?.count),
           shareBasisPoints: ratio(amountCents, totals.netCents),
           saleShareBasisPoints: ratio(saleCount, totals.saleCount),
         };
       });
       const ranked = this.rows(
-        `WITH returned AS (SELECT ri.sale_item_id,SUM(ri.quantity_base) quantity,SUM(ri.net_cents) net FROM sale_return_items ri JOIN sale_returns sr ON sr.id=ri.return_id WHERE sr.status='CONFIRMED' GROUP BY ri.sale_item_id), filtered AS (SELECT i.*,i.quantity_base-COALESCE(r.quantity,0) remaining_quantity,i.net_cents-COALESCE(r.net,0) remaining_net,ROW_NUMBER() OVER(PARTITION BY i.product_id,i.unit ORDER BY s.number DESC,i.position DESC) latest FROM sale_items i JOIN sales s ON s.id=i.sale_id LEFT JOIN returned r ON r.sale_item_id=i.id WHERE s.status='COMPLETED' AND s.local_month=? AND s.business_date BETWEEN ? AND ?) SELECT product_id,unit,MAX(CASE WHEN latest=1 THEN name END) name,SUM(remaining_quantity) quantity,SUM(remaining_net) net FROM filtered GROUP BY product_id,unit ORDER BY net DESC,product_id`,
-        ...args,
+        `${movementLines}, filtered AS (
+          SELECT *,ROW_NUMBER() OVER(PARTITION BY product_id,unit ORDER BY date DESC,sale_number DESC,position DESC,movement_id DESC) latest
+          FROM movements
+        ) SELECT product_id,unit,MAX(CASE WHEN latest=1 THEN name END) name,
+          SUM(quantity) quantity,SUM(net) net FROM filtered
+          GROUP BY product_id,unit ORDER BY net DESC,product_id,unit`,
+        period.from,
+        period.to,
+        period.from,
+        period.to,
       ).map((r) => ({
         productId: String(r.product_id),
         unit: r.unit as RankedProduct['unit'],
@@ -163,34 +220,37 @@ export class MonthlyReports {
                 : ('LOW' as const),
         };
       });
-      const dailyRows = this.rows(
-        `SELECT date,SUM(net) net,SUM(count) count FROM (
-           SELECT business_date date,total_cents net,1 count FROM sales WHERE status='COMPLETED' AND local_month=? AND business_date BETWEEN ? AND ?
-           UNION ALL
-           SELECT business_date date,-total_cents net,0 count FROM sale_returns WHERE status='CONFIRMED' AND local_month=? AND business_date BETWEEN ? AND ?
-         ) GROUP BY date`,
-        ...args,
-        ...args,
-      );
-      const daily = Array.from({ length: Number(period.to.slice(8)) }, (_, index) => {
-        const date = `${month}-${String(index + 1).padStart(2, '0')}`,
-          r = dailyRows.find((r) => r.date === date);
-        return { date, netCents: integer(r?.net), saleCount: integer(r?.count) };
-      });
+      const daily = this.daily(period.from, period.to);
+      const previousDaily = this.daily(period.previousFrom, period.previousTo);
       const changed = this.rows(
-        `SELECT MAX(e.created_at_utc) changed FROM sale_events e JOIN sales s ON s.id=e.sale_id WHERE s.local_month=?`,
-        month,
+        `SELECT MAX(changed) changed FROM (
+          SELECT e.created_at_utc changed FROM sale_events e JOIN sales s ON s.id=e.sale_id
+          WHERE s.business_date BETWEEN ? AND ?
+          UNION ALL
+          SELECT e.created_at_utc changed FROM sale_return_events e JOIN sale_returns r ON r.id=e.return_id
+          WHERE r.status='CONFIRMED' AND r.business_date BETWEEN ? AND ?
+        )`,
+        period.from,
+        period.to,
+        period.from,
+        period.to,
       )[0]?.changed;
       const periodProfit = this.period(period.from, period.to).profitability;
       const profitBreakdown = (group: 'product' | 'category'): ProfitabilityBreakdown[] => {
         const groupId =
-          group === 'product' ? 'i.product_id' : "COALESCE(i.category_name,'Sin categoría')";
+          group === 'product' ? 'product_id' : "COALESCE(category_name,'Sin categoría')";
         const groupName =
-          group === 'product' ? 'MAX(i.name)' : "COALESCE(i.category_name,'Sin categoría')";
-        const joins = '';
+          group === 'product' ? 'MAX(name)' : "COALESCE(category_name,'Sin categoría')";
         return this.rows(
-          `WITH returned AS (SELECT ri.sale_item_id,SUM(ri.net_cents) net,SUM(CASE WHEN ri.cost_cents IS NOT NULL THEN ri.cost_cents ELSE 0 END) cost FROM sale_return_items ri JOIN sale_returns sr ON sr.id=ri.return_id WHERE sr.status='CONFIRMED' GROUP BY ri.sale_item_id) SELECT ${groupId} id,${groupName} name,SUM(i.net_cents-COALESCE(r.net,0)) net,COALESCE(SUM(CASE WHEN i.cost_cents IS NOT NULL THEN i.net_cents-COALESCE(r.net,0) ELSE 0 END),0) covered,COALESCE(SUM(CASE WHEN i.cost_cents IS NOT NULL THEN i.cost_cents-COALESCE(r.cost,0) ELSE 0 END),0) cost FROM sale_items i JOIN sales s ON s.id=i.sale_id LEFT JOIN returned r ON r.sale_item_id=i.id${joins} WHERE s.status='COMPLETED' AND s.local_month=? AND s.business_date BETWEEN ? AND ? GROUP BY ${groupId} ORDER BY net DESC,id LIMIT ${fullBreakdown ? 50001 : 20}`,
-          ...args,
+          `${movementLines} SELECT ${groupId} id,${groupName} name,SUM(net) net,
+            COALESCE(SUM(CASE WHEN cost IS NOT NULL THEN net ELSE 0 END),0) covered,
+            COALESCE(SUM(cost),0) cost,SUM(ABS(net)) movement_net,
+            SUM(CASE WHEN cost IS NOT NULL THEN ABS(net) ELSE 0 END) covered_movement_net
+            FROM movements GROUP BY ${groupId} ORDER BY net DESC,id LIMIT ${fullBreakdown ? 50001 : 20}`,
+          period.from,
+          period.to,
+          period.from,
+          period.to,
         ).map((row) => {
           const netCents = integer(row.net),
             coveredNetCents = integer(row.covered),
@@ -202,7 +262,10 @@ export class MonthlyReports {
             coveredNetCents,
             knownCostCents,
             grossMarginCents: coveredNetCents - knownCostCents,
-            coverageBasisPoints: ratio(coveredNetCents, netCents),
+            coverageBasisPoints: ratio(
+              integer(row.covered_movement_net),
+              integer(row.movement_net),
+            ),
           };
         });
       };
@@ -210,6 +273,7 @@ export class MonthlyReports {
         coveredNetCents = periodProfit.coveredNetCents;
       return {
         month,
+        definitionVersion: 2 as const,
         period,
         generatedAt: now.toISOString(),
         lastChangedAt: changed === null || changed === undefined ? null : String(changed),
@@ -225,12 +289,14 @@ export class MonthlyReports {
           .filter((p) => p.method === 'DEBIT' || p.method === 'CREDIT')
           .reduce((sum, p) => sum + p.amountCents, 0),
         daily,
+        previousDaily,
         rankings: { revenue: ranked, units: byQuantity('UNIT'), kilos: byQuantity('KG') },
         profitability: {
           knownCostCents,
           coveredNetCents,
           grossMarginCents: coveredNetCents - knownCostCents,
-          coverageBasisPoints: ratio(coveredNetCents, totals.netCents),
+          coverageBasisPoints: periodProfit.coverageBasisPoints,
+          coverageBasis: periodProfit.coverageBasis,
           missingLineCount: periodProfit.missingLineCount,
           products: profitBreakdown('product'),
           categories: profitBreakdown('category'),

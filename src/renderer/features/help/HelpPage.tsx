@@ -1,3 +1,4 @@
+import { PageHeading } from '../../components/PageHeader';
 import { useState } from 'react';
 import type { Role } from '../../../shared/auth';
 import { matchesHelpSearch, normalizeHelpSearch } from './search';
@@ -310,10 +311,10 @@ export function HelpPage({ role }: { role: Role }) {
         )
       : activeTopic?.sections;
   return (
-    <>
-      <div className="page-heading">
+    <div className="admin-workspace help-workspace">
+      <PageHeading className="page-heading">
         <h1>Ayuda</h1>
-      </div>
+      </PageHeading>
       <section className="panel help-page">
         <label className="field">
           Buscar en la ayuda
@@ -337,7 +338,14 @@ export function HelpPage({ role }: { role: Role }) {
             </button>
           ))}
         </nav>
-        {!topics.length && <p role="status">No hay temas para esa búsqueda.</p>}
+        {!topics.length && (
+          <div className="admin-empty" role="status">
+            <p>No hay temas para esa búsqueda. Probá con otra palabra o volvé a todos los temas.</p>
+            <button className="button secondary small" onClick={() => setSearch('')}>
+              Limpiar búsqueda
+            </button>
+          </div>
+        )}
         {activeTopic && (
           <article id={`ayuda-${activeTopic.id}`}>
             <h2>{activeTopic.title}</h2>
@@ -350,6 +358,6 @@ export function HelpPage({ role }: { role: Role }) {
           </article>
         )}
       </section>
-    </>
+    </div>
   );
 }

@@ -1,0 +1,89 @@
+.auth-password-control {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+.auth-password-control input {
+  flex: 1;
+  min-width: 0;
+}
+.auth-password-control .button {
+  flex-shrink: 0;
+  padding-inline: 12px;
+}
+.auth-card #login-error p {
+  margin: 8px 0 0;
+}
+.admin-workspace {
+  min-width: 0;
+}
+.admin-workspace > .page-heading {
+  margin-bottom: 20px;
+}
+.admin-workspace .heading-actions,
+.admin-workspace .row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.admin-workspace .admin-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px;
+  padding: 0 0 16px;
+}
+.admin-toolbar .field {
+  min-width: 160px;
+  margin: 0;
+}
+.admin-toolbar .field:has(select) {
+  flex: 1;
+}
+.admin-workspace .admin-pagination {
+  position: static;
+  justify-content: space-between;
+  padding: 16px 0 0;
+  margin-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.admin-workspace .table-scroll,
+.admin-workspace .preview-table,
+.admin-workspace .dashboard-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+}
+.admin-workspace .help-page article {
+  max-width: 72ch;
+}
+.admin-workspace .help-page article p {
+  line-height: 1.65;
+}
+.admin-workspace .admin-empty {
+  padding: 24px 0;
+}
+.admin-workspace .admin-empty p {
+  max-width: 65ch;
+  color: var(--ink-soft);
+}
+.settings-workspace .settings-tabs {
+  flex-wrap: wrap;
+}
+@media (max-width: 600px) {
+  .admin-workspace > .page-heading,
+  .admin-workspace .settings-terminals > .page-heading {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .admin-workspace .heading-actions {
+    width: 100%;
+  }
+  .admin-toolbar .field {
+    flex: 1 1 160px;
+  }
+  .admin-workspace .admin-pagination {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}

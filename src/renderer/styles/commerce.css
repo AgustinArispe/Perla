@@ -1,0 +1,257 @@
+/* Commerce surfaces: keep amounts aligned and the next operational action visible. */
+.checkout-scan .checkout-diagnostics {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin-top: 8px;
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+}
+.checkout-diagnostics .checkout-scanner-diagnostic {
+  min-height: 32px;
+  padding: 4px 0;
+  font-size: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.checkout-cart .checkout-tools {
+  margin-top: 12px;
+}
+.checkout-cart .cart-empty {
+  min-height: 220px;
+}
+.checkout-totals .checkout-total strong,
+.purchase-receive .purchase-summary > strong {
+  font-size: 2rem;
+  font-variant-numeric: tabular-nums;
+}
+.commerce-purchase-entry {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 18px;
+}
+.commerce-purchase-entry .supplier-picker {
+  align-items: end;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+.commerce-purchase-entry .purchase-entry-title {
+  margin: 2px 0 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+}
+.commerce-purchase-entry .purchase-scan {
+  min-height: 52px;
+  box-shadow: none;
+}
+.commerce-purchase-entry .purchase-scan:focus-within {
+  outline: 2px solid var(--navy);
+  outline-offset: 3px;
+}
+.purchase-receive .purchase-top-grid {
+  align-items: start;
+}
+.purchase-receive .purchase-summary {
+  min-height: 0;
+  padding: 20px;
+  box-shadow: none;
+}
+.purchase-receive .purchase-summary > span {
+  margin-top: 16px;
+}
+.purchase-receive .purchase-line label span {
+  font-size: 0.8125rem;
+  text-transform: none;
+}
+.commerce-history .history-filters,
+.purchase-history .purchase-filters,
+.commerce-shifts .movement-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.commerce-history .catalog-card {
+  overflow-x: auto;
+}
+.commerce-history table,
+.commerce-shifts table {
+  width: 100%;
+}
+.commerce-history th,
+.commerce-history td,
+.commerce-shifts th,
+.commerce-shifts td {
+  padding: 12px 16px;
+}
+.commerce-history .numeric,
+.commerce-shifts .numeric {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.purchase-history .purchase-history-list {
+  gap: 0;
+}
+.purchase-history .purchase-history-row {
+  display: grid;
+  grid-template-columns: 90px minmax(160px, 1fr) 100px 140px;
+  align-items: center;
+  gap: 16px;
+  min-height: 72px;
+  padding: 12px 16px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  box-shadow: none;
+}
+.purchase-history-row > strong {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.purchase-suppliers .supplier-card {
+  min-height: 76px;
+  padding: 12px 16px;
+  gap: 16px;
+}
+.purchase-suppliers .supplier-balance {
+  display: grid;
+  gap: 2px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.supplier-balance .supplier-account-action {
+  color: var(--navy);
+  font-size: 0.8125rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.customer-page .customer-list article {
+  grid-template-columns: 38px minmax(160px, 1fr) minmax(150px, auto) auto;
+  padding: 12px 16px;
+}
+.customer-page .customer-list article.muted {
+  opacity: 1;
+}
+.customer-page .customer-list article > div:nth-child(2) .status-pill {
+  grid-column: auto;
+  width: fit-content;
+}
+.customer-page .customer-list small,
+.purchase-suppliers .supplier-card small {
+  color: var(--ink-soft);
+}
+.customer-page .customer-balance {
+  font-variant-numeric: tabular-nums;
+}
+.commerce-agenda-page .commerce-tabs {
+  margin-bottom: 12px;
+}
+.commerce-agenda-page .commerce-agenda-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px;
+  margin-top: 12px;
+}
+.commerce-agenda-page .agenda-totals {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 4px;
+}
+.commerce-agenda-page .agenda-totals > div {
+  min-width: 180px;
+}
+.commerce-agenda-page .agenda-totals strong {
+  font-size: 1.375rem;
+  font-variant-numeric: tabular-nums;
+}
+.commerce-agenda-page .commerce-agenda-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+.commerce-agenda-row strong {
+  font-variant-numeric: tabular-nums;
+}
+.promotion-list .promotion-card {
+  padding: 16px 20px;
+}
+.promotion-list .promotion-card-main h2 {
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+}
+.promotion-list .promotion-card-main p {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+}
+.commerce-shifts .shift-difference {
+  font-weight: 650;
+}
+.commerce-shifts .shift-discrepancy {
+  color: #8a411e;
+  background: #fcf4e7;
+}
+.commerce-shifts .shift-discrepancy.negative-value {
+  color: #a12828;
+}
+@media (max-width: 900px) {
+  .customer-page .customer-list article {
+    grid-template-columns: 38px minmax(0, 1fr) auto;
+  }
+  .customer-page .customer-list .row-actions {
+    grid-column: 2 / -1;
+    justify-content: start;
+  }
+  .purchase-suppliers .supplier-card {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .purchase-suppliers .supplier-card > * {
+    grid-column: auto;
+  }
+  .purchase-history .purchase-history-row {
+    grid-template-columns: 80px minmax(0, 1fr) auto;
+  }
+  .purchase-history .purchase-history-row > strong {
+    grid-column: 2 / -1;
+  }
+}
+@media (max-width: 560px) {
+  .customer-page .customer-list article {
+    grid-template-columns: 38px minmax(0, 1fr);
+  }
+  .customer-page .customer-list .customer-balance,
+  .customer-page .customer-list .status-pill {
+    grid-column: 2;
+    justify-items: start;
+  }
+  .customer-page .customer-list .row-actions {
+    grid-column: 2;
+    flex-wrap: wrap;
+  }
+  .purchase-receive .purchase-top-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .purchase-history .purchase-history-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .purchase-history .purchase-history-row > span:nth-child(2) {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .purchase-history .purchase-history-row > strong {
+    grid-column: 2;
+  }
+  .commerce-history .history-filters > .field,
+  .purchase-history .purchase-filters > .field,
+  .commerce-shifts .movement-filters > .field {
+    flex: 1 1 140px;
+  }
+}

@@ -637,15 +637,25 @@ function collect(
     ],
     [report.totals as unknown as Row],
   );
+  const netPaymentsCents = report.payments.reduce((sum, payment) => sum + payment.amountCents, 0);
+  const positivePaymentComposition =
+    netPaymentsCents > 0 && report.payments.every((payment) => payment.amountCents >= 0);
   const payments = sheet(
     'Medios de pago',
     [
       'method|Medio',
       'amountCents|Importe (ARS)|money',
       'saleCount|Ventas',
-      'shareBasisPoints|Participación|percent',
+      'refundCount|Reembolsos',
+      'paymentShareBasisPoints|Participación en pagos netos|percent',
     ],
-    report.payments,
+    report.payments.map((payment) => ({
+      ...payment,
+      refundCount: payment.refundCount ?? 0,
+      paymentShareBasisPoints: positivePaymentComposition
+        ? (10000 * payment.amountCents) / netPaymentsCents
+        : null,
+    })),
   );
   const ranking = sheet(
     'Más vendidos',
@@ -672,10 +682,10 @@ function collect(
       [
         'name|Producto',
         'netCents|Venta neta (ARS)|money',
-        'coveredNetCents|Venta con costo (ARS)|money',
+        'coveredNetCents|Neto con costo registrado (ARS)|money',
         'knownCostCents|Costo (ARS)|money',
         'grossMarginCents|Margen (ARS)|money',
-        'coverageBasisPoints|Cobertura|percent',
+        'coverageBasisPoints|Movimientos con costo|percent',
       ],
       report.profitability.products.map((row) => ({ ...row })),
     );

@@ -2,8 +2,8 @@ import { expect, it } from 'vitest';
 import { authorizedNavigation } from '../../src/renderer/navigation';
 it('administración conserva actividad cuando es su única área autorizada', () => {
   const entries = authorizedNavigation(new Set(['Caja', 'Actividad']));
-  expect(entries.map((entry) => entry.title)).toEqual(['Caja', 'Administración']);
-  expect(entries.find((entry) => entry.title === 'Administración')?.areas).toEqual([
+  expect(entries.map((entry) => entry.title)).toEqual(['Caja', 'Configuración']);
+  expect(entries.find((entry) => entry.title === 'Configuración')?.areas).toEqual([
     ['Actividad', 'Actividad'],
   ]);
 });

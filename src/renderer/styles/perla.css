@@ -2420,9 +2420,7 @@ kbd {
 .dashboard-metrics {
   margin-bottom: 16px;
 }
-.daily-sales-panel {
-  margin-bottom: 16px;
-}
+
 .dashboard-grid {
   margin-bottom: 16px;
 }
@@ -2434,37 +2432,14 @@ kbd {
   font-size: clamp(22px, 2.3vw, 32px);
   overflow-wrap: anywhere;
 }
-.perla-chart-heading {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 18px;
-}
-.perla-chart-heading h2 {
-  margin: 0;
-}
-.perla-chart-heading > span {
-  font-size: 12px;
-  color: #676356;
-}
-.perla-chart-heading strong {
-  color: #795824;
-}
-.daily-chart span {
-  background: #46616c;
-  border-radius: 4px 4px 0 0;
-}
-.daily-chart [data-peak='true'] span {
-  background: #9c753a;
-}
-.daily-chart > div:hover span {
-  background: #795824;
-}
-.daily-chart-scale {
-  color: #676356;
-}
+
+
+
+
+
+
+
+
 .metric-track {
   background: #ece7dc;
 }
@@ -2684,20 +2659,10 @@ kbd {
   box-shadow: none;
   background: transparent;
 }
-.daily-chart > div {
-  max-width: 48px;
-}
-.daily-chart {
-  border-bottom: 0;
-}
-.daily-chart-area {
-  position: relative;
-}
-.daily-chart-area .daily-chart-scale {
-  top: 0;
-  bottom: 24px;
-  left: 0;
-}
+
+
+
+
 .dashboard-month-navigation {
   display: flex;
   align-items: flex-end;
@@ -2709,27 +2674,8 @@ kbd {
   min-height: 44px;
   padding: 10px;
 }
-.daily-chart .daily-chart-day {
-  display: grid;
-  flex: 1;
-  gap: 6px;
-  min-width: 20px;
-  max-width: 48px;
-  padding: 0;
-  border: 0;
-  border-radius: 4px;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  text-align: center;
-  cursor: pointer;
-  box-shadow: none;
-}
-.daily-chart-day > div {
-  display: flex;
-  align-items: flex-end;
-  height: 145px;
-}
+
+
 .dashboard-animated-value {
   display: inline-block;
   max-width: 100%;
@@ -2766,63 +2712,16 @@ kbd {
   color: inherit;
   letter-spacing: inherit;
 }
-.daily-chart-day span {
-  transform-origin: bottom;
-  transform: scaleY(1);
-  transition:
-    transform 360ms var(--ease-out),
-    opacity 240ms var(--ease-out),
-    background-color 120ms ease;
-}
-@starting-style {
-  .daily-chart-day span {
-    transform: scaleY(0.12);
-    opacity: 0.55;
-  }
-}
-.daily-chart-day:hover span,
-.daily-chart-day[aria-pressed='true'] span {
-  background: var(--green);
-}
-.daily-chart-day:focus-visible {
-  outline: 2px solid var(--green);
-  outline-offset: 4px;
-}
-.daily-chart-day[aria-pressed='true'] small {
-  color: var(--ink);
-  font-weight: 700;
-}
-.daily-chart-selection {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px 20px;
-  margin-block: 16px;
-  padding: 12px 16px;
-  border-radius: var(--radius-sm);
-  background: var(--surface-subtle);
-  font-variant-numeric: tabular-nums;
-}
-.daily-chart-selection > span {
-  color: var(--ink-soft);
-  font-size: 13px;
-}
-.daily-chart-selection > .button {
-  margin-left: auto;
-  min-width: 44px;
-  min-height: 44px;
-}
-.daily-chart-selection[data-motion='gentle'] {
-  transition:
-    opacity 160ms var(--ease-out),
-    transform 160ms var(--ease-out);
-}
-@starting-style {
-  .daily-chart-selection[data-motion='gentle'] {
-    opacity: 0.65;
-    transform: translateY(3px);
-  }
-}
+
+
+
+
+
+
+
+
+
+
 .comparison-presets button {
   transition:
     background-color 140ms ease,
@@ -2845,17 +2744,9 @@ kbd {
   .dashboard-month-navigation {
     flex: 1 1 100%;
   }
-  .daily-chart .daily-chart-day {
-    min-width: 44px;
-  }
-  .daily-chart-selection {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-  }
-  .daily-chart-selection > .button {
-    grid-column: 2;
-    grid-row: 1 / span 4;
-  }
+
+
+
 }
 .dashboard-metrics-secondary {
   border: 0;

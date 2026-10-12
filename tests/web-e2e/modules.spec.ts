@@ -163,22 +163,24 @@ test('web real: módulos, terminal, venta escaneada y consulta', async ({ page }
     if (name === 'Resumen mensual') {
       await expect(page.locator('.dashboard-metrics')).toBeVisible();
       await expect(page.locator('.dashboard-metrics article')).toHaveCount(3);
-      await expect(page.locator('.unused-payment-methods')).toContainText('Medios sin ventas (4)');
+      await expect(page.locator('.unused-payment-methods')).toContainText(
+        'Medios sin movimientos (4)',
+      );
       await expect(page.getByRole('button', { name: /^Ver inventario actual/ })).toBeVisible();
       const monthInput = page.getByLabel('Mes', { exact: true });
       const activeMonth = await monthInput.inputValue();
       await monthInput.fill('2025-01');
       await expect(page.locator('.dashboard-empty-chart')).toContainText('Todavía no hay ventas');
-      await expect(page.locator('.daily-chart')).toHaveCount(0);
+      await expect(page.locator('.results-plot-scroll')).toHaveCount(0);
       await monthInput.fill(activeMonth);
-      await expect(page.locator('.daily-chart')).toBeVisible();
+      await expect(page.locator('.results-plot-scroll')).toBeVisible();
       await page.setViewportSize({ width: 390, height: 844 });
       const chartOverflows = await page
-        .locator('.daily-chart')
+        .locator('.results-plot-scroll')
         .evaluate((chart) => chart.scrollWidth > chart.clientWidth);
       if (chartOverflows)
         await expect
-          .poll(() => page.locator('.daily-chart').evaluate((chart) => chart.scrollLeft))
+          .poll(() => page.locator('.results-plot-scroll').evaluate((chart) => chart.scrollLeft))
           .toBeGreaterThan(0);
       await page.screenshot({ path: 'tmp/frontend-dashboard-mobile.png', fullPage: true });
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
@@ -187,6 +189,20 @@ test('web real: módulos, terminal, venta escaneada y consulta', async ({ page }
       await page.setViewportSize({ width: 1280, height: 720 });
     }
     await expect(page.locator('main')).not.toContainText('Origen no permitido');
+    if (name === 'Configuración') {
+      await expect(page.locator('.workspace-tabs')).toHaveCount(1);
+      const businessTab = page.getByRole('tab', { name: 'Negocio', exact: true });
+      await businessTab.focus();
+      await businessTab.press('ArrowRight');
+      await expect(page.getByRole('tab', { name: 'Funciones', exact: true })).toBeFocused();
+      await page.getByRole('tab', { name: 'Funciones', exact: true }).press('ArrowRight');
+      await page.getByRole('tab', { name: 'Terminales', exact: true }).press('ArrowRight');
+      await expect(page.getByRole('tab', { name: 'Lector', exact: true })).toBeFocused();
+      await expect(page.locator('.workspace-tabs')).toHaveCount(1);
+      await page.getByRole('tab', { name: 'Lector', exact: true }).press('Home');
+      await expect(businessTab).toBeFocused();
+      await expect(businessTab).toHaveAttribute('aria-selected', 'true');
+    }
     await page.screenshot({ path: 'tmp/frontend-' + name + '.png', fullPage: true });
     await page.setViewportSize({ width: 390, height: 844 });
     await expect(page.locator('main h1')).toBeVisible();
@@ -304,7 +320,7 @@ test('web: permisos de vendedor y supervisor', async ({ page }) => {
     await expect(
       page.getByRole('heading', { name: 'Usuarios y configuración', exact: true }),
     ).toHaveCount(0);
-    if (username === 'vendedor') await expect(nav.getByRole('button')).toHaveCount(1);
+    if (username === 'vendedor') await expect(nav.locator('.nav-item')).toHaveCount(1);
     else await expect(nav.getByRole('button', { name: 'Stock', exact: true })).toBeVisible();
     expect(
       await page.evaluate(

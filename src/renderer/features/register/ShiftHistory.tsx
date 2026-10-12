@@ -1,3 +1,4 @@
+import { PageHeading } from '../../components/PageHeader';
 import { SavedViews } from '../../components/SavedViews';
 import { useRememberedState, scalarViewFilters } from '../../components/useRememberedState';
 import { ExportButton } from '../../components/ExportButton';
@@ -56,10 +57,10 @@ export function ShiftHistory() {
   const invalid = !!from && !!to && from > to;
   const terminalName = (id: string) => terminals.data?.find((t) => t.id === id)?.name ?? id;
   return (
-    <>
-      <div className="page-heading">
+    <div className="commerce-shifts">
+      <PageHeading className="page-heading">
         <h1>Turnos</h1>
-      </div>
+      </PageHeading>
       <section className="panel">
         <div className="movement-filters">
           <label className="field">
@@ -136,9 +137,6 @@ export function ShiftHistory() {
                 <th>Apertura</th>
                 <th>Terminal</th>
                 <th>Estado</th>
-                <th className="numeric">Inicial</th>
-                <th className="numeric">Esperado</th>
-                <th className="numeric">Contado</th>
                 <th className="numeric">Diferencia</th>
                 <th>Detalle</th>
               </tr>
@@ -149,16 +147,15 @@ export function ShiftHistory() {
                   <tr key={s.id}>
                     <td>{operationDate(s.openedAt)}</td>
                     <td>{terminalName(s.terminalId)}</td>
-                    <td>{s.status === 'OPEN' ? 'Abierta' : 'Cerrada'}</td>
-                    <td className="numeric">{formatMoney(s.openingCashCents)}</td>
-                    <td className="numeric">
-                      {s.expectedCashCents == null ? 'Al cerrar' : formatMoney(s.expectedCashCents)}
-                    </td>
-                    <td className="numeric">
-                      {s.countedCashCents == null ? '—' : formatMoney(s.countedCashCents)}
+                    <td>
+                      <span
+                        className={`status-pill ${s.status === 'OPEN' ? 'warning' : 'success'}`}
+                      >
+                        {s.status === 'OPEN' ? 'Abierta' : 'Cerrada'}
+                      </span>
                     </td>
                     <td
-                      className={`numeric ${s.differenceCents && s.differenceCents < 0 ? 'negative-value' : ''}`}
+                      className={`numeric shift-difference ${s.differenceCents ? 'shift-discrepancy' : ''} ${s.differenceCents && s.differenceCents < 0 ? 'negative-value' : ''}`}
                     >
                       {s.differenceCents == null
                         ? 'Pendiente de cierre'
@@ -179,7 +176,7 @@ export function ShiftHistory() {
                 ))}
               {(!shifts.data?.items.length || invalid) && !shifts.isError && (
                 <tr>
-                  <td className="empty-table" colSpan={8}>
+                  <td className="empty-table" colSpan={5}>
                     {shifts.isPending ? 'Cargando cajas…' : 'Sin cajas en este período.'}
                   </td>
                 </tr>
@@ -214,7 +211,7 @@ export function ShiftHistory() {
           />
         )}
       </section>
-    </>
+    </div>
   );
 }
 function ShiftDetailDialog({

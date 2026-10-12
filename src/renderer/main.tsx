@@ -15,6 +15,10 @@ import './styles/perla.css';
 import './styles/operational.css';
 import './styles/typography.css';
 import './styles/home.css';
+import './styles/results.css';
+import './styles/merchandise.css';
+import './styles/commerce.css';
+import './styles/admin.css';
 
 const client = new QueryClient();
 ReactDOM.createRoot(document.getElementById('root')!).render(

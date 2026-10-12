@@ -97,7 +97,7 @@ test('web real: recibe una compra y conserva su detalle histórico', async ({ pa
   await page.getByRole('dialog').getByRole('button', { name: 'Cerrar', exact: true }).click();
   await openModule(page, 'Proveedores');
   await supplierCard.getByRole('button', { name: /Saldo/ }).click();
-  await expect(page.getByRole('dialog')).toContainText('Crédito a favor');
+  await expect(page.getByRole('dialog')).toContainText('A nuestro favor');
   await expect(page.getByRole('dialog')).toContainText('$ 900,00');
 
   await page.setViewportSize({ width: 390, height: 844 });

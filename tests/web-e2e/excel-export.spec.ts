@@ -192,7 +192,7 @@ test('Excel: filtros actuales, descarga real y diálogo usable en celular', asyn
   await page.getByRole('dialog').getByRole('button', { name: 'Volver', exact: true }).click();
   await page
     .getByRole('navigation', { name: 'Módulos' })
-    .getByRole('button', { name: 'Administración', exact: true })
+    .getByRole('button', { name: 'Configuración', exact: true })
     .click();
   await page.getByRole('button', { name: 'Usuarios', exact: true }).click();
   await page.getByLabel('Buscar usuarios').fill('jefe');

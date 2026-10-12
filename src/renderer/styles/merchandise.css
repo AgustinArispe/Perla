@@ -1,0 +1,298 @@
+/* Catalog and logistics keep the Perla operational palette and normal-flow footers. */
+.product-page-heading .heading-actions {
+  flex-wrap: wrap;
+  align-items: start;
+  justify-content: flex-end;
+}
+.product-maintenance {
+  max-width: 560px;
+}
+.product-maintenance > summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  background: var(--surface);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+.product-maintenance > summary::-webkit-details-marker {
+  display: none;
+}
+.product-maintenance > summary:hover,
+.product-maintenance[open] > summary {
+  background: var(--surface-selected);
+}
+.product-maintenance > summary:focus-visible {
+  outline: 2px solid var(--navy);
+  outline-offset: 3px;
+}
+.product-maintenance-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 10px;
+}
+.merchandise-catalog .catalog-toolbar,
+.stock-card .catalog-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+  padding: 14px 18px;
+}
+.merchandise-catalog .catalog-toolbar > .search-field,
+.stock-card .catalog-toolbar > .search-field {
+  flex: 1 1 280px;
+}
+.merchandise-catalog .catalog-toolbar > .filter-label,
+.stock-card .catalog-toolbar > .filter-label {
+  flex: 0 1 120px;
+}
+.merchandise-catalog .catalog-selection-bar,
+.replenishment-workspace .catalog-selection-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  padding: 12px 18px;
+  color: var(--ink);
+  background: var(--surface-selected);
+}
+.merchandise-catalog .catalog-selection-bar > span,
+.replenishment-selection > span {
+  flex: 1 1 240px;
+  font-size: 13px;
+}
+.product-row-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  white-space: nowrap;
+}
+.merchandise-catalog td,
+.stock-card td {
+  padding-block: 13px;
+}
+.stock-card .stock-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.stock-card .stock-quantity,
+.stock-card .stock-minimum,
+.replenishment-quantity {
+  font-variant-numeric: tabular-nums;
+}
+.locations-page .location-workspace {
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 20px;
+  margin-bottom: 0;
+}
+.locations-page .location-inventory {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+.locations-page .location-inventory .dashboard-panel-heading {
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.locations-page .location-inventory .dashboard-panel-heading small {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink-soft);
+}
+.locations-page .location-inventory .dashboard-table-scroll {
+  position: relative;
+  max-height: min(460px, 60vh);
+  min-height: 0;
+  overflow: auto;
+  scrollbar-color: var(--line-strong) var(--surface-subtle);
+  scrollbar-width: thin;
+}
+.locations-page .location-inventory > .table-pagination {
+  position: static;
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 64px;
+  padding: 12px 18px;
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+}
+.locations-page .transfer-surface .transfer-list {
+  max-height: none;
+  overflow: visible;
+  padding-right: 0;
+}
+.locations-page .transfer-list > article {
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 16px;
+}
+.locations-page .transfer-number {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.locations-page .transfer-surface .export-filter-bar {
+  align-items: flex-end;
+}
+.replenishment-workspace .replenishment-filters {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) minmax(200px, 1.5fr) minmax(110px, 0.65fr) minmax(
+      180px,
+      1fr
+    );
+  align-items: end;
+  gap: 12px;
+}
+.replenishment-filters > details {
+  grid-column: 1 / 4;
+  align-self: center;
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+.replenishment-filters > details > summary {
+  cursor: pointer;
+}
+.replenishment-filters > details[open] {
+  padding: 12px 0;
+}
+.replenishment-filters > details p {
+  max-width: 70ch;
+  margin-block: 12px;
+  line-height: 1.6;
+}
+.replenishment-filters > .button {
+  justify-self: end;
+}
+.replenishment-calendar-notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+}
+.replenishment-calendar-notice > span {
+  flex: 1 1 400px;
+}
+.replenishment-workspace .replenishment-calendar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+}
+.replenishment-calendar > p,
+.replenishment-calendar > .field {
+  flex-basis: 100%;
+}
+.replenishment-calendar > label:not(.field) {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.replenishment-quantity {
+  width: 7rem;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  color: var(--ink);
+  background: var(--surface);
+}
+.replenishment-workspace .replenishment-order-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  padding: 20px;
+  scroll-margin-top: 24px;
+}
+.replenishment-order-form > h2,
+.replenishment-order-form > p {
+  grid-column: 1 / -1;
+}
+.replenishment-order-form > .button {
+  justify-self: start;
+}
+.replenishment-chosen-summary {
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 1100px) {
+  .merchandise-catalog .catalog-toolbar > .search-field,
+  .stock-card .catalog-toolbar > .search-field {
+    flex-basis: 100%;
+  }
+  .locations-page .location-workspace {
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: 14px;
+  }
+  .replenishment-workspace .replenishment-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .replenishment-filters > details {
+    grid-column: 1 / -1;
+  }
+  .replenishment-filters > .button {
+    justify-self: start;
+  }
+}
+@media (max-width: 760px) {
+  .product-page-heading .heading-actions {
+    justify-content: flex-start;
+  }
+  .product-maintenance-actions {
+    justify-content: flex-start;
+  }
+  .locations-page .location-workspace {
+    grid-template-columns: 1fr;
+  }
+  .locations-page .location-directory {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .locations-page .location-directory h2 {
+    flex-basis: 100%;
+  }
+  .locations-page .location-directory-row {
+    flex: 1 1 180px;
+    margin-bottom: 0;
+  }
+  .locations-page .transfer-list > article {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .locations-page .transfer-list .row-actions {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+}
+@media (max-width: 480px) {
+  .replenishment-workspace .replenishment-filters,
+  .replenishment-workspace .replenishment-order-form {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .merchandise-catalog .catalog-toolbar > .filter-label,
+  .stock-card .catalog-toolbar > .filter-label {
+    flex: 1 1 120px;
+  }
+  .locations-page .transfer-list > article {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -77,6 +77,7 @@ export interface WeeklySummary {
   generatedAt: string;
   totals: ReportTotals;
   profitability: {
+    coverageBasis?: 'ABSOLUTE_MOVEMENT_NET';
     knownCostCents: number;
     coveredNetCents: number;
     grossMarginCents: number;

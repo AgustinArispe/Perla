@@ -1,5 +1,8 @@
+import { PageHeader } from '../../components/PageHeader';
 import { ExportButton } from '../../components/ExportButton';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
+import { useRememberedState } from '../../components/useRememberedState';
+import { DailySalesChart } from './DailySalesChart';
 import { useQuery } from '@tanstack/react-query';
 import { api, unwrap, errorMessage } from '../../api';
 import { formatMoney } from '../../../domain/values';
@@ -19,15 +22,18 @@ function dayLabel(value: string) {
 }
 export function DashboardPage({
   onOpenStock,
+  onOpenDay,
   profitabilityEnabled = false,
   locationsEnabled = false,
 }: {
   onOpenStock?: () => void;
+  onOpenDay?: (date: string) => void;
   profitabilityEnabled?: boolean;
   locationsEnabled?: boolean;
 }) {
-  const chartRef = useRef<HTMLDivElement>(null);
-  const [month, setMonth] = useState(() =>
+  const [month, setMonth] = useRememberedState(
+    'results',
+    'month',
     new Intl.DateTimeFormat('sv-SE', {
       timeZone: 'America/Argentina/Buenos_Aires',
       year: 'numeric',
@@ -36,8 +42,6 @@ export function DashboardPage({
   );
   const [printing, setPrinting] = useState(false);
   const [exploring, setExploring] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const [selectionMotion, setSelectionMotion] = useState(true);
   const currentMonth = new Intl.DateTimeFormat('sv-SE', {
     timeZone: 'America/Argentina/Buenos_Aires',
     year: 'numeric',
@@ -45,7 +49,6 @@ export function DashboardPage({
   }).format(new Date());
   function selectMonth(value: string) {
     setMonth(value);
-    setSelectedDate(null);
     setExploring(false);
   }
   function stepMonth(direction: number) {
@@ -62,92 +65,89 @@ export function DashboardPage({
     retry: false,
   });
   const data = report.data;
-  const maxDaily = Math.max(0, ...(data?.daily.map((day) => day.netCents) ?? []));
-  const maxMagnitude = Math.max(0, ...(data?.daily.map((day) => Math.abs(day.netCents)) ?? []));
-  const selectedDay = data?.daily.find((day) => day.date === selectedDate);
-  useEffect(() => {
-    function showLatestDays() {
-      if (!window.matchMedia('(max-width: 700px)').matches) return;
-      const chart = chartRef.current;
-      if (chart) chart.scrollLeft = chart.scrollWidth - chart.clientWidth;
-    }
-    showLatestDays();
-    window.addEventListener('resize', showLatestDays);
-    return () => window.removeEventListener('resize', showLatestDays);
-  }, [data?.period.to]);
   return (
     <>
-      <div className="page-heading dashboard-heading">
-        <div>
-          <h1>Resumen mensual</h1>
-        </div>
-        <div className="dashboard-heading-actions">
-          <details className="dashboard-export-menu">
-            <summary>Exportar</summary>
-            <div>
-              <ExportButton
-                dataset="dashboard"
-                filters={{ month }}
-                label="Resumen mensual · Excel"
-              />
-              <ExportButton dataset="payments" filters={{ month }} label="Medios de pago · Excel" />
-              <ExportButton
-                dataset="ranking"
-                filters={{ month, rank: 'revenue' }}
-                label="Productos · Excel"
-              />
-              {profitabilityEnabled && (
-                <ExportButton dataset="profitability" filters={{ month }} label="Margen · Excel" />
-              )}
-              {data && (
-                <button className="button secondary" onClick={() => setPrinting(true)}>
-                  Reporte PDF
-                </button>
-              )}
+      <PageHeader
+        title="Resultados"
+        context="Ventas, productos y margen del período elegido."
+        className="dashboard-heading"
+        actions={
+          <div className="dashboard-heading-actions">
+            <details className="dashboard-export-menu">
+              <summary>Exportar</summary>
+              <div>
+                <ExportButton
+                  dataset="dashboard"
+                  filters={{ month }}
+                  label="Resumen mensual · Excel"
+                />
+                <ExportButton
+                  dataset="payments"
+                  filters={{ month }}
+                  label="Medios de pago · Excel"
+                />
+                <ExportButton
+                  dataset="ranking"
+                  filters={{ month, rank: 'revenue' }}
+                  label="Productos · Excel"
+                />
+                {profitabilityEnabled && (
+                  <ExportButton
+                    dataset="profitability"
+                    filters={{ month }}
+                    label="Margen · Excel"
+                  />
+                )}
+                {data && (
+                  <button className="button secondary" onClick={() => setPrinting(true)}>
+                    Reporte PDF
+                  </button>
+                )}
+              </div>
+            </details>
+            <div className="dashboard-month-navigation" role="group" aria-label="Cambiar mes">
+              <button
+                className="button secondary"
+                type="button"
+                aria-label="Mes anterior"
+                disabled={!month || month === '1000-01'}
+                onClick={() => stepMonth(-1)}
+              >
+                <Icon name="arrow" size={18} style={{ transform: 'rotate(180deg)' }} />
+              </button>
+              <label className="field">
+                Mes
+                <input
+                  aria-label="Mes"
+                  type="month"
+                  value={month}
+                  min="1000-01"
+                  max={currentMonth}
+                  onChange={(event) => selectMonth(event.target.value)}
+                />
+              </label>
+              <button
+                className="button secondary"
+                type="button"
+                aria-label="Mes siguiente"
+                disabled={!month || month >= currentMonth}
+                onClick={() => stepMonth(1)}
+              >
+                <Icon name="arrow" size={18} />
+              </button>
             </div>
-          </details>
-          <div className="dashboard-month-navigation" role="group" aria-label="Cambiar mes">
-            <button
-              className="button secondary"
-              type="button"
-              aria-label="Mes anterior"
-              disabled={!month || month === '1000-01'}
-              onClick={() => stepMonth(-1)}
-            >
-              <Icon name="arrow" size={18} style={{ transform: 'rotate(180deg)' }} />
-            </button>
-            <label className="field">
-              Mes
-              <input
-                aria-label="Mes"
-                type="month"
-                value={month}
-                min="1000-01"
-                max={currentMonth}
-                onChange={(event) => selectMonth(event.target.value)}
-              />
-            </label>
-            <button
-              className="button secondary"
-              type="button"
-              aria-label="Mes siguiente"
-              disabled={!month || month >= currentMonth}
-              onClick={() => stepMonth(1)}
-            >
-              <Icon name="arrow" size={18} />
-            </button>
+            {month !== currentMonth && (
+              <button
+                className="button secondary"
+                type="button"
+                onClick={() => selectMonth(currentMonth)}
+              >
+                Mes actual
+              </button>
+            )}
           </div>
-          {month !== currentMonth && (
-            <button
-              className="button secondary"
-              type="button"
-              onClick={() => selectMonth(currentMonth)}
-            >
-              Mes actual
-            </button>
-          )}
-        </div>
-      </div>
+        }
+      />
       {report.isError && (
         <div className="alert error" role="alert">
           {errorMessage(report.error)}{' '}
@@ -212,7 +212,7 @@ export function DashboardPage({
                   <strong>{formatMoney(data.profitability.grossMarginCents)}</strong>
                   <small>
                     {data.profitability.coverageBasisPoints < 10000
-                      ? `${data.profitability.coverageBasisPoints / 100}% de ventas con costo registrado · Parcial`
+                      ? `${(data.profitability.coverageBasisPoints / 100).toLocaleString('es-AR')}% de ${data.profitability.coverageBasis === 'ABSOLUTE_MOVEMENT_NET' ? 'movimientos' : 'ventas'} con costo registrado · Parcial`
                       : 'Costos registrados completos'}
                   </small>
                   <small>No es ganancia neta</small>
@@ -230,137 +230,10 @@ export function DashboardPage({
           </button>
           {exploring && <PeriodComparison key={month} monthlyReport={data} />}
 
-          <section className="dashboard-panel daily-sales-panel">
-            <div className="perla-chart-heading">
-              <div>
-                <h2>Ventas por día</h2>
-                <small>
-                  Del {dayLabel(data.period.from)} al {dayLabel(data.period.to)}
-                  {data.period.open
-                    ? ' · Mes en curso; días futuros fuera del informe'
-                    : ' · Mes completo'}
-                </small>
-              </div>
-              {maxDaily > 0 && (
-                <span>
-                  Mejor día{' '}
-                  <strong>
-                    {dayLabel(data.daily.find((day) => day.netCents === maxDaily)!.date)}
-                  </strong>{' '}
-                  · {formatMoney(maxDaily)}
-                </span>
-              )}
-            </div>
-            {data.daily.some((day) => day.netCents < 0) && (
-              <p className="dashboard-note">
-                Altura por importe absoluto. Los días con neto negativo llevan signo −.
-              </p>
-            )}
-            {maxMagnitude === 0 ? (
-              <div className="dashboard-empty-chart" role="status">
-                {data.totals.saleCount === 0
-                  ? 'Todavía no hay ventas en este mes.'
-                  : 'Las ventas de este mes no tienen importe neto.'}
-              </div>
-            ) : (
-              <>
-                <div className="daily-chart-area">
-                  <div className="daily-chart-scale">
-                    <span>{formatMoney(maxMagnitude)}</span>
-                    <span>$ 0</span>
-                  </div>
-                  <div
-                    ref={chartRef}
-                    className="daily-chart"
-                    aria-label="Importe neto vendido por día"
-                    tabIndex={0}
-                  >
-                    {data.daily.map((d) => (
-                      <button
-                        key={d.date}
-                        type="button"
-                        className="daily-chart-day"
-                        aria-pressed={selectedDate === d.date}
-                        onClick={(event) => {
-                          setSelectionMotion(event.detail !== 0);
-                          setSelectedDate(d.date);
-                        }}
-                        data-negative={d.netCents < 0}
-                        data-peak={d.netCents === maxDaily && maxDaily > 0}
-                        title={`${dayLabel(d.date)} · ${formatMoney(d.netCents)} · ${d.saleCount} ${d.saleCount === 1 ? 'venta' : 'ventas'}`}
-                        aria-label={`${dayLabel(d.date)}: ${formatMoney(d.netCents)}, ${d.saleCount} ${d.saleCount === 1 ? 'venta' : 'ventas'}`}
-                      >
-                        <div>
-                          <span
-                            style={{
-                              height: `${(100 * Math.abs(d.netCents)) / Math.max(maxMagnitude, 1)}%`,
-                            }}
-                          />
-                        </div>
-                        <small>{d.date.slice(8)}</small>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                {selectedDay && (
-                  <div
-                    key={selectedDay.date}
-                    className="daily-chart-selection"
-                    data-motion={selectionMotion ? 'gentle' : 'instant'}
-                    role="status"
-                    aria-live="polite"
-                  >
-                    <strong>{dayLabel(selectedDay.date)}</strong>
-                    <span>
-                      {selectedDay.saleCount.toLocaleString('es-AR')}{' '}
-                      {selectedDay.saleCount === 1 ? 'venta' : 'ventas'}
-                    </span>
-                    <strong>{formatMoney(selectedDay.netCents)}</strong>
-                    <span>
-                      Promedio{' '}
-                      {formatMoney(
-                        selectedDay.saleCount
-                          ? Math.round(selectedDay.netCents / selectedDay.saleCount)
-                          : 0,
-                      )}
-                    </span>
-                    <button
-                      type="button"
-                      className="button ghost small"
-                      aria-label="Cerrar detalle del día"
-                      onClick={() => setSelectedDate(null)}
-                    >
-                      <Icon name="close" size={18} />
-                    </button>
-                  </div>
-                )}
-              </>
-            )}
-            <details>
-              <summary>Ver importes diarios</summary>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Día</th>
-                    <th>Ventas</th>
-                    <th>Neto</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.daily.map((d) => (
-                    <tr key={d.date}>
-                      <td>{dayLabel(d.date)}</td>
-                      <td>{d.saleCount}</td>
-                      <td>{formatMoney(d.netCents)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </details>
-          </section>
-          <div className="dashboard-grid">
-            <PaymentBreakdown report={data} />
+          <DailySalesChart key={month} report={data} {...(onOpenDay ? { onOpenDay } : {})} />
+          <div className="results-analysis-grid">
             <TopProducts report={data} />
+            <PaymentBreakdown report={data} />
           </div>
 
           {profitabilityEnabled && (
@@ -381,7 +254,7 @@ export function DashboardPage({
               <div className="profitability-metrics">
                 {data.profitability.coverageBasisPoints < 10000 && (
                   <article>
-                    <span>Ventas con costo registrado</span>
+                    <span>Neto de movimientos con costo</span>
                     <strong>{formatMoney(data.profitability.coveredNetCents)}</strong>
                   </article>
                 )}
@@ -402,7 +275,7 @@ export function DashboardPage({
                   {data.profitability.missingLineCount === 1
                     ? 'renglón sin costo'
                     : 'renglones sin costo'}
-                  . El margen considera la venta cubierta.
+                  . El margen considera solamente los movimientos con costo conocido.
                 </p>
               )}
               <small>No incluye gastos, impuestos ni comisiones.</small>
@@ -487,12 +360,12 @@ export function DashboardPage({
             </aside>
           )}
           <p className="dashboard-note">
-            Actualizado:{' '}
+            Último movimiento:{' '}
             {data.lastChangedAt
               ? new Date(data.lastChangedAt).toLocaleString('es-AR', {
                   timeZone: 'America/Argentina/Buenos_Aires',
                 })
-              : 'sin ventas'}
+              : 'sin actividad'}
           </p>
         </>
       )}

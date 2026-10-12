@@ -253,11 +253,7 @@ export function PurchaseDraft({
         </div>
       )}
       <div className="purchase-top-grid">
-        <div className="purchase-entry dashboard-panel">
-          <div className="purchase-step">
-            <span>1</span>
-            <strong>Proveedor</strong>
-          </div>
+        <div className="purchase-entry dashboard-panel commerce-purchase-entry">
           <div className="supplier-picker">
             <EntityPicker
               label="Proveedor"
@@ -289,10 +285,7 @@ export function PurchaseDraft({
               <Icon name="plus" size={18} /> Nuevo
             </button>
           </div>
-          <div className="purchase-step">
-            <span>2</span>
-            <strong>Productos</strong>
-          </div>
+          <h2 className="purchase-entry-title">Agregar productos</h2>
           <label className="purchase-scan">
             <Icon name="search" size={20} />
             <input
@@ -305,6 +298,7 @@ export function PurchaseDraft({
                   void scanProduct();
                 }
               }}
+              aria-label="Escanear código para compra"
               placeholder="Escanear código + Enter"
               autoFocus
             />

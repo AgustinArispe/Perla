@@ -1,3 +1,4 @@
+import { PageHeading } from '../../components/PageHeader';
 import { useRef, useState, type FormEvent } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { errorMessage } from '../../api';
@@ -49,8 +50,8 @@ export function BackupsPage({ onRestored }: { onRestored: () => Promise<void> })
     }
   }
   return (
-    <>
-      <div className="page-heading">
+    <div className="admin-workspace backups-workspace">
+      <PageHeading className="page-heading">
         <div>
           <h1>Copias de seguridad</h1>
         </div>
@@ -67,7 +68,7 @@ export function BackupsPage({ onRestored }: { onRestored: () => Promise<void> })
         >
           {busy ? 'Procesando…' : 'Crear copia'}
         </button>
-      </div>
+      </PageHeading>
       {error && (
         <div className="alert error" role="alert">
           {error}
@@ -105,7 +106,7 @@ export function BackupsPage({ onRestored }: { onRestored: () => Promise<void> })
             </button>
           </div>
         )}
-        <div className="dashboard-table-scroll">
+        <div className="dashboard-table-scroll" aria-busy={backups.isFetching}>
           <table>
             <thead>
               <tr>
@@ -129,7 +130,7 @@ export function BackupsPage({ onRestored }: { onRestored: () => Promise<void> })
                     KB
                   </td>
                   <td>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                    <div className="row-actions">
                       <button
                         className="button secondary small"
                         disabled={busy}
@@ -206,7 +207,7 @@ export function BackupsPage({ onRestored }: { onRestored: () => Promise<void> })
       {preview && (
         <RestoreForm preview={preview} onClose={() => setPreview(null)} onRestored={onRestored} />
       )}
-    </>
+    </div>
   );
 }
 

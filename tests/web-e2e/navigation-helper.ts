@@ -9,10 +9,10 @@ const destinations: Record<string, [string, string?]> = {
   Proveedores: ['Compras', 'Proveedores'],
   Histórico: ['Ventas', 'Historial'],
   Comprobantes: ['Ventas', 'Comprobantes'],
-  Usuarios: ['Administración', 'Usuarios'],
-  Configuración: ['Administración', 'Configuración'],
-  Actividad: ['Administración', 'Actividad'],
-  Backups: ['Administración', 'Copias'],
+  Usuarios: ['Configuración', 'Usuarios'],
+  Configuración: ['Configuración', 'Configuración'],
+  Actividad: ['Configuración', 'Actividad'],
+  Backups: ['Configuración', 'Copias'],
   Agenda: ['Cobros y pagos'],
 };
 
@@ -29,7 +29,7 @@ export async function openModule(page: Page, destination: string) {
       ? 'Trabajo diario'
       : ['Productos', 'Stock', 'Compras', 'Ubicaciones'].includes(group)
         ? 'Mercadería'
-        : group === 'Administración'
+        : group === 'Configuración'
           ? 'Administración'
           : 'Negocio';
     const compactSection = nav.getByRole('button', {
@@ -44,7 +44,7 @@ export async function openModule(page: Page, destination: string) {
   }
   await nav.getByRole('button', { name: group, exact: true }).click();
   if (area) {
-    const tabs = page.locator(`main > [aria-label="Áreas de ${group}"]`);
+    const tabs = page.locator(`main [aria-label="Áreas de ${group}"]`);
     await expect(tabs).toBeVisible();
     await tabs.getByRole('button', { name: area, exact: true }).click();
   }

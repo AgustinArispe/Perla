@@ -1,3 +1,4 @@
+import { PageHeading } from '../../components/PageHeader';
 import { activityLabel } from '../audit/operation-labels';
 import { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
@@ -129,7 +130,7 @@ export function StructuredActivityPanel({
   }
   return (
     <>
-      <div className="page-heading">
+      <PageHeading className="page-heading">
         <h1>Cambios del negocio</h1>
         {onBack && (
           <button className="button secondary" onClick={onBack}>
@@ -143,7 +144,7 @@ export function StructuredActivityPanel({
         >
           Descargar Excel
         </button>
-      </div>
+      </PageHeading>
       <section className="panel">
         <div className="movement-filters">
           <label className="field">

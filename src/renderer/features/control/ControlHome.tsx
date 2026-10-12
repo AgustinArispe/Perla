@@ -1,3 +1,4 @@
+import { PageHeading } from '../../components/PageHeader';
 import { useQuery } from '@tanstack/react-query';
 import type { ControlHome as HomeData, ControlPending } from '../../../shared/control';
 import { useState } from 'react';
@@ -37,11 +38,16 @@ export function ControlHome({
   });
   const data = home.data;
   const overview = data?.overview;
-  const pending = data?.groups.filter((group) => group.total > 0) ?? [];
+  const pending = (data?.groups.filter((group) => group.total > 0) ?? []).sort((a, b) => {
+    // Prioritize observed operational categories without inferring severity from a sample.
+    const order = (group: ControlPending) =>
+      group.action === 'expiries' ? 0 : group.action === 'cashDifferences' ? 1 : 2;
+    return order(a) - order(b);
+  });
   const openRegisters = data?.registers.filter((register) => register.openedAt).length ?? 0;
   return (
     <div className="home-workspace">
-      <div className="page-heading home-heading">
+      <PageHeading className="page-heading home-heading">
         <div>
           <h1>Inicio</h1>
           <p>Tu negocio, de un vistazo.</p>
@@ -59,7 +65,7 @@ export function ControlHome({
             Vender
           </button>
         </div>
-      </div>
+      </PageHeading>
       {home.isPending && (
         <div className="home-loading" role="status">
           Preparando el resumen de tu negocio…
@@ -92,6 +98,15 @@ export function ControlHome({
               </div>
             </dl>
             <p>Importe neto: ventas menos devoluciones.</p>
+            {overview.today.saleCount === 0 && (
+              <p className="home-day-context">
+                {overview.today.netCents !== 0
+                  ? 'Hoy no se completaron ventas. El neto refleja devoluciones registradas hoy.'
+                  : overview.lastSaleDate
+                    ? 'Hoy todavía no se completaron ventas. Podés revisar los pendientes o abrir Caja para vender.'
+                    : 'Todavía no hay ventas registradas. Abrí Caja para registrar tu primera venta.'}
+              </p>
+            )}
           </div>
           <div className="home-week">
             <h2>Esta semana</h2>
@@ -123,6 +138,12 @@ export function ControlHome({
                   : 'Al día'}
               </span>
             </div>
+            {pending.length > 1 && (
+              <p className="home-attention-context">
+                Vencimientos y diferencias de caja primero. Abrí cada área para revisar sus
+                registros.
+              </p>
+            )}
             {!pending.length && (
               <div className="home-clear">
                 <Icon name="check" size={24} />
@@ -290,7 +311,9 @@ export function WorkspacePreference({ owner }: { owner: boolean }) {
               'Compras',
               ...(owner ? ['Resumen mensual'] : []),
             ].map((page) => (
-              <option key={page}>{page}</option>
+              <option key={page} value={page}>
+                {page === 'Resumen mensual' ? 'Resultados' : page}
+              </option>
             ))}
           </select>
         </label>

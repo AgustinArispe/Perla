@@ -1,3 +1,5 @@
+import { PageHeading } from '../../components/PageHeader';
+import { PageHeader } from '../../components/PageHeader';
 import { useState, type FormEvent } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { OperationSchemas } from '../../../shared/operations';
@@ -30,6 +32,7 @@ const methods: Record<Method, string> = {
   TRANSFER: 'Transferencia',
   OTHER: 'Otro',
 };
+const settingsTabs = ['Negocio', 'Funciones', 'Terminales', 'Lector', 'Exportar'];
 
 export function SettingsPage({
   onOpenPurchaseHistory,
@@ -54,20 +57,23 @@ export function SettingsPage({
   const [editing, setEditing] = useState<Terminal | null | undefined>();
   const [notice, setNotice] = useState('');
   return (
-    <>
-      <div className="page-heading">
-        <h1>Configuración</h1>
-        <button
-          className="button secondary"
-          disabled={settings.isFetching || terminals.isFetching}
-          onClick={() => {
-            void settings.refetch();
-            void terminals.refetch();
-          }}
-        >
-          Actualizar
-        </button>
-      </div>
+    <div className="admin-workspace settings-workspace">
+      <PageHeader
+        title="Configuración"
+        context="Negocio, terminales y funciones disponibles."
+        actions={
+          <button
+            className="button secondary"
+            disabled={settings.isFetching || terminals.isFetching}
+            onClick={() => {
+              void settings.refetch();
+              void terminals.refetch();
+            }}
+          >
+            Actualizar
+          </button>
+        }
+      />
       {notice && (
         <p className="status-message" role="status">
           {notice}
@@ -87,19 +93,41 @@ export function SettingsPage({
         </div>
       )}
       <div className="settings-tabs" role="tablist" aria-label="Configuración">
-        {['Negocio', 'Funciones', 'Terminales', 'Lector', 'Exportar'].map((item) => (
+        {settingsTabs.map((item, index) => (
           <button
             key={item}
+            id={`settings-tab-${item}`}
             role="tab"
+            aria-controls="settings-panel"
             aria-selected={tab === item}
+            tabIndex={tab === item ? 0 : -1}
             className={tab === item ? 'selected' : ''}
             onClick={() => setTab(item)}
+            onKeyDown={(event) => {
+              let next: number | undefined;
+              if (event.key === 'ArrowRight') next = (index + 1) % settingsTabs.length;
+              if (event.key === 'ArrowLeft')
+                next = (index + settingsTabs.length - 1) % settingsTabs.length;
+              if (event.key === 'Home') next = 0;
+              if (event.key === 'End') next = settingsTabs.length - 1;
+              if (next === undefined) return;
+              event.preventDefault();
+              const item = settingsTabs[next]!;
+              setTab(item);
+              document.getElementById(`settings-tab-${item}`)?.focus();
+            }}
           >
             {item}
           </button>
         ))}
       </div>
-      <div className="settings-layout" role="tabpanel" aria-label={tab}>
+      <div
+        id="settings-panel"
+        className="settings-layout"
+        role="tabpanel"
+        aria-labelledby={`settings-tab-${tab}`}
+        tabIndex={0}
+      >
         {settings.data && tab === 'Negocio' && (
           <BusinessForm
             key={settings.data.revision}
@@ -116,12 +144,12 @@ export function SettingsPage({
             className="dashboard-panel settings-terminals"
             aria-labelledby="terminal-heading"
           >
-            <div className="page-heading">
+            <PageHeading className="page-heading">
               <h2 id="terminal-heading">Terminales</h2>
               <button className="button primary" onClick={() => setEditing(null)}>
                 Crear terminal
               </button>
-            </div>
+            </PageHeading>
             {terminals.isError && (
               <div className="alert error" role="alert">
                 {errorMessage(terminals.error)}{' '}
@@ -176,7 +204,7 @@ export function SettingsPage({
           </section>
         )}
         {tab === 'Exportar' && <Exports />}
-        {tab === 'Lector' && <ScannerTest />}
+        {tab === 'Lector' && <ScannerTest autoFocusInput={false} />}
       </div>
       {editing !== undefined && (
         <TerminalForm
@@ -190,7 +218,7 @@ export function SettingsPage({
           }}
         />
       )}
-    </>
+    </div>
   );
 }
 
@@ -338,6 +366,7 @@ function TerminalForm({
             <select
               name="locationId"
               defaultValue={terminal?.locationId ?? locations.find((item) => item.isDefault)?.id}
+              disabled={busy}
             >
               {locations
                 .filter((item) => item.active || item.id === terminal?.locationId)

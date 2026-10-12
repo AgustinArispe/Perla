@@ -1,3 +1,4 @@
+import { PageHeading, WorkspaceTabs } from './components/PageHeader';
 import { authorizedNavigation } from './navigation';
 import { StructuredActivityPanel } from './features/control/StructuredActivityPanel';
 import { controlValue } from './features/control/client';
@@ -174,6 +175,7 @@ function Workspace({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const sidebarRef = useRef<HTMLElement>(null);
   const [stockShortages, setStockShortages] = useState(false);
+  const [resultsDay, setResultsDay] = useState<string | undefined>();
   const [purchaseInitialView, setPurchaseInitialView] = useState<'receive' | 'history'>('receive');
   const [narrow, setNarrow] = useState(() => window.matchMedia('(max-width: 900px)').matches);
   useEffect(() => {
@@ -376,6 +378,30 @@ function Workspace({
       });
   }
   const currentSection = visibleSections.some(([, title]) => title === section) ? section : 'Caja';
+  const moduleTabs =
+    currentNavigation && currentNavigation.areas.length > 1 ? (
+      <div
+        className="segmented-control workspace-tabs"
+        aria-label={`Áreas de ${currentNavigation.title}`}
+      >
+        {currentNavigation.areas.map(([target, label]) => (
+          <button
+            key={label}
+            className={
+              target === currentSection &&
+              (activeArea
+                ? activeArea === label
+                : label === currentNavigation.areas.find(([id]) => id === currentSection)?.[1])
+                ? 'active'
+                : ''
+            }
+            onClick={() => void openArea(target, label)}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+    ) : null;
   return (
     <div
       className={`app-shell${menuCollapsed ? ' sidebar-collapsed' : ''}`}
@@ -538,261 +564,258 @@ function Workspace({
           </div>
         </header>
         <main className="page-content">
-          {sessionError && (
-            <div className="alert error" role="alert">
-              {sessionError}
-            </div>
-          )}
-          {status.isError && (
-            <div className="alert error" role="alert">
-              {errorMessage(status.error)}{' '}
-              <button className="button secondary small" onClick={() => void reconnect()}>
-                Reintentar conexión
-              </button>
-            </div>
-          )}
-          {preferenceOpen && (
-            <WorkspacePreference owner={user.role === 'OWNER' || user.role === 'ADMIN'} />
-          )}
-          {(currentNavigation?.title === 'Stock' ||
-            (currentNavigation?.title === 'Turnos' && currentSection === 'Controles')) && (
-            <div className="page-heading">
-              <h1>{currentNavigation.title}</h1>
-            </div>
-          )}
-          {currentNavigation && currentNavigation.areas.length > 1 && (
-            <div className="segmented-control" aria-label={`Áreas de ${currentNavigation.title}`}>
-              {currentNavigation.areas.map(([target, label]) => (
-                <button
-                  key={label}
-                  className={
-                    target === currentSection &&
-                    (activeArea
-                      ? activeArea === label
-                      : label ===
-                        currentNavigation.areas.find(([id]) => id === currentSection)?.[1])
-                      ? 'active'
-                      : ''
-                  }
-                  onClick={() => void openArea(target, label)}
-                >
-                  {label}
+          <WorkspaceTabs.Provider value={moduleTabs}>
+            {sessionError && (
+              <div className="alert error" role="alert">
+                {sessionError}
+              </div>
+            )}
+            {status.isError && (
+              <div className="alert error" role="alert">
+                {errorMessage(status.error)}{' '}
+                <button className="button secondary small" onClick={() => void reconnect()}>
+                  Reintentar conexión
                 </button>
-              ))}
-            </div>
-          )}
-          <div
-            className={
-              [
-                'Inicio',
-                'Reposición',
-                'Revisión',
-                'Controles',
-                'Agenda',
-                'Resumen semanal',
-                'Actividad',
-              ].includes(currentSection)
-                ? 'control-surface'
-                : undefined
-            }
-          >
-            {currentSection === 'Inicio' ? (
-              <ControlHome
-                stockEnabled={Boolean(features.data?.enabled.STOCK_CONTROL)}
-                owner={user.role === 'OWNER' || user.role === 'ADMIN'}
-                onOpen={(area, action, id, locationId) => {
-                  setControlTarget({
-                    action,
-                    ...(id ? { id } : {}),
-                    ...(locationId ? { locationId } : {}),
-                  });
-                  if (area === 'module')
-                    void navigate(action === 'Resumen mensual' ? 'Resumen mensual' : 'Caja');
-                  else if (area === 'operations')
-                    void (action === 'agenda'
-                      ? navigate('Agenda')
-                      : navigate('Controles').then((opened) => {
-                          if (opened)
-                            setActiveArea(
-                              action === 'expiries'
-                                ? 'Vencimientos'
-                                : action === 'cashDifferences'
-                                  ? 'Diferencias de caja'
-                                  : 'Conteos',
-                            );
-                        }));
-                  else if (area === 'commercial') void navigate('Revisión');
-                  else if (area === 'replenishment') {
-                    setStockShortages(true);
-                    void navigate(features.data?.enabled.REPLENISHMENT ? 'Reposición' : 'Stock');
+              </div>
+            )}
+            {preferenceOpen && (
+              <WorkspacePreference owner={user.role === 'OWNER' || user.role === 'ADMIN'} />
+            )}
+            {(currentNavigation?.title === 'Stock' ||
+              (currentNavigation?.title === 'Compras' && currentSection === 'Reposición') ||
+              (currentNavigation?.title === 'Turnos' && currentSection === 'Controles')) && (
+              <PageHeading className="page-heading">
+                <h1>{currentNavigation.title}</h1>
+              </PageHeading>
+            )}
+            <div
+              className={
+                [
+                  'Inicio',
+                  'Reposición',
+                  'Revisión',
+                  'Controles',
+                  'Agenda',
+                  'Resumen semanal',
+                  'Actividad',
+                ].includes(currentSection)
+                  ? 'control-surface'
+                  : undefined
+              }
+            >
+              {currentSection === 'Inicio' ? (
+                <ControlHome
+                  stockEnabled={Boolean(features.data?.enabled.STOCK_CONTROL)}
+                  owner={user.role === 'OWNER' || user.role === 'ADMIN'}
+                  onOpen={(area, action, id, locationId) => {
+                    setControlTarget({
+                      action,
+                      ...(id ? { id } : {}),
+                      ...(locationId ? { locationId } : {}),
+                    });
+                    if (area === 'module')
+                      void navigate(action === 'Resumen mensual' ? 'Resumen mensual' : 'Caja');
+                    else if (area === 'operations')
+                      void (action === 'agenda'
+                        ? navigate('Agenda')
+                        : navigate('Controles').then((opened) => {
+                            if (opened)
+                              setActiveArea(
+                                action === 'expiries'
+                                  ? 'Vencimientos'
+                                  : action === 'cashDifferences'
+                                    ? 'Diferencias de caja'
+                                    : 'Conteos',
+                              );
+                          }));
+                    else if (area === 'commercial') void navigate('Revisión');
+                    else if (area === 'replenishment') {
+                      setStockShortages(true);
+                      void navigate(features.data?.enabled.REPLENISHMENT ? 'Reposición' : 'Stock');
+                    }
+                  }}
+                />
+              ) : currentSection === 'Reposición' ? (
+                <ReplenishmentPanel
+                  embedded
+                  onBack={() => void navigate('Inicio')}
+                  key={activeArea}
+                  initial={{
+                    productId: controlTarget.id,
+                    locationId: controlTarget.locationId,
+                    ...(activeArea === 'Pedidos' ? { view: 'orders' } : {}),
+                  }}
+                />
+              ) : currentSection === 'Revisión' ? (
+                <CommercialPanel
+                  onBack={() => void navigate('Inicio')}
+                  initial={{
+                    view:
+                      controlTarget.action === 'rotation'
+                        ? 'rotation'
+                        : features.data?.enabled.COSTS_MARGIN
+                          ? 'prices'
+                          : 'rotation',
+                    productId: controlTarget.id,
+                  }}
+                />
+              ) : currentSection === 'Controles' ? (
+                <OperationsPanel
+                  embedded
+                  key={controlTarget.action + controlTarget.id}
+                  onBack={() => void navigate('Inicio')}
+                  initialTab={
+                    controlTarget.action === 'expiries'
+                      ? 'expiry'
+                      : controlTarget.action === 'cashDifferences'
+                        ? 'cash'
+                        : 'counts'
                   }
-                }}
-              />
-            ) : currentSection === 'Reposición' ? (
-              <ReplenishmentPanel
-                embedded
-                onBack={() => void navigate('Inicio')}
-                key={activeArea}
-                initial={{
-                  productId: controlTarget.id,
-                  locationId: controlTarget.locationId,
-                  ...(activeArea === 'Pedidos' ? { view: 'orders' } : {}),
-                }}
-              />
-            ) : currentSection === 'Revisión' ? (
-              <CommercialPanel
-                onBack={() => void navigate('Inicio')}
-                initial={{
-                  view:
-                    controlTarget.action === 'rotation'
-                      ? 'rotation'
-                      : features.data?.enabled.COSTS_MARGIN
-                        ? 'prices'
-                        : 'rotation',
-                  productId: controlTarget.id,
-                }}
-              />
-            ) : currentSection === 'Controles' ? (
-              <OperationsPanel
-                embedded
-                key={controlTarget.action + controlTarget.id}
-                onBack={() => void navigate('Inicio')}
-                initialTab={
-                  controlTarget.action === 'expiries'
-                    ? 'expiry'
-                    : controlTarget.action === 'cashDifferences'
-                      ? 'cash'
-                      : 'counts'
-                }
-                {...(controlTarget.action === 'expiries' && controlTarget.id
-                  ? { initialLotId: controlTarget.id }
-                  : {})}
-                {...(controlTarget.action === 'cashDifferences' && controlTarget.id
-                  ? { initialShiftId: controlTarget.id }
-                  : {})}
-                {...(controlTarget.locationId
-                  ? { initialLocationId: controlTarget.locationId }
-                  : {})}
-              />
-            ) : currentSection === 'Agenda' ? (
-              <AgendaPanel onBack={() => void navigate('Inicio')} />
-            ) : currentSection === 'Resumen semanal' ? (
-              <WeeklyPanel onBack={() => void navigate('Inicio')} />
-            ) : currentSection === 'Ayuda' ? (
-              <HelpPage role={user.role} />
-            ) : currentSection === 'Productos' ? (
-              <ProductList canChangePrices={user.role === 'OWNER' || user.role === 'ADMIN'} />
-            ) : currentSection === 'Stock' ? (
-              <StockList
-                embedded
-                key={stockShortages ? 'shortages' : 'all'}
-                initialFilter={stockShortages ? 'SHORTAGES' : 'ALL'}
-                lotsEnabled={Boolean(features.data?.enabled.LOTS)}
-              />
-            ) : currentSection === 'Compras' ? (
-              <PurchaseWorkspace
-                embedded
-                key={purchaseInitialView}
-                initialView={purchaseInitialView}
-                historyOnly={!features.data?.enabled.SUPPLIERS_PURCHASES}
-                lotsEnabled={Boolean(features.data?.enabled.LOTS)}
-                accountsEnabled={Boolean(features.data?.enabled.SUPPLIER_ACCOUNTS)}
-              />
-            ) : currentSection === 'Proveedores' ? (
-              <>
-                <div className="page-heading">
-                  <h1>Proveedores</h1>
-                </div>
-                <SupplierList accountsEnabled={Boolean(features.data?.enabled.SUPPLIER_ACCOUNTS)} />
-              </>
-            ) : currentSection === 'Usuarios' ? (
-              <UserList currentRole={user.role} />
-            ) : currentSection === 'Clientes' ? (
-              <CustomerPage
-                canManageCredit={
-                  Boolean(features.data?.enabled.CUSTOMER_CREDIT) &&
-                  (user.role === 'OWNER' || user.role === 'ADMIN')
-                }
-              />
-            ) : currentSection === 'Ubicaciones' ? (
-              <LocationsPage canConfigure={user.role === 'OWNER' || user.role === 'ADMIN'} />
-            ) : currentSection === 'Promociones' ? (
-              <PromotionPage />
-            ) : currentSection === 'Histórico' ? (
-              <SalesList
-                userId={user.id}
-                profitabilityEnabled={Boolean(features.data?.enabled.COSTS_MARGIN)}
-                returnsEnabled={Boolean(features.data?.enabled.RETURNS)}
-              />
-            ) : currentSection === 'Comprobantes' ? (
-              <ReceiptQueue />
-            ) : currentSection === 'Resumen mensual' ? (
-              <DashboardPage
-                profitabilityEnabled={Boolean(features.data?.enabled.COSTS_MARGIN)}
-                locationsEnabled={Boolean(features.data?.enabled.LOCATIONS_TRANSFERS)}
-                onOpenStock={() => {
-                  setStockShortages(true);
-                  void navigate('Stock');
-                }}
-              />
-            ) : currentSection === 'Configuración' ? (
-              <SettingsPage
-                onOpenPurchaseHistory={() => {
-                  setPurchaseInitialView('history');
-                  void openArea('Compras', 'Historial');
-                }}
-              />
-            ) : currentSection === 'Backups' ? (
-              <BackupsPage onRestored={onPasswordChanged} />
-            ) : currentSection === 'Turnos' ? (
-              <ShiftHistory />
-            ) : currentSection === 'Actividad' ? (
-              <>
-                <div className="segmented-control">
-                  <button
-                    className={!activityDetailed ? 'active' : ''}
-                    onClick={() => setActivityDetailed(false)}
-                  >
-                    Registro general
-                  </button>
-                  <button
-                    className={activityDetailed ? 'active' : ''}
-                    onClick={() => setActivityDetailed(true)}
-                  >
-                    Cambios detallados
-                  </button>
-                </div>
-                {activityDetailed ? <StructuredActivityPanel /> : <AuditPage />}
-              </>
-            ) : desktop ? (
-              <Checkout
-                user={user}
-                registerLeaveGuard={registerLeaveGuard}
-                customersEnabled={Boolean(features.data?.enabled.CUSTOMERS)}
-                customerCreditEnabled={Boolean(features.data?.enabled.CUSTOMER_CREDIT)}
-              />
-            ) : (
-              <RegisterGate
-                beforeClose={async () => {
-                  await leaveGuard.current?.();
-                }}
-              >
+                  {...(controlTarget.action === 'expiries' && controlTarget.id
+                    ? { initialLotId: controlTarget.id }
+                    : {})}
+                  {...(controlTarget.action === 'cashDifferences' && controlTarget.id
+                    ? { initialShiftId: controlTarget.id }
+                    : {})}
+                  {...(controlTarget.locationId
+                    ? { initialLocationId: controlTarget.locationId }
+                    : {})}
+                />
+              ) : currentSection === 'Agenda' ? (
+                <AgendaPanel onBack={() => void navigate('Inicio')} />
+              ) : currentSection === 'Resumen semanal' ? (
+                <WeeklyPanel onBack={() => void navigate('Inicio')} />
+              ) : currentSection === 'Ayuda' ? (
+                <HelpPage role={user.role} />
+              ) : currentSection === 'Productos' ? (
+                <ProductList canChangePrices={user.role === 'OWNER' || user.role === 'ADMIN'} />
+              ) : currentSection === 'Stock' ? (
+                <StockList
+                  embedded
+                  key={stockShortages ? 'shortages' : 'all'}
+                  initialFilter={stockShortages ? 'SHORTAGES' : 'ALL'}
+                  lotsEnabled={Boolean(features.data?.enabled.LOTS)}
+                />
+              ) : currentSection === 'Compras' ? (
+                <PurchaseWorkspace
+                  embedded
+                  key={purchaseInitialView}
+                  initialView={purchaseInitialView}
+                  historyOnly={!features.data?.enabled.SUPPLIERS_PURCHASES}
+                  lotsEnabled={Boolean(features.data?.enabled.LOTS)}
+                  accountsEnabled={Boolean(features.data?.enabled.SUPPLIER_ACCOUNTS)}
+                />
+              ) : currentSection === 'Proveedores' ? (
+                <>
+                  <PageHeading className="page-heading">
+                    <h1>Proveedores</h1>
+                  </PageHeading>
+                  <SupplierList
+                    accountsEnabled={Boolean(features.data?.enabled.SUPPLIER_ACCOUNTS)}
+                  />
+                </>
+              ) : currentSection === 'Usuarios' ? (
+                <UserList currentRole={user.role} />
+              ) : currentSection === 'Clientes' ? (
+                <CustomerPage
+                  canManageCredit={
+                    Boolean(features.data?.enabled.CUSTOMER_CREDIT) &&
+                    (user.role === 'OWNER' || user.role === 'ADMIN')
+                  }
+                />
+              ) : currentSection === 'Ubicaciones' ? (
+                <LocationsPage canConfigure={user.role === 'OWNER' || user.role === 'ADMIN'} />
+              ) : currentSection === 'Promociones' ? (
+                <PromotionPage />
+              ) : currentSection === 'Histórico' ? (
+                <SalesList
+                  userId={user.id}
+                  {...(resultsDay
+                    ? {
+                        initialDate: resultsDay,
+                        onBackToResults: () => {
+                          setResultsDay(undefined);
+                          void openArea('Resumen mensual', 'Mensual');
+                        },
+                      }
+                    : {})}
+                  profitabilityEnabled={Boolean(features.data?.enabled.COSTS_MARGIN)}
+                  returnsEnabled={Boolean(features.data?.enabled.RETURNS)}
+                />
+              ) : currentSection === 'Comprobantes' ? (
+                <ReceiptQueue />
+              ) : currentSection === 'Resumen mensual' ? (
+                <DashboardPage
+                  onOpenDay={(date) => {
+                    setResultsDay(date);
+                    void openArea('Histórico', 'Historial');
+                  }}
+                  profitabilityEnabled={Boolean(features.data?.enabled.COSTS_MARGIN)}
+                  locationsEnabled={Boolean(features.data?.enabled.LOCATIONS_TRANSFERS)}
+                  onOpenStock={() => {
+                    setStockShortages(true);
+                    void navigate('Stock');
+                  }}
+                />
+              ) : currentSection === 'Configuración' ? (
+                <SettingsPage
+                  onOpenPurchaseHistory={() => {
+                    setPurchaseInitialView('history');
+                    void openArea('Compras', 'Historial');
+                  }}
+                />
+              ) : currentSection === 'Backups' ? (
+                <BackupsPage onRestored={onPasswordChanged} />
+              ) : currentSection === 'Turnos' ? (
+                <ShiftHistory />
+              ) : currentSection === 'Actividad' ? (
+                <>
+                  <div className="segmented-control">
+                    <button
+                      className={!activityDetailed ? 'active' : ''}
+                      onClick={() => setActivityDetailed(false)}
+                    >
+                      Registro general
+                    </button>
+                    <button
+                      className={activityDetailed ? 'active' : ''}
+                      onClick={() => setActivityDetailed(true)}
+                    >
+                      Cambios detallados
+                    </button>
+                  </div>
+                  {activityDetailed ? <StructuredActivityPanel /> : <AuditPage />}
+                </>
+              ) : desktop ? (
                 <Checkout
                   user={user}
                   registerLeaveGuard={registerLeaveGuard}
                   customersEnabled={Boolean(features.data?.enabled.CUSTOMERS)}
                   customerCreditEnabled={Boolean(features.data?.enabled.CUSTOMER_CREDIT)}
                 />
-              </RegisterGate>
+              ) : (
+                <RegisterGate
+                  beforeClose={async () => {
+                    await leaveGuard.current?.();
+                  }}
+                >
+                  <Checkout
+                    user={user}
+                    registerLeaveGuard={registerLeaveGuard}
+                    customersEnabled={Boolean(features.data?.enabled.CUSTOMERS)}
+                    customerCreditEnabled={Boolean(features.data?.enabled.CUSTOMER_CREDIT)}
+                  />
+                </RegisterGate>
+              )}
+            </div>
+            {passwordOpen && (
+              <ChangePassword
+                role={user.role}
+                onClose={() => setPasswordOpen(false)}
+                onChanged={onPasswordChanged}
+              />
             )}
-          </div>
-          {passwordOpen && (
-            <ChangePassword
-              role={user.role}
-              onClose={() => setPasswordOpen(false)}
-              onChanged={onPasswordChanged}
-            />
-          )}
+          </WorkspaceTabs.Provider>
         </main>
         <footer className="app-footer">
           <span>Perla · Gestión para tu comercio</span>

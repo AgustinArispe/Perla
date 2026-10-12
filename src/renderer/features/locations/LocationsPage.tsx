@@ -141,6 +141,8 @@ export function LocationsPage({ canConfigure }: { canConfigure: boolean }) {
               key={selectedLocation.id}
               location={selectedLocation}
               onLocationChange={setSelected}
+              canTransfer={active.length >= 2 && selectedLocation.active}
+              onTransfer={() => setDispatchOpen(true)}
             />
           )}
         </div>
@@ -149,12 +151,18 @@ export function LocationsPage({ canConfigure }: { canConfigure: boolean }) {
         <section className="dashboard-panel transfer-surface">
           <div className="dashboard-panel-heading">
             <h2>Traslados</h2>
-            <span className="status-pill">
-              {(transfers.data ?? []).filter((item) => item.status === 'IN_TRANSIT').length} por
-              recibir en esta vista
+            <span className="muted">
+              {transfers.data?.length ?? '—'} traslados en esta vista · hasta 100
             </span>
           </div>
           <div className="export-filter-bar">
+            <button
+              className={`button ${transferStatus === 'IN_TRANSIT' ? 'primary' : 'secondary'} small`}
+              aria-pressed={transferStatus === 'IN_TRANSIT'}
+              onClick={() => setTransferStatus('IN_TRANSIT')}
+            >
+              <Icon name="stock" size={18} /> Por recibir
+            </button>
             <label className="field">
               Estado de envíos
               <select
@@ -162,7 +170,7 @@ export function LocationsPage({ canConfigure }: { canConfigure: boolean }) {
                 onChange={(e) => setTransferStatus(e.target.value as typeof transferStatus)}
               >
                 <option value="ALL">Todos</option>
-                <option value="IN_TRANSIT">En tránsito</option>
+                <option value="IN_TRANSIT">Por recibir</option>
                 <option value="RECEIVED">Recibidos</option>
                 <option value="CANCELLED">Cancelados</option>
               </select>
@@ -226,7 +234,13 @@ export function LocationsPage({ canConfigure }: { canConfigure: boolean }) {
               ))}
             </div>
           ) : (
-            <p className="empty-state">Todavía no hay traslados.</p>
+            <p className="empty-state">
+              {transferStatus === 'IN_TRANSIT'
+                ? 'No hay traslados por recibir.'
+                : transferStatus === 'ALL'
+                  ? 'Todavía no hay traslados.'
+                  : 'No hay traslados con este estado.'}
+            </p>
           )}
         </section>
       )}
@@ -243,7 +257,7 @@ export function LocationsPage({ canConfigure }: { canConfigure: boolean }) {
       {dispatchOpen && (
         <DispatchDialog
           locations={active}
-          initialFrom={selectedLocation?.id ?? ''}
+          initialFrom={selectedLocation?.active ? selectedLocation.id : ''}
           onClose={() => setDispatchOpen(false)}
           onSaved={async () => {
             setDispatchOpen(false);
@@ -269,9 +283,13 @@ export function LocationsPage({ canConfigure }: { canConfigure: boolean }) {
 function InventoryPane({
   location,
   onLocationChange,
+  canTransfer,
+  onTransfer,
 }: {
   location: Location;
   onLocationChange: (id: string) => void;
+  canTransfer: boolean;
+  onTransfer: () => void;
 }) {
   const [query, setQuery] = useRememberedState('inventory', 'query', '');
   const [page, setPage] = useRememberedState('inventory', `page:${location.id}`, 0);
@@ -291,8 +309,15 @@ function InventoryPane({
   return (
     <section className="dashboard-panel location-inventory">
       <div className="dashboard-panel-heading">
-        <h2>{location.name}</h2>
-        <span>{stock.data?.total ?? '—'} artículos</span>
+        <div>
+          <h2>{location.name}</h2>
+          <small>
+            {location.code} · {stock.data?.total ?? '—'} artículos
+          </small>
+        </div>
+        <button className="button secondary small" disabled={!canTransfer} onClick={onTransfer}>
+          <Icon name="arrow" size={18} /> Trasladar desde aquí
+        </button>
       </div>
       <div className="export-filter-bar">
         <label className="search-field">

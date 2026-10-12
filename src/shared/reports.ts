@@ -42,6 +42,8 @@ export interface ProfitabilityBreakdown {
 }
 export interface MonthlyReport {
   month: string;
+  /** 2: sales and returns by movement date; absent on legacy saved reports. */
+  definitionVersion?: 2;
   generatedAt: string;
   lastChangedAt: string | null;
   period: { from: string; to: string; previousFrom: string; previousTo: string; open: boolean };
@@ -51,17 +53,23 @@ export interface MonthlyReport {
     method: PaymentInput['method'];
     amountCents: number;
     saleCount: number;
+    /** Refund operations in the period; distinct from completed sale count. */
+    refundCount?: number;
     shareBasisPoints: number;
     saleShareBasisPoints: number;
   }[];
   cardCents: number;
   daily: { date: string; netCents: number; saleCount: number }[];
+  /** Actual previous-month dates, bounded by period.previousFrom/previousTo. */
+  previousDaily?: { date: string; netCents: number; saleCount: number }[];
   rankings: { revenue: RankedProduct[]; units: RankedProduct[]; kilos: RankedProduct[] };
   profitability: {
     knownCostCents: number;
     coveredNetCents: number;
     grossMarginCents: number;
     coverageBasisPoints: number;
+    /** Coverage of absolute movement revenue, including returns, with recorded costs. */
+    coverageBasis?: 'ABSOLUTE_MOVEMENT_NET';
     missingLineCount: number;
     products: ProfitabilityBreakdown[];
     categories: ProfitabilityBreakdown[];

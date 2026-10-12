@@ -1,7 +1,8 @@
+import { PageHeading } from '../../components/PageHeader';
 import { SavedViews } from '../../components/SavedViews';
 import { useRememberedState, scalarViewFilters } from '../../components/useRememberedState';
 import { ExportButton } from '../../components/ExportButton';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import type { SalesSearchInput } from '../../../shared/sales';
 import { formatMoney } from '../../../domain/values';
@@ -11,13 +12,17 @@ export function SalesList({
   userId,
   profitabilityEnabled = false,
   returnsEnabled = false,
+  initialDate,
+  onBackToResults,
 }: {
   userId: string;
   profitabilityEnabled?: boolean;
   returnsEnabled?: boolean;
+  initialDate?: string;
+  onBackToResults?: () => void;
 }) {
-  const [from, setFrom] = useRememberedState('sales', 'fromDate', ''),
-    [to, setTo] = useRememberedState('sales', 'toDate', ''),
+  const [from, setFrom] = useRememberedState('sales', 'fromDate', initialDate ?? ''),
+    [to, setTo] = useRememberedState('sales', 'toDate', initialDate ?? ''),
     [status, setStatus] = useRememberedState<'ALL' | 'COMPLETED' | 'VOIDED'>(
       'sales',
       'status',
@@ -27,6 +32,15 @@ export function SalesList({
       undefined,
     ]),
     [selected, setSelected] = useState<string | null>(null);
+  const appliedDate = useRef<string | undefined>(undefined);
+  useEffect(() => {
+    if (!initialDate || appliedDate.current === initialDate) return;
+    appliedDate.current = initialDate;
+    setFrom(initialDate);
+    setTo(initialDate);
+    setStatus('COMPLETED');
+    setCursors([undefined]);
+  }, [initialDate, setFrom, setTo, setStatus, setCursors]);
   const cursor = cursors.at(-1);
   const input: SalesSearchInput = {
     limit: 20,
@@ -44,13 +58,24 @@ export function SalesList({
     setCursors([undefined]);
   }
   return (
-    <>
-      <div className="page-heading">
+    <div className="commerce-history">
+      <PageHeading className="page-heading">
         <div>
           <h1>Histórico</h1>
           <p>Ventas guardadas y anulaciones</p>
+          {initialDate && (
+            <p>
+              Ventas originadas en esta fecha; las devoluciones pueden corresponder a ventas
+              anteriores.
+            </p>
+          )}
         </div>
-      </div>
+        {initialDate && onBackToResults && (
+          <button className="button secondary" onClick={onBackToResults}>
+            Volver a Resultados
+          </button>
+        )}
+      </PageHeading>
       <div className="history-filters">
         <label className="field">
           Desde
@@ -116,7 +141,7 @@ export function SalesList({
               <th>Venta</th>
               <th>Fecha</th>
               <th>Estado</th>
-              <th>Total</th>
+              <th className="numeric">Total</th>
               <th />
             </tr>
           </thead>
@@ -128,7 +153,7 @@ export function SalesList({
                 </td>
                 <td>{sale.businessDate.split('-').reverse().join('/')}</td>
                 <td>{sale.status === 'COMPLETED' ? 'Completada' : 'Anulada'}</td>
-                <td>
+                <td className="numeric">
                   <strong>{formatMoney(sale.totalCents)}</strong>
                 </td>
                 <td>
@@ -178,6 +203,6 @@ export function SalesList({
           onClose={() => setSelected(null)}
         />
       )}
-    </>
+    </div>
   );
 }

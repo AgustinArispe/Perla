@@ -1,3 +1,4 @@
+import { PageHeading } from '../../components/PageHeader';
 import { ExportButton } from '../../components/ExportButton';
 import { useRememberedState } from '../../components/useRememberedState';
 import { useMemo, useRef, useState } from 'react';
@@ -25,7 +26,7 @@ export function CustomerPage({ canManageCredit }: { canManageCredit: boolean }) 
   });
   return (
     <div className="customer-page">
-      <div className="page-heading">
+      <PageHeading className="page-heading">
         <div>
           <h1>Clientes</h1>
         </div>
@@ -33,7 +34,7 @@ export function CustomerPage({ canManageCredit }: { canManageCredit: boolean }) 
           <Icon name="plus" size={18} />
           Nuevo cliente
         </button>
-      </div>
+      </PageHeading>
       <section className="surface customer-surface">
         <div className="customer-toolbar">
           <label className="search-field">
@@ -88,13 +89,14 @@ export function CustomerPage({ canManageCredit }: { canManageCredit: boolean }) 
               <span className="customer-avatar">{item.name.charAt(0).toUpperCase()}</span>
               <div>
                 <strong>{item.name}</strong>
+                {!item.active && <span className="status-pill">Inactivo</span>}
                 <small>
                   {[item.phone, item.email].filter(Boolean).join(' · ') || 'Sin datos de contacto'}
                 </small>
               </div>
               {item.creditEnabled ? (
                 <span className="customer-balance">
-                  <small>Saldo</small>
+                  <small>{item.balanceCents > 0 ? 'Por cobrar' : 'Al día'}</small>
                   <strong>{formatMoney(item.balanceCents)}</strong>
                 </span>
               ) : (
@@ -357,16 +359,16 @@ export function CustomerAccountDialog({
           <>
             <div className="customer-account-hero">
               <div>
-                <small>Saldo pendiente</small>
+                <small>Por cobrar</small>
                 <strong>{formatMoney(data.balanceCents)}</strong>
               </div>
               <div>
-                <small>Disponible</small>
+                <small>Crédito disponible</small>
                 <strong>{formatMoney(data.availableCents)}</strong>
               </div>
               {data.creditCents > 0 && (
                 <div>
-                  <small>Crédito a favor</small>
+                  <small>A favor del cliente</small>
                   <strong>{formatMoney(data.creditCents)}</strong>
                 </div>
               )}

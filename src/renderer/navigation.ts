@@ -74,7 +74,7 @@ export const navigation = [
     ],
   },
   {
-    title: 'Administración',
+    title: 'Configuración',
     icon: 'settings',
     group: 'Administración',
     areas: [

@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { openModule } from './navigation-helper';
 
 test('el dashboard conserva el mes elegido y permite consultar días con teclado y celular', async ({
   page,
@@ -67,6 +68,12 @@ test('el dashboard conserva el mes elegido y permite consultar días con teclado
   await page.keyboard.press('Enter');
   await expect(page.locator('.daily-chart-selection')).toContainText('Promedio');
   await expect(day).toHaveAttribute('aria-pressed', 'true');
+  await page.getByRole('button', { name: 'Ver ventas del día', exact: true }).click();
+  await expect(page.getByRole('combobox', { name: 'Estado', exact: true })).toHaveValue(
+    'COMPLETED',
+  );
+  await page.getByRole('button', { name: 'Volver a Resultados', exact: true }).click();
+  await expect(month).toHaveValue(currentMonth);
   await month.fill('2000-01');
   await expect(page.getByTestId('monthly-net')).toHaveText('$ 0,00');
   await page.getByRole('button', { name: 'Explorar períodos', exact: true }).click();
@@ -127,4 +134,115 @@ test('el dashboard conserva el mes elegido y permite consultar días con teclado
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.screenshot({ path: 'tmp/weekly-1440.png', fullPage: true });
+});
+
+test('Resultados compara meses de distinta duración y conserva negativos fuera del Top 5', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/');
+  await page.getByLabel('Usuario', { exact: true }).fill('jefe');
+  await page.getByLabel('Contraseña', { exact: true }).fill('Prueba-Web-Bocha-2026!');
+  await page.getByRole('button', { name: 'Mostrar contraseña', exact: true }).click();
+  await expect(page.getByLabel('Contraseña', { exact: true })).toHaveAttribute('type', 'text');
+  await page.getByRole('button', { name: 'Ocultar contraseña', exact: true }).click();
+  await page.getByRole('button', { name: 'Ingresar', exact: true }).click();
+  await page.route('**/api/v1/dashboard/monthly?*', async (route) => {
+    const response = await route.fetch();
+    const payload = await response.json();
+    const report = payload.value;
+    const month = new URL(route.request().url()).searchParams.get('month')!;
+    const negative = month === '2026-01';
+    const rowCount = month === '2026-02' ? 28 : 31;
+    report.definitionVersion = 2;
+    report.daily = Array.from({ length: rowCount }, (_, i) => ({
+      date: `${month}-${String(i + 1).padStart(2, '0')}`,
+      netCents: i === 2 && negative ? -180000 : 100000 + (i % 7) * 20000,
+      saleCount: i === 2 && negative ? 0 : 3,
+    }));
+    report.previousDaily = Array.from({ length: 31 }, (_, i) => ({
+      date: `2026-01-${String(i + 1).padStart(2, '0')}`,
+      netCents: 70000 + (i % 5) * 18000,
+      saleCount: 2,
+    }));
+    report.period = {
+      from: `${month}-01`,
+      to: `${month}-${rowCount}`,
+      previousFrom: '2026-01-01',
+      previousTo: '2026-01-31',
+      open: false,
+    };
+    report.rankings.revenue = Array.from({ length: 8 }, (_, i) => ({
+      productId: String(i),
+      name:
+        i === 7 && negative
+          ? 'Devolución fuera del Top 5'
+          : [
+              'Merluza fresca',
+              'Langostino pelado',
+              'Filet de salmón',
+              'Calamar limpio',
+              'Mejillones',
+              'Cornalitos',
+              'Abadejo',
+              'Otros pescados',
+            ][i],
+      unit: 'KG',
+      quantityBase: i === 7 && negative ? -1000 : (8 - i) * 1000,
+      netCents: i === 7 && negative ? -100000 : (8 - i) * 110000,
+    }));
+    report.totals.netCents = report.rankings.revenue.reduce(
+      (sum: number, row: { netCents: number }) => sum + row.netCents,
+      0,
+    );
+    report.payments = [
+      {
+        method: 'CASH',
+        amountCents: 2400000,
+        saleCount: 28,
+        refundCount: 0,
+        shareBasisPoints: 0,
+        saleShareBasisPoints: 10000,
+      },
+      {
+        method: 'DEBIT',
+        amountCents: negative ? -100000 : 1400000,
+        saleCount: 0,
+        refundCount: negative ? 1 : 0,
+        shareBasisPoints: 0,
+        saleShareBasisPoints: 0,
+      },
+    ];
+    await route.fulfill({ response, json: payload });
+  });
+  await openModule(page, 'Resumen mensual');
+  await page.getByLabel('Mes', { exact: true }).fill('2026-02');
+  await expect(page.locator('.results-donut')).toBeVisible();
+  await expect(page.locator('.results-share-legend')).toContainText('Otros');
+  await page.getByLabel('Comparar con el mes anterior').check();
+  await expect(page.locator('.results-day')).toHaveCount(31);
+  await page.locator('.results-day').last().click();
+  await expect(page.locator('.daily-chart-selection')).toContainText(
+    'No existe un día equivalente',
+  );
+  await page.setViewportSize({ width: 1366, height: 900 });
+  await page.screenshot({
+    path: testInfo.outputPath('results-comparison-desktop.png'),
+    fullPage: true,
+  });
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({
+    path: testInfo.outputPath('results-comparison-mobile.png'),
+    fullPage: true,
+  });
+  for (const width of [1920, 1366, 1024, 768]) {
+    await page.setViewportSize({ width, height: 1080 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+      true,
+    );
+  }
+  await page.getByLabel('Mes', { exact: true }).fill('2026-01');
+  await expect(page.locator('.results-donut')).toHaveCount(0);
+  await expect(page.locator('.results-product-bars')).toContainText('Devolución fuera del Top 5');
+  await expect(page.locator('.results-payments')).toContainText('Reembolsos mayores que pagos');
 });

@@ -1,3 +1,4 @@
+import { PageHeading } from '../../components/PageHeader';
 import { useState } from 'react';
 import { Icon } from '../../components/Icon';
 import { PurchaseDraft } from './PurchaseDraft';
@@ -20,7 +21,7 @@ export function PurchaseWorkspace({
   const [view, setView] = useState(initialView);
   return (
     <>
-      <div className="page-heading purchase-page-heading">
+      <PageHeading className="page-heading purchase-page-heading">
         <div>
           <h1>Compras</h1>
         </div>
@@ -50,7 +51,7 @@ export function PurchaseWorkspace({
             )}
           </div>
         )}
-      </div>
+      </PageHeading>
       {view === 'receive' ? (
         <PurchaseDraft lotsEnabled={lotsEnabled} />
       ) : view === 'history' ? (

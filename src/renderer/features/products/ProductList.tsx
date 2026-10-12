@@ -1,3 +1,4 @@
+import { PageHeading } from '../../components/PageHeader';
 import { SavedViews } from '../../components/SavedViews';
 import { useRememberedState, scalarViewFilters } from '../../components/useRememberedState';
 import { ExportButton } from '../../components/ExportButton';
@@ -14,6 +15,7 @@ import { Dialog } from '../../components/Dialog';
 import type { FeatureStatus } from '../../../shared/features';
 import { webValue } from '../../web-client';
 import { PriceBulkDialog } from './PriceBulkDialog';
+import { refreshSelectedProduct, updateProductSelection } from './product-selection';
 
 export function ProductList({ canChangePrices = false }: { canChangePrices?: boolean }) {
   const connected = true;
@@ -90,6 +92,7 @@ export function ProductList({ canChangePrices = false }: { canChangePrices?: boo
         }),
       ),
     onSuccess: (product) => {
+      setSelected((current) => refreshSelectedProduct(current, product));
       void client.invalidateQueries({ queryKey: ['products'] });
       setNotice(`${product.name}: ${product.active ? 'activado' : 'desactivado'}.`);
       setError('');
@@ -122,7 +125,8 @@ export function ProductList({ canChangePrices = false }: { canChangePrices?: boo
     },
     onError: (failure) => setError(errorMessage(failure)),
   });
-  const modalOpen = editor !== undefined || Boolean(preview) || taxonomyOpen || priceEditorOpen;
+  const modalOpen =
+    editor !== undefined || Boolean(preview) || taxonomyOpen || labelsOpen || priceEditorOpen;
   useEffect(() => {
     function keyboard(event: KeyboardEvent) {
       if (modalOpen) return;
@@ -152,44 +156,41 @@ export function ProductList({ canChangePrices = false }: { canChangePrices?: boo
   }
   return (
     <>
-      <div className="page-heading product-page-heading">
+      <PageHeading className="page-heading product-page-heading">
         <div>
           <h1>Productos</h1>
         </div>
         <div className="heading-actions">
-          {canChangePrices && (
-            <button
-              className="button secondary"
-              disabled={!Object.keys(selected).length}
-              onClick={() => setPriceEditorOpen(true)}
-            >
-              Actualizar precios
-              {Object.keys(selected).length ? ` (${Object.keys(selected).length})` : ''}
-            </button>
-          )}
-          <button className="button secondary" onClick={() => setTaxonomyOpen(true)}>
-            Categorías y marcas
-          </button>
-          {labelsEnabled && (
-            <button className="button secondary" onClick={() => setLabelsOpen(true)}>
-              Etiquetas{labels.data?.total ? ` (${labels.data.total})` : ''}
-            </button>
-          )}
-          <button
-            className="button secondary"
-            disabled={!connected || importFile.isPending}
-            onClick={() => importFile.mutate()}
-            aria-label="Importar productos"
-          >
-            <Icon name="upload" />
-            {importFile.isPending ? 'Leyendo archivo…' : 'Importar productos'}
-          </button>
+          <details className="product-maintenance">
+            <summary>
+              <Icon name="settings" size={18} /> Gestionar catálogo
+            </summary>
+            <div className="product-maintenance-actions">
+              <button className="button secondary" onClick={() => setTaxonomyOpen(true)}>
+                Categorías y marcas
+              </button>
+              {labelsEnabled && (
+                <button className="button secondary" onClick={() => setLabelsOpen(true)}>
+                  Etiquetas{labels.data?.total ? ` (${labels.data.total})` : ''}
+                </button>
+              )}
+              <button
+                className="button secondary"
+                disabled={!connected || importFile.isPending}
+                onClick={() => importFile.mutate()}
+                aria-label="Importar productos"
+              >
+                <Icon name="upload" />
+                {importFile.isPending ? 'Leyendo archivo…' : 'Importar productos'}
+              </button>
+            </div>
+          </details>
           <button className="button primary" disabled={!connected} onClick={() => setEditor(null)}>
             <Icon name="plus" />
             Nuevo producto<kbd>F3</kbd>
           </button>
         </div>
-      </div>
+      </PageHeading>
       {!connected && (
         <div className="alert info">
           Vista previa. Abrí la aplicación de escritorio para cargar y consultar los datos del
@@ -219,7 +220,7 @@ export function ProductList({ canChangePrices = false }: { canChangePrices?: boo
           </button>
         </div>
       )}
-      <section className="catalog-card" aria-label="Catálogo de productos">
+      <section className="catalog-card merchandise-catalog" aria-label="Catálogo de productos">
         <div className="catalog-toolbar">
           <div className="search-field">
             <Icon name="search" />
@@ -333,6 +334,11 @@ export function ProductList({ canChangePrices = false }: { canChangePrices?: boo
                 : 'productos seleccionados'}
             </strong>
             <span>Podés seguir buscando: tu selección se conserva.</span>
+            {canChangePrices && (
+              <button className="button secondary small" onClick={() => setPriceEditorOpen(true)}>
+                Actualizar precios
+              </button>
+            )}
             <button className="button secondary" onClick={() => setSelected({})}>
               Limpiar selección
             </button>
@@ -353,15 +359,13 @@ export function ProductList({ canChangePrices = false }: { canChangePrices?: boo
                       }
                       disabled={products.isFetching || query !== search}
                       onChange={(event) =>
-                        setSelected((current) => {
-                          const next = { ...current };
-                          for (const product of products.data?.items ?? []) {
-                            if (event.target.checked) next[product.id] = product;
-                            else delete next[product.id];
-                          }
-                          if (Object.keys(next).length > 5000) return current;
-                          return next;
-                        })
+                        setSelected((current) =>
+                          updateProductSelection(
+                            current,
+                            products.data?.items ?? [],
+                            event.target.checked,
+                          ),
+                        )
                       }
                     />
                   </th>
@@ -390,12 +394,9 @@ export function ProductList({ canChangePrices = false }: { canChangePrices?: boo
                         checked={Boolean(selected[product.id])}
                         disabled={!selected[product.id] && Object.keys(selected).length >= 5000}
                         onChange={(event) =>
-                          setSelected((current) => {
-                            const next = { ...current };
-                            if (event.target.checked) next[product.id] = product;
-                            else delete next[product.id];
-                            return next;
-                          })
+                          setSelected((current) =>
+                            updateProductSelection(current, [product], event.target.checked),
+                          )
                         }
                       />
                     </td>
@@ -421,16 +422,6 @@ export function ProductList({ canChangePrices = false }: { canChangePrices?: boo
                   </td>
                   <td className="numeric product-price">{formatMoney(product.priceCents)}</td>
                   <td>
-                    {labelsEnabled && product.internalBarcode && (
-                      <button
-                        className="edit-button"
-                        aria-label={`Crear etiqueta para ${product.name}`}
-                        disabled={createLabel.isPending}
-                        onClick={() => createLabel.mutate(product.id)}
-                      >
-                        Etiqueta
-                      </button>
-                    )}
                     <button
                       className={`pill state-button ${product.active ? 'good' : ''}`}
                       aria-label={`${product.active ? 'Desactivar' : 'Activar'} ${product.name}`}
@@ -441,14 +432,27 @@ export function ProductList({ canChangePrices = false }: { canChangePrices?: boo
                     </button>
                   </td>
                   <td>
-                    <button
-                      className="edit-button"
-                      aria-label={`Editar ${product.name}`}
-                      onClick={() => setEditor(product)}
-                    >
-                      <Icon name="edit" size={20} />
-                      <span>Editar</span>
-                    </button>
+                    <div className="product-row-actions">
+                      {labelsEnabled && product.internalBarcode && (
+                        <button
+                          className="icon-button"
+                          aria-label={`Crear etiqueta para ${product.name}`}
+                          title="Crear etiqueta"
+                          disabled={createLabel.isPending}
+                          onClick={() => createLabel.mutate(product.id)}
+                        >
+                          <Icon name="tag" size={18} />
+                        </button>
+                      )}
+                      <button
+                        className="edit-button"
+                        aria-label={`Editar ${product.name}`}
+                        onClick={() => setEditor(product)}
+                      >
+                        <Icon name="edit" size={20} />
+                        <span>Editar</span>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -548,8 +552,8 @@ export function ProductList({ canChangePrices = false }: { canChangePrices?: boo
           onClose={() => setPriceEditorOpen(false)}
           onSaved={() => {
             setPriceEditorOpen(false);
-            setSelected({});
             setNotice('Precios actualizados.');
+            restoreFocus();
           }}
         />
       )}
@@ -564,11 +568,13 @@ export function ProductList({ canChangePrices = false }: { canChangePrices?: boo
           costsEnabled={costsEnabled}
           onClose={closeEditor}
           onSaveAnother={(product) => {
+            setSelected((current) => refreshSelectedProduct(current, product));
             setNotice(`${product.name}: guardado.`);
             void client.invalidateQueries({ queryKey: ['products'] });
             void client.invalidateQueries({ queryKey: ['product-labels'] });
           }}
           onSaved={(product) => {
+            setSelected((current) => refreshSelectedProduct(current, product));
             setNotice(`${product.name}: guardado.`);
             void client.invalidateQueries({ queryKey: ['products'] });
             closeEditor();

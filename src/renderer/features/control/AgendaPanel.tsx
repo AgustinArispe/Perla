@@ -1,3 +1,4 @@
+import { PageHeading } from '../../components/PageHeader';
 import { useRememberedState } from '../../components/useRememberedState';
 import { useState } from 'react';
 import { SavedViews } from '../../components/SavedViews';
@@ -76,8 +77,8 @@ export function AgendaPanel({
     }
   }
   return (
-    <div className="control-page">
-      <div className="page-heading">
+    <div className="control-page commerce-agenda-page">
+      <PageHeading className="page-heading">
         <div>
           <h1>Cobros y pagos</h1>
           <p>Fechas acordadas e importes pendientes de cada obligación.</p>
@@ -87,7 +88,7 @@ export function AgendaPanel({
             Volver
           </button>
         )}
-      </div>
+      </PageHeading>
       <section className="surface commerce-agenda">
         <div className="commerce-tabs" role="group" aria-label="Tipo de compromiso">
           {(['ALL', 'CUSTOMER', 'SUPPLIER'] as const).map((value) => (
@@ -113,24 +114,7 @@ export function AgendaPanel({
             setPage(1);
           }}
         />
-        <div
-          className="filters"
-          style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'end', marginTop: 16 }}
-        >
-          <label className="field">
-            Cuenta
-            <select
-              value={kind}
-              onChange={(e) => {
-                setKind(e.target.value as typeof kind);
-                setPage(1);
-              }}
-            >
-              <option value="ALL">Cobros y pagos</option>
-              <option value="CUSTOMER">Por cobrar</option>
-              <option value="SUPPLIER">Por pagar</option>
-            </select>
-          </label>
+        <div className="filters commerce-agenda-filters">
           <label className="field">
             Fecha
             <select
@@ -188,22 +172,11 @@ export function AgendaPanel({
         )}
         {agenda.isPending && <p>Cargando compromisos…</p>}
         {agenda.data?.items.map((row) => (
-          <article
-            key={`${row.kind}:${row.obligationId}`}
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              gap: 16,
-              padding: '16px 0',
-              borderBottom: '1px solid var(--line)',
-            }}
-          >
+          <article key={`${row.kind}:${row.obligationId}`} className="commerce-agenda-row">
             <div>
               <strong>{row.name}</strong>
               <p>
-                {row.kind === 'CUSTOMER' ? 'Por cobrar' : 'Por pagar'} · obligación individual ·{' '}
+                {row.kind === 'CUSTOMER' ? 'Por cobrar' : 'Por pagar'} ·{' '}
                 {row.dueOn ? `Fecha acordada ${row.dueOn}` : 'Sin fecha acordada'}
               </p>
               <strong>{formatMoney(row.balanceCents)}</strong>

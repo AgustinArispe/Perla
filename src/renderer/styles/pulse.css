@@ -817,21 +817,11 @@ textarea::placeholder {
   gap: 8px;
   padding: 12px 0;
 }
-.daily-sales-panel .daily-chart .daily-chart-day {
-  max-width: none;
-}
-.daily-sales-panel .daily-chart-day span {
-  transition: none;
-}
-.daily-sales-panel .daily-chart-day[data-negative='true'] span {
-  background: var(--danger);
-}
-.daily-sales-panel .daily-chart-day[data-negative='true'] small::before {
-  content: '-';
-}
-.daily-chart-scale {
-  color: var(--ink-faint);
-}
+
+
+
+
+
 .dashboard-panel .payment-metric {
   padding: 12px 0;
   border-bottom: 1px solid var(--line);
@@ -923,9 +913,7 @@ textarea::placeholder {
   .control-surface .weekly-report .weekly-totals {
     grid-template-columns: minmax(0, 1fr);
   }
-  .daily-sales-panel .daily-chart .daily-chart-day {
-    min-width: 44px;
-  }
+
   .dashboard-panel {
     padding: 16px;
   }

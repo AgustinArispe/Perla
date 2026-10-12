@@ -1,3 +1,4 @@
+import { PageHeading } from '../../components/PageHeader';
 import { useRememberedState } from '../../components/useRememberedState';
 import { useMemo, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -10,6 +11,7 @@ import type {
 import { moneyInput, parseArs, parseQuantity, quantityInput } from '../../../domain/values';
 import { errorMessage } from '../../api';
 import { controlValue, downloadControlExcel } from './client';
+import { Icon } from '../../components/Icon';
 
 type Named = { id: string; name: string };
 type Orders = { items: ReplenishmentOrder[]; total: number; nextOffset: number | null };
@@ -167,6 +169,41 @@ export function ReplenishmentPanel({
     });
   }
   const chosen = Object.values(selected);
+  async function openCalendar() {
+    if (calendarOpen) {
+      setCalendarOpen(false);
+      return;
+    }
+    const result = await calendar.refetch();
+    if (!result.data) {
+      setNotice(errorMessage(result.error));
+      return;
+    }
+    setCalendarDays(result.data.openWeekdays);
+    setClosedDates(result.data.closedDates.join('\n'));
+    setCalendarOpen(true);
+  }
+  const locationField = (
+    <label className="field">
+      Ubicación
+      <select
+        value={destination}
+        onChange={(e) => {
+          setLocation(e.target.value);
+          setOffset(0);
+          setOrderOffset(0);
+          setSelected({});
+          setCalendarOpen(false);
+        }}
+      >
+        {locations.data?.map((location) => (
+          <option key={location.id} value={location.id}>
+            {location.name}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
   function loadOrder(next: ReplenishmentOrder) {
     setOrder(next);
     setReceiptQty({});
@@ -180,9 +217,9 @@ export function ReplenishmentPanel({
     setExpected(next.expectedDate ?? '');
   }
   return (
-    <section className="control-workspace">
+    <section className="control-workspace replenishment-workspace">
       {!embedded && (
-        <div className="page-heading">
+        <PageHeading className="page-heading">
           <div>
             <h1>Preparar compra</h1>
             <p>Calculá faltantes y seguí la mercadería pendiente.</p>
@@ -192,7 +229,7 @@ export function ReplenishmentPanel({
               Volver
             </button>
           )}
-        </div>
+        </PageHeading>
       )}
       {!embedded && (
         <div className="purchase-tabs" role="tablist" aria-label="Reposición">
@@ -215,26 +252,7 @@ export function ReplenishmentPanel({
         </div>
       )}
       {notice && <p role="alert">{notice}</p>}
-      <div className="filters">
-        <label className="field">
-          Ubicación
-          <select
-            value={destination}
-            onChange={(e) => {
-              setLocation(e.target.value);
-              setOffset(0);
-              setOrderOffset(0);
-              setSelected({});
-            }}
-          >
-            {locations.data?.map((l) => (
-              <option key={l.id} value={l.id}>
-                {l.name}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
+      {view === 'orders' && <div className="filters">{locationField}</div>}
       {locations.error && <p role="alert">{errorMessage(locations.error)}</p>}
       {rule && (
         <form
@@ -282,7 +300,8 @@ export function ReplenishmentPanel({
               Ver todos los productos
             </button>
           )}
-          <div className="filters">
+          <div className="filters replenishment-filters">
+            {locationField}
             <label className="field">
               Buscar
               <input
@@ -338,11 +357,8 @@ export function ReplenishmentPanel({
               </p>
               <button
                 className="button secondary"
-                onClick={() => {
-                  setCalendarDays(calendar.data?.openWeekdays ?? []);
-                  setClosedDates(calendar.data?.closedDates.join('\n') ?? '');
-                  setCalendarOpen(!calendarOpen);
-                }}
+                disabled={!destination || calendar.isFetching}
+                onClick={() => void openCalendar()}
               >
                 Configurar apertura
               </button>
@@ -360,12 +376,13 @@ export function ReplenishmentPanel({
                 )
               }
             >
+              <Icon name="download" size={18} />
               Descargar Excel{chosen.length ? ' seleccionado' : ''}
             </button>
           </div>
           {calendarOpen && (
             <form
-              className="panel"
+              className="panel replenishment-calendar"
               onSubmit={(e) => {
                 e.preventDefault();
                 void perform(async () => {
@@ -415,8 +432,18 @@ export function ReplenishmentPanel({
                       onChange={(e) => setClosedDates(e.target.value)}
                     />
                   </label>
-                  <button className="button primary" disabled={busy || !calendarDays.length}>
+                  <button
+                    className="button primary"
+                    disabled={busy || calendar.isError || !calendarDays.length}
+                  >
                     Guardar apertura
+                  </button>
+                  <button
+                    type="button"
+                    className="button secondary"
+                    onClick={() => setCalendarOpen(false)}
+                  >
+                    Cancelar
                   </button>
                 </>
               )}
@@ -434,15 +461,41 @@ export function ReplenishmentPanel({
           ) : (
             <>
               {!suggestions.data?.calendarConfigured && (
-                <p>
-                  Configurá los días de apertura para calcular demanda. Mientras tanto se usa el
-                  mínimo conocido.
-                </p>
+                <div className="alert info replenishment-calendar-notice">
+                  <span>
+                    Configurá los días de apertura para calcular demanda. Mientras tanto se usa el
+                    mínimo conocido.
+                  </span>
+                  <button
+                    className="button secondary small"
+                    disabled={!destination || calendar.isFetching}
+                    onClick={() => void openCalendar()}
+                  >
+                    {calendar.isFetching ? 'Consultando calendario…' : 'Configurar apertura'}
+                  </button>
+                </div>
               )}
               <p>
                 {suggestions.data?.total ?? 0} productos · horizonte hasta{' '}
                 {suggestions.data?.horizon}
               </p>
+              {!!chosen.length && (
+                <div className="catalog-selection-bar replenishment-selection" role="status">
+                  <strong>
+                    {chosen.length}{' '}
+                    {chosen.length === 1 ? 'producto seleccionado' : 'productos seleccionados'}
+                  </strong>
+                  <span>
+                    La selección y las cantidades editadas se conservan al buscar y paginar.
+                  </span>
+                  <a className="button primary small" href="#replenishment-order-form">
+                    Preparar pedido
+                  </a>
+                  <button className="button secondary small" onClick={() => setSelected({})}>
+                    Limpiar selección
+                  </button>
+                </div>
+              )}
               <div className="table-scroll">
                 <table>
                   <thead>
@@ -504,7 +557,7 @@ export function ReplenishmentPanel({
                           <input
                             aria-label={`Comprar ${row.name}`}
                             inputMode="decimal"
-                            style={{ width: '6rem' }}
+                            className="replenishment-quantity"
                             value={
                               quantities[row.productId] ??
                               (row.suggestedBase === null
@@ -577,8 +630,8 @@ export function ReplenishmentPanel({
                 <div className="pagination">
                   <button
                     className="button secondary"
-                    disabled={!offset}
-                    onClick={() => setOffset(Math.max(0, offset - 50))}
+                    disabled={!offset || suggestions.isFetching}
+                    onClick={() => setOffset(Math.max(0, offset - filters.limit))}
                   >
                     Anterior
                   </button>
@@ -587,8 +640,11 @@ export function ReplenishmentPanel({
                   </span>
                   <button
                     className="button secondary"
-                    disabled={offset + 50 >= (suggestions.data?.total ?? 0)}
-                    onClick={() => setOffset(offset + 50)}
+                    disabled={
+                      suggestions.isFetching ||
+                      offset + filters.limit >= (suggestions.data?.total ?? 0)
+                    }
+                    onClick={() => setOffset(offset + filters.limit)}
                   >
                     Siguiente
                   </button>
@@ -596,7 +652,8 @@ export function ReplenishmentPanel({
               )}
               {!!chosen.length && (
                 <form
-                  className="panel"
+                  className="panel replenishment-order-form"
+                  id="replenishment-order-form"
                   onSubmit={(e) => {
                     e.preventDefault();
                     void perform(async () => {
@@ -638,6 +695,14 @@ export function ReplenishmentPanel({
                   }}
                 >
                   <h2>Preparar {chosen.length} productos</h2>
+                  <p className="replenishment-chosen-summary">
+                    {chosen
+                      .map(
+                        (row) =>
+                          `${row.name}: ${quantities[row.productId] ?? (row.suggestedBase === null ? 'revisar cantidad' : quantityInput(row.suggestedBase, row.unit))} ${row.unit === 'KG' ? 'kg' : 'un.'}`,
+                      )
+                      .join(' · ')}
+                  </p>
                   <label className="field">
                     Proveedor
                     <select
@@ -763,7 +828,7 @@ export function ReplenishmentPanel({
       )}
       {order && (
         <section className="panel" aria-label={`Pedido ${order.number}`}>
-          <div className="page-heading">
+          <PageHeading className="page-heading">
             <h2>
               Pedido {order.number} · {order.supplierName}
             </h2>
@@ -791,7 +856,7 @@ export function ReplenishmentPanel({
             >
               Cerrar
             </button>
-          </div>
+          </PageHeading>
           <p>
             {stateLabels[order.status]} · {order.locationName}
           </p>

@@ -1,5 +1,15 @@
 # Perla Negra · identidad visual
 
+## Dirección vigente — 12 de octubre de 2026
+
+Las cabeceras presentan primero el título y las acciones, luego las pestañas del módulo. `PageHeading` comparte este orden mediante el contexto del workspace y solo inserta pestañas junto a un h1; los encabezados internos no las repiten. La tipografía operativa sigue siendo Manrope, con cifras tabulares. Las decisiones siguientes prevalecen sobre las referencias históricas de este documento.
+
+Resultados usa cuatro indicadores compactos, gráfico diario con escala y eje cero, comparación opcional del mes anterior y detalle accesible por teclado. Los meses conservan sus fechas reales, incluso cuando tienen distinta duración. La dona representa Top 5 + Otros del universo completo por facturación neta; cuando hay movimientos negativos se muestran importes con signo en lugar de sectores. Los medios de pago muestran pagos netos y reembolsos, separados de cobros de deuda. Excel y el informe imprimible usan el mismo alcance.
+
+Los listados agrupan filtros y acciones secundarias; Productos conserva selección entre búsquedas y páginas. Stock distingue cero, sin conteo y sin control; Reponer ofrece calendario accionable y resumen de selección. Caja mantiene el lector como entrada principal y el total estable. Cuentas explican la dirección de sus saldos; Turnos destaca diferencias; Promociones explica regla, alcance y vigencia. Inicio contextualiza los días sin actividad y el ingreso permite mostrar la contraseña.
+
+Las capas `results.css`, `merchandise.css`, `commerce.css` y `admin.css` están acotadas a sus áreas. El navy conserva navegación y cifras principales; latón identifica acciones y selección. Se mantienen permisos, atajos, borradores, informes guardados y preferencias del menú.
+
 ## Inicio operativo — 10 de octubre de 2026
 
 El inicio combina un resumen de ventas de hoy y semana, pendientes desplegables, cajas y saldos abiertos. Navy destaca el resultado, latón las acciones y cantidades que requieren atención; el resto conserva superficies claras y aire. Los datos principales se ven sin desplegar listas; el detalle se consulta al pedirlo. Las métricas respetan permisos y módulos habilitados, explican su período y no mezclan saldos actuales con ventas. En móvil las columnas se apilan y los importes pueden ocupar más de una línea.

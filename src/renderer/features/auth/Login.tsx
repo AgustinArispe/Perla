@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { api, errorMessage, unwrap } from '../../api';
 import { PerlaLockup } from '../../components/PerlaBrand';
@@ -12,6 +12,8 @@ export function Login({
   const initialized = window.bocha ? accountInitialized : true;
   const [busy, setBusy] = useState(false),
     [error, setError] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const errorRef = useRef<HTMLDivElement>(null);
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (busy) return;
@@ -31,6 +33,7 @@ export function Login({
       await onSignedIn();
     } catch (failure) {
       setError(errorMessage(failure));
+      requestAnimationFrame(() => errorRef.current?.focus());
     } finally {
       setBusy(false);
     }
@@ -64,7 +67,7 @@ export function Login({
                 : 'Creá la cuenta principal para comenzar.'}
             </p>
           </div>
-          <form onSubmit={(event) => void submit(event)}>
+          <form aria-busy={busy} onSubmit={(event) => void submit(event)}>
             {!initialized && (
               <label className="field">
                 Nombre
@@ -75,6 +78,7 @@ export function Login({
                   maxLength={100}
                   autoComplete="name"
                   autoFocus
+                  disabled={busy}
                 />
               </label>
             )}
@@ -89,24 +93,55 @@ export function Login({
                 autoCapitalize="none"
                 spellCheck={false}
                 autoFocus={initialized}
+                disabled={busy}
+                aria-describedby={error ? 'login-error' : undefined}
               />
             </label>
-            <label className="field">
-              Contraseña
-              <input
-                name="password"
-                aria-label="Contraseña"
-                type="password"
-                required
-                minLength={initialized ? 1 : 8}
-                maxLength={128}
-                autoComplete={initialized ? 'current-password' : 'new-password'}
-              />
-              {!initialized && <small>Al menos 8 caracteres, con mayúscula y símbolo.</small>}
-            </label>
+            <div className="field auth-password-field">
+              <label htmlFor="login-password">Contraseña</label>
+              <div className="auth-password-control">
+                <input
+                  id="login-password"
+                  name="password"
+                  aria-label="Contraseña"
+                  type={passwordVisible ? 'text' : 'password'}
+                  required
+                  minLength={initialized ? 1 : 8}
+                  maxLength={128}
+                  autoComplete={initialized ? 'current-password' : 'new-password'}
+                  disabled={busy}
+                  aria-describedby={
+                    error ? 'login-error' : !initialized ? 'login-password-hint' : undefined
+                  }
+                />
+                <button
+                  className="button secondary small"
+                  type="button"
+                  disabled={busy}
+                  aria-controls="login-password"
+                  aria-pressed={passwordVisible}
+                  aria-label={passwordVisible ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                  onClick={() => setPasswordVisible((visible) => !visible)}
+                >
+                  {passwordVisible ? 'Ocultar' : 'Mostrar'}
+                </button>
+              </div>
+              {!initialized && (
+                <small id="login-password-hint">
+                  Al menos 8 caracteres, con mayúscula y símbolo.
+                </small>
+              )}
+            </div>
             {error && (
-              <div className="alert error" role="alert">
+              <div
+                id="login-error"
+                ref={errorRef}
+                className="alert error"
+                role="alert"
+                tabIndex={-1}
+              >
                 {error}
+                <p>Revisá el mensaje y volvé a intentar.</p>
               </div>
             )}
             <button className="button primary" disabled={busy}>

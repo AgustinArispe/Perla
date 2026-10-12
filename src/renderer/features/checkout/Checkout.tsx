@@ -257,13 +257,6 @@ export function Checkout({
             <div className="checkout-tools">
               <button
                 className="button secondary"
-                disabled={!ready}
-                onClick={() => setScannerTestOpen(true)}
-              >
-                {lastScan ? 'Probar conexión de nuevo' : 'Probar conexión del lector'}
-              </button>
-              <button
-                className="button secondary"
                 disabled={!editable}
                 onClick={() => {
                   setWeightOnly(false);
@@ -284,13 +277,22 @@ export function Checkout({
                 <Icon name="box" size={18} />
                 Producto por kilo · F6
               </button>
+            </div>
+            <div className="checkout-diagnostics" role="status">
+              <button
+                className="button quiet checkout-scanner-diagnostic"
+                disabled={!ready}
+                onClick={() => setScannerTestOpen(true)}
+              >
+                {lastScan ? 'Probar conexión de nuevo' : 'Probar conexión del lector'}
+              </button>
               <span>
                 {state.pendingScans
                   ? `${state.pendingScans} lecturas pendientes`
                   : ready
                     ? lastScan
                       ? `Lector OK · Última lectura ${lastScan.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })}`
-                      : 'Lector sin verificar · Listo para escanear'
+                      : 'Listo para escanear'
                     : 'Escaneo suspendido'}
               </span>
             </div>

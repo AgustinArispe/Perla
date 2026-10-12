@@ -7,6 +7,8 @@ import type { Promotion } from '../../../shared/promotions';
 import { api, errorMessage, unwrap } from '../../api';
 import { Icon } from '../../components/Icon';
 import { PromotionForm } from './PromotionForm';
+import { formatMoney } from '../../../domain/values';
+import { PageHeading } from '../../components/PageHeader';
 
 type View = 'CURRENT' | 'SCHEDULED' | 'OTHER';
 const typeLabel = {
@@ -31,9 +33,14 @@ function bucket(promotion: Promotion, now: number): View {
 function benefit(promotion: Promotion) {
   const input = promotion.input;
   if (input.type === 'PERCENT') return `${input.basisPoints / 100}% menos`;
-  if (input.type === 'X_FOR_Y') return `${input.buyQuantity} × ${input.payQuantity}`;
-  if (input.type === 'QUANTITY_PRICE') return `Desde ${input.thresholdBase} unidades`;
-  return `${input.components.length} productos`;
+  if (input.type === 'X_FOR_Y') return `Llevá ${input.buyQuantity}, pagá ${input.payQuantity}`;
+  if (input.type === 'QUANTITY_PRICE') {
+    // The engine compares each product's quantity: units for UNIT, grams for KG.
+    // A category or brand can contain both forms of sale, so show both interpretations.
+    const quantity = new Intl.NumberFormat('es-AR', { maximumFractionDigits: 3 });
+    return `Desde ${quantity.format(input.thresholdBase)} unidades o ${quantity.format(input.thresholdBase / 1000)} kg, según la forma de venta de cada producto · Precio especial: ${formatMoney(input.specialPriceCents)} por unidad o kg`;
+  }
+  return `Combo por ${formatMoney(input.comboPriceCents)}`;
 }
 
 export function PromotionPage() {
@@ -84,47 +91,38 @@ export function PromotionPage() {
   });
   return (
     <>
-      <div className="page-heading promotion-page-heading">
+      <PageHeading className="page-heading promotion-page-heading">
         <div>
-          <span className="eyebrow">Ventas</span>
           <h1>Promociones</h1>
         </div>
         <button className="button primary" onClick={() => setEditor(null)}>
           <Icon name="plus" size={18} />
           Nueva promoción
         </button>
-      </div>
-      <div className="promotion-overview panel">
-        <div>
-          <span>Activas ahora</span>
-          <strong>{counts.CURRENT}</strong>
-          <small>Se aplican automáticamente en Caja</small>
-        </div>
-        <div>
-          <span>Programadas</span>
-          <strong>{counts.SCHEDULED}</strong>
-          <small>Comienzan en la fecha indicada</small>
-        </div>
-        <div>
-          <span>Borradores y finalizadas</span>
-          <strong>{counts.OTHER}</strong>
-          <small>Sin efecto sobre las ventas</small>
-        </div>
-      </div>
+      </PageHeading>
       {error && <div className="alert error">{error}</div>}
       <div className="export-filter-bar">
-        <div className="promotion-tabs" role="tablist">
-          <button className={view === 'CURRENT' ? 'active' : ''} onClick={() => setView('CURRENT')}>
+        <div className="promotion-tabs" role="group" aria-label="Estado de las promociones">
+          <button
+            className={view === 'CURRENT' ? 'active' : ''}
+            aria-pressed={view === 'CURRENT'}
+            onClick={() => setView('CURRENT')}
+          >
             Activas <span>{counts.CURRENT}</span>
           </button>
           <button
             className={view === 'SCHEDULED' ? 'active' : ''}
+            aria-pressed={view === 'SCHEDULED'}
             onClick={() => setView('SCHEDULED')}
           >
             Programadas <span>{counts.SCHEDULED}</span>
           </button>
-          <button className={view === 'OTHER' ? 'active' : ''} onClick={() => setView('OTHER')}>
-            Borradores y finalizadas <span>{counts.OTHER}</span>
+          <button
+            className={view === 'OTHER' ? 'active' : ''}
+            aria-pressed={view === 'OTHER'}
+            onClick={() => setView('OTHER')}
+          >
+            Pausadas, borradores y finalizadas <span>{counts.OTHER}</span>
           </button>
         </div>
         <SavedViews
@@ -162,10 +160,22 @@ export function PromotionPage() {
         ) : (
           visible.map((promotion) => {
             const input = promotion.input;
-            const targetTotal =
+            const scope =
               input.type === 'COMBO_PRICE'
-                ? input.components.length
-                : input.productIds.length + input.categoryIds.length + input.brandIds.length;
+                ? `${input.components.length} productos del combo`
+                : [
+                    input.productIds.length
+                      ? `${input.productIds.length} ${input.productIds.length === 1 ? 'producto' : 'productos'}`
+                      : '',
+                    input.categoryIds.length
+                      ? `${input.categoryIds.length} ${input.categoryIds.length === 1 ? 'categoría' : 'categorías'}`
+                      : '',
+                    input.brandIds.length
+                      ? `${input.brandIds.length} ${input.brandIds.length === 1 ? 'marca' : 'marcas'}`
+                      : '',
+                  ]
+                    .filter(Boolean)
+                    .join(' · ');
             return (
               <article className="promotion-card" key={promotion.id}>
                 <div className="promotion-card-icon">
@@ -189,12 +199,17 @@ export function PromotionPage() {
                   <h2>{input.name}</h2>
                   <p>
                     <strong>{benefit(promotion)}</strong>
+                    <span>{scope}</span>
                     <span>
-                      {targetTotal} {targetTotal === 1 ? 'objetivo' : 'objetivos'}
+                      {input.startsAt
+                        ? `Desde ${new Date(input.startsAt).toLocaleDateString('es-AR')}`
+                        : 'Sin fecha de inicio'}
                     </span>
-                    {input.endsAt && (
-                      <span>Hasta {new Date(input.endsAt).toLocaleDateString('es-AR')}</span>
-                    )}
+                    <span>
+                      {input.endsAt
+                        ? `Hasta ${new Date(input.endsAt).toLocaleDateString('es-AR')}`
+                        : 'Sin fecha de finalización'}
+                    </span>
                   </p>
                 </div>
                 <div className="promotion-card-actions">

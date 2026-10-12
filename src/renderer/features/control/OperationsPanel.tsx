@@ -1,3 +1,4 @@
+import { PageHeading } from '../../components/PageHeader';
 import { useRememberedState } from '../../components/useRememberedState';
 import { useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -126,7 +127,7 @@ export function OperationsPanel({
   return (
     <div className="control-page operations-workspace">
       {!embedded && (
-        <div className="page-heading">
+        <PageHeading className="page-heading">
           <div>
             <h1>Controles operativos</h1>
             <p>Conteos, vencimientos y revisión de cierres.</p>
@@ -136,7 +137,7 @@ export function OperationsPanel({
               Volver
             </button>
           )}
-        </div>
+        </PageHeading>
       )}
       {!embedded && (
         <div className="filter-tabs" role="tablist" aria-label="Controles">

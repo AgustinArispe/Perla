@@ -11,7 +11,7 @@ test('Inicio: resumen útil, pendientes bajo demanda y accesos correctos en escr
   await expect(page.getByLabel('Ventas de hoy y de la semana')).toBeVisible();
   await expect(page.getByLabel('Estado de las cajas')).toBeVisible();
   await page.getByRole('button', { name: 'Ver resultados', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Resumen mensual', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Resultados', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Inicio', exact: true }).click();
   await page.route('**/api/v1/control', async (route) => {
     const request = route.request().postDataJSON();

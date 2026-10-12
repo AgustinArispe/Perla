@@ -20,7 +20,12 @@ export function MonthlyReportPrint({
   onClose: () => void;
   profitabilityEnabled?: boolean;
 }) {
-  const usedPayments = report.payments.filter((payment) => payment.amountCents > 0);
+  const usedPayments = report.payments.filter(
+    (payment) =>
+      payment.amountCents !== 0 || payment.saleCount > 0 || (payment.refundCount ?? 0) > 0,
+  );
+  const paymentTotal = usedPayments.reduce((sum, payment) => sum + payment.amountCents, 0);
+  const signedPayments = usedPayments.some((payment) => payment.amountCents < 0);
   const topProducts = report.rankings.revenue.slice(0, 8);
   return (
     <div className="report-modal" role="dialog" aria-modal="true" aria-labelledby="report-title">
@@ -78,7 +83,12 @@ export function MonthlyReportPrint({
           <section className="report-section report-profitability">
             <div className="report-section-heading">
               <h2>Margen bruto</h2>
-              <span>{report.profitability.coverageBasisPoints / 100}% de la venta cubierta</span>
+              <span>
+                {report.profitability.coverageBasisPoints / 100}% de{' '}
+                {report.profitability.coverageBasis === 'ABSOLUTE_MOVEMENT_NET'
+                  ? 'movimientos con costo'
+                  : 'la venta cubierta'}
+              </span>
             </div>
             <div className="report-profit-grid">
               <div>
@@ -128,17 +138,21 @@ export function MonthlyReportPrint({
         <section className="report-section">
           <div className="report-section-heading">
             <h2>Medios de pago</h2>
-            <span>Sobre ventas completadas</span>
+            <span>Pagos de ventas menos reembolsos; no incluye cobros posteriores de deuda</span>
           </div>
           {usedPayments.length ? (
             usedPayments.map((payment) => (
               <div className="report-payment" key={payment.method}>
                 <div>
                   <strong>{paymentLabels[payment.method]}</strong>
-                  <span>{payment.saleCount} ventas</span>
+                  <span>
+                    {payment.saleCount} ventas · {payment.refundCount ?? 0} reembolsos
+                  </span>
                 </div>
                 <div className="report-track">
-                  <i style={{ width: `${payment.shareBasisPoints / 100}%` }} />
+                  {!signedPayments && paymentTotal > 0 && (
+                    <i style={{ width: `${(100 * payment.amountCents) / paymentTotal}%` }} />
+                  )}
                 </div>
                 <strong>{formatMoney(payment.amountCents)}</strong>
               </div>

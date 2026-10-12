@@ -1,3 +1,4 @@
+import { PageHeading } from '../../components/PageHeader';
 import { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import type { WeeklySummary } from '../../../shared/commercial-control';
@@ -86,14 +87,14 @@ export function WeeklyPanel({ onBack }: { onBack?: () => void }) {
   const w = report.data;
   return (
     <>
-      <div className="page-heading">
+      <PageHeading className="page-heading">
         <h1>Resumen semanal</h1>
         {onBack && (
           <button className="button secondary" onClick={onBack}>
             Volver
           </button>
         )}
-      </div>
+      </PageHeading>
       <section className="panel weekly-report">
         <div className="movement-filters">
           <label className="field">
@@ -191,7 +192,11 @@ export function WeeklyPanel({ onBack }: { onBack?: () => void }) {
                 <dt>Margen bruto conocido</dt>
                 <dd>{formatMoney(w.profitability.grossMarginCents)}</dd>
                 <small>
-                  {w.profitability.coverageBasisPoints / 100}% con costo registrado
+                  {w.profitability.coverageBasisPoints / 100}% de{' '}
+                  {w.profitability.coverageBasis === 'ABSOLUTE_MOVEMENT_NET'
+                    ? 'movimientos'
+                    : 'ventas'}{' '}
+                  con costo registrado
                   {w.profitability.coverageBasisPoints < 10000 ? ' · Parcial' : ''} · No es ganancia
                   neta
                 </small>

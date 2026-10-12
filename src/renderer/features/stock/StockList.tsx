@@ -1,3 +1,4 @@
+import { PageHeading } from '../../components/PageHeader';
 import { SavedViews } from '../../components/SavedViews';
 import { useRememberedState, scalarViewFilters } from '../../components/useRememberedState';
 import { ExportButton } from '../../components/ExportButton';
@@ -105,11 +106,11 @@ export function StockList({
         />
       )}
       {!embedded && (
-        <div className="page-heading">
+        <PageHeading className="page-heading">
           <div>
             <h1>Stock</h1>
           </div>
-        </div>
+        </PageHeading>
       )}
       {!connected && (
         <div className="alert info">
@@ -262,10 +263,14 @@ export function StockList({
                     data-label="Disponible"
                     className={`numeric stock-quantity ${balance.state === 'NEGATIVE' ? 'negative-value' : ''}`}
                   >
-                    {formatStock(balance.quantityBase, balance.unit)}
+                    {!balance.trackStock
+                      ? 'Sin control'
+                      : !balance.initialized
+                        ? 'Sin conteo'
+                        : formatStock(balance.quantityBase, balance.unit)}
                   </td>
                   <td className="numeric stock-minimum" data-label="Mínimo">
-                    {formatStock(balance.minStockBase, balance.unit)}
+                    {balance.trackStock ? formatStock(balance.minStockBase, balance.unit) : '—'}
                   </td>
                   <td>
                     <span className={`pill stock-state-${balance.state.toLowerCase()}`}>
@@ -283,21 +288,23 @@ export function StockList({
                         Contar stock
                       </button>
                       <button
-                        className="icon-button"
+                        className="button secondary small"
                         aria-label={`Registrar movimiento de ${balance.name}`}
                         title="Ingreso o merma"
                         disabled={!balance.trackStock || !balance.initialized || blocked}
                         onClick={() => setEditor({ balance, mode: 'record' })}
                       >
-                        <Icon name="plus" />
+                        <Icon name="plus" size={17} />
+                        Ingreso / merma
                       </button>
                       <button
-                        className="icon-button"
+                        className="button quiet small"
                         aria-label={`Ver movimientos de ${balance.name}`}
                         title="Ver historial"
                         onClick={() => setHistory(balance)}
                       >
-                        <Icon name="history" />
+                        <Icon name="history" size={17} />
+                        Movimientos
                       </button>
                       {lotsEnabled && balance.trackStock && balance.initialized && (
                         <button

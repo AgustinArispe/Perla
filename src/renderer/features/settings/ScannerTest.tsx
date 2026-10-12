@@ -11,9 +11,11 @@ type Reading = {
 
 export function ScannerTest({
   compact = false,
+  autoFocusInput = true,
   onVerified,
 }: {
   compact?: boolean;
+  autoFocusInput?: boolean;
   onVerified?: (at: Date) => void;
 }) {
   const input = useRef<HTMLInputElement>(null);
@@ -23,8 +25,8 @@ export function ScannerTest({
   const [checking, setChecking] = useState(false);
 
   useEffect(() => {
-    input.current?.focus();
-  }, []);
+    if (autoFocusInput) input.current?.focus();
+  }, [autoFocusInput]);
 
   async function check(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

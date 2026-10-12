@@ -85,8 +85,12 @@ export function SupplierList({
                 aria-label={`Cuenta de ${supplier.name}. Saldo ${formatMoney(supplier.balanceCents)}`}
                 onClick={() => setAccountSupplier(supplier.id)}
               >
-                <small>Saldo</small>
+                <small>{supplier.balanceCents > 0 ? 'Por pagar' : 'Al día'}</small>
                 <strong>{formatMoney(supplier.balanceCents)}</strong>
+                {supplier.creditCents > 0 && (
+                  <small>A nuestro favor {formatMoney(supplier.creditCents)}</small>
+                )}
+                <span className="supplier-account-action">Ver cuenta</span>
               </button>
             )}
             <button className="button secondary small" onClick={() => setEditor(supplier)}>

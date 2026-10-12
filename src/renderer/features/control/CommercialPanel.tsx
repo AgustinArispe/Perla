@@ -1,3 +1,4 @@
+import { PageHeading } from '../../components/PageHeader';
 import { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import type { Product } from '../../../shared/catalog';
@@ -109,7 +110,7 @@ export function CommercialPanel({
   const busy = review.isPending || prices.isPending || settings.isPending;
   return (
     <>
-      <div className="page-heading">
+      <PageHeading className="page-heading">
         <h1>Revisión de productos</h1>
         <SavedViews<{ view: 'prices' | 'rotation' } & CommercialFilter>
           module="commercial"
@@ -133,7 +134,7 @@ export function CommercialPanel({
         >
           Descargar Excel
         </button>
-      </div>
+      </PageHeading>
       <div className="segmented-control" role="group" aria-label="Vista comercial">
         <button
           disabled={available.data?.flags.COSTS_MARGIN === false}

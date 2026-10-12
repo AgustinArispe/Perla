@@ -1,3 +1,4 @@
+import { PageHeading } from '../../components/PageHeader';
 import { SavedViews } from '../../components/SavedViews';
 import { useRememberedState, scalarViewFilters } from '../../components/useRememberedState';
 import { ExportButton } from '../../components/ExportButton';
@@ -47,18 +48,25 @@ export function UserList({ currentRole }: { currentRole: Role }) {
     }
   }
   return (
-    <>
-      <div className="page-heading">
+    <div className="admin-workspace users-workspace">
+      <PageHeading className="page-heading">
         <div>
           <h1>Usuarios</h1>
         </div>
         <button className="button primary" onClick={() => setEditing(null)}>
           Crear usuario
         </button>
-      </div>
+      </PageHeading>
       {users.isError && (
         <div className="alert error" role="alert">
           {errorMessage(users.error)}
+          <button
+            className="button secondary small"
+            onClick={() => void users.refetch()}
+            disabled={users.isFetching}
+          >
+            Reintentar
+          </button>
         </div>
       )}
       {actionError && (
@@ -110,7 +118,7 @@ export function UserList({ currentRole }: { currentRole: Role }) {
             filters={{ query: search, status, ...(role ? { role } : {}) }}
           />
         </div>
-        <div className="table-scroll">
+        <div className="table-scroll" aria-busy={users.isFetching}>
           <table>
             <thead>
               <tr>
@@ -118,7 +126,9 @@ export function UserList({ currentRole }: { currentRole: Role }) {
                 <th>Usuario</th>
                 <th>Rol</th>
                 <th>Estado</th>
-                <th />
+                <th>
+                  <span className="sr-only">Acciones</span>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -165,9 +175,25 @@ export function UserList({ currentRole }: { currentRole: Role }) {
             </tbody>
           </table>
         </div>
-        {users.isPending && <p className="empty-table">Cargando usuarios…</p>}
+        {users.isPending && (
+          <p className="empty-table" role="status">
+            Cargando usuarios…
+          </p>
+        )}
         {!users.isPending && !users.isError && visibleUsers?.length === 0 && (
-          <p className="empty-table">No hay usuarios con estos filtros.</p>
+          <div className="empty-table" role="status">
+            <p>No hay usuarios con estos filtros.</p>
+            <button
+              className="button secondary small"
+              onClick={() => {
+                setSearch('');
+                setStatus('ALL');
+                setRole('');
+              }}
+            >
+              Limpiar filtros
+            </button>
+          </div>
         )}
       </div>
       {accessUser && (
@@ -222,7 +248,7 @@ export function UserList({ currentRole }: { currentRole: Role }) {
           }}
         />
       )}
-    </>
+    </div>
   );
 }
 function UserForm({

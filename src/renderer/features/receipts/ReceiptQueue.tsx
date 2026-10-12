@@ -1,3 +1,4 @@
+import { PageHeading } from '../../components/PageHeader';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import type { SaleReceipt } from '../../../shared/receipts';
@@ -14,12 +15,12 @@ export function ReceiptQueue() {
   });
   return (
     <>
-      <div className="page-heading">
+      <PageHeading className="page-heading">
         <div>
           <h1>Comprobantes</h1>
           <p>Ventas listas para imprimir</p>
         </div>
-      </div>
+      </PageHeading>
       {receipts.isError && <div className="alert error">{errorMessage(receipts.error)}</div>}
       <section className="catalog-card">
         {receipts.isPending && <div className="loading-state">Cargando comprobantes…</div>}

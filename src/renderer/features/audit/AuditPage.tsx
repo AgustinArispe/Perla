@@ -1,3 +1,4 @@
+import { PageHeading } from '../../components/PageHeader';
 import { activityLabel, activityOperations as operations } from './operation-labels';
 import { SavedViews } from '../../components/SavedViews';
 import { useRememberedState, scalarViewFilters } from '../../components/useRememberedState';
@@ -36,42 +37,56 @@ export function AuditPage() {
     setPages([undefined]);
   }
   return (
-    <>
-      <div className="page-heading">
-        <SavedViews
-          module="audit"
-          filters={{
-            ...(from ? { fromDate: from } : {}),
-            ...(to ? { toDate: to } : {}),
-            ...(operation ? { operation } : {}),
-          }}
-          onApply={(filters) => {
-            const value = scalarViewFilters(filters);
-            setFrom(value.fromDate ?? '');
-            setTo(value.toDate ?? '');
-            setOperation(value.operation ?? '');
-            setPages([undefined]);
-          }}
-        />
-        <ExportButton
-          dataset="audit"
-          filters={{
-            ...(from ? { fromDate: from } : {}),
-            ...(to ? { toDate: to } : {}),
-            ...(operation ? { operation } : {}),
-          }}
-        />
+    <div className="admin-workspace audit-workspace">
+      <PageHeading className="page-heading">
         <h1>Actividad</h1>
-      </div>
+        <div className="heading-actions">
+          <SavedViews
+            module="audit"
+            filters={{
+              ...(from ? { fromDate: from } : {}),
+              ...(to ? { toDate: to } : {}),
+              ...(operation ? { operation } : {}),
+            }}
+            onApply={(filters) => {
+              const value = scalarViewFilters(filters);
+              setFrom(value.fromDate ?? '');
+              setTo(value.toDate ?? '');
+              setOperation(value.operation ?? '');
+              setPages([undefined]);
+            }}
+          />
+          <ExportButton
+            dataset="audit"
+            filters={{
+              ...(from ? { fromDate: from } : {}),
+              ...(to ? { toDate: to } : {}),
+              ...(operation ? { operation } : {}),
+            }}
+          />
+        </div>
+      </PageHeading>
       <section className="panel">
-        <div className="movement-filters">
+        <div className="movement-filters admin-toolbar">
           <label className="field">
             Desde
-            <input type="date" value={from} onChange={(e) => change(setFrom, e.target.value)} />
+            <input
+              type="date"
+              value={from}
+              aria-invalid={invalid}
+              aria-describedby={invalid ? 'audit-date-error' : undefined}
+              onChange={(e) => change(setFrom, e.target.value)}
+            />
           </label>
           <label className="field">
             Hasta
-            <input type="date" value={to} onChange={(e) => change(setTo, e.target.value)} />
+            <input
+              type="date"
+              value={to}
+              aria-invalid={invalid}
+              aria-describedby={invalid ? 'audit-date-error' : undefined}
+              onChange={(e) => change(setTo, e.target.value)}
+            />
           </label>
           <label className="field">
             Operación
@@ -93,8 +108,8 @@ export function AuditPage() {
           </button>
         </div>
         {invalid && (
-          <div className="alert error" role="alert">
-            La fecha inicial debe ser anterior a la final.
+          <div id="audit-date-error" className="alert error" role="alert">
+            La fecha inicial debe ser anterior o igual a la final.
           </div>
         )}
         {events.isError && (
@@ -138,14 +153,18 @@ export function AuditPage() {
               {(!events.data?.items.length || invalid) && !events.isError && (
                 <tr>
                   <td className="empty-table" colSpan={4}>
-                    {events.isPending ? 'Cargando auditoría…' : 'Sin operaciones en este período.'}
+                    {invalid
+                      ? 'Corregí las fechas para consultar la actividad.'
+                      : events.isPending
+                        ? 'Cargando auditoría…'
+                        : 'Sin operaciones con estos filtros. Probá ampliar el período o elegir todas las operaciones.'}
                   </td>
                 </tr>
               )}
             </tbody>
           </table>
         </div>
-        <div className="dialog-footer">
+        <div className="dialog-footer admin-pagination" aria-label="Paginación de actividad">
           <button
             className="button secondary"
             disabled={pages.length === 1 || events.isFetching || invalid}
@@ -165,6 +184,6 @@ export function AuditPage() {
           </button>
         </div>
       </section>
-    </>
+    </div>
   );
 }

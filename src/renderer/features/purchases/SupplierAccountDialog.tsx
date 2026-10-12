@@ -202,11 +202,11 @@ export function SupplierAccountDialog({
           <>
             <div className="supplier-account-hero">
               <div>
-                <small>Saldo pendiente</small>
+                <small>Por pagar</small>
                 <strong>{formatMoney(data.balanceCents)}</strong>
               </div>
               <div className={data.creditCents ? 'has-credit' : ''}>
-                <small>Crédito a favor</small>
+                <small>A nuestro favor</small>
                 <strong>{formatMoney(data.creditCents)}</strong>
               </div>
               {!paying && (
