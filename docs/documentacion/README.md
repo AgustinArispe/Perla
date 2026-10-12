@@ -10,6 +10,9 @@ No es una promesa de funcionalidades futuras ni una certificación de seguridad.
 
 ## Lectura completa
 
+- [Análisis de Containdt — 12 de octubre de 2026](../analisis-competencia-containdt-2026-10-12.md): comparación comercial y prioridades propuestas.
+- [Base de simulación en Railway](../railway-base-simulacion.md): tamaño, distribución de la semilla y persistencia entre deploys.
+
 - [Documento completo en un solo archivo](DOCUMENTACION-COMPLETA.md).
 - [Versión HTML navegable, con búsqueda del navegador e impresión](DOCUMENTACION-COMPLETA.html).
 - [Nombre Perla, significado del logo, paleta y tipografía](01-producto-y-alcance.md#9-perla-nombre-identidad-y-significado-de-marca): narrativa del producto, archivos de diseño y origen del lettering.
