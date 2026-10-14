@@ -3,7 +3,11 @@ const port = Number(process.env.BOCHA_WEB_TEST_PORT ?? '3087');
 if (!Number.isInteger(port) || port < 1024 || port > 65521)
   throw new Error('Puerto de prueba inválido.');
 const scenarios = [
-  { name: 'home', port: port + 15, testMatch: '**/home-summary.spec.ts' },
+  {
+    name: 'home',
+    port: port + 15,
+    testMatch: ['**/home-summary.spec.ts', '**/login-layout.spec.ts'],
+  },
   { name: 'modules-control-tools', port: port, testMatch: '**/control-tools.spec.ts' },
   { name: 'modules-excel-export', port: port + 8, testMatch: '**/excel-export.spec.ts' },
   {

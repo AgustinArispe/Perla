@@ -1,6 +1,6 @@
 # Base de simulación en Railway
 
-Revisión: 12 de octubre de 2026. Estado: evaluación y procedimiento propuesto; no se subió una base ni se configuró Railway.
+Revisión: 14 de octubre de 2026. Estado: exportador privado implementado y probado con una base de prueba; la transferencia de la simulación local y su carga en Railway siguen pendientes.
 
 ## Viabilidad
 
@@ -20,7 +20,7 @@ La base local `.data/five-month-local/pos.sqlite` mide 230.707.200 bytes, aproxi
 ## Procedimiento recomendado
 
 1. Crear un snapshot consistente con la API de backup de SQLite; no copiar solamente el archivo principal mientras está en uso, porque puede tener escrituras pendientes en WAL.
-2. Trabajar sobre la copia. Conservar relaciones y datos ficticios; retirar sesiones y material de autenticación reutilizable. Definir cuentas de acceso propias del entorno desplegado. Revisar auditoría y campos de texto para evitar incluir información añadida manualmente que no sea ficticia.
+2. Trabajar sobre la copia. Conservar relaciones y datos ficticios; retirar sesiones y bloqueos de ingreso. Una transferencia privada puede conservar los hashes de los usuarios para mantener sus contraseñas; un artefacto público debe retirar ese material y definir cuentas propias del entorno desplegado. Revisar auditoría y campos de texto para evitar incluir información añadida manualmente que no sea ficticia.
 3. No incorporar `.env`, `backup.key`, backups cifrados ni credenciales locales al artefacto. Verificar integridad y relaciones de la copia, y registrar versión, tamaño y checksum.
 4. Comprimir y distribuir la copia como artefacto de demo. Se recomienda release o almacenamiento de artefactos; un archivo comprimido en el repositorio es posible si queda bajo el límite. Git LFS requiere comprobar que el mecanismo de build obtiene el archivo real, no solamente el puntero.
 5. Configurar Railway para construir con `Dockerfile.api` y montar un volumen en `/data`. Mantener una sola instancia escritora de esta base y comprobar permisos del volumen para el usuario `node`.
@@ -41,3 +41,28 @@ Un volumen ya existente conserva sus datos: un nuevo deploy no debe volver a sem
 La recomendación para esta demo es snapshot limpio y carga inicial al volumen. Para una instalación comercial se prepara una base propia del comercio.
 
 Referencias: [operación y variables de Perla](documentacion/08-operacion-y-despliegue.md), [volúmenes de Railway](https://docs.railway.com/volumes), [límites de GitHub](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github).
+
+## Exportar la base local exacta
+
+Desde el proyecto local actualizado y con las dependencias instaladas:
+
+```powershell
+node scripts/export-demo-database.mjs
+```
+
+El script usa por defecto `.data/five-month-local/pos.sqlite`. Se puede indicar otra
+ruta como primer argumento. Obtiene una copia consistente mediante el backup de
+SQLite, incluyendo datos confirmados en WAL, sin modificar la base original.
+Retira sesiones y bloqueos de ingreso únicamente de la copia, conserva artículos,
+historial, usuarios y contraseñas existentes, y verifica integridad y relaciones.
+
+El resultado queda en una carpeta nueva dentro de `.data/exports/`: `pos.sqlite.gz`
+y `manifest.json`. La consola muestra la ruta, la cantidad real de artículos,
+los usuarios y roles, y el checksum SHA-256 del archivo comprimido. No muestra
+contraseñas ni hashes de autenticación.
+
+Es un archivo privado: conserva los hashes necesarios para ingresar con los mismos
+usuarios. No subirlo a GitHub ni incluir claves de backups. Transferirlo de forma
+privada para la carga única al volumen de Railway, con la API detenida y una copia
+previa de cualquier base de destino existente. Este comando prepara la exportación;
+no reemplaza la base de Railway ni configura su despliegue.

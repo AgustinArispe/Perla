@@ -9,6 +9,8 @@
 }
 .auth-password-control .button {
   flex-shrink: 0;
+  width: auto;
+  margin: 0;
   padding-inline: 12px;
 }
 .auth-card #login-error p {

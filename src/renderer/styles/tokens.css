@@ -772,6 +772,7 @@ h3 {
   min-width: 160px;
 }
 .field > input,
+.auth-password-control > input,
 .field > select,
 .filter-label select {
   width: 100%;
@@ -1975,7 +1976,7 @@ input::file-selector-button {
   display: grid;
   gap: 16px;
 }
-.auth-card .button {
+.auth-card form > .button {
   width: 100%;
   margin-top: 4px;
 }
@@ -2330,6 +2331,7 @@ input::file-selector-button {
   }
   .search-field input,
   .field > input,
+  .auth-password-control > input,
   .field > select,
   .filter-label select {
     font-size: 16px;
