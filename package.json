@@ -24,6 +24,7 @@
     "format:check": "prettier --check src tests *.ts *.json *.yaml *.yml scripts/*.{mjs,ts} .github/workflows/*.yml",
     "test": "node scripts/build-api.mjs && node scripts/run-tests.mjs",
     "test:watch": "node scripts/run-tests.mjs --watch",
+    "benchmark:queries": "node scripts/benchmark-queries.mjs",
     "test:e2e": "npm run build && playwright test",
     "test:packaged": "node scripts/run-packaged-tests.mjs",
     "check": "npm run typecheck && npm run lint && npm test && npm run build && npm run build:web && npm run build:api",
