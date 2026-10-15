@@ -4,19 +4,25 @@ import {
   chmodSync,
   closeSync,
   copyFileSync,
+  createReadStream,
+  createWriteStream,
   existsSync,
   fsyncSync,
   mkdirSync,
   openSync,
   readFileSync,
+  readSync,
   readdirSync,
   renameSync,
   rmSync,
   statSync,
   writeFileSync,
+  writeSync,
 } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { deflateSync, inflateSync } from 'node:zlib';
+import { createDeflate, createInflate, inflateSync } from 'node:zlib';
+import { Transform } from 'node:stream';
+import { pipeline } from 'node:stream/promises';
 import { MIGRATIONS, SCHEMA_VERSION, migrate } from '../../worker/db/migrations';
 import { DomainError } from '../../shared/errors';
 
@@ -43,6 +49,19 @@ interface Options {
 const MAGIC = Buffer.from('BOCHABK1');
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const hash = (data: Buffer | string) => createHash('sha256').update(data).digest('hex');
+function fileHash(path: string): string {
+  const digest = createHash('sha256');
+  const fd = openSync(path, 'r');
+  try {
+    const block = Buffer.allocUnsafe(64 * 1024);
+    let bytes: number;
+    while ((bytes = readSync(fd, block, 0, block.length, null)) > 0)
+      digest.update(block.subarray(0, bytes));
+    return digest.digest('hex');
+  } finally {
+    closeSync(fd);
+  }
+}
 const invalid = (message = 'La copia no pasó la validación.') =>
   new DomainError('BACKUP_INVALID', message);
 function durable(path: string, data: Buffer | string): void {
@@ -157,6 +176,7 @@ export class BackupService {
     { id: string; fileHash: string; stateHash: string; expires: number }
   >();
   private busy = false;
+  private readonly listed = new Map<string, { hash: string; info: BackupInfo | null }>();
   constructor(private readonly options: Options) {
     if (options.key.length !== 32) throw new Error('La clave de backup debe tener 32 bytes.');
     this.key = Buffer.from(options.key);
@@ -169,10 +189,18 @@ export class BackupService {
     return join(this.options.backupDirectory, id + '.bochabackup');
   }
   private validateSqlite(bytes: Buffer, version: number): void {
+    const path = join(this.options.backupDirectory, randomUUID() + '.validation');
+    try {
+      durable(path, bytes);
+      this.validateSqliteFile(path, version);
+    } finally {
+      rmSync(path, { force: true });
+      removeSidecars(path);
+    }
+  }
+  private validateSqliteFile(path: string, version: number): void {
     if (!Number.isInteger(version) || version < 1 || version > SCHEMA_VERSION)
       throw invalid('La versión de la base no es compatible.');
-    const path = join(this.options.backupDirectory, randomUUID() + '.validation');
-    durable(path, bytes);
     let db: Database.Database | undefined;
     const expected = new Database(':memory:');
     try {
@@ -205,7 +233,7 @@ export class BackupService {
         .prepare('SELECT version,checksum FROM schema_migrations ORDER BY version')
         .all() as { version: number; checksum: string }[];
       if (
-        rows.length !== MIGRATIONS.length ||
+        rows.length !== MIGRATIONS.filter((m) => m.version <= version).length ||
         rows.some((row, index) => {
           const migration = MIGRATIONS[index]!;
           return (
@@ -224,8 +252,6 @@ export class BackupService {
     } finally {
       db?.close();
       expected.close();
-      rmSync(path, { force: true });
-      removeSidecars(path);
     }
   }
   private decode(buffer: Buffer): { info: BackupInfo; database: Buffer } {
@@ -262,19 +288,19 @@ export class BackupService {
   }
   async create(kind: BackupInfo['kind'] = 'MANUAL'): Promise<BackupInfo> {
     const path = join(this.options.backupDirectory, randomUUID() + '.snapshot');
+    const output = path + '.encrypted';
     try {
       durable(path, Buffer.alloc(0));
       await this.options.getDatabase().backup(path);
       chmodSync(path, 0o600);
       if (statSync(path).size > this.maxBytes) throw invalid('La base supera el límite de copia.');
-      const database = readFileSync(path);
       const version = (
         this.options
           .getDatabase()
           .prepare('SELECT MAX(version) AS version FROM schema_migrations')
           .get() as { version: number }
       ).version;
-      this.validateSqlite(database, version);
+      this.validateSqliteFile(path, version);
       const info: BackupInfo = {
         id: randomUUID(),
         createdAt: new Date().toISOString(),
@@ -283,7 +309,7 @@ export class BackupService {
         schemaVersion: version,
         bytes: 0,
         keyId: hash(this.key).slice(0, 16),
-        sha256: hash(database),
+        sha256: fileHash(path),
       };
       const manifest = Buffer.from(JSON.stringify(info));
       const size = Buffer.alloc(4);
@@ -291,33 +317,131 @@ export class BackupService {
       const iv = randomBytes(12);
       const cipher = createCipheriv('aes-256-gcm', this.key, iv);
       cipher.setAAD(MAGIC);
-      const encrypted = Buffer.concat([
-        cipher.update(Buffer.concat([size, manifest, deflateSync(database)])),
-        cipher.final(),
-      ]);
-      const container = Buffer.concat([MAGIC, iv, cipher.getAuthTag(), encrypted]);
-      if (container.length > this.maxBytes) throw invalid();
-      durable(this.path(info.id), container);
+      // Keep the BOCHABK1 format while bounding memory independently of database size.
+      const header = Buffer.concat([MAGIC, iv, Buffer.alloc(16)]);
+      const prefix = cipher.update(Buffer.concat([size, manifest]));
+      durable(output, Buffer.concat([header, prefix]));
+      await pipeline(
+        createReadStream(path),
+        createDeflate(),
+        cipher,
+        createWriteStream(output, { flags: 'a', mode: 0o600 }),
+      );
+      const bytes = statSync(output).size;
+      if (bytes > this.maxBytes) throw invalid();
+      const fd = openSync(output, 'r+');
+      try {
+        writeSync(fd, cipher.getAuthTag(), 0, 16, MAGIC.length + iv.length);
+        fsyncSync(fd);
+      } finally {
+        closeSync(fd);
+      }
+      const destination = this.path(info.id);
+      renameSync(output, destination);
       syncDirectory(this.options.backupDirectory);
-      return { ...info, bytes: container.length };
+      const result = { ...info, bytes };
+      this.listed.set(destination, { hash: fileHash(destination), info: result });
+      return result;
     } finally {
       rmSync(path, { force: true });
       removeSidecars(path);
+      rmSync(output, { force: true });
     }
   }
-  list(): BackupInfo[] {
-    return readdirSync(this.options.backupDirectory)
-      .filter((name) => name.endsWith('.bochabackup') && UUID.test(name.slice(0, -12)))
-      .flatMap((name) => {
-        try {
-          const path = join(this.options.backupDirectory, name);
-          if (statSync(path).size > this.maxBytes) return [];
-          return [this.decode(readFileSync(path)).info];
-        } catch {
-          return [];
+  private async readInfo(path: string): Promise<BackupInfo> {
+    const packed = join(this.options.backupDirectory, randomUUID() + '.packed');
+    const database = packed + '.validation';
+    try {
+      const bytes = statSync(path).size;
+      if (bytes < 40 || bytes > this.maxBytes) throw invalid();
+      const fd = openSync(path, 'r');
+      const header = Buffer.alloc(36);
+      try {
+        if (readSync(fd, header, 0, header.length, 0) !== header.length) throw invalid();
+      } finally {
+        closeSync(fd);
+      }
+      if (!header.subarray(0, 8).equals(MAGIC)) throw invalid();
+      const decipher = createDecipheriv('aes-256-gcm', this.key, header.subarray(8, 20));
+      decipher.setAAD(MAGIC);
+      decipher.setAuthTag(header.subarray(20, 36));
+      // Authenticate the whole payload before inflating any untrusted content.
+      await pipeline(
+        createReadStream(path, { start: 36 }),
+        decipher,
+        createWriteStream(packed, { flags: 'wx', mode: 0o600 }),
+      );
+      const packedFd = openSync(packed, 'r');
+      let length: number;
+      let info: BackupInfo;
+      try {
+        const size = Buffer.alloc(4);
+        if (readSync(packedFd, size, 0, 4, 0) !== 4) throw invalid();
+        length = size.readUInt32BE(0);
+        if (length < 2 || length > 16384 || length + 4 > statSync(packed).size) throw invalid();
+        const manifest = Buffer.alloc(length);
+        if (readSync(packedFd, manifest, 0, length, 4) !== length) throw invalid();
+        info = JSON.parse(manifest.toString('utf8')) as BackupInfo;
+      } finally {
+        closeSync(packedFd);
+      }
+      if (
+        !UUID.test(info.id) ||
+        !['MANUAL', 'DAILY', 'PRE_RESTORE'].includes(info.kind) ||
+        typeof info.appVersion !== 'string' ||
+        !Number.isFinite(Date.parse(info.createdAt)) ||
+        info.keyId !== hash(this.key).slice(0, 16)
+      )
+        throw invalid();
+      let inflatedBytes = 0;
+      const limit = this.maxBytes;
+      const bounded = new Transform({
+        transform(chunk: Buffer, _encoding, callback) {
+          inflatedBytes += chunk.length;
+          callback(inflatedBytes > limit ? invalid() : null, chunk);
+        },
+      });
+      await pipeline(
+        createReadStream(packed, { start: length + 4 }),
+        createInflate(),
+        bounded,
+        createWriteStream(database, { flags: 'wx', mode: 0o600 }),
+      );
+      if (fileHash(database) !== info.sha256) throw invalid();
+      this.validateSqliteFile(database, info.schemaVersion);
+      return { ...info, bytes };
+    } finally {
+      rmSync(packed, { force: true });
+      rmSync(database, { force: true });
+      removeSidecars(database);
+    }
+  }
+  async list(): Promise<BackupInfo[]> {
+    const result: BackupInfo[] = [];
+    for (const name of readdirSync(this.options.backupDirectory).filter(
+      (name) => name.endsWith('.bochabackup') && UUID.test(name.slice(0, -12)),
+    )) {
+      try {
+        const path = join(this.options.backupDirectory, name);
+        if (statSync(path).size > this.maxBytes) continue;
+        const digest = fileHash(path);
+        const cached = this.listed.get(path);
+        if (cached?.hash === digest) {
+          if (cached.info) result.push(cached.info);
+          continue;
         }
-      })
-      .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+        try {
+          const info = await this.readInfo(path);
+          this.listed.set(path, { hash: digest, info });
+          result.push(info);
+        } catch {
+          this.listed.set(path, { hash: digest, info: null });
+        }
+      } catch {
+        // Ignore unreadable entries, as with invalid backups.
+      }
+    }
+    return result.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   }
   download(id: string): Buffer {
     const path = this.path(id);
@@ -450,11 +574,13 @@ export class BackupService {
   }
   async ensureDaily(): Promise<BackupInfo> {
     const day = new Date().toISOString().slice(0, 10);
-    const existing = this.list().find(
+    const backups = await this.list();
+    const existing = backups.find(
       (info) => info.kind === 'DAILY' && info.createdAt.slice(0, 10) === day,
     );
     const info = existing ?? (await this.create('DAILY'));
-    for (const expired of this.list()
+    for (const expired of [info, ...backups.filter((backup) => backup.id !== info.id)]
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
       .filter((item) => item.kind === 'DAILY')
       .slice(14))
       rmSync(this.path(expired.id), { force: true });

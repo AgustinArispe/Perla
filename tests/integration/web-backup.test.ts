@@ -14,6 +14,33 @@ import {
 } from '../../src/server/backups/service';
 
 const cleanups: (() => void)[] = [];
+it('lists and verifies backups from an earlier supported schema', async () => {
+  const directory = mkdtempSync(join(tmpdir(), 'bocha-historical-backup-'));
+  const databasePath = join(directory, 'db.sqlite');
+  const db = new Database(databasePath);
+  cleanups.push(() => {
+    db.close();
+    rmSync(directory, { recursive: true, force: true });
+  });
+  migrate(db, MIGRATIONS.slice(0, -1));
+  const options = {
+    databasePath,
+    backupDirectory: join(directory, 'backups'),
+    key: randomBytes(32),
+    appVersion: 'test',
+    getDatabase: () => db,
+    closeDatabase: () => db.close(),
+    reopenDatabase: () => {
+      throw new Error('unused');
+    },
+  };
+  const service = new BackupService(options);
+  const info = await service.create('DAILY');
+  const restarted = new BackupService(options);
+  expect(await restarted.list()).toEqual([info]);
+  expect(await restarted.ensureDaily()).toEqual(info);
+  expect(restarted.download(info.id)).toEqual(service.download(info.id));
+});
 it('backup acepta esquema con fin de línea de Windows para recuperarlo en Linux', async () => {
   const directory = mkdtempSync(join(tmpdir(), 'bocha-portable-')),
     databasePath = join(directory, 'db.sqlite'),
@@ -93,6 +120,19 @@ function repack(buffer: Buffer, key: Buffer, change: (packed: Buffer) => Buffer)
   const encrypted = Buffer.concat([cipher.update(change(packed)), cipher.final()]);
   return Buffer.concat([magic, iv, cipher.getAuthTag(), encrypted]);
 }
+it('rechecks cached backup listings when ciphertext is changed', async () => {
+  const f = fixture();
+  const info = await f.service.create();
+  expect(await f.service.list()).toEqual([info]);
+  const path = join(f.directory, 'backups', info.id + '.bochabackup');
+  const original = readFileSync(path);
+  const corrupt = Buffer.from(original);
+  corrupt[corrupt.length - 1] = corrupt[corrupt.length - 1]! ^ 1;
+  writeFileSync(path, corrupt);
+  expect(await f.service.list()).toEqual([]);
+  writeFileSync(path, original);
+  expect(await f.service.list()).toEqual([info]);
+});
 it('rejects authenticated checksum mismatches and bounded decompression bombs', async () => {
   const f = fixture();
   const info = await f.service.create();
@@ -135,7 +175,7 @@ it('exports authenticated ciphertext and restores a verified online snapshot, re
   const backup = await f.service.create();
   const bytes = f.service.download(backup.id);
   expect(bytes.includes(Buffer.from('SQLite format'))).toBe(false);
-  expect(f.service.list()).toEqual([backup]);
+  expect(await f.service.list()).toEqual([backup]);
   expect((await f.service.upload(bytes)).sha256).toBe(backup.sha256);
   f.db().prepare("UPDATE business_settings SET business_name='changed'").run();
   const preview = await f.service.inspect(backup.id);
@@ -195,7 +235,7 @@ it('exports authenticated ciphertext and restores a verified online snapshot, re
       .prepare("SELECT enabled FROM business_features WHERE feature_key='SUPPLIERS_PURCHASES'")
       .get(),
   ).toEqual({ enabled: 1 });
-  expect(f.service.list().some((b) => b.kind === 'PRE_RESTORE')).toBe(true);
+  expect((await f.service.list()).some((b) => b.kind === 'PRE_RESTORE')).toBe(true);
   await expect(f.service.restore(preview.previewToken)).rejects.toThrow();
 });
 it('rejects a backup encrypted with another key and a missing or future application schema', async () => {
@@ -289,7 +329,7 @@ it('creates one daily backup per day and retains fourteen daily copies', async (
     await f.service.ensureDaily();
     await f.service.ensureDaily();
   }
-  expect(f.service.list().filter((b) => b.kind === 'DAILY')).toHaveLength(14);
+  expect((await f.service.list()).filter((b) => b.kind === 'DAILY')).toHaveLength(14);
   expect(f.service.download(manual.id).length).toBeGreaterThan(0);
   // This circuit writes and validates 17 encrypted SQLite snapshots on disk.
 }, 60000);
