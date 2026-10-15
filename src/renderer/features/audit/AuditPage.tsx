@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { PageHeading } from '../../components/PageHeader';
 import { activityLabel, activityOperations as operations } from './operation-labels';
 import { SavedViews } from '../../components/SavedViews';
@@ -156,7 +157,7 @@ export function AuditPage() {
                     {invalid
                       ? 'Corregí las fechas para consultar la actividad.'
                       : events.isPending
-                        ? 'Cargando auditoría…'
+                        ? (<PerlaLoading size="compact" label="Cargando auditoría…" />)
                         : 'Sin operaciones con estos filtros. Probá ampliar el período o elegir todas las operaciones.'}
                   </td>
                 </tr>

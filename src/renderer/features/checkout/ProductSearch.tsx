@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { useEffect, useId, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import type { Product } from '../../../shared/catalog';
@@ -122,7 +123,7 @@ export function ProductSearch({
               <strong>{formatMoney(product.priceCents)}</strong>
             </button>
           ))}
-          {products.isFetching && <p role="status">Buscando…</p>}
+          {products.isFetching && <PerlaLoading size="inline" label="Buscando…" />}
           {!items.length && !products.isFetching && !products.isError && (
             <p role="status">No hay productos con esa búsqueda.</p>
           )}

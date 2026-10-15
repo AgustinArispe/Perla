@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { useRef, useState, type ReactNode } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import type { WebSession } from '../../../shared/web';
@@ -193,7 +194,7 @@ export function RegisterGate({
     return (
       <section className="panel" aria-busy="true">
         <h2>Caja</h2>
-        <p>Cargando caja…</p>
+        <PerlaLoading size="compact" label="Cargando caja…" />
       </section>
     );
   if ((session.isError && !session.data) || (terminals.isError && !terminals.data))

@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { PageHeading } from '../../components/PageHeader';
 import { useRef, useState, type FormEvent } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -168,7 +169,7 @@ export function BackupsPage({ onRestored }: { onRestored: () => Promise<void> })
                 <tr>
                   <td colSpan={4} className="empty-table">
                     {backups.isPending
-                      ? 'Cargando copias…'
+                      ? (<PerlaLoading size="compact" label="Cargando copias…" />)
                       : 'Creá una copia para resguardar los datos del negocio.'}
                   </td>
                 </tr>

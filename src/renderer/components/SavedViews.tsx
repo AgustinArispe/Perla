@@ -1,3 +1,4 @@
+import { PerlaLoading } from './PerlaLoading';
 import type { ExcelDataset, ExcelFilters } from '../../shared/excel';
 import { ExportDialog } from './ExportButton';
 import { useState } from 'react';
@@ -135,7 +136,7 @@ export function SavedViews<T extends object>({
               </button>
             </form>
             <div className="saved-view-list">
-              {views.isPending && <p role="status">Cargando vistas…</p>}
+              {views.isPending && <PerlaLoading size="inline" label="Cargando vistas…" />}
               {views.data?.length === 0 && (
                 <p className="subtle-note">Todavía no guardaste vistas.</p>
               )}

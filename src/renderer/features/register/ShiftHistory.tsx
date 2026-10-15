@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { PageHeading } from '../../components/PageHeader';
 import { SavedViews } from '../../components/SavedViews';
 import { useRememberedState, scalarViewFilters } from '../../components/useRememberedState';
@@ -177,7 +178,7 @@ export function ShiftHistory() {
               {(!shifts.data?.items.length || invalid) && !shifts.isError && (
                 <tr>
                   <td className="empty-table" colSpan={5}>
-                    {shifts.isPending ? 'Cargando cajas…' : 'Sin cajas en este período.'}
+                    {shifts.isPending ? (<PerlaLoading size="compact" label="Cargando cajas…" />) : 'Sin cajas en este período.'}
                   </td>
                 </tr>
               )}
@@ -232,7 +233,7 @@ function ShiftDetailDialog({
   return (
     <Dialog title="Detalle de caja" onClose={onClose} wide>
       <div className="dialog-body">
-        {detail.isPending && <p aria-busy="true">Cargando caja…</p>}
+        {detail.isPending && <PerlaLoading size="compact" label="Cargando caja…" />}
         {detail.isError && (
           <div className="alert error" role="alert">
             {errorMessage(detail.error)}{' '}

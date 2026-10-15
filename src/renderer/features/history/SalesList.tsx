@@ -1,4 +1,5 @@
 import { PageHeading } from '../../components/PageHeader';
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { SavedViews } from '../../components/SavedViews';
 import { useRememberedState, scalarViewFilters } from '../../components/useRememberedState';
 import { ExportButton } from '../../components/ExportButton';
@@ -169,6 +170,7 @@ export function SalesList({
             ))}
           </tbody>
         </table>
+        {sales.isPending && <PerlaLoading label="Cargando ventas…" />}
         {!sales.isPending && !sales.data?.items.length && (
           <p className="empty-table">No hay ventas en este período.</p>
         )}

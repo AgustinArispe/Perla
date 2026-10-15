@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { PageHeading } from '../../components/PageHeader';
 import { useRememberedState } from '../../components/useRememberedState';
 import { useMemo, useState } from 'react';
@@ -398,7 +399,7 @@ export function ReplenishmentPanel({
             >
               <p>Elegí los días en los que abre esta ubicación.</p>
               {calendar.isPending ? (
-                <p>Cargando calendario…</p>
+                <PerlaLoading size="compact" label="Cargando calendario…" />
               ) : (
                 <>
                   <button
@@ -450,7 +451,7 @@ export function ReplenishmentPanel({
             </form>
           )}
           {suggestions.isPending ? (
-            <p>Cargando sugerencias…</p>
+            <PerlaLoading size="compact" label="Cargando sugerencias…" />
           ) : suggestions.error ? (
             <p role="alert">
               {errorMessage(suggestions.error)}{' '}
@@ -774,7 +775,7 @@ export function ReplenishmentPanel({
             </button>
           </div>
           {orders.error && <p role="alert">{errorMessage(orders.error)}</p>}
-          {orders.isPending && <p>Cargando pedidos…</p>}
+          {orders.isPending && <PerlaLoading size="compact" label="Cargando pedidos…" />}
           <div className="table-scroll">
             <table>
               <thead>

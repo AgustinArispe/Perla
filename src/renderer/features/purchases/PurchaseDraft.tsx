@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { EntityPicker } from "../../components/EntityPicker";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -416,9 +417,7 @@ export function PurchaseDraft({
               );
             if (!product)
               return (
-                <div key={line.lineId} className="purchase-line loading">
-                  Cargando producto…
-                </div>
+                <PerlaLoading key={line.lineId} size="inline" label="Cargando producto…" />
               );
             return (
               <article className="purchase-line" key={line.lineId}>

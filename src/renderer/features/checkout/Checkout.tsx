@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import type { Customer } from '../../../shared/customers';
 import { CustomerForm } from '../customers/CustomerPage';
 import { EntityPicker } from '../../components/EntityPicker';
@@ -429,7 +430,7 @@ export function Checkout({
               ))}
             </div>
           ) : state.quoteLoading && state.body.discount.type === 'NONE' ? (
-            <div className="checkout-quote-loading">Buscando promociones…</div>
+            <PerlaLoading size="inline" label="Buscando promociones…" />
           ) : null}
           <button
             className="button secondary"
@@ -619,7 +620,7 @@ export function Checkout({
                 </button>
               </>
             ) : (
-              <p role="status">Cargando medios de pago…</p>
+              <PerlaLoading size="compact" label="Cargando medios de pago…" />
             )}
           </div>
         </Dialog>

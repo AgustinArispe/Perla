@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { ExportButton } from '../../components/ExportButton';
 import { useMemo, useRef, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -184,7 +185,7 @@ export function SupplierAccountDialog({
     <Dialog title={data?.supplierName ?? 'Cuenta del proveedor'} onClose={onClose} wide busy={busy}>
       <div className="dialog-body supplier-account-dialog">
         <ExportButton dataset="supplierAccount" filters={{ supplierId }} />
-        {account.isPending && <p>Cargando cuenta…</p>}
+        {account.isPending && <PerlaLoading size="compact" label="Cargando cuenta…" />}
         {account.isError && (
           <div className="alert error">
             {errorMessage(account.error)}{' '}

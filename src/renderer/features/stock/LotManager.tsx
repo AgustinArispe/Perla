@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { StockBalance } from '../../../shared/stock';
@@ -62,7 +63,7 @@ export function LotManager({ balance, onClose }: { balance: StockBalance; onClos
     <Dialog title={`Lotes · ${balance.name}`} onClose={onClose} busy={busy} wide className="lot-dialog">
       {error && <div className="alert error">{error}</div>}
       {status.isPending ? (
-        <div className="dialog-body">Cargando lotes…</div>
+        <PerlaLoading size="panel" label="Cargando lotes…" />
       ) : !data?.enabled ? (
         <div className="dialog-body lot-intro">
           <span className="lot-symbol"><Icon name="box" size={26} /></span>

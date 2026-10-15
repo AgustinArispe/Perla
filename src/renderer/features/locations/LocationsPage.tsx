@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { canTransferQuantity } from './transfer-validation';
 import { SavedViews } from '../../components/SavedViews';
 import { useRememberedState, scalarViewFilters } from '../../components/useRememberedState';
@@ -110,6 +111,7 @@ export function LocationsPage({ canConfigure }: { canConfigure: boolean }) {
         <div className="location-workspace">
           <section className="location-directory" aria-label="Locales y depósitos">
             <h2>Locales y depósitos</h2>
+            {locations.isPending && <PerlaLoading size="compact" label="Cargando ubicaciones…" />}
             {locations.data?.map((item) => (
               <div className="location-directory-row" key={item.id}>
                 <button
@@ -190,7 +192,7 @@ export function LocationsPage({ canConfigure }: { canConfigure: boolean }) {
               {errorMessage(transfers.error)}
             </div>
           ) : transfers.isPending ? (
-            <p role="status">Cargando traslados…</p>
+            <PerlaLoading size="compact" label="Cargando traslados…" />
           ) : transfers.data?.length ? (
             <div className="transfer-list">
               {transfers.data.map((item) => (
@@ -375,7 +377,11 @@ function InventoryPane({
           </tbody>
         </table>
       </div>
-      {stock.isFetching && <p role="status">Consultando existencias…</p>}
+      {stock.isPending ? (
+        <PerlaLoading size="compact" label="Consultando existencias…" />
+      ) : stock.isFetching ? (
+        <PerlaLoading size="inline" label="Actualizando existencias…" />
+      ) : null}
       {stock.data?.total === 0 && <p>Sin artículos para esta búsqueda.</p>}
       {!!stock.data?.total && (
         <div className="table-pagination">

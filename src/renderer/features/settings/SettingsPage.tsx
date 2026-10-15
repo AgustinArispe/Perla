@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { PageHeading } from '../../components/PageHeader';
 import { PageHeader } from '../../components/PageHeader';
 import { useState, type FormEvent } from 'react';
@@ -89,7 +90,7 @@ export function SettingsPage({
       )}
       {settings.isPending && (
         <div className="dashboard-panel" aria-busy="true">
-          <p>Cargando configuración…</p>
+          <PerlaLoading size="compact" label="Cargando configuración…" />
         </div>
       )}
       <div className="settings-tabs" role="tablist" aria-label="Configuración">

@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { SavedViews } from '../../components/SavedViews';
 import { useRememberedState, scalarViewFilters } from '../../components/useRememberedState';
 import { ExportButton } from '../../components/ExportButton';
@@ -137,7 +138,7 @@ export function PromotionPage() {
       </div>
       <section className="promotion-list panel">
         {promotions.isPending ? (
-          <div className="empty-state">Cargando promociones…</div>
+          <PerlaLoading size="panel" label="Cargando promociones…" />
         ) : promotions.isError ? (
           <div className="alert error">{errorMessage(promotions.error)}</div>
         ) : visible.length === 0 ? (

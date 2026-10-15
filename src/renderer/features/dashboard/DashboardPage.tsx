@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { PageHeader } from '../../components/PageHeader';
 import { ExportButton } from '../../components/ExportButton';
 import { useState } from 'react';
@@ -157,12 +158,7 @@ export function DashboardPage({
         </div>
       )}
       {report.isPending && month && (
-        <div className="dashboard-loading" role="status" aria-busy="true">
-          <span>Consultando el mes…</span>
-          <div />
-          <div />
-          <div />
-        </div>
+        <PerlaLoading label="Consultando el mes…" />
       )}
       {data && (
         <>

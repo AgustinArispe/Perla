@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { ExportButton } from '../../components/ExportButton';
 import { useQuery } from '@tanstack/react-query';
 import { api, errorMessage, unwrap } from '../../api';
@@ -15,7 +16,7 @@ export function LocationSummary({ month }: { month: string }) {
         <h2>Mercadería por ubicación</h2>
         <ExportButton dataset="locations" filters={{ month }} />
       </div>
-      {report.isPending && <p role="status">Consultando ubicaciones…</p>}
+      {report.isPending && <PerlaLoading size="compact" label="Consultando ubicaciones…" />}
       {report.isError && <p role="alert">{errorMessage(report.error)}</p>}
       <div className="location-summary-grid">
         {report.data?.locations.map((location) => (

@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { TaxonomyItem } from '../../../shared/catalog';
@@ -127,7 +128,7 @@ export function TaxonomyManager({ onClose }: { onClose: () => void }) {
   return (
     <Dialog title="Categorías y marcas" onClose={onClose} wide className="taxonomy-dialog">
       <div className="dialog-body">
-        {taxonomy.isPending && <p>Cargando catálogos…</p>}
+        {taxonomy.isPending && <PerlaLoading size="compact" label="Cargando catálogos…" />}
         {taxonomy.isError && <div className="alert error">{errorMessage(taxonomy.error)}</div>}
         {taxonomy.data && (
           <div className="taxonomy-grid">

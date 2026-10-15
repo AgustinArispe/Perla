@@ -1,3 +1,4 @@
+import { PerlaLoading } from './PerlaLoading';
 import { useEffect, useId, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Icon } from './Icon';
@@ -136,7 +137,7 @@ export function EntityPicker<T extends { id: string; name: string }>({
       {open && (
         <div className="entity-results" id={id} role="listbox" aria-label={label}>
           {result.isFetching ? (
-            <p role="status">Buscando…</p>
+            <PerlaLoading size="inline" label="Buscando…" />
           ) : result.isError ? (
             <p role="alert">
               {errorMessage(result.error)}{' '}

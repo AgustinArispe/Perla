@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles/loading.css" />
     <meta
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' ws:; object-src 'none'; base-uri 'none'"
@@ -11,8 +12,28 @@
     <meta name="theme-color" content="#152b36" />
     <title>Perla · Gestión para tu comercio</title>
   </head>
-  <body>
-    <div id="root"></div>
+  <body class="perla-loading-shell">
+    <div id="root">
+      <div
+        class="perla-loading perla-loading--screen"
+        role="status"
+        aria-live="polite"
+        aria-label="Abriendo Perla…"
+      >
+        <div class="perla-loading__emblem" aria-hidden="true">
+          <img
+            class="perla-loading__mark"
+            src="./assets/perla-loading-mark.svg"
+            alt=""
+            width="172"
+            height="164"
+          />
+        </div>
+        <span class="perla-loading__label">Abriendo Perla…</span>
+        <span class="perla-loading__track" aria-hidden="true"></span>
+      </div>
+    </div>
+    <noscript>Activá JavaScript en tu navegador para usar Perla.</noscript>
     <script type="module" src="/main.tsx"></script>
   </body>
 </html>

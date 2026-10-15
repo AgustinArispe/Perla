@@ -1,4 +1,5 @@
 import { PageHeading } from '../../components/PageHeader';
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { useQuery } from '@tanstack/react-query';
 import type { ControlHome as HomeData, ControlPending } from '../../../shared/control';
 import { useState } from 'react';
@@ -67,9 +68,7 @@ export function ControlHome({
         </div>
       </PageHeading>
       {home.isPending && (
-        <div className="home-loading" role="status">
-          Preparando el resumen de tu negocio…
-        </div>
+        <PerlaLoading label="Preparando el resumen de tu negocio…" />
       )}
       {home.isError && (
         <div className="alert error" role="alert">

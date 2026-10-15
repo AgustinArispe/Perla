@@ -19,6 +19,7 @@ import './styles/results.css';
 import './styles/merchandise.css';
 import './styles/commerce.css';
 import './styles/admin.css';
+import './styles/loading.css';
 
 const client = new QueryClient();
 ReactDOM.createRoot(document.getElementById('root')!).render(

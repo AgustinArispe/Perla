@@ -1,4 +1,5 @@
 import { SavedViews } from '../../components/SavedViews';
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { useRememberedState, scalarViewFilters } from '../../components/useRememberedState';
 import { ExportButton } from '../../components/ExportButton';
 import { useState } from 'react';
@@ -73,6 +74,7 @@ export function PurchaseHistory({ accountsEnabled = false }: { accountsEnabled?:
       </div>
       {purchases.isError && <div className="alert error">{errorMessage(purchases.error)}</div>}
       <div className="purchase-history-list">
+        {purchases.isPending && <PerlaLoading label="Cargando compras…" />}
         {purchases.data?.items.map((purchase) => (
           <button
             key={purchase.id}

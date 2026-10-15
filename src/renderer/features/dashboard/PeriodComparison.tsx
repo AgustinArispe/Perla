@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { ExportButton } from '../../components/ExportButton';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -100,9 +101,7 @@ export function PeriodComparison({ monthlyReport }: { monthlyReport?: MonthlyRep
         </div>
       )}
       {!data && query.isPending && valid && (
-        <div className="comparison-loading" role="status">
-          Calculando comparación…
-        </div>
+        <PerlaLoading size="panel" label="Calculando comparación…" />
       )}
       <p className="dashboard-note">
         Comparación con el tramo inmediatamente anterior de igual duración.

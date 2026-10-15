@@ -1,5 +1,18 @@
 # Perla Negra · identidad visual
 
+## Estados de carga con marca — 14 de octubre de 2026
+
+El arranque muestra el símbolo vectorial de Perla desde el HTML inicial, antes de
+descargar React. El mismo indicador acompaña la conexión, la preparación del espacio
+y las consultas sin datos disponibles. El símbolo respira suavemente y una línea de
+latón indica actividad sin simular porcentajes. Hay escalas de pantalla, panel,
+detalle y búsqueda: las operaciones de Caja mantienen indicadores discretos.
+
+Cada indicador tiene un mensaje específico y un estado accesible. Los datos ya
+disponibles permanecen visibles al actualizar en segundo plano; los errores y sus
+acciones de reintento sustituyen la carga. No se añaden demoras artificiales. Con
+movimiento reducido, el símbolo y la línea permanecen estáticos.
+
 ## Dirección vigente — 12 de octubre de 2026
 
 Las cabeceras presentan primero el título y las acciones, luego las pestañas del módulo. `PageHeading` comparte este orden mediante el contexto del workspace y solo inserta pestañas junto a un h1; los encabezados internos no las repiten. La tipografía operativa sigue siendo Manrope, con cifras tabulares. Las decisiones siguientes prevalecen sobre las referencias históricas de este documento.

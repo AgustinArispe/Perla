@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { useMemo, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import type { FeatureFlags, FeatureStatus } from '../../../shared/features';
@@ -98,9 +99,7 @@ export function FeaturesPanel({
         </div>
       </div>
       {query.isPending && (
-        <p className="muted" role="status">
-          Cargando funciones…
-        </p>
+        <PerlaLoading size="compact" label="Cargando funciones…" />
       )}
       {query.isError && (
         <div className="alert error" role="alert">

@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { useEffect, useRef, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { api, errorMessage, unwrap } from '../../api';
@@ -95,7 +96,7 @@ export function NotificationBell({
               <Icon name="close" size={18} />
             </button>
           </div>
-          {query.isPending && <p className="notification-empty">Buscando avisos…</p>}
+          {query.isPending && <PerlaLoading size="inline" label="Buscando avisos…" />}
           {query.isError && <p className="notification-error">{errorMessage(query.error)}</p>}
           {query.data?.items.length === 0 && (
             <div className="notification-empty">

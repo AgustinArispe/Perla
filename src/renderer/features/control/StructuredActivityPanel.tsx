@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { PageHeading } from '../../components/PageHeader';
 import { activityLabel } from '../audit/operation-labels';
 import { useState } from 'react';
@@ -251,7 +252,7 @@ export function StructuredActivityPanel({
               {(!data.data?.items.length || invalid) && (
                 <tr>
                   <td className="empty-table" colSpan={3}>
-                    {data.isPending ? 'Cargando actividad…' : 'Sin cambios con estos filtros.'}
+                    {data.isPending ? (<PerlaLoading size="compact" label="Cargando actividad…" />) : 'Sin cambios con estos filtros.'}
                   </td>
                 </tr>
               )}

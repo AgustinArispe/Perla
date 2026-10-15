@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import {ExportButton} from '../../components/ExportButton';
 import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -61,7 +62,7 @@ export function PurchaseDetail({
       busy={confirming}
     >
       <div className="dialog-body purchase-detail"><ExportButton dataset="purchaseDetail" filters={{purchaseId}} />
-        {detail.isPending && <p>Cargando compra…</p>}
+        {detail.isPending && <PerlaLoading size="compact" label="Cargando compra…" />}
         {detail.isError && <div className="alert error">{errorMessage(detail.error)}</div>}
         {purchase && (
           <>

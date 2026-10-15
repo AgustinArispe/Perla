@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { PageHeading } from '../../components/PageHeader';
 import { useRememberedState } from '../../components/useRememberedState';
 import { useState } from 'react';
@@ -170,7 +171,7 @@ export function AgendaPanel({
             )}
           </p>
         )}
-        {agenda.isPending && <p>Cargando compromisos…</p>}
+        {agenda.isPending && <PerlaLoading size="compact" label="Cargando compromisos…" />}
         {agenda.data?.items.map((row) => (
           <article key={`${row.kind}:${row.obligationId}`} className="commerce-agenda-row">
             <div>

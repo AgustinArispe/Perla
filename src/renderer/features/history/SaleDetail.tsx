@@ -1,4 +1,5 @@
 import { EntityActivity } from '../../components/EntityActivity';
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { ExportButton } from '../../components/ExportButton';
 import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -163,6 +164,7 @@ export function SaleDetailView({
       <div className="sale-detail">
         <ExportButton dataset="saleDetail" filters={{ saleId }} />
         <EntityActivity entityType="sale" entityId={saleId} />
+        {detail.isPending && <PerlaLoading size="compact" label="Cargando venta…" />}
         {(error || detail.isError) && (
           <div className="alert error" role="alert">
             {error || errorMessage(detail.error)}

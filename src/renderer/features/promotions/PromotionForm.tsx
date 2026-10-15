@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { useMemo, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { Product, TaxonomyItem } from '../../../shared/catalog';
@@ -208,7 +209,7 @@ export function PromotionForm({
               placeholder="Buscar productos"
             />
           </label>
-          {products.isPending && <p>Cargando productos…</p>}
+          {products.isPending && <PerlaLoading size="compact" label="Cargando productos…" />}
           {products.isError && (
             <p className="alert error" role="alert">
               {errorMessage(products.error)}{' '}

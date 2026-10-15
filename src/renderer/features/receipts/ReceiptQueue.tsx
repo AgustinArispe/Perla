@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { PageHeading } from '../../components/PageHeader';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -23,7 +24,7 @@ export function ReceiptQueue() {
       </PageHeading>
       {receipts.isError && <div className="alert error">{errorMessage(receipts.error)}</div>}
       <section className="catalog-card">
-        {receipts.isPending && <div className="loading-state">Cargando comprobantes…</div>}
+        {receipts.isPending && <PerlaLoading size="panel" label="Cargando comprobantes…" />}
         {!receipts.isPending && !receipts.data?.items.length && (
           <div className="empty-state">
             <h2>No hay comprobantes pendientes</h2>

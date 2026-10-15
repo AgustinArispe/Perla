@@ -6,7 +6,7 @@ const scenarios = [
   {
     name: 'home',
     port: port + 15,
-    testMatch: ['**/home-summary.spec.ts', '**/login-layout.spec.ts'],
+    testMatch: ['**/home-summary.spec.ts', '**/login-layout.spec.ts', '**/loading-brand.spec.ts'],
   },
   { name: 'modules-control-tools', port: port, testMatch: '**/control-tools.spec.ts' },
   { name: 'modules-excel-export', port: port + 8, testMatch: '**/excel-export.spec.ts' },

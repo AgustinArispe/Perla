@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { PageHeading } from '../../components/PageHeader';
 import { SavedViews } from '../../components/SavedViews';
 import { useRememberedState, scalarViewFilters } from '../../components/useRememberedState';
@@ -176,9 +177,7 @@ export function UserList({ currentRole }: { currentRole: Role }) {
           </table>
         </div>
         {users.isPending && (
-          <p className="empty-table" role="status">
-            Cargando usuarios…
-          </p>
+          <PerlaLoading size="compact" label="Cargando usuarios…" />
         )}
         {!users.isPending && !users.isError && visibleUsers?.length === 0 && (
           <div className="empty-table" role="status">

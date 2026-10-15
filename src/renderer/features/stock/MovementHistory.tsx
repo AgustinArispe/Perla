@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import {ExportButton} from '../../components/ExportButton';
 import { useState } from 'react';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
@@ -105,7 +106,7 @@ export function MovementHistory({
                 <tr>
                   <td colSpan={5} className="empty-table">
                     {movements.isPending
-                      ? 'Cargando movimientos…'
+                      ? (<PerlaLoading size="compact" label="Cargando movimientos…" />)
                       : 'Sin movimientos en este período.'}
                   </td>
                 </tr>

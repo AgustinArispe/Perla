@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { PageHeading } from '../../components/PageHeader';
 import { useRememberedState } from '../../components/useRememberedState';
 import { useRef, useState } from 'react';
@@ -215,7 +216,7 @@ export function OperationsPanel({
               </button>
             </div>
             <h2>Borradores recuperables</h2>
-            {drafts.isPending && <p role="status">Cargando conteos pendientes…</p>}
+            {drafts.isPending && <PerlaLoading size="compact" label="Cargando conteos pendientes…" />}
             {drafts.data?.items.map((s) => (
               <article
                 key={s.id}
@@ -387,7 +388,7 @@ export function OperationsPanel({
         )}
         {tab === 'expiry' && (
           <>
-            {expiries.isPending && <p role="status">Consultando vencimientos…</p>}
+            {expiries.isPending && <PerlaLoading size="compact" label="Consultando vencimientos…" />}
             {lotFilter && (
               <button
                 className="button secondary"
@@ -482,7 +483,7 @@ export function OperationsPanel({
         )}
         {tab === 'cash' && (
           <>
-            {cash.isPending && <p role="status">Consultando diferencias…</p>}
+            {cash.isPending && <PerlaLoading size="compact" label="Consultando diferencias…" />}
             {shiftFilter && (
               <button
                 className="button secondary"

@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { PageHeading } from '../../components/PageHeader';
 import { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
@@ -157,7 +158,7 @@ export function WeeklyPanel({ onBack }: { onBack?: () => void }) {
             </button>
           </div>
         )}
-        {report.isPending && <p role="status">Preparando resumen…</p>}
+        {report.isPending && <PerlaLoading size="compact" label="Preparando resumen…" />}
         {w && (
           <>
             <header>

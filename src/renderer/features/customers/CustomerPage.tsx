@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { PageHeading } from '../../components/PageHeader';
 import { ExportButton } from '../../components/ExportButton';
 import { useRememberedState } from '../../components/useRememberedState';
@@ -76,6 +77,7 @@ export function CustomerPage({ canManageCredit }: { canManageCredit: boolean }) 
             </button>
           </div>
         )}
+        {customers.isPending && <PerlaLoading label="Cargando clientes…" />}
         {!customers.isPending && !customers.isError && !customers.data?.items.length && (
           <p className="empty-table">
             {query
@@ -345,7 +347,7 @@ export function CustomerAccountDialog({
   return (
     <Dialog title={data?.customer.name ?? 'Cuenta del cliente'} onClose={onClose} wide busy={busy}>
       <div className="dialog-body customer-account-dialog">
-        {account.isPending && <p>Cargando cuenta…</p>}
+        {account.isPending && <PerlaLoading size="compact" label="Cargando cuenta…" />}
         {account.isError && (
           <div className="alert error" role="alert">
             {errorMessage(account.error)}{' '}

@@ -1,4 +1,5 @@
 import { PageHeading, WorkspaceTabs } from './components/PageHeader';
+import { PerlaLoading } from './components/PerlaLoading';
 import { authorizedNavigation } from './navigation';
 import { StructuredActivityPanel } from './features/control/StructuredActivityPanel';
 import { controlValue } from './features/control/client';
@@ -95,7 +96,7 @@ export function App() {
     unwrap(await api().auth.logout());
     await refresh();
   }
-  if (auth.isPending) return <div className="auth-screen">Conectando datos…</div>;
+  if (auth.isPending) return <PerlaLoading size="screen" label="Conectando con tu negocio…" />;
   if (auth.isError && !auth.data?.user)
     return (
       <div className="auth-screen">
@@ -132,7 +133,7 @@ function WorkspaceEntry(props: {
     retry: false,
   });
   if (props.user.role !== 'SELLER' && preference.isPending)
-    return <div className="auth-screen">Preparando tu espacio...</div>;
+    return <PerlaLoading size="screen" />;
   const start = preference.data?.start?.start_module;
   const initialSection: Section =
     props.user.role === 'SELLER'

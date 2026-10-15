@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { PageHeading } from '../../components/PageHeader';
 import { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
@@ -414,7 +415,7 @@ export function CommercialPanel({
                 <tr>
                   <td colSpan={5} className="empty-table">
                     {data.isPending
-                      ? 'Cargando productos…'
+                      ? (<PerlaLoading size="compact" label="Cargando productos…" />)
                       : 'Sin productos pendientes con estos filtros.'}
                   </td>
                 </tr>

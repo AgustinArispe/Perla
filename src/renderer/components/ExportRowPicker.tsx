@@ -1,3 +1,4 @@
+import { PerlaLoading } from './PerlaLoading';
 import { useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import type { ExcelPreview } from '../../shared/excel';
@@ -99,7 +100,7 @@ export function ExportRowPicker({
           <p className="subtle-note">
             La selección se conserva entre páginas y hojas. Hasta 5.000 filas.
           </p>
-          {data.isPending && <p role="status">Cargando filas…</p>}
+          {data.isPending && <PerlaLoading size="compact" label="Cargando filas…" />}
           {data.isError && (
             <div className="alert error" role="alert">
               {errorMessage(data.error)}

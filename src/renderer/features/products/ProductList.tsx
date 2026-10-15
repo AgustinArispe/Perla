@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { PageHeading } from '../../components/PageHeader';
 import { SavedViews } from '../../components/SavedViews';
 import { useRememberedState, scalarViewFilters } from '../../components/useRememberedState';
@@ -495,9 +496,7 @@ export function ProductList({ canChangePrices = false }: { canChangePrices?: boo
             </div>
           )}
           {connected && products.isPending && (
-            <div className="loading-state" role="status">
-              Cargando catálogo…
-            </div>
+            <PerlaLoading size="panel" label="Cargando catálogo…" />
           )}
         </div>
         <div className="catalog-bottom">
@@ -613,7 +612,7 @@ export function ProductList({ canChangePrices = false }: { canChangePrices?: boo
           wide
         >
           <div className="dialog-body">
-            {labels.isPending && <p>Cargando etiquetas…</p>}
+            {labels.isPending && <PerlaLoading size="compact" label="Cargando etiquetas…" />}
             {labels.isError && <div className="alert error">{errorMessage(labels.error)}</div>}
             {!labels.isPending && !labels.data?.items.length && <p>No hay etiquetas pendientes.</p>}
             <div className="receipt-items">

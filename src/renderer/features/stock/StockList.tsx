@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { PageHeading } from '../../components/PageHeader';
 import { SavedViews } from '../../components/SavedViews';
 import { useRememberedState, scalarViewFilters } from '../../components/useRememberedState';
@@ -323,7 +324,7 @@ export function StockList({
                 <tr>
                   <td colSpan={5} className="empty-table">
                     {connected && stock.isPending
-                      ? 'Cargando existencias…'
+                      ? (<PerlaLoading size="compact" label="Cargando existencias…" />)
                       : filter === 'SHORTAGES' && !query && !categoryId && !brandId
                         ? 'No hay productos para reponer.'
                         : query || filter !== 'ALL' || categoryId || brandId

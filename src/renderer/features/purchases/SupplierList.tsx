@@ -1,3 +1,4 @@
+import { PerlaLoading } from '../../components/PerlaLoading';
 import { SavedViews } from '../../components/SavedViews';
 import { useRememberedState, scalarViewFilters } from '../../components/useRememberedState';
 import { ExportButton } from '../../components/ExportButton';
@@ -68,7 +69,11 @@ export function SupplierList({
         <ExportButton dataset="suppliers" filters={{ query, status: 'ALL' }} />
       </div>
       {suppliers.isError && <div className="alert error">{errorMessage(suppliers.error)}</div>}
-      {suppliers.isFetching && <p role="status">Buscando proveedores…</p>}
+      {suppliers.isPending ? (
+        <PerlaLoading label="Buscando proveedores…" />
+      ) : suppliers.isFetching ? (
+        <PerlaLoading size="inline" label="Actualizando proveedores…" />
+      ) : null}
       <div className="supplier-cards">
         {suppliers.data?.items.map((supplier) => (
           <article className="supplier-card" key={supplier.id}>
