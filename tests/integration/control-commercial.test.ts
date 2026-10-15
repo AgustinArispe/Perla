@@ -36,6 +36,25 @@ function fixture() {
   return { db, actor, p, service };
 }
 describe('control comercial', () => {
+  it('el resumen de Inicio conserva prioridades y permisos de la revisión completa', () => {
+    const f = fixture();
+    try {
+      const page = f.service.execute('prices', { limit: 3 }, f.actor) as {
+        total: number;
+        items: { productId: string; name: string }[];
+      };
+      expect(f.service.priceSummary(f.actor)).toEqual({
+        total: page.total,
+        items: page.items.map(({ productId, name }) => ({ productId, name })),
+      });
+      expect(() => f.service.priceSummary({ ...f.actor, role: 'SUPERVISOR' })).toThrow();
+      expect(() => f.service.priceSummary({ ...f.actor, active: false })).toThrow();
+      f.db.prepare("UPDATE business_features SET enabled=0 WHERE feature_key='COSTS_MARGIN'").run();
+      expect(() => f.service.priceSummary(f.actor)).toThrow();
+    } finally {
+      f.db.close();
+    }
+  });
   it('prioriza 50 unidades antiguas y descuenta una devolución total del último movimiento', () => {
     const f = fixture();
     try {

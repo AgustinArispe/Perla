@@ -43,8 +43,9 @@ describe('índices de consultas', () => {
       const tables = ['products', 'users', 'commercial_price_events', 'sales', 'sale_returns'];
       const snapshot = () => tables.map((table) => db.prepare(`SELECT * FROM ${table}`).all());
       const rows = snapshot();
-      migrate(db);
-      migrate(db); // Idempotent on subsequent starts.
+      const version30 = MIGRATIONS.filter((migration) => migration.version <= 30);
+      migrate(db, version30);
+      migrate(db, version30); // Idempotent on subsequent starts.
       expect(snapshot()).toEqual(rows);
       expect(commercial.execute('prices', { limit: 3 }, actor)).toEqual(before);
       expect(before).toMatchObject({

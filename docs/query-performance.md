@@ -1,5 +1,9 @@
 # Consultas SQLite: diagnóstico y verificación
 
+La [revisión de esquema v31](schema-audit.md) incorpora una segunda mejora de
+Inicio. El benchmark actual incluye `homeBeforeSummaryOptimization` para medir
+la ruta de v30 sobre los mismos datos que la ruta optimizada `home`.
+
 La migración 030 agrega índices, sin modificar artículos, usuarios, contraseñas,
 ventas ni cálculos. Usa el mecanismo existente de respaldo e integridad previo a
 migrar una base persistente. Se aplica automáticamente al iniciar la nueva versión;

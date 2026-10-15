@@ -118,7 +118,7 @@ it('rejects authenticated checksum mismatches and bounded decompression bombs', 
 it('exports authenticated ciphertext and restores a verified online snapshot, revoking sessions', async () => {
   const f = fixture();
   f.db().exec(
-    "INSERT INTO users VALUES('owner','owner','Owner','OWNER',1,'hash',1,'now','now',0); INSERT INTO auth_sessions(token_hash,user_id,user_revision,expires_at_ms) VALUES('session','owner',1,9999999999999); INSERT INTO auth_attempts VALUES('owner',1,0,0); INSERT INTO products(id,sku,name,search_name,sale_unit,price_cents,active,track_stock,stock_initialized,min_stock_base,revision,created_at_utc,updated_at_utc) VALUES('product','SKU-COSTO','Producto con costo','producto con costo','UNIT',5000,1,0,0,0,1,'now','now'); INSERT INTO product_cost_states VALUES('product','REFERENCE',20000000,0,1,'now','owner','Owner'); INSERT INTO product_cost_events(id,product_id,kind,after_method,after_rate_micros_per_base,after_covered_quantity_base,after_revision,reason,actor_user_id,actor_name,created_at_utc) VALUES('cost-event','product','REFERENCE','REFERENCE',20000000,0,1,'Costo inicial','owner','Owner','now'); INSERT INTO sales(id,number,checkout_key,payload_hash,status,created_at_utc,business_date,local_month,subtotal_cents,discount_cents,total_cents,discount_json) VALUES('sale',1,'checkout','hash','COMPLETED','now','2026-10-02','2026-10',5000,0,5000,'{\"type\":\"NONE\",\"value\":0}'); INSERT INTO sale_items(id,sale_id,line_id,position,product_id,sku,name,unit,unit_price_cents,quantity_base,gross_cents,discount_cents,net_cents,cost_method,cost_rate_micros_per_base,cost_cents,cost_effective_at_utc,category_name) VALUES('sale-item','sale','line',0,'product','SKU-COSTO','Producto con costo','UNIT',5000,1,5000,0,5000,'REFERENCE',20000000,2000,'now','Almacén'); INSERT INTO suppliers VALUES('supplier','Proveedor de prueba','proveedor de prueba',NULL,NULL,NULL,NULL,1,1,'now','now'); INSERT INTO purchases VALUES('purchase',1,'receipt','hash','supplier','Proveedor de prueba',NULL,'RECEIVED','now','2026-10-02',2500,0,'owner','Owner'); INSERT INTO purchase_events VALUES('purchase-event','purchase','RECEIVED','Mercadería recibida','receipt','hash','{}','owner','Owner','now'); UPDATE business_features SET enabled=1 WHERE feature_key IN ('SUPPLIERS_PURCHASES','COSTS_MARGIN')",
+    "INSERT INTO users (id,username,name,role,active,password_hash,revision,created_at_utc,updated_at_utc,system_admin) VALUES('owner','owner','Owner','OWNER',1,'hash',1,'now','now',0); INSERT INTO auth_sessions(token_hash,user_id,user_revision,expires_at_ms) VALUES('session','owner',1,9999999999999); INSERT INTO auth_attempts VALUES('owner',1,0,0); INSERT INTO products(id,sku,name,search_name,sale_unit,price_cents,active,track_stock,stock_initialized,min_stock_base,revision,created_at_utc,updated_at_utc) VALUES('product','SKU-COSTO','Producto con costo','producto con costo','UNIT',5000,1,0,0,0,1,'now','now'); INSERT INTO product_cost_states VALUES('product','REFERENCE',20000000,0,1,'now','owner','Owner'); INSERT INTO product_cost_events(id,product_id,kind,after_method,after_rate_micros_per_base,after_covered_quantity_base,after_revision,reason,actor_user_id,actor_name,created_at_utc) VALUES('cost-event','product','REFERENCE','REFERENCE',20000000,0,1,'Costo inicial','owner','Owner','now'); INSERT INTO sales(id,number,checkout_key,payload_hash,status,created_at_utc,business_date,local_month,subtotal_cents,discount_cents,total_cents,discount_json) VALUES('sale',1,'checkout','hash','COMPLETED','now','2026-10-02','2026-10',5000,0,5000,'{\"type\":\"NONE\",\"value\":0}'); INSERT INTO sale_items(id,sale_id,line_id,position,product_id,sku,name,unit,unit_price_cents,quantity_base,gross_cents,discount_cents,net_cents,cost_method,cost_rate_micros_per_base,cost_cents,cost_effective_at_utc,category_name) VALUES('sale-item','sale','line',0,'product','SKU-COSTO','Producto con costo','UNIT',5000,1,5000,0,5000,'REFERENCE',20000000,2000,'now','Almacén'); INSERT INTO suppliers VALUES('supplier','Proveedor de prueba','proveedor de prueba',NULL,NULL,NULL,NULL,1,1,'now','now'); INSERT INTO purchases VALUES('purchase',1,'receipt','hash','supplier','Proveedor de prueba',NULL,'RECEIVED','now','2026-10-02',2500,0,'owner','Owner'); INSERT INTO purchase_events VALUES('purchase-event','purchase','RECEIVED','Mercadería recibida','receipt','hash','{}','owner','Owner','now'); UPDATE business_features SET enabled=1 WHERE feature_key IN ('SUPPLIERS_PURCHASES','COSTS_MARGIN')",
   );
   f.db().exec(`
     INSERT INTO sale_returns VALUES('return',1,'sale','return-operation','return-hash','{}','CONFIRMED','Devolución de prueba',1000,400,'owner','Owner','now','2026-10-02','2026-10');
@@ -165,15 +165,14 @@ it('exports authenticated ciphertext and restores a verified online snapshot, re
       .get('product'),
   ).toEqual({ method: 'REFERENCE', rate_micros_per_base: 20000000, revision: 1 });
   expect(
-    f
-      .db()
-      .prepare('SELECT kind,reason FROM product_cost_events WHERE product_id=?')
-      .get('product'),
+    f.db().prepare('SELECT kind,reason FROM product_cost_events WHERE product_id=?').get('product'),
   ).toEqual({ kind: 'REFERENCE', reason: 'Costo inicial' });
   expect(f.db().prepare('SELECT total_cents FROM sale_returns WHERE id=?').get('return')).toEqual({
     total_cents: 1000,
   });
-  expect(f.db().prepare('SELECT code,quantity_base FROM inventory_lots WHERE id=?').get('lot')).toEqual({
+  expect(
+    f.db().prepare('SELECT code,quantity_base FROM inventory_lots WHERE id=?').get('lot'),
+  ).toEqual({
     code: 'LOTE-PRUEBA',
     quantity_base: 4,
   });

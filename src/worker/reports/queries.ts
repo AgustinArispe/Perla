@@ -126,6 +126,10 @@ export class MonthlyReports {
       };
     })();
   }
+  currentTotals(input: ComparisonRequest, now = new Date()): ReportTotals {
+    const period = comparisonPeriods(input, now);
+    return this.db.transaction(() => this.totals(period.from, period.to))();
+  }
   compare(input: ComparisonRequest, now = new Date()): PeriodComparison {
     const period = comparisonPeriods(input, now);
     return this.db.transaction(() => {

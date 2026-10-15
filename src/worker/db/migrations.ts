@@ -29,6 +29,7 @@ import control27 from './migrations/027_control_counts.sql?raw';
 import control28 from './migrations/028_control_agenda.sql?raw';
 import control29 from './migrations/029_control_weekly.sql?raw';
 import queryIndexes30 from './migrations/030_query_indexes.sql?raw';
+import schemaCleanup31 from './migrations/031_schema_cleanup.sql?raw';
 import { DomainError } from '../../shared/errors';
 
 export interface Migration {
@@ -72,6 +73,7 @@ export const MIGRATIONS: Migration[] = [
   { version: 28, sql: control28 },
   { version: 29, sql: control29 },
   { version: 30, sql: queryIndexes30 },
+  { version: 31, sql: schemaCleanup31 },
 ];
 export const SCHEMA_VERSION = MIGRATIONS.at(-1)!.version;
 const rawChecksum = (sql: string) => createHash('sha256').update(sql).digest('hex');

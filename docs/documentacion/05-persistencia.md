@@ -2,6 +2,9 @@
 
 [Volver al índice](README.md)
 
+Actualización de esquema v31: quedan 84 tablas propias. Las decisiones y el
+inventario revisado están en [la auditoría del esquema](../schema-audit.md).
+
 ## 1. Archivo, conexión y garantías
 
 La persistencia principal es SQLite. `openDatabase` configura `foreign_keys=ON`, `trusted_schema=OFF`, `journal_mode=WAL`, `synchronous=FULL` y espera de bloqueo de 5 segundos. Antes de utilizar una base existente hace `quick_check`; una base no vacía sin historial esperado no se adopta silenciosamente como si perteneciera al producto.
@@ -16,19 +19,19 @@ Predominan identificadores UUID almacenados como texto. Las ventas, compras y de
 
 Convenciones frecuentes:
 
-| Sufijo/campo | Interpretación |
-|---|---|
-| `_cents` | Entero monetario en centavos |
-| `_base` | Cantidad base: unidades o gramos según producto |
-| `_micros` / `rate_micros_per_base` | Tasa de costo con escala adicional |
-| `_at_utc` | Instante UTC serializado |
-| `business_date` | Día comercial utilizado para agrupaciones |
-| `local_month` | Clave mensual comercial |
-| `revision` | Versión para concurrencia optimista |
-| `operation_key` | Identidad de una acción para recuperación/idempotencia |
-| `payload_hash` | Huella de los datos de la solicitud |
-| `snapshot_json` | Instantánea del contenido representado |
-| `active` | Disponibilidad lógica, no borrado físico |
+| Sufijo/campo                       | Interpretación                                         |
+| ---------------------------------- | ------------------------------------------------------ |
+| `_cents`                           | Entero monetario en centavos                           |
+| `_base`                            | Cantidad base: unidades o gramos según producto        |
+| `_micros` / `rate_micros_per_base` | Tasa de costo con escala adicional                     |
+| `_at_utc`                          | Instante UTC serializado                               |
+| `business_date`                    | Día comercial utilizado para agrupaciones              |
+| `local_month`                      | Clave mensual comercial                                |
+| `revision`                         | Versión para concurrencia optimista                    |
+| `operation_key`                    | Identidad de una acción para recuperación/idempotencia |
+| `payload_hash`                     | Huella de los datos de la solicitud                    |
+| `snapshot_json`                    | Instantánea del contenido representado                 |
+| `active`                           | Disponibilidad lógica, no borrado físico               |
 
 Cada tabla tiene su definición exacta en el [diccionario completo](referencia-base-datos.md). Las convenciones ayudan a leerlo, pero no deben sustituir CHECKs y tipos declarados.
 
@@ -58,7 +61,7 @@ El saldo acelera consulta; el historial conserva explicación. Reparar una difer
 
 `sale_returns`, `sale_return_items`, `sale_return_refunds` y `sale_return_events` modelan devoluciones. `sale_return_item_lots` mantiene trazabilidad de partidas. Las devoluciones no se expresan como una venta negativa inventada sin relación con la original.
 
-`sale_receipts` contiene comprobantes y su instantánea, formato, estado, autor y fecha. `printer_profiles` existe en el esquema para perfiles de impresión; la existencia de la tabla no prueba que haya selección nativa automática de cualquier impresora implementada en todos los clientes.
+`sale_receipts` contiene comprobantes y su instantánea, formato, estado, autor y fecha. La tabla sin uso `printer_profiles` se retiró en v31; cualquier perfil histórico se conserva completo bajo `legacy.printer_profiles.<id>` en `app_settings`. La preferencia de página inicial se guarda ahora en `users.start_module` y reemplaza `workspace_preferences`.
 
 ## 7. Turnos y movimientos de efectivo
 

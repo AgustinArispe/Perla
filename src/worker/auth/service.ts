@@ -53,8 +53,7 @@ export class AuthService {
     return Boolean(
       (
         this.db.prepare('SELECT system_admin FROM users WHERE id=?').get(id) as
-          | { system_admin: number }
-          | undefined
+          { system_admin: number } | undefined
       )?.system_admin,
     );
   }
@@ -130,7 +129,9 @@ export class AuthService {
         const id = randomUUID(),
           now = new Date().toISOString();
         this.db
-          .prepare('INSERT INTO users VALUES (?,?,?,?,?,?,?,?,?,?)')
+          .prepare(
+            'INSERT INTO users (id,username,name,role,active,password_hash,revision,created_at_utc,updated_at_utc,system_admin) VALUES (?,?,?,?,?,?,?,?,?,?)',
+          )
           .run(
             id,
             input.username,
@@ -213,9 +214,9 @@ export class AuthService {
     return this.db
       .transaction(() => {
         const actor = this.authorize(token, 'auth.unlockUser');
-        const user = this.db.prepare('SELECT id FROM users WHERE username=?').get(input.username) as
-          | { id: string }
-          | undefined;
+        const user = this.db
+          .prepare('SELECT id FROM users WHERE username=?')
+          .get(input.username) as { id: string } | undefined;
         if (!user) throw new DomainError('NOT_FOUND', 'La cuenta no existe.');
         this.db.prepare('DELETE FROM auth_attempts WHERE username=?').run(input.username);
         recordAudit(this.db, actor, 'auth.unlockUser', user.id);
@@ -242,7 +243,9 @@ export class AuthService {
         ) {
           const count = (
             this.db
-              .prepare("SELECT COUNT(*) AS n FROM users WHERE role='OWNER' AND system_admin=0 AND active=1")
+              .prepare(
+                "SELECT COUNT(*) AS n FROM users WHERE role='OWNER' AND system_admin=0 AND active=1",
+              )
               .get() as { n: number }
           ).n;
           if (count <= 1)
@@ -295,7 +298,9 @@ export class AuthService {
           this.db.prepare('DELETE FROM auth_sessions WHERE user_id=?').run(id);
         } else
           this.db
-            .prepare('INSERT INTO users VALUES (?,?,?,?,?,?,?,?,?,?)')
+            .prepare(
+              'INSERT INTO users (id,username,name,role,active,password_hash,revision,created_at_utc,updated_at_utc,system_admin) VALUES (?,?,?,?,?,?,?,?,?,?)',
+            )
             .run(
               id,
               input.username,

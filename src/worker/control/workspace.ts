@@ -66,7 +66,7 @@ export class WorkspaceControlService {
       z.strictObject({}).parse(raw);
       return {
         start: this.db
-          .prepare('SELECT start_module FROM workspace_preferences WHERE user_id=?')
+          .prepare('SELECT start_module FROM users WHERE id=? AND start_module IS NOT NULL')
           .get(actor.id) as { start_module: string } | undefined,
       };
     }
@@ -78,11 +78,7 @@ export class WorkspaceControlService {
         .parse(raw);
       if (v.start === 'Resumen mensual' && !['OWNER', 'ADMIN'].includes(actor.role))
         throw new DomainError('FORBIDDEN', 'No tenés permiso para esa página.');
-      this.db
-        .prepare(
-          'INSERT INTO workspace_preferences(user_id,start_module) VALUES(?,?) ON CONFLICT(user_id) DO UPDATE SET start_module=excluded.start_module',
-        )
-        .run(actor.id, v.start);
+      this.db.prepare('UPDATE users SET start_module=? WHERE id=?').run(v.start, actor.id);
       return v;
     }
     if (action === 'home') {
@@ -270,11 +266,7 @@ export class WorkspaceControlService {
           });
       }
       if (flags.COSTS_MARGIN) {
-        const prices = new CommercialControlService(this.db).execute(
-          'prices',
-          { limit: 3 },
-          actor,
-        ) as { total: number; items: { productId: string; name: string }[] };
+        const prices = new CommercialControlService(this.db).priceSummary(actor);
         if (prices.total)
           groups.push({
             key: 'prices',
@@ -299,8 +291,8 @@ export class WorkspaceControlService {
         ? {
             businessDate: day,
             weekFrom: week.from,
-            today: reports.compare({ preset: 'TODAY' }, now).current,
-            week: reports.compare({ preset: 'WEEK' }, now).current,
+            today: reports.currentTotals({ preset: 'TODAY' }, now),
+            week: reports.currentTotals({ preset: 'WEEK' }, now),
             lastSaleDate: (
               this.db
                 .prepare("SELECT MAX(business_date) date FROM sales WHERE status='COMPLETED'")

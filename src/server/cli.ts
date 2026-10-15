@@ -70,7 +70,9 @@ async function main() {
               updatedAt: now,
             };
           runtime.database
-            .prepare('INSERT INTO users VALUES (?,?,?,?,?,?,?,?,?,?)')
+            .prepare(
+              'INSERT INTO users (id,username,name,role,active,password_hash,revision,created_at_utc,updated_at_utc,system_admin) VALUES (?,?,?,?,?,?,?,?,?,?)',
+            )
             .run(
               id,
               input.username,
@@ -109,7 +111,9 @@ async function main() {
             )
             .run(hashPassword(input.password), new Date().toISOString(), row.id);
           runtime.database.prepare('DELETE FROM auth_sessions').run();
-          runtime.database.prepare('DELETE FROM auth_attempts WHERE username=?').run(input.username);
+          runtime.database
+            .prepare('DELETE FROM auth_attempts WHERE username=?')
+            .run(input.username);
           const actor = runtime.database
             .prepare(
               'SELECT id,username,name,role,active,revision,created_at_utc AS createdAt,updated_at_utc AS updatedAt FROM users WHERE id=?',

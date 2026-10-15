@@ -102,10 +102,36 @@ try {
   const workspace = new WorkspaceControlService(db);
   const commercial = new CommercialControlService(db);
   const reports = new MonthlyReports(db);
+  const homeBeforeSummaryOptimization = () => {
+    const priceSummary = CommercialControlService.prototype.priceSummary;
+    const currentTotals = MonthlyReports.prototype.currentTotals;
+    try {
+      // Reproduce v30's extra work on the very same fixture and indexes.
+      CommercialControlService.prototype.priceSummary = function (user) {
+        return this.execute('prices', { limit: 3 }, user);
+      };
+      MonthlyReports.prototype.currentTotals = function (input, now) {
+        return this.compare(input, now).current;
+      };
+      return workspace.execute('home', {}, actor);
+    } finally {
+      CommercialControlService.prototype.priceSummary = priceSummary;
+      MonthlyReports.prototype.currentTotals = currentTotals;
+    }
+  };
+  const priorHome = homeBeforeSummaryOptimization();
+  const optimizedHome = workspace.execute('home', {}, actor);
+  assert.deepEqual({ ...optimizedHome, generatedAt: null }, { ...priorHome, generatedAt: null });
+  const fullPrices = commercial.execute('prices', { limit: 3 }, actor);
+  assert.deepEqual(commercial.priceSummary(actor), {
+    total: fullPrices.total,
+    items: fullPrices.items.map(({ productId, name }) => ({ productId, name })),
+  });
   const operations = {
     catalog: () => catalog.search({ query: '', status: 'ACTIVE', activeOnly: false, limit: 50 }),
     catalogSearch: () =>
       catalog.search({ query: 'NO-EXISTE', status: 'ACTIVE', activeOnly: false, limit: 50 }),
+    homeBeforeSummaryOptimization,
     home: () => workspace.execute('home', {}, actor),
     prices: () => commercial.execute('prices', { limit: 3 }, actor),
     monthly: () => reports.month(month),

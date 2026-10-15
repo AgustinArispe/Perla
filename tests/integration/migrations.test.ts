@@ -134,7 +134,7 @@ describe('migraciones trazables', () => {
       const users = db.prepare('SELECT * FROM users').all() as Record<string, unknown>[];
       migrate(db);
       expect(db.prepare('SELECT * FROM users').all()).toEqual(
-        users.map((user) => ({ ...user, system_admin: 0 })),
+        users.map((user) => ({ ...user, system_admin: 0, start_module: null })),
       );
       expect(db.prepare('SELECT count(*) AS n FROM auth_sessions').get()).toEqual({ n: 0 });
       expect(db.prepare('SELECT max(version) AS version FROM schema_migrations').get()).toEqual({

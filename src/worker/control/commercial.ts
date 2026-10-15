@@ -379,7 +379,22 @@ export class CommercialControlService {
       )
       .get('main') as CommercialPage['settings'];
   }
-  private list(f: CommercialFilter, prices: boolean, all = false): CommercialPage {
+  priceSummary(actor: User): { total: number; items: { productId: string; name: string }[] } {
+    this.gate(actor, 'COSTS_MARGIN');
+    // Home only needs the count and first three names. Reuse the same price
+    // rules and sorting, but avoid scanning each product's sales history.
+    const page = this.list(CommercialFilterSchema.parse({ limit: 3 }), true, false, false);
+    return {
+      total: page.total,
+      items: page.items.map(({ productId, name }) => ({ productId, name })),
+    };
+  }
+  private list(
+    f: CommercialFilter,
+    prices: boolean,
+    all = false,
+    includeMovementHistory = true,
+  ): CommercialPage {
     if (
       f.locationId &&
       !(
@@ -408,13 +423,18 @@ export class CommercialControlService {
       .prepare(
         `SELECT p.id,p.name,p.sale_unit,p.price_cents,p.created_at_utc,c.rate_micros_per_base,c.revision cost_revision,c.method,c.effective_at_utc,
    CASE WHEN ? IS NULL THEN COALESCE((SELECT SUM(b.quantity_base) FROM location_inventory_balances b WHERE b.product_id=p.id),0) ELSE COALESCE((SELECT b.quantity_base FROM location_inventory_balances b WHERE b.product_id=p.id AND b.location_id=?),0) END quantity,
-   (SELECT MAX(s.business_date) FROM sale_items i JOIN sales s ON s.id=i.sale_id WHERE i.product_id=p.id AND s.status='COMPLETED' AND (? IS NULL OR s.location_id=?) AND i.quantity_base>COALESCE((SELECT SUM(ri.quantity_base) FROM sale_return_items ri JOIN sale_returns sr ON sr.id=ri.return_id WHERE ri.sale_item_id=i.id AND sr.status='CONFIRMED'),0)) last_sale,
+   ${includeMovementHistory ? "(SELECT MAX(s.business_date) FROM sale_items i JOIN sales s ON s.id=i.sale_id WHERE i.product_id=p.id AND s.status='COMPLETED' AND (? IS NULL OR s.location_id=?) AND i.quantity_base>COALESCE((SELECT SUM(ri.quantity_base) FROM sale_return_items ri JOIN sale_returns sr ON sr.id=ri.return_id WHERE ri.sale_item_id=i.id AND sr.status='CONFIRMED'),0))" : 'NULL'} last_sale,
    (SELECT COALESCE(MAX(id),0) FROM commercial_price_events e WHERE e.product_id=p.id) price_version,
    (SELECT MAX(created_at_utc) FROM commercial_price_events e WHERE e.product_id=p.id) last_price,
    (SELECT created_at_utc FROM commercial_price_reviews r WHERE r.product_id=p.id AND r.price_cents=p.price_cents AND r.price_version=COALESCE((SELECT MAX(e.id) FROM commercial_price_events e WHERE e.product_id=p.id),0) AND r.cost_revision IS c.revision ORDER BY created_at_utc DESC,id DESC LIMIT 1) reviewed
    FROM products p LEFT JOIN product_cost_states c ON c.product_id=p.id WHERE ${wh.join(' AND ')}`,
       )
-      .all(location, location, location, location, ...args) as {
+      .all(
+        location,
+        location,
+        ...(includeMovementHistory ? [location, location] : []),
+        ...args,
+      ) as {
       id: string;
       name: string;
       sale_unit: 'KG' | 'UNIT';
