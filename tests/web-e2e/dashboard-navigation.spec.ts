@@ -55,10 +55,7 @@ test('el dashboard conserva el mes elegido y permite consultar días con teclado
       payments: [{ method: 'DEBIT', amountCents: 100000 }],
     });
   });
-  await page
-    .getByRole('navigation', { name: 'Módulos' })
-    .getByRole('button', { name: 'Resultados', exact: true })
-    .click();
+  await openModule(page, 'Resultados');
   await expect(page.getByTestId('monthly-net')).toBeVisible();
   const month = page.getByLabel('Mes', { exact: true });
   const currentMonth = await month.inputValue();

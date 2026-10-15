@@ -1,4 +1,4 @@
-import { useEffect, useId, useState, type ReactNode } from 'react';
+import { useId, useState, type ReactNode } from 'react';
 import { Icon } from './Icon';
 
 const sectionIcons = {
@@ -10,35 +10,19 @@ const sectionIcons = {
 
 export function SidebarGroup({
   title,
-  userId,
   activeTitle,
   compact,
   onCompactOpen,
   children,
 }: {
   title: string;
-  userId: string;
   activeTitle?: string | undefined;
   compact: boolean;
   onCompactOpen: () => void;
   children: ReactNode;
 }) {
   const id = useId();
-  const key = `perla:sidebar:${userId}:${title}`;
-  const [expanded, setExpanded] = useState(() => {
-    try {
-      return localStorage.getItem(key) !== 'false';
-    } catch {
-      return true;
-    }
-  });
-  useEffect(() => {
-    try {
-      localStorage.setItem(key, String(expanded));
-    } catch {
-      /* Navigation remains usable without browser storage. */
-    }
-  }, [expanded, key]);
+  const [expanded, setExpanded] = useState(false);
   return (
     <div className={`nav-group${activeTitle ? ' nav-group-active' : ''}`}>
       <button

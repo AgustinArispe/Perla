@@ -1,3 +1,4 @@
+import { openModule } from './navigation-helper';
 import { expect, test, type Page } from '@playwright/test';
 
 const password = 'Prueba-Web-Bocha-2026!';
@@ -66,10 +67,7 @@ test('web adversarial: XSS, CSRF, permisos, importes manipulados e idempotencia'
     });
     return { product, csrf: session.csrfToken };
   }, password);
-  await page
-    .getByRole('navigation', { name: 'Módulos' })
-    .getByRole('button', { name: 'Productos', exact: true })
-    .click();
+  await openModule(page, 'Productos');
   await expect(page.getByText(fixture.product.name, { exact: true })).toBeVisible();
   expect(await page.evaluate(() => (window as Window & { __xss?: boolean }).__xss)).toBeUndefined();
   expect(await page.locator('img[src="x"]').count()).toBe(0);

@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { openModule } from './navigation-helper';
 
 test('Inicio: resumen útil, pendientes bajo demanda y accesos correctos en escritorio y móvil', async ({
   page,
@@ -12,7 +13,7 @@ test('Inicio: resumen útil, pendientes bajo demanda y accesos correctos en escr
   await expect(page.getByLabel('Estado de las cajas')).toBeVisible();
   await page.getByRole('button', { name: 'Ver resultados', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Resultados', exact: true })).toBeVisible();
-  await page.getByRole('button', { name: 'Inicio', exact: true }).click();
+  await openModule(page, 'Inicio');
   await page.route('**/api/v1/control', async (route) => {
     const request = route.request().postDataJSON();
     if (request.area !== 'workspace' || request.action !== 'home') return route.continue();

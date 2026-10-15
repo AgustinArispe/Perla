@@ -256,7 +256,7 @@ test('web real: módulos, terminal, venta escaneada y consulta', async ({ page }
   await page.locator('.sidebar').getByRole('button', { name: 'Ayuda', exact: true }).click();
   await page.getByRole('searchbox', { name: 'Buscar en la ayuda' }).fill('vuelto');
   await expect(page.locator('.help-page article h3')).toHaveText('Descuentos y cobro');
-  await page.getByRole('navigation').getByRole('button', { name: 'Caja', exact: true }).click();
+  await openModule(page, 'Caja');
   await page.getByRole('button', { name: 'Cerrar caja', exact: true }).click();
   const closing = page.getByRole('dialog');
   await closing.getByLabel('Efectivo contado', { exact: true }).fill('12900');
@@ -313,6 +313,9 @@ test('web: permisos de vendedor y supervisor', async ({ page }) => {
     await page.getByRole('button', { name: 'Ingresar', exact: true }).click();
     const nav = page.getByRole('navigation', { name: 'Módulos' });
     await expect(nav).toBeVisible();
+    for (const section of await nav.getByRole('button', { name: /^Desplegar sección/ }).all()) {
+      await section.click();
+    }
     await expect(nav.getByRole('button', { name: 'Resultados', exact: true })).toHaveCount(0);
     await expect(nav.getByRole('button', { name: 'Usuarios', exact: true })).toHaveCount(0);
     await page.locator('.sidebar').getByRole('button', { name: 'Ayuda', exact: true }).click();

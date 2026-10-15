@@ -6,7 +6,6 @@ test('web real: avisa stock bajo y compara períodos en celular', async ({ page 
   await page.getByLabel('Usuario', { exact: true }).fill('jefe');
   await page.getByLabel('Contraseña', { exact: true }).fill('Prueba-Web-Bocha-2026!');
   await page.getByRole('button', { name: 'Ingresar', exact: true }).click();
-  const modules = page.getByRole('navigation', { name: 'Módulos' });
   await openModule(page, 'Configuración');
   await page.getByRole('tab', { name: 'Funciones', exact: true }).click();
   const notifications = page.getByRole('switch', { name: 'Notificaciones' });
@@ -15,7 +14,7 @@ test('web real: avisa stock bajo y compara períodos en celular', async ({ page 
     await page.getByRole('button', { name: 'Aplicar cambios' }).click();
     await page.getByRole('dialog').getByRole('button', { name: 'Confirmar cambios' }).click();
   }
-  await modules.getByRole('button', { name: 'Productos' }).click();
+  await openModule(page, 'Productos');
   await page.getByRole('button', { name: /Nuevo producto/ }).click();
   await page.getByLabel('Nombre del producto').fill('Salmón alerta web');
   await page.getByLabel('Precio de venta').fill('12500,00');
@@ -24,7 +23,7 @@ test('web real: avisa stock bajo y compara períodos en celular', async ({ page 
   await page.getByLabel('Mínimo para reponer (unidades)').fill('5');
   await page.getByRole('button', { name: 'Guardar producto' }).click();
   await expect(page.getByRole('dialog')).not.toBeVisible();
-  await modules.getByRole('button', { name: 'Stock' }).click();
+  await openModule(page, 'Stock');
   await page.getByPlaceholder('Buscar por nombre o código').fill('Salmón alerta web');
   await page.getByRole('button', { name: 'Contar Salmón alerta web' }).click();
   await page.getByLabel('Cantidad contada').fill('2');

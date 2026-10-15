@@ -74,10 +74,7 @@ test('Excel conserva el alcance al abrir y cerrar el ajuste de filtros', async (
   await page.getByLabel('Usuario', { exact: true }).fill('jefe');
   await page.getByLabel('Contraseña', { exact: true }).fill('Prueba-Web-Bocha-2026!');
   await page.getByRole('button', { name: 'Ingresar', exact: true }).click();
-  await page
-    .getByRole('navigation', { name: 'Módulos' })
-    .getByRole('button', { name: 'Productos', exact: true })
-    .click();
+  await openModule(page, 'Productos');
   await page.getByRole('button', { name: 'Exportar productos a Excel', exact: true }).click();
   const dialog = page.getByRole('dialog');
   await expect(
@@ -139,10 +136,7 @@ test('Caja selecciona con teclado, conserva búsqueda en error y devuelve foco',
     return terminal.id;
   });
   await page.reload();
-  await page
-    .getByRole('navigation', { name: 'Módulos' })
-    .getByRole('button', { name: 'Caja', exact: true })
-    .click();
+  await openModule(page, 'Caja');
   await page.getByRole('combobox', { name: 'Terminal', exact: true }).selectOption(terminalId);
   await page.getByRole('button', { name: 'Usar terminal', exact: true }).click();
   await page.getByLabel('Efectivo inicial').fill('0');

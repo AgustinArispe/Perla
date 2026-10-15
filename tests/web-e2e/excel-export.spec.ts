@@ -134,10 +134,7 @@ test('Excel: filtros actuales, descarga real y diálogo usable en celular', asyn
   await page.getByLabel('Usuario', { exact: true }).fill('jefe');
   await page.getByLabel('Contraseña', { exact: true }).fill('Prueba-Web-Bocha-2026!');
   await page.getByRole('button', { name: 'Ingresar', exact: true }).click();
-  await page
-    .getByRole('navigation', { name: 'Módulos' })
-    .getByRole('button', { name: 'Productos', exact: true })
-    .click();
+  await openModule(page, 'Productos');
   await page.getByRole('button', { name: /Nuevo producto/ }).click();
   await page.getByLabel('Nombre del producto').fill('Exportación Excel QA');
   await page.getByLabel('Precio de venta').fill('123,45');
@@ -190,10 +187,7 @@ test('Excel: filtros actuales, descarga real y diálogo usable en celular', asyn
     'Exportación Excel QA',
   );
   await page.getByRole('dialog').getByRole('button', { name: 'Volver', exact: true }).click();
-  await page
-    .getByRole('navigation', { name: 'Módulos' })
-    .getByRole('button', { name: 'Configuración', exact: true })
-    .click();
+  await openModule(page, 'Configuración');
   await page.getByRole('button', { name: 'Usuarios', exact: true }).click();
   await page.getByLabel('Buscar usuarios').fill('jefe');
   await page.getByRole('combobox', { name: 'Rol', exact: true }).selectOption('OWNER');

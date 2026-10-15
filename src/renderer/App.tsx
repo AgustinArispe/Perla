@@ -132,8 +132,7 @@ function WorkspaceEntry(props: {
     enabled: props.user.role !== 'SELLER',
     retry: false,
   });
-  if (props.user.role !== 'SELLER' && preference.isPending)
-    return <PerlaLoading size="screen" />;
+  if (props.user.role !== 'SELLER' && preference.isPending) return <PerlaLoading size="screen" />;
   const start = preference.data?.start?.start_module;
   const initialSection: Section =
     props.user.role === 'SELLER'
@@ -163,13 +162,7 @@ function Workspace({
   const [activityDetailed, setActivityDetailed] = useState(false);
   const [passwordOpen, setPasswordOpen] = useState(false),
     [sessionError, setSessionError] = useState('');
-  const [collapsed, setCollapsed] = useState(() => {
-    try {
-      return localStorage.getItem('bocha-sidebar-collapsed') === 'true';
-    } catch {
-      return false;
-    }
-  });
+  const [collapsed, setCollapsed] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const [preferenceOpen, setPreferenceOpen] = useState(false);
   const [activeArea, setActiveArea] = useState('');
@@ -222,13 +215,7 @@ function Workspace({
       setMobileMenuOpen((open) => !open);
       return;
     }
-    const next = !collapsed;
-    setCollapsed(next);
-    try {
-      localStorage.setItem('bocha-sidebar-collapsed', String(next));
-    } catch {
-      /* Browsers can disable local storage. */
-    }
+    setCollapsed((value) => !value);
   }
   const desktop = Boolean(window.bocha);
   const client = useQueryClient();
@@ -445,16 +432,8 @@ function Workspace({
               <SidebarGroup
                 key={group}
                 title={group}
-                userId={user.id}
                 compact={menuCollapsed && !narrow}
-                onCompactOpen={() => {
-                  setCollapsed(false);
-                  try {
-                    localStorage.setItem('bocha-sidebar-collapsed', 'false');
-                  } catch {
-                    /* Navigation stays usable without storage. */
-                  }
-                }}
+                onCompactOpen={() => setCollapsed(false)}
                 activeTitle={
                   currentNavigation?.group === group ? currentNavigation.title : undefined
                 }
