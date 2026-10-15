@@ -36,7 +36,8 @@ async function main() {
     }
   });
 }
-main().catch(() => {
+main().catch((error: unknown) => {
   console.error('No se pudo iniciar Perla Negra. Revisá la configuración y la base de datos.');
+  console.error('Detalle del error de arranque:', error);
   process.exitCode = 1;
 });
