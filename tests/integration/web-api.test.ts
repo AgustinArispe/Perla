@@ -268,7 +268,7 @@ it('roles web: vendedor solo caja; supervisor gestiona stock; jefe crea usuarios
     rmSync(f.directory, { recursive: true, force: true });
   }
 }, 10000);
-it('seguridad producción, no origen wildcard, límites por cuenta e inyección de proxy no confiado', async () => {
+it('distintas cuentas comparten red y un proxy no confiado no controla la IP', async () => {
   const f = await fixture();
   try {
     const headers = { host: 'pos.test', origin: 'http://pos.test', 'x-forwarded-for': '1.2.3.4' };
@@ -286,6 +286,16 @@ it('seguridad producción, no origen wildcard, límites por cuenta e inyección 
       payload: { username: 'jefe', password },
     });
     expect(validSharedNetwork.statusCode).toBe(200);
+  } finally {
+    await f.app.close();
+    f.runtime.close();
+    rmSync(f.directory, { recursive: true, force: true });
+  }
+});
+it('limita intentos de una misma cuenta y conserva cabeceras de seguridad', async () => {
+  const f = await fixture();
+  try {
+    const headers = { host: 'pos.test', origin: 'http://pos.test', 'x-forwarded-for': '1.2.3.4' };
     for (let i = 0; i < 5; i++)
       await f.app.inject({
         method: 'POST',

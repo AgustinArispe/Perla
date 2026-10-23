@@ -100,13 +100,19 @@ export async function createServer(
   app.setErrorHandler((error, req, reply) => {
     req.log.error({ code: (error as { code?: string }).code }, 'Solicitud rechazada');
     const status = (error as { statusCode?: number }).statusCode;
-    reply.code(status === 429 ? 429 : status === 413 ? 413 : 400).send({
+    const invalid =
+      error instanceof z.ZodError || (status !== undefined && status >= 400 && status < 500);
+    reply.code(invalid ? (status ?? 400) : 500).send({
       ok: false,
       error: {
-        code: status === 429 ? 'AUTH_THROTTLED' : 'VALIDATION',
+        code: status === 429 ? 'AUTH_THROTTLED' : invalid ? 'VALIDATION' : 'INTERNAL',
         message:
-          status === 429 ? 'Demasiados intentos. Esperá un minuto.' : 'La solicitud no es válida.',
-        retryable: status === 429,
+          status === 429
+            ? 'Demasiados intentos. Esperá un minuto.'
+            : invalid
+              ? 'La solicitud no es válida.'
+              : 'No se pudo completar la operación. Verificá su estado antes de reintentar.',
+        retryable: status === 429 || !invalid,
       },
     });
   });

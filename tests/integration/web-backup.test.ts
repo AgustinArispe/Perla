@@ -14,6 +14,32 @@ import {
 } from '../../src/server/backups/service';
 
 const cleanups: (() => void)[] = [];
+it('lists and verifies backups from an earlier supported schema', async () => {
+  const directory = mkdtempSync(join(tmpdir(), 'bocha-historical-backup-'));
+  const databasePath = join(directory, 'db.sqlite');
+  const db = new Database(databasePath);
+  cleanups.push(() => {
+    db.close();
+    rmSync(directory, { recursive: true, force: true });
+  });
+  migrate(db, MIGRATIONS.slice(0, -1));
+  const options = {
+    databasePath,
+    backupDirectory: join(directory, 'backups'),
+    key: randomBytes(32),
+    appVersion: 'test',
+    getDatabase: () => db,
+    closeDatabase: () => db.close(),
+    reopenDatabase: () => {
+      throw new Error('unused');
+    },
+  };
+  const service = new BackupService(options);
+  const info = await service.create('DAILY');
+  const restarted = new BackupService(options);
+  expect(await restarted.list()).toEqual([info]);
+  expect(restarted.download(info.id)).toEqual(service.download(info.id));
+});
 it.each([31, SCHEMA_VERSION])(
   'backup v%i acepta esquema con fin de línea de Windows para recuperarlo en Linux',
   async (version) => {
@@ -153,7 +179,7 @@ it.each([31, 32, 33, 34])(
     const info = await f.service.create();
     const bytes = f.service.download(info.id);
     expect(info.schemaVersion).toBe(version);
-    expect(f.service.list()).toEqual([info]);
+    expect(await f.service.list()).toEqual([info]);
     expect((await f.service.upload(bytes)).id).toBe(info.id);
     const assertRestored = (db: Database.Database) => {
       expect(db.prepare('SELECT MAX(version) AS version FROM schema_migrations').get()).toEqual({
@@ -300,6 +326,19 @@ it.each(['DETAIL', 'CASH_REVIEW', 'DUE_DATE'])(
     });
   },
 );
+it('rechecks cached backup listings when ciphertext is changed', async () => {
+  const f = fixture();
+  const info = await f.service.create();
+  expect(await f.service.list()).toEqual([info]);
+  const path = join(f.directory, 'backups', info.id + '.bochabackup');
+  const original = readFileSync(path);
+  const corrupt = Buffer.from(original);
+  corrupt[corrupt.length - 1] = corrupt[corrupt.length - 1]! ^ 1;
+  writeFileSync(path, corrupt);
+  expect(await f.service.list()).toEqual([]);
+  writeFileSync(path, original);
+  expect(await f.service.list()).toEqual([info]);
+});
 it('rejects authenticated checksum mismatches and bounded decompression bombs', async () => {
   const f = fixture();
   const info = await f.service.create();
@@ -359,7 +398,7 @@ it('exports authenticated ciphertext and restores a verified online snapshot, re
   const backup = await f.service.create();
   const bytes = f.service.download(backup.id);
   expect(bytes.includes(Buffer.from('SQLite format'))).toBe(false);
-  expect(f.service.list()).toEqual([backup]);
+  expect(await f.service.list()).toEqual([backup]);
   expect((await f.service.upload(bytes)).sha256).toBe(backup.sha256);
   f.db().prepare("UPDATE business_settings SET business_name='changed'").run();
   const preview = await f.service.inspect(backup.id);
@@ -484,7 +523,7 @@ it('exports authenticated ciphertext and restores a verified online snapshot, re
       .prepare("SELECT enabled FROM business_features WHERE feature_key='SUPPLIERS_PURCHASES'")
       .get(),
   ).toEqual({ enabled: 1 });
-  expect(f.service.list().some((b) => b.kind === 'PRE_RESTORE')).toBe(true);
+  expect((await f.service.list()).some((b) => b.kind === 'PRE_RESTORE')).toBe(true);
   expect(
     f.db().prepare('SELECT document_type,id FROM drafts ORDER BY document_type').all(),
   ).toEqual([
@@ -601,7 +640,7 @@ it('schedules once per local Saturday across calls, concurrent checks, restarts 
   // UTC Saturday is still Friday in Buenos Aires until 03:00 UTC.
   vi.setSystemTime(new Date('2026-10-17T02:59:59Z'));
   expect(await f.service.ensureScheduled()).toBeUndefined();
-  expect(f.service.list()).toEqual([]);
+  expect(await f.service.list()).toEqual([]);
   vi.setSystemTime(new Date('2026-10-17T03:00:00Z'));
   const [first, second] = await Promise.all([
     f.service.ensureScheduled(),
@@ -619,7 +658,7 @@ it('schedules once per local Saturday across calls, concurrent checks, restarts 
   vi.setSystemTime(new Date('2026-10-24T03:00:00Z'));
   const next = await restarted.ensureScheduled();
   expect(next?.id).not.toBe(first?.id);
-  expect(f.service.list()).toHaveLength(2);
+  expect(await f.service.list()).toHaveLength(2);
 });
 it('uses the configured timezone and does not catch up on weekdays', async () => {
   const f = fixture();
@@ -631,13 +670,13 @@ it('uses the configured timezone and does not catch up on weekdays', async () =>
   ).toMatchObject({ schedule: 'WEEKLY_SATURDAY' });
   vi.setSystemTime(new Date('2026-10-26T12:00:00Z'));
   expect(await f.service.ensureScheduled()).toBeUndefined();
-  expect(f.service.list()).toHaveLength(1);
+  expect(await f.service.list()).toHaveLength(1);
 });
 it('does not create, enumerate or delete backups when automatic backups are disabled', async () => {
   const f = fixture();
   await f.service.create('DAILY', 'WEEKLY_SATURDAY');
   await f.service.create('DAILY', 'WEEKLY_SATURDAY');
-  const before = f.service.list();
+  const before = await f.service.list();
   vi.useFakeTimers({ toFake: ['Date'] });
   vi.setSystemTime(new Date('2026-10-17T12:00:00Z'));
   const create = vi.spyOn(f.service, 'create');
@@ -647,7 +686,7 @@ it('does not create, enumerate or delete backups when automatic backups are disa
   expect(await f.restart().ensureScheduled(disabled)).toBeUndefined();
   expect(create).not.toHaveBeenCalled();
   expect(list).not.toHaveBeenCalled();
-  expect(f.service.list()).toEqual(before);
+  expect(await f.service.list()).toEqual(before);
 });
 it('retains two weekly copies by default and prunes only this scheduler copies with configurable retention', async () => {
   const f = fixture();
@@ -668,20 +707,14 @@ it('retains two weekly copies by default and prunes only this scheduler copies w
     ids.push((await f.service.ensureScheduled())!.id);
   }
   expect(
-    f.service
-      .list()
-      .filter((b) => b.schedule === 'WEEKLY_SATURDAY')
-      .map((b) => b.id),
+    (await f.service.list()).filter((b) => b.schedule === 'WEEKLY_SATURDAY').map((b) => b.id),
   ).toEqual(ids.slice(-2).reverse());
   expect(existsSync(join(f.directory, 'backups', ids[0] + '.bochabackup'))).toBe(false);
   await f
     .restart()
     .ensureScheduled({ enabled: true, retention: 1, timezone: 'America/Argentina/Buenos_Aires' });
   expect(
-    f.service
-      .list()
-      .filter((b) => b.schedule === 'WEEKLY_SATURDAY')
-      .map((b) => b.id),
+    (await f.service.list()).filter((b) => b.schedule === 'WEEKLY_SATURDAY').map((b) => b.id),
   ).toEqual(ids.slice(-1));
   for (const info of [manual, beforeRestore, legacyDaily])
     expect(f.service.download(info.id).length).toBeGreaterThan(0);

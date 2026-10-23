@@ -39,7 +39,10 @@ export class WebWorkerClient implements Executor {
         this.fail();
         reject(new Error('No se pudo iniciar la base de datos.'));
       });
-      this.worker.on('exit', () => this.fail());
+      this.worker.on('exit', () => {
+        this.fail();
+        reject(new Error('El servicio de datos se cerró antes de completar el arranque.'));
+      });
     });
   }
   private fail() {
