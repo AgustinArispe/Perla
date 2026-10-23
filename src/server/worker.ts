@@ -1,7 +1,9 @@
 import { parentPort, workerData } from 'node:worker_threads';
 import { ServerRuntime, type RuntimeOptions } from './runtime';
+import type { ScheduledBackupPolicy } from './backups/service';
+const options = workerData as RuntimeOptions & { autoBackup?: ScheduledBackupPolicy };
 const runtime = new ServerRuntime({
-  ...(workerData as RuntimeOptions),
+  ...options,
   backupKey: Buffer.from(workerData.backupKey as string, 'hex'),
 });
 let chain = Promise.resolve();
@@ -22,15 +24,16 @@ parentPort!.on(
   },
 );
 const timer = setInterval(() => {
-  chain = chain.then(async () => {
-    try {
-      await runtime.backups.ensureDaily();
-    } catch {
-      console.error('No se pudo completar el backup diario.');
-    }
-  });
-}, 3600000);
+  chain = chain.then(ensureScheduled);
+}, 60000);
+async function ensureScheduled() {
+  try {
+    await runtime.backups.ensureScheduled(options.autoBackup);
+  } catch {
+    console.error('No se pudo completar el backup semanal.');
+  }
+}
 chain = chain.then(async () => {
-  await runtime.backups.ensureDaily();
+  await ensureScheduled();
   parentPort!.postMessage({ ready: true });
 });

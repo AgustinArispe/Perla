@@ -56,7 +56,7 @@ export class CustomerService {
             throw new DomainError('REVISION_CONFLICT', 'El cliente cambió. Actualizá la ficha.');
           this.db
             .prepare(
-              'UPDATE customers SET name=?,search_name=?,phone=?,email=?,notes=?,revision=revision+1,updated_at_utc=? WHERE id=?',
+              'UPDATE parties SET name=?,search_name=?,phone=?,email=?,notes=?,revision=revision+1,updated_at_utc=? WHERE is_customer=1 AND id=?',
             )
             .run(
               input.name,
@@ -70,7 +70,7 @@ export class CustomerService {
         } else
           this.db
             .prepare(
-              'INSERT INTO customers(id,name,search_name,phone,email,notes,created_at_utc,updated_at_utc) VALUES (?,?,?,?,?,?,?,?)',
+              'INSERT INTO parties(is_customer,id,name,search_name,phone,email,notes,created_at_utc,updated_at_utc) VALUES (1,?,?,?,?,?,?,?,?)',
             )
             .run(
               id,
@@ -142,7 +142,7 @@ export class CustomerService {
       throw new DomainError('VALIDATION', 'El límite no puede ser menor al saldo pendiente.');
     this.db
       .prepare(
-        'UPDATE customers SET credit_enabled=?,credit_limit_cents=?,revision=revision+1,updated_at_utc=? WHERE id=?',
+        'UPDATE parties SET credit_enabled=?,credit_limit_cents=?,revision=revision+1,updated_at_utc=? WHERE is_customer=1 AND id=?',
       )
       .run(
         Number(input.creditEnabled),
@@ -163,7 +163,9 @@ export class CustomerService {
         'El cliente tiene saldo pendiente y no se puede desactivar.',
       );
     this.db
-      .prepare('UPDATE customers SET active=?,revision=revision+1,updated_at_utc=? WHERE id=?')
+      .prepare(
+        'UPDATE parties SET active=?,revision=revision+1,updated_at_utc=? WHERE is_customer=1 AND id=?',
+      )
       .run(Number(input.active), new Date().toISOString(), input.customerId);
     return this.get(input.customerId);
   }
@@ -184,9 +186,9 @@ export class CustomerService {
     const now = new Date().toISOString();
     this.db
       .prepare(
-        "INSERT INTO customer_receivables(sale_id,customer_id,original_cents,balance_cents,status,created_at_utc,updated_at_utc) VALUES (?,?,?,?,'OPEN',?,?)",
+        "UPDATE sales SET debt_party_id=?,debt_original_cents=?,debt_balance_cents=?,debt_status='OPEN',debt_created_at_utc=?,debt_updated_at_utc=? WHERE id=? AND debt_status IS NULL",
       )
-      .run(sale.id, sale.customerId, sale.amountCents, sale.amountCents, now, now);
+      .run(sale.customerId, sale.amountCents, sale.amountCents, now, now, sale.id);
   }
   reverseSale(saleId: string, reason: string): void {
     if (!this.db.inTransaction)
@@ -208,13 +210,13 @@ export class CustomerService {
       collected = row.original_cents - row.balance_cents;
     this.db
       .prepare(
-        "UPDATE customer_receivables SET balance_cents=0,status='VOIDED',updated_at_utc=? WHERE sale_id=?",
+        "UPDATE sales SET debt_balance_cents=0,debt_status='VOIDED',debt_updated_at_utc=? WHERE id=? AND debt_status IS NOT NULL",
       )
       .run(now, saleId);
     if (collected > 0)
       this.db
         .prepare(
-          'INSERT INTO customer_credits(id,customer_id,sale_id,amount_cents,reason,created_at_utc) VALUES (?,?,?,?,?,?)',
+          'INSERT INTO account_credits(id,party_id,sale_id,amount_cents,reason,created_at_utc) VALUES (?,?,?,?,?,?)',
         )
         .run(randomUUID(), row.customer_id, saleId, collected, reason, now);
   }
@@ -228,7 +230,7 @@ export class CustomerService {
       next = row.balance_cents - offset;
     this.db
       .prepare(
-        "UPDATE customer_receivables SET balance_cents=?,status=CASE WHEN ?=0 THEN 'PAID' ELSE 'OPEN' END,updated_at_utc=? WHERE sale_id=? AND balance_cents=?",
+        "UPDATE sales SET debt_balance_cents=?,debt_status=CASE WHEN ?=0 THEN 'PAID' ELSE 'OPEN' END,debt_updated_at_utc=? WHERE id=? AND debt_balance_cents=?",
       )
       .run(next, next, new Date().toISOString(), saleId, row.balance_cents);
     return offset;
@@ -299,7 +301,7 @@ export class CustomerService {
           now = new Date().toISOString();
         this.db
           .prepare(
-            'INSERT INTO customer_collections(id,operation_key,payload_hash,customer_id,business_date,method,amount_cents,note,actor_user_id,actor_name,shift_id,created_at_utc) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',
+            "INSERT INTO account_payments(direction,id,operation_key,payload_hash,party_id,business_date,method,amount_cents,note,actor_user_id,actor_name,shift_id,created_at_utc) VALUES ('IN',?,?,?,?,?,?,?,?,?,?,?,?)",
           )
           .run(
             id,
@@ -318,12 +320,12 @@ export class CustomerService {
         for (const a of allocations) {
           this.db
             .prepare(
-              'INSERT INTO customer_collection_allocations(collection_id,sale_id,amount_cents) VALUES (?,?,?)',
+              'INSERT INTO account_payment_allocations(payment_id,sale_id,amount_cents) VALUES (?,?,?)',
             )
             .run(id, a.saleId, a.amountCents);
           const changed = this.db
             .prepare(
-              "UPDATE customer_receivables SET balance_cents=balance_cents-?,status=CASE WHEN balance_cents-?=0 THEN 'PAID' ELSE 'OPEN' END,updated_at_utc=? WHERE sale_id=? AND status='OPEN' AND balance_cents>=?",
+              "UPDATE sales SET debt_balance_cents=debt_balance_cents-?,debt_status=CASE WHEN debt_balance_cents-?=0 THEN 'PAID' ELSE 'OPEN' END,debt_updated_at_utc=? WHERE id=? AND debt_status='OPEN' AND debt_balance_cents>=?",
             )
             .run(a.amountCents, a.amountCents, now, a.saleId, a.amountCents).changes;
           if (!changed)
@@ -344,7 +346,9 @@ export class CustomerService {
             actor,
           );
           this.db
-            .prepare('UPDATE customer_collections SET register_movement_id=? WHERE id=?')
+            .prepare(
+              "UPDATE account_payments SET register_movement_id=? WHERE direction='IN' AND id=?",
+            )
             .run(movement.id, id);
         }
         recordAudit(this.db, actor, 'customerAccounts.collect', id);
@@ -357,7 +361,7 @@ export class CustomerService {
     const receivables = (
       this.db
         .prepare(
-          `SELECT r.sale_id,s.number,s.business_date,r.original_cents,r.balance_cents,r.status FROM customer_receivables r JOIN sales s ON s.id=r.sale_id WHERE r.customer_id=? ORDER BY s.business_date,s.number`,
+          `SELECT r.sale_id,s.number,s.business_date,r.original_cents,r.balance_cents,r.status FROM customer_receivables r JOIN sale_orders s ON s.id=r.sale_id WHERE r.customer_id=? ORDER BY s.business_date,s.number`,
         )
         .all(customerId) as {
         sale_id: string;
@@ -383,7 +387,7 @@ export class CustomerService {
     const credits = (
       this.db
         .prepare(
-          'SELECT c.id,c.sale_id,s.number,c.amount_cents,c.reason,c.created_at_utc FROM customer_credits c JOIN sales s ON s.id=c.sale_id WHERE c.customer_id=? ORDER BY c.created_at_utc DESC',
+          'SELECT c.id,c.sale_id,s.number,c.amount_cents,c.reason,c.created_at_utc FROM customer_credits c JOIN sale_orders s ON s.id=c.sale_id WHERE c.customer_id=? ORDER BY c.created_at_utc DESC',
         )
         .all(customerId) as {
         id: string;
@@ -433,7 +437,7 @@ export class CustomerService {
     const allocations = (
       this.db
         .prepare(
-          'SELECT a.sale_id,s.number,a.amount_cents FROM customer_collection_allocations a JOIN sales s ON s.id=a.sale_id WHERE a.collection_id=? ORDER BY s.business_date,s.number',
+          'SELECT a.sale_id,s.number,a.amount_cents FROM customer_collection_allocations a JOIN sale_orders s ON s.id=a.sale_id WHERE a.collection_id=? ORDER BY s.business_date,s.number',
         )
         .all(id) as { sale_id: string; number: number; amount_cents: number }[]
     ).map((a) => ({ saleId: a.sale_id, saleNumber: a.number, amountCents: a.amount_cents }));

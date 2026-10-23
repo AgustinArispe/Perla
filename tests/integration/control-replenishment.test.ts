@@ -60,14 +60,14 @@ describe('reposición y pedidos', () => {
       const destination = randomUUID(),
         now = new Date().toISOString();
       f.db
-        .prepare('INSERT INTO locations VALUES(?,?,?,1,0,1,?,?)')
+        .prepare('INSERT INTO locations(id,name,code,active,is_default,revision,created_at_utc,updated_at_utc) VALUES(?,?,?,1,0,1,?,?)')
         .run(destination, 'Destino', 'DEST', now, now);
       f.db
         .prepare('INSERT INTO location_inventory_balances VALUES(?,?,0,1)')
         .run(destination, f.product.id);
       f.db.prepare("UPDATE business_features SET enabled=1 WHERE feature_key='LOTS'").run();
       f.db
-        .prepare('INSERT INTO lot_product_settings VALUES(?,1,1,1,?,?,?)')
+        .prepare('WITH input(id,updated,actor,name) AS (VALUES(?,?,?,?)) UPDATE products SET lots_enabled=1,lots_reconciled=1,lots_revision=1,(lots_updated_at_utc,lots_actor_user_id,lots_actor_name)=(SELECT updated,actor,name FROM input) WHERE id=(SELECT id FROM input)')
         .run(f.product.id, now, f.owner.id, f.owner.name);
       const draft = f.call('create', {
         locationId: destination,
@@ -172,9 +172,15 @@ describe('reposición y pedidos', () => {
       f.db.close();
     }
   });
-  test('incluye días abiertos sin ventas y devoluciones, sin mezclar gramos con unidades', () => {
+  test.each(['UNIT', 'KG'] as const)('incluye días abiertos sin ventas y devoluciones, sin mezclar gramos con unidades (%s)', (unit) => {
     const f = fixture();
     try {
+      f.db.prepare('UPDATE products SET sale_unit=? WHERE id=?').run(unit, f.product.id);
+      const quantityBase = unit === 'KG' ? 28000 : 28;
+      const returnQuantityBase = unit === 'KG' ? 7000 : 7;
+      const expectedDemand = unit === 'KG'
+        ? { unit: 'KG', observedOpenDays: 6, dailyDemand: 3500, targetBase: 24500, suggestedBase: 24497 }
+        : { unit: 'UNIT', observedOpenDays: 6, dailyDemand: 3.5, targetBase: 25, suggestedBase: 22 };
       f.call('saveCalendar', {
         locationId: f.locationId,
         expectedRevision: 0,
@@ -191,38 +197,33 @@ describe('reposición y pedidos', () => {
         .run(saleId, randomUUID(), f.locationId);
       f.db
         .prepare(
-          "INSERT INTO sale_items(id,sale_id,line_id,position,product_id,sku,name,unit,unit_price_cents,quantity_base,gross_cents,discount_cents,net_cents) VALUES(?,?,?,0,?,'REP-01','Producto','UNIT',100,28,2800,0,2800)",
+          "INSERT INTO sale_items(id,sale_id,line_id,position,product_id,sku,name,unit,unit_price_cents,quantity_base,gross_cents,discount_cents,net_cents) VALUES(?,?,?,0,?,'REP-01','Producto',?,100,?,2800,0,2800)",
         )
-        .run(itemId, saleId, randomUUID(), f.product.id);
+        .run(itemId, saleId, randomUUID(), f.product.id, unit, quantityBase);
       f.db
         .prepare(
-          "INSERT INTO sale_returns(id,number,sale_id,operation_key,payload_hash,input_json,status,reason,total_cents,actor_user_id,actor_name,created_at_utc,business_date,local_month) VALUES(?,1,?,?,'hash','{}','CONFIRMED','Devolución',700,?,'Dueña','2026-10-07T12:00:00Z','2026-10-07','2026-10')",
+          "INSERT INTO sales(id,number,original_sale_id,operation_key,payload_hash,input_json,status,reason,total_cents,actor_user_id,actor_name,created_at_utc,business_date,local_month,document_type) VALUES(?,1,?,?,'hash','{}','CONFIRMED','Devolución',700,?,'Dueña','2026-10-07T12:00:00Z','2026-10-07','2026-10','RETURN')",
         )
         .run(returnId, saleId, randomUUID(), f.owner.id);
       f.db
         .prepare(
-          "INSERT INTO sale_return_items(id,return_id,sale_item_id,product_id,quantity_base,gross_cents,discount_cents,net_cents,disposition) VALUES(?,?,?,?,7,700,0,700,'NONE')",
+          "INSERT INTO sale_items(id,sale_id,original_sale_item_id,product_id,line_id,position,sku,name,unit,unit_price_cents,quantity_base,gross_cents,discount_cents,net_cents,disposition,document_type) VALUES(?,?,?,?,?,0,'REP-01','Producto',?,100,?,700,0,700,'NONE','RETURN')",
         )
-        .run(randomUUID(), returnId, itemId, f.product.id);
+        .run(randomUUID(), returnId, itemId, f.product.id, itemId, unit, returnQuantityBase);
       expect(
         (f.call('suggest', { locationId: f.locationId, asOf: '2026-10-07' }) as SuggestionPage)
           .items[0],
-      ).toMatchObject({ observedOpenDays: 6, dailyDemand: 3.5, targetBase: 25, suggestedBase: 22 });
+      ).toMatchObject(expectedDemand);
       const newerSale=randomUUID();
       f.db.prepare("INSERT INTO sales(id,number,checkout_key,payload_hash,status,created_at_utc,business_date,local_month,subtotal_cents,discount_cents,total_cents,discount_json,location_id) VALUES(?,2,?,'hash','COMPLETED','2026-10-06T12:00:00Z','2026-10-06','2026-10',2800,0,2800,'{}',?)").run(newerSale,randomUUID(),f.locationId);
-      f.db.prepare("INSERT INTO sale_items(id,sale_id,line_id,position,product_id,sku,name,unit,unit_price_cents,quantity_base,gross_cents,discount_cents,net_cents) VALUES(?,?,?,0,?,'REP-01','Producto','UNIT',100,28,2800,0,2800)").run(randomUUID(),newerSale,randomUUID(),f.product.id);
-      expect((f.call('suggest',{locationId:f.locationId,asOf:'2026-10-07',referenceDays:2}) as SuggestionPage).items[0]).toMatchObject({observedOpenDays:2,dailyDemand:10.5,targetBase:74});
+      f.db.prepare("INSERT INTO sale_items(id,sale_id,line_id,position,product_id,sku,name,unit,unit_price_cents,quantity_base,gross_cents,discount_cents,net_cents) VALUES(?,?,?,0,?,'REP-01','Producto',?,100,?,2800,0,2800)").run(randomUUID(),newerSale,randomUUID(),f.product.id,unit,quantityBase);
+      expect((f.call('suggest',{locationId:f.locationId,asOf:'2026-10-07',referenceDays:2}) as SuggestionPage).items[0]).toMatchObject({observedOpenDays:2,dailyDemand:unit === 'KG' ? 10500 : 10.5,targetBase:unit === 'KG' ? 73500 : 74});
       f.db.prepare('DELETE FROM sale_items WHERE sale_id=?').run(newerSale);
       f.db.prepare('DELETE FROM sales WHERE id=?').run(newerSale);
-      f.db.prepare("UPDATE sale_items SET unit='KG',quantity_base=28000 WHERE id=?").run(itemId);
-      f.db
-        .prepare('UPDATE sale_return_items SET quantity_base=7000 WHERE sale_item_id=?')
-        .run(itemId);
-      f.db.prepare("UPDATE products SET sale_unit='KG' WHERE id=?").run(f.product.id);
       expect(
         (f.call('suggest', { locationId: f.locationId, asOf: '2026-10-07' }) as SuggestionPage)
           .items[0],
-      ).toMatchObject({ unit: 'KG', dailyDemand: 3500, targetBase: 24500, suggestedBase: 24497 });
+      ).toMatchObject(expectedDemand);
       f.db.prepare('UPDATE products SET active=0 WHERE id=?').run(f.product.id);
       expect(
         (f.call('suggest', { locationId: f.locationId, asOf: '2026-10-07' }) as SuggestionPage)
@@ -327,7 +328,7 @@ describe('reposición y pedidos', () => {
       });
       const location = randomUUID();
       f.db
-        .prepare('INSERT INTO locations VALUES(?,?,?,1,0,1,?,?)')
+        .prepare('INSERT INTO locations(id,name,code,active,is_default,revision,created_at_utc,updated_at_utc) VALUES(?,?,?,1,0,1,?,?)')
         .run(location, 'Depósito', 'DEP', new Date().toISOString(), new Date().toISOString());
       f.db
         .prepare('INSERT INTO location_inventory_balances VALUES(?,?,40,1)')

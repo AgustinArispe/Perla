@@ -13,12 +13,15 @@ interface BackupInfo {
   appVersion: string;
   schemaVersion: number;
   bytes: number;
+  schedule?: 'WEEKLY_SATURDAY';
 }
 interface Preview {
   info: BackupInfo;
   previewToken: string;
 }
 const kinds = { MANUAL: 'Manual', DAILY: 'Diaria', PRE_RESTORE: 'Antes de restaurar' };
+const kindLabel = (info: BackupInfo) =>
+  info.schedule === 'WEEKLY_SATURDAY' ? 'Semanal · sábados' : kinds[info.kind];
 const date = new Intl.DateTimeFormat('es-AR', {
   timeZone: 'America/Argentina/Buenos_Aires',
   dateStyle: 'short',
@@ -91,7 +94,7 @@ export function BackupsPage({ onRestored }: { onRestored: () => Promise<void> })
                 ? date.format(new Date(latest.createdAt))
                 : 'Sin copias disponibles'}
         </strong>
-        {latest && <small>{kinds[latest.kind]}</small>}
+        {latest && <small>{kindLabel(latest)}</small>}
       </section>
       <section className="dashboard-panel commerce-backup-list">
         <h2>Copias disponibles</h2>
@@ -123,7 +126,7 @@ export function BackupsPage({ onRestored }: { onRestored: () => Promise<void> })
                   <td>
                     <strong>{date.format(new Date(info.createdAt))}</strong>
                   </td>
-                  <td>{kinds[info.kind]}</td>
+                  <td>{kindLabel(info)}</td>
                   <td>
                     {new Intl.NumberFormat('es-AR', { maximumFractionDigits: 1 }).format(
                       info.bytes / 1024,
@@ -168,9 +171,11 @@ export function BackupsPage({ onRestored }: { onRestored: () => Promise<void> })
               {!backups.isError && !backups.data?.length && (
                 <tr>
                   <td colSpan={4} className="empty-table">
-                    {backups.isPending
-                      ? (<PerlaLoading size="compact" label="Cargando copias…" />)
-                      : 'Creá una copia para resguardar los datos del negocio.'}
+                    {backups.isPending ? (
+                      <PerlaLoading size="compact" label="Cargando copias…" />
+                    ) : (
+                      'Creá una copia para resguardar los datos del negocio.'
+                    )}
                   </td>
                 </tr>
               )}
@@ -249,7 +254,7 @@ function RestoreForm({
       <form className="user-form" onSubmit={(event) => void submit(event)}>
         <p>
           Copia del <strong>{date.format(new Date(preview.info.createdAt))}</strong> ·{' '}
-          {kinds[preview.info.kind]}
+          {kindLabel(preview.info)}
         </p>
         <div className="alert warning">
           La restauración reemplaza los datos actuales y cierra todas las sesiones. Se guarda una

@@ -485,7 +485,7 @@ export class ServerRuntime implements Executor {
 
           const existing = this.database
 
-            .prepare('SELECT location_id FROM sales WHERE checkout_key=?')
+            .prepare('SELECT location_id FROM sale_orders WHERE checkout_key=?')
 
             .get(input.checkoutKey) as { location_id: string | null } | undefined;
 
@@ -543,7 +543,7 @@ export class ServerRuntime implements Executor {
 
           const original = this.database
 
-            .prepare('SELECT register_shift_id FROM sales WHERE id=?')
+            .prepare('SELECT register_shift_id FROM sale_orders WHERE id=?')
 
             .get(before.id) as { register_shift_id: string | null };
 
@@ -601,7 +601,7 @@ export class ServerRuntime implements Executor {
     const row = this.database
 
       .prepare(
-        'SELECT terminal_id AS terminalId,register_shift_id AS registerShiftId FROM sales WHERE id=?',
+        'SELECT terminal_id AS terminalId,register_shift_id AS registerShiftId FROM sale_orders WHERE id=?',
       )
 
       .get(sale.id) as { terminalId: string | null; registerShiftId: string | null };

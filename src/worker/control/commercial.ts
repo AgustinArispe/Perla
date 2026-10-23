@@ -61,7 +61,9 @@ export function recordStructuredAudit(
   const b = pick(before),
     a = pick(after);
   if (JSON.stringify(b) === JSON.stringify(a)) return;
-  db.prepare('INSERT INTO control_audit_details VALUES (?,?,?,?,?,?,?,?,?,?)').run(
+  db.prepare(
+    "INSERT INTO audit_events(event_type,id,entity_type,entity_id,operation,before_json,after_json,reason,actor_user_id,actor_name,created_at_utc) VALUES ('DETAIL',?,?,?,?,?,?,?,?,?,?)",
+  ).run(
     randomUUID(),
     entityType,
     entityId,
@@ -102,7 +104,7 @@ function mutationState(
       : type === 'stock'
         ? 'SELECT quantity_base AS quantityBase,revision FROM inventory_balances WHERE product_id=?'
         : type === 'sale'
-          ? 'SELECT number,status,total_cents AS totalCents FROM sales WHERE id=?'
+          ? 'SELECT number,status,total_cents AS totalCents FROM sale_orders WHERE id=?'
           : type === 'shift'
             ? 'SELECT status,counted_cash_cents AS countedCents,expected_cash_cents AS expectedCents,revision FROM register_shifts WHERE id=?'
             : null;
@@ -198,7 +200,7 @@ export class CommercialControlService {
         actors: this.db.prepare('SELECT id,name FROM users ORDER BY name').all(),
         operations: this.db
           .prepare(
-            'SELECT DISTINCT operation FROM audit_events UNION SELECT DISTINCT operation FROM control_audit_details ORDER BY operation',
+            'SELECT DISTINCT operation FROM audit_actions UNION SELECT DISTINCT operation FROM control_audit_details ORDER BY operation',
           )
           .all(),
         locations: flags.LOCATIONS_TRANSFERS
@@ -421,13 +423,13 @@ export class CommercialControlService {
     const location = f.locationId ?? null;
     const rows = this.db
       .prepare(
-        `SELECT p.id,p.name,p.sale_unit,p.price_cents,p.created_at_utc,c.rate_micros_per_base,c.revision cost_revision,c.method,c.effective_at_utc,
+        `SELECT p.id,p.name,p.sale_unit,p.price_cents,p.created_at_utc,p.cost_rate_micros_per_base AS rate_micros_per_base,p.cost_revision,p.cost_method AS method,p.cost_effective_at_utc AS effective_at_utc,
    CASE WHEN ? IS NULL THEN COALESCE((SELECT SUM(b.quantity_base) FROM location_inventory_balances b WHERE b.product_id=p.id),0) ELSE COALESCE((SELECT b.quantity_base FROM location_inventory_balances b WHERE b.product_id=p.id AND b.location_id=?),0) END quantity,
-   ${includeMovementHistory ? "(SELECT MAX(s.business_date) FROM sale_items i JOIN sales s ON s.id=i.sale_id WHERE i.product_id=p.id AND s.status='COMPLETED' AND (? IS NULL OR s.location_id=?) AND i.quantity_base>COALESCE((SELECT SUM(ri.quantity_base) FROM sale_return_items ri JOIN sale_returns sr ON sr.id=ri.return_id WHERE ri.sale_item_id=i.id AND sr.status='CONFIRMED'),0))" : 'NULL'} last_sale,
+   ${includeMovementHistory ? "(SELECT MAX(s.business_date) FROM sale_order_items i JOIN sale_orders s ON s.id=i.sale_id WHERE i.product_id=p.id AND s.status='COMPLETED' AND (? IS NULL OR s.location_id=?) AND i.quantity_base>COALESCE((SELECT SUM(ri.quantity_base) FROM sale_return_items ri JOIN sale_returns sr ON sr.id=ri.return_id WHERE ri.sale_item_id=i.id AND sr.status='CONFIRMED'),0))" : 'NULL'} last_sale,
    (SELECT COALESCE(MAX(id),0) FROM commercial_price_events e WHERE e.product_id=p.id) price_version,
    (SELECT MAX(created_at_utc) FROM commercial_price_events e WHERE e.product_id=p.id) last_price,
-   (SELECT created_at_utc FROM commercial_price_reviews r WHERE r.product_id=p.id AND r.price_cents=p.price_cents AND r.price_version=COALESCE((SELECT MAX(e.id) FROM commercial_price_events e WHERE e.product_id=p.id),0) AND r.cost_revision IS c.revision ORDER BY created_at_utc DESC,id DESC LIMIT 1) reviewed
-   FROM products p LEFT JOIN product_cost_states c ON c.product_id=p.id WHERE ${wh.join(' AND ')}`,
+   (SELECT created_at_utc FROM commercial_price_reviews r WHERE r.product_id=p.id AND r.price_cents=p.price_cents AND r.price_version=COALESCE((SELECT MAX(e.id) FROM commercial_price_events e WHERE e.product_id=p.id),0) AND r.cost_revision IS p.cost_revision ORDER BY created_at_utc DESC,id DESC LIMIT 1) reviewed
+   FROM products p WHERE ${wh.join(' AND ')}`,
       )
       .all(
         location,
@@ -568,7 +570,7 @@ export class CommercialControlService {
         for (const i of v.items) {
           const current = this.db
             .prepare(
-              'SELECT p.price_cents,c.revision,COALESCE((SELECT MAX(e.id) FROM commercial_price_events e WHERE e.product_id=p.id),0) price_version FROM products p LEFT JOIN product_cost_states c ON c.product_id=p.id WHERE p.id=?',
+              'SELECT p.price_cents,p.cost_revision AS revision,COALESCE((SELECT MAX(e.id) FROM commercial_price_events e WHERE e.product_id=p.id),0) price_version FROM products p WHERE p.id=?',
             )
             .get(i.productId) as
             { price_cents: number; revision: number | null; price_version: number } | undefined;
@@ -607,7 +609,7 @@ export class CommercialControlService {
         const before = this.settings();
         const result = this.db
           .prepare(
-            "UPDATE commercial_settings SET margin_basis_points=?,stale_days=?,revision=revision+1 WHERE id='main' AND revision=?",
+            'UPDATE business_settings SET margin_basis_points=?,stale_days=?,commercial_revision=commercial_revision+1 WHERE id=1 AND commercial_revision=?',
           )
           .run(v.marginBasisPoints, v.staleDays, v.expectedRevision);
         if (!result.changes) throw new DomainError('REVISION_CONFLICT', 'Los criterios cambiaron.');
@@ -715,7 +717,7 @@ export class CommercialControlService {
       .immediate();
   }
   recoverWeekly(maxWeeks = 52): number {
-    const first = this.db.prepare('SELECT MIN(business_date) date FROM sales').get() as {
+    const first = this.db.prepare('SELECT MIN(business_date) date FROM sale_orders').get() as {
       date: string | null;
     };
     const last = addDays(monday(today()), -7);
@@ -760,7 +762,7 @@ export class CommercialControlService {
     }
     if (v.entityQuery) {
       wh.push(
-        '(entity_id IN (SELECT id FROM products WHERE name LIKE ? OR sku LIKE ?) OR entity_id IN (SELECT id FROM sales WHERE CAST(number AS TEXT)=?))',
+        '(entity_id IN (SELECT id FROM products WHERE name LIKE ? OR sku LIKE ?) OR entity_id IN (SELECT id FROM sale_orders WHERE CAST(number AS TEXT)=?))',
       );
       args.push('%' + v.entityQuery + '%', '%' + v.entityQuery + '%', v.entityQuery);
     }
@@ -773,7 +775,7 @@ export class CommercialControlService {
       args.push(v.to);
     }
     const source = `(SELECT id,entity_type,entity_id,operation,before_json,after_json,reason,actor_user_id,actor_name,created_at_utc FROM control_audit_details
- UNION ALL SELECT a.id,CASE WHEN a.operation LIKE 'products.%' THEN 'product' WHEN a.operation LIKE 'sales.%' THEN 'sale' WHEN a.operation LIKE 'stock.%' THEN 'stock' WHEN a.operation LIKE 'cash.%' THEN 'shift' ELSE 'settings' END entity_type,a.entity_id,a.operation,NULL before_json,NULL after_json,'Registro anterior sin desglose' reason,a.actor_user_id,a.actor_name,a.created_at_utc FROM audit_events a WHERE NOT EXISTS (SELECT 1 FROM control_audit_details d WHERE d.operation=a.operation AND d.entity_id IS a.entity_id AND ABS(julianday(d.created_at_utc)-julianday(a.created_at_utc))<0.00003))`;
+ UNION ALL SELECT a.id,CASE WHEN a.operation LIKE 'products.%' THEN 'product' WHEN a.operation LIKE 'sales.%' THEN 'sale' WHEN a.operation LIKE 'stock.%' THEN 'stock' WHEN a.operation LIKE 'cash.%' THEN 'shift' ELSE 'settings' END entity_type,a.entity_id,a.operation,NULL before_json,NULL after_json,'Registro anterior sin desglose' reason,a.actor_user_id,a.actor_name,a.created_at_utc FROM audit_actions a WHERE NOT EXISTS (SELECT 1 FROM control_audit_details d WHERE d.operation=a.operation AND d.entity_id IS a.entity_id AND ABS(julianday(d.created_at_utc)-julianday(a.created_at_utc))<0.00003))`;
     const total = (
       this.db
         .prepare(`SELECT COUNT(*) n FROM ${source} WHERE ${wh.join(' AND ')}`)

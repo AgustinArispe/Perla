@@ -29,8 +29,8 @@ export class PriceChangeService {
       change: input.change,
       items,
     };
-    this.db.prepare('DELETE FROM price_change_previews WHERE expires_at_ms<?').run(now);
-    this.db.prepare('INSERT INTO price_change_previews VALUES (?,?,?,?)').run(
+    this.db.prepare("DELETE FROM price_change_batches WHERE record_type='PREVIEW' AND expires_at_ms<?").run(now);
+    this.db.prepare("INSERT INTO price_change_batches(record_type,id,input_json,result_json,expires_at_ms) VALUES ('PREVIEW',?,?,?,?)").run(
       result.previewToken,
       JSON.stringify(input),
       JSON.stringify(result),
@@ -43,7 +43,7 @@ export class PriceChangeService {
     const input = PriceConfirmSchema.parse(raw);
     const payloadHash = digest(input);
     return this.db.transaction(() => {
-      const replay = this.db.prepare('SELECT id,payload_hash FROM price_change_batches WHERE operation_key=?').get(input.operationKey) as { id: string; payload_hash: string } | undefined;
+      const replay = this.db.prepare('SELECT id,payload_hash FROM price_change_applications WHERE operation_key=?').get(input.operationKey) as { id: string; payload_hash: string } | undefined;
       if (replay) {
         if (replay.payload_hash !== payloadHash) throw new DomainError('IDEMPOTENCY_CONFLICT', 'La clave ya corresponde a otro cambio de precios.');
         return this.get(replay.id);
@@ -58,8 +58,8 @@ export class PriceChangeService {
       }
       const id = randomUUID();
       const now = new Date().toISOString();
-      this.db.prepare('INSERT INTO price_change_batches VALUES (?,?,?,?,?,?,?,?)').run(
-        id, input.operationKey, payloadHash, JSON.stringify(preview.change), preview.items.length, actor.id, actor.name, now,
+      this.db.prepare('INSERT INTO price_change_batches(id,operation_key,payload_hash,change_json,item_count,actor_user_id,actor_name,created_at_utc,source_preview_id) VALUES (?,?,?,?,?,?,?,?,?)').run(
+        id, input.operationKey, payloadHash, JSON.stringify(preview.change), preview.items.length, actor.id, actor.name, now, input.previewToken,
       );
       const insert = this.db.prepare('INSERT INTO price_change_items VALUES (?,?,?,?,?,?,?)');
       for (const item of preview.items) {
@@ -72,7 +72,7 @@ export class PriceChangeService {
   }
 
   get(id: string): PriceChangeBatch {
-    const batch = this.db.prepare('SELECT id,operation_key AS operationKey,item_count AS itemCount,created_at_utc AS createdAt FROM price_change_batches WHERE id=?').get(id) as Omit<PriceChangeBatch, 'items'> | undefined;
+    const batch = this.db.prepare('SELECT id,operation_key AS operationKey,item_count AS itemCount,created_at_utc AS createdAt FROM price_change_applications WHERE id=?').get(id) as Omit<PriceChangeBatch, 'items'> | undefined;
     if (!batch) throw new DomainError('NOT_FOUND', 'No se encontró el cambio de precios.');
     const items = this.db.prepare('SELECT product_id AS productId,product_name AS name,before_cents AS beforeCents,after_cents AS afterCents,before_revision AS expectedRevision FROM price_change_items WHERE batch_id=? ORDER BY product_name,product_id').all(id) as PriceChangeBatch['items'];
     return { ...batch, items };

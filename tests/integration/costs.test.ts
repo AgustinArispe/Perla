@@ -75,7 +75,9 @@ describe('costos vigentes', () => {
       });
       const supplierId = randomUUID();
       f.db
-        .prepare('INSERT INTO suppliers VALUES (?,?,?,NULL,NULL,NULL,NULL,1,1,?,?)')
+        .prepare(
+          'INSERT INTO parties(id,name,search_name,is_supplier,created_at_utc,updated_at_utc) VALUES (?,?,?,1,?,?)',
+        )
         .run(
           supplierId,
           'Proveedor',
@@ -86,7 +88,7 @@ describe('costos vigentes', () => {
       const addPurchase = (purchaseId: string, itemId: string, number: number) => {
         const key = randomUUID();
         f.db
-          .prepare("INSERT INTO purchases VALUES (?,?,?,?,?,?,NULL,'RECEIVED',?,?,?,?,?,?)")
+          .prepare("INSERT INTO purchases(id,number,receipt_key,payload_hash,supplier_id,supplier_name,supplier_phone,status,received_at_utc,business_date,total_cents,stock_applied,actor_user_id,actor_name) VALUES (?,?,?,?,?,?,NULL,'RECEIVED',?,?,?,?,?,?)")
           .run(
             purchaseId,
             number,
@@ -102,7 +104,7 @@ describe('costos vigentes', () => {
             f.owner.name,
           );
         f.db
-          .prepare('INSERT INTO purchase_items VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)')
+          .prepare('INSERT INTO purchase_items(id,purchase_id,position,line_id,product_id,sku,barcode,name,unit,quantity_base,unit_cost_cents,subtotal_cents,product_revision) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)')
           .run(
             itemId,
             purchaseId,

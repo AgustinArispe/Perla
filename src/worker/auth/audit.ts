@@ -8,12 +8,7 @@ export function recordAudit(
   entityId: string | null,
 ): void {
   if (!db.inTransaction) throw new Error('La auditoría requiere una transacción.');
-  db.prepare('INSERT INTO audit_events VALUES (?,?,?,?,?,?)').run(
-    randomUUID(),
-    operation,
-    entityId,
-    actor.id,
-    actor.name,
-    new Date().toISOString(),
-  );
+  db.prepare(
+    'INSERT INTO audit_events(id,operation,entity_id,actor_user_id,actor_name,created_at_utc) VALUES (?,?,?,?,?,?)',
+  ).run(randomUUID(), operation, entityId, actor.id, actor.name, new Date().toISOString());
 }

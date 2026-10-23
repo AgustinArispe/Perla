@@ -201,7 +201,7 @@ export class OperationsService {
     const sql =
       kind === 'shifts'
         ? shiftSql
-        : 'SELECT id,operation,entity_id AS entityId,actor_user_id AS actorUserId,actor_name AS actorName,created_at_utc AS createdAt FROM audit_events';
+        : 'SELECT id,operation,entity_id AS entityId,actor_user_id AS actorUserId,actor_name AS actorName,created_at_utc AS createdAt FROM audit_actions';
     const limit = input.limit as number;
     args.push(limit + 1);
     const rows = this.db

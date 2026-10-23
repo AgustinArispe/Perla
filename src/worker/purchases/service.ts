@@ -132,7 +132,7 @@ export class PurchaseService {
         const now = new Date().toISOString();
         this.db
           .prepare(
-            'INSERT INTO purchase_drafts (user_id,terminal_id,revision,body_json,updated_at_utc) VALUES (?,?,?,?,?) ON CONFLICT(user_id) DO UPDATE SET terminal_id=excluded.terminal_id,revision=excluded.revision,body_json=excluded.body_json,updated_at_utc=excluded.updated_at_utc',
+            `WITH input(owner,terminal,rev,body,updated) AS (VALUES (?,?,?,?,?)) INSERT INTO drafts(document_type,id,owner_user_id,terminal_id,revision,body_json,updated_at_utc) SELECT 'PURCHASE',owner,owner,terminal,rev,body,updated FROM input WHERE true ON CONFLICT(document_type,id) DO UPDATE SET terminal_id=excluded.terminal_id,revision=excluded.revision,body_json=excluded.body_json,updated_at_utc=excluded.updated_at_utc`,
           )
           .run(userId, terminalId, input.expectedRevision + 1, JSON.stringify(input.body), now);
         return this.getDraft(userId)!;
@@ -149,7 +149,7 @@ export class PurchaseService {
             'REVISION_CONFLICT',
             'El borrador cambió. Recuperalo antes de descartarlo.',
           );
-        this.db.prepare('DELETE FROM purchase_drafts WHERE user_id=?').run(userId);
+        this.db.prepare("DELETE FROM drafts WHERE document_type='PURCHASE' AND id=?").run(userId);
         return null;
       })
       .immediate();
@@ -283,7 +283,10 @@ export class PurchaseService {
             if (this.lotsEnabled() && this.lots?.enabled(item.product.id)) {
               const line = input.lines[item.position]!;
               if (!line.lotCode)
-                throw new DomainError('VALIDATION', `${item.product.name} requiere un código de lote.`);
+                throw new DomainError(
+                  'VALIDATION',
+                  `${item.product.name} requiere un código de lote.`,
+                );
               this.lots.receive({
                 productId: item.product.id,
                 code: line.lotCode,
@@ -315,7 +318,9 @@ export class PurchaseService {
             now,
           );
         if (input.expectedDraftRevision !== undefined)
-          this.db.prepare('DELETE FROM purchase_drafts WHERE user_id=?').run(actor.id);
+          this.db
+            .prepare("DELETE FROM drafts WHERE document_type='PURCHASE' AND id=?")
+            .run(actor.id);
         return this.detail(id);
       })
       .immediate();

@@ -169,9 +169,9 @@ export class ReplenishmentService {
               throw new DomainError('REVISION_CONFLICT', 'La unidad de compra cambió.');
             this.db
               .prepare(
-                'INSERT INTO replenishment_product_rules VALUES(?,?,?) ON CONFLICT(product_id) DO UPDATE SET revision=excluded.revision,purchase_multiple_base=excluded.purchase_multiple_base',
+                'UPDATE products SET replenishment_revision=?,purchase_multiple_base=? WHERE id=?',
               )
-              .run(v.productId, v.expectedRevision + 1, v.purchaseMultipleBase);
+              .run(v.expectedRevision + 1, v.purchaseMultipleBase, v.productId);
             return { ...v, revision: v.expectedRevision + 1 };
           })
           .immediate();
@@ -337,13 +337,13 @@ export class ReplenishmentService {
           throw new DomainError('REVISION_CONFLICT', 'El calendario cambió.');
         this.db
           .prepare(
-            'INSERT INTO replenishment_calendars VALUES(?,?,?,?) ON CONFLICT(location_id) DO UPDATE SET revision=excluded.revision,weekdays_json=excluded.weekdays_json,closed_dates_json=excluded.closed_dates_json',
+            'UPDATE locations SET calendar_revision=?,weekdays_json=?,closed_dates_json=? WHERE id=?',
           )
           .run(
-            v.locationId,
             v.expectedRevision + 1,
             JSON.stringify(v.openWeekdays),
             JSON.stringify(v.closedDates),
+            v.locationId,
           );
         return this.calendar(v.locationId);
       })
@@ -496,8 +496,10 @@ export class ReplenishmentService {
         .prepare('UPDATE replenishment_order_lines SET received_base=received_base+? WHERE id=?')
         .run(item.quantityBase, item.lineId);
       this.db
-        .prepare('INSERT INTO replenishment_receipts VALUES(?,?,?)')
-        .run(item.lineId, item.id, item.quantityBase);
+        .prepare(
+          'UPDATE purchase_items SET replenishment_order_line_id=?,replenishment_received_base=? WHERE id=?',
+        )
+        .run(item.lineId, item.quantityBase, item.id);
     }
     const pending = (
       this.db
@@ -569,7 +571,7 @@ export class ReplenishmentService {
     const first = (
       this.db
         .prepare(
-          "SELECT MIN(business_date) AS date FROM sales WHERE location_id=? AND status='COMPLETED'",
+          "SELECT MIN(business_date) AS date FROM sale_orders WHERE location_id=? AND status='COMPLETED'",
         )
         .get(v.locationId) as { date: string | null }
     ).date;
@@ -585,9 +587,9 @@ export class ReplenishmentService {
         this.db
           .prepare(
             `SELECT id,SUM(qty) AS qty FROM (
-              SELECT i.product_id AS id,i.quantity_base AS qty FROM sale_items i JOIN sales s ON s.id=i.sale_id WHERE s.location_id=? AND s.status='COMPLETED' AND s.business_date BETWEEN ? AND ?
+              SELECT i.product_id AS id,i.quantity_base AS qty FROM sale_order_items i JOIN sale_orders s ON s.id=i.sale_id WHERE s.location_id=? AND s.status='COMPLETED' AND s.business_date BETWEEN ? AND ?
               UNION ALL
-              SELECT i.product_id AS id,-i.quantity_base AS qty FROM sale_return_items i JOIN sale_returns r ON r.id=i.return_id JOIN sales s ON s.id=r.sale_id WHERE s.location_id=? AND s.status='COMPLETED' AND r.business_date BETWEEN ? AND ?
+              SELECT i.product_id AS id,-i.quantity_base AS qty FROM sale_return_items i JOIN sale_returns r ON r.id=i.return_id JOIN sale_orders s ON s.id=r.sale_id WHERE s.location_id=? AND s.status='COMPLETED' AND r.business_date BETWEEN ? AND ?
             ) GROUP BY id`,
           )
           .all(v.locationId, start, asOf, v.locationId, start, asOf) as {

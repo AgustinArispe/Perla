@@ -105,7 +105,7 @@ export class NotificationService {
       const totals = (from: string, to: string) =>
         this.db
           .prepare(
-            `SELECT COUNT(*) count,COALESCE(SUM(total_cents),0) net FROM sales
+            `SELECT COUNT(*) count,COALESCE(SUM(total_cents),0) net FROM sale_orders
              WHERE status='COMPLETED' AND business_date BETWEEN ? AND ?`,
           )
           .get(from, to) as { count: number; net: number };

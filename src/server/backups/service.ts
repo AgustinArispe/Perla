@@ -29,6 +29,14 @@ export interface BackupInfo {
   bytes: number;
   keyId: string;
   sha256: string;
+  // DAILY is the legacy container/UI classification, also used for weekly copies.
+  // Only marked copies belong to this scheduler's retention policy.
+  schedule?: 'WEEKLY_SATURDAY';
+}
+export interface ScheduledBackupPolicy {
+  enabled: boolean;
+  retention: number;
+  timezone: string;
 }
 interface Options {
   databasePath: string;
@@ -157,6 +165,7 @@ export class BackupService {
     { id: string; fileHash: string; stateHash: string; expires: number }
   >();
   private busy = false;
+  private scheduled: Promise<BackupInfo | undefined> | undefined;
   constructor(private readonly options: Options) {
     if (options.key.length !== 32) throw new Error('La clave de backup debe tener 32 bytes.');
     this.key = Buffer.from(options.key);
@@ -176,16 +185,16 @@ export class BackupService {
     let db: Database.Database | undefined;
     const expected = new Database(':memory:');
     try {
+      const migrations = MIGRATIONS.filter((m) => m.version <= version);
+      if (migrations.at(-1)?.version !== version)
+        throw invalid('La versión de la base no es compatible.');
       db = new Database(path, { readonly: true, fileMustExist: true });
       if (
         db.pragma('integrity_check', { simple: true }) !== 'ok' ||
         (db.pragma('foreign_key_check') as unknown[]).length
       )
         throw invalid();
-      migrate(
-        expected,
-        MIGRATIONS.filter((m) => m.version <= version),
-      );
+      migrate(expected, migrations);
       const schema = (database: Database.Database) =>
         database
           .prepare(
@@ -205,9 +214,9 @@ export class BackupService {
         .prepare('SELECT version,checksum FROM schema_migrations ORDER BY version')
         .all() as { version: number; checksum: string }[];
       if (
-        rows.length !== MIGRATIONS.length ||
+        rows.length !== migrations.length ||
         rows.some((row, index) => {
-          const migration = MIGRATIONS[index]!;
+          const migration = migrations[index]!;
           return (
             row.version !== migration.version ||
             ![
@@ -247,6 +256,8 @@ export class BackupService {
         !UUID.test(info.id) ||
         !['MANUAL', 'DAILY', 'PRE_RESTORE'].includes(info.kind) ||
         typeof info.appVersion !== 'string' ||
+        (info.schedule !== undefined &&
+          (info.kind !== 'DAILY' || info.schedule !== 'WEEKLY_SATURDAY')) ||
         !Number.isFinite(Date.parse(info.createdAt)) ||
         info.keyId !== hash(this.key).slice(0, 16)
       )
@@ -260,7 +271,10 @@ export class BackupService {
       throw invalid();
     }
   }
-  async create(kind: BackupInfo['kind'] = 'MANUAL'): Promise<BackupInfo> {
+  async create(
+    kind: BackupInfo['kind'] = 'MANUAL',
+    schedule?: BackupInfo['schedule'],
+  ): Promise<BackupInfo> {
     const path = join(this.options.backupDirectory, randomUUID() + '.snapshot');
     try {
       durable(path, Buffer.alloc(0));
@@ -284,6 +298,7 @@ export class BackupService {
         bytes: 0,
         keyId: hash(this.key).slice(0, 16),
         sha256: hash(database),
+        ...(schedule ? { schedule } : {}),
       };
       const manifest = Buffer.from(JSON.stringify(info));
       const size = Buffer.alloc(4);
@@ -341,21 +356,47 @@ export class BackupService {
   private stateHash(): string {
     const db = this.options.getDatabase();
     const digest = createHash('sha256');
+    const typedAudit = (db.pragma('table_info(audit_events)') as { name: string }[]).some(
+      (column) => column.name === 'event_type',
+    );
     const tables = db
       .prepare(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT IN ('auth_sessions','auth_attempts','audit_events') ORDER BY name",
+        "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT IN ('auth_sessions','auth_attempts') ORDER BY name",
       )
       .all() as { name: string }[];
     for (const { name } of tables) {
       digest.update(name);
+      // ACTION records accompany routine requests. Consolidated domain history must
+      // still invalidate a preview, just as its separate tables did before v35.
+      const filter =
+        name === 'audit_events' ? (typedAudit ? " WHERE event_type <> 'ACTION'" : ' WHERE 0') : '';
       const rows = db
-        .prepare('SELECT * FROM "' + name.replaceAll('"', '""') + '"')
+        .prepare('SELECT * FROM "' + name.replaceAll('"', '""') + '"' + filter)
         .all()
         .map((row) => JSON.stringify(row))
         .sort();
       for (const row of rows) digest.update(row);
     }
     return digest.digest('hex');
+  }
+  private prepareRestoreCandidate(path: string, database: Buffer): void {
+    durable(path, database);
+    const db = new Database(path);
+    try {
+      db.pragma('foreign_keys=ON');
+      migrate(db);
+      db.transaction(() =>
+        db.exec('DELETE FROM auth_sessions; DELETE FROM auth_attempts'),
+      ).immediate();
+      if (
+        db.pragma('integrity_check', { simple: true }) !== 'ok' ||
+        (db.pragma('foreign_key_check') as unknown[]).length
+      )
+        throw invalid();
+    } finally {
+      db.close();
+    }
+    durable(path, readFileSync(path));
   }
   async inspect(id: string): Promise<{ info: BackupInfo; previewToken: string }> {
     const bytes = this.download(id);
@@ -408,7 +449,7 @@ export class BackupService {
       await this.create('PRE_RESTORE');
       if (preview.stateHash !== this.stateHash())
         throw invalid('Los datos cambiaron durante el respaldo.');
-      durable(candidate, database);
+      this.prepareRestoreCandidate(candidate, database);
       this.options.getDatabase().pragma('wal_checkpoint(TRUNCATE)');
       this.options.closeDatabase();
       closed = true;
@@ -444,19 +485,55 @@ export class BackupService {
       throw error;
     } finally {
       rmSync(candidate, { force: true });
+      removeSidecars(candidate);
       if (!existsSync(journal)) rmSync(previous, { force: true });
       this.busy = false;
     }
   }
-  async ensureDaily(): Promise<BackupInfo> {
-    const day = new Date().toISOString().slice(0, 10);
-    const existing = this.list().find(
-      (info) => info.kind === 'DAILY' && info.createdAt.slice(0, 10) === day,
+  async ensureScheduled(
+    policy: ScheduledBackupPolicy = {
+      enabled: true,
+      retention: 2,
+      timezone: 'America/Argentina/Buenos_Aires',
+    },
+  ): Promise<BackupInfo | undefined> {
+    if (!policy.enabled) return;
+    if (!Number.isInteger(policy.retention) || policy.retention < 1 || policy.retention > 104)
+      throw new Error('La retención automática debe estar entre 1 y 104.');
+    if (this.scheduled) return this.scheduled;
+    this.scheduled = this.runScheduled(policy);
+    try {
+      return await this.scheduled;
+    } finally {
+      this.scheduled = undefined;
+    }
+  }
+  private async runScheduled(policy: ScheduledBackupPolicy): Promise<BackupInfo | undefined> {
+    const calendar = new Intl.DateTimeFormat('en-CA', {
+      timeZone: policy.timezone,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      weekday: 'short',
+    });
+    const localDate = (date: Date) => {
+      const parts = Object.fromEntries(calendar.formatToParts(date).map((p) => [p.type, p.value]));
+      return { day: `${parts.year}-${parts.month}-${parts.day}`, weekday: parts.weekday };
+    };
+    const today = localDate(new Date());
+    // A missed Saturday is retried on the next Saturday, without weekday catch-up.
+    if (today.weekday !== 'Sat') return;
+    const automatic = this.list().filter(
+      (info) => info.kind === 'DAILY' && info.schedule === 'WEEKLY_SATURDAY',
     );
-    const info = existing ?? (await this.create('DAILY'));
-    for (const expired of this.list()
-      .filter((item) => item.kind === 'DAILY')
-      .slice(14))
+    const existing = automatic.find(
+      (info) => localDate(new Date(info.createdAt)).day === today.day,
+    );
+    const info = existing ?? (await this.create('DAILY', 'WEEKLY_SATURDAY'));
+    const retained = existing ? automatic : [info, ...automatic];
+    retained.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    // Prune only authenticated, marked scheduler copies after a successful backup.
+    for (const expired of retained.slice(policy.retention))
       rmSync(this.path(expired.id), { force: true });
     return info;
   }
@@ -474,23 +551,7 @@ export class BackupService {
       );
     const hadOriginal = existsSync(path);
     try {
-      durable(candidate, database);
-      const db = new Database(candidate);
-      try {
-        db.pragma('foreign_keys=ON');
-        migrate(db);
-        db.transaction(() =>
-          db.exec('DELETE FROM auth_sessions; DELETE FROM auth_attempts'),
-        ).immediate();
-        if (
-          db.pragma('integrity_check', { simple: true }) !== 'ok' ||
-          (db.pragma('foreign_key_check') as unknown[]).length
-        )
-          throw invalid();
-      } finally {
-        db.close();
-      }
-      durable(candidate, readFileSync(candidate));
+      this.prepareRestoreCandidate(candidate, database);
       if (hadOriginal) {
         durable(previous, readFileSync(path));
         for (const suffix of ['-wal', '-shm'])

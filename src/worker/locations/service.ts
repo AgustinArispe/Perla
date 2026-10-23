@@ -89,9 +89,9 @@ export class LocationTransferService {
     const rows = this.db
       .prepare(
         `SELECT l.id,l.name,l.active, EXISTS(SELECT 1 FROM terminal_locations tl JOIN terminals t ON t.id=tl.terminal_id WHERE tl.location_id=l.id AND t.active=1) hasTerminal,
-      COALESCE((SELECT SUM(CASE WHEN s.status='COMPLETED' THEN s.total_cents ELSE 0 END) FROM sales s WHERE s.location_id=l.id AND s.local_month=?),0)-
-      COALESCE((SELECT SUM(r.total_cents) FROM sale_returns r JOIN sales s ON s.id=r.sale_id WHERE r.status='CONFIRMED' AND s.location_id=l.id AND r.local_month=?),0) net,
-      COALESCE((SELECT COUNT(*) FROM sales s WHERE s.location_id=l.id AND s.local_month=? AND s.status='COMPLETED'),0) sales,
+      COALESCE((SELECT SUM(CASE WHEN s.status='COMPLETED' THEN s.total_cents ELSE 0 END) FROM sale_orders s WHERE s.location_id=l.id AND s.local_month=?),0)-
+      COALESCE((SELECT SUM(r.total_cents) FROM sale_returns r JOIN sale_orders s ON s.id=r.sale_id WHERE r.status='CONFIRMED' AND s.location_id=l.id AND r.local_month=?),0) net,
+      COALESCE((SELECT COUNT(*) FROM sale_orders s WHERE s.location_id=l.id AND s.local_month=? AND s.status='COMPLETED'),0) sales,
       COALESCE((SELECT SUM(CASE WHEN p.sale_unit='UNIT' THEN b.quantity_base ELSE 0 END) FROM location_inventory_balances b JOIN products p ON p.id=b.product_id WHERE b.location_id=l.id AND p.active=1 AND p.track_stock=1),0) units,
       COALESCE((SELECT SUM(CASE WHEN p.sale_unit='KG' THEN b.quantity_base ELSE 0 END) FROM location_inventory_balances b JOIN products p ON p.id=b.product_id WHERE b.location_id=l.id AND p.active=1 AND p.track_stock=1),0) grams,
       COALESCE((SELECT COUNT(*) FROM location_inventory_balances b JOIN products p ON p.id=b.product_id WHERE b.location_id=l.id AND p.active=1 AND p.track_stock=1 AND p.stock_initialized=1 AND b.quantity_base<=p.min_stock_base),0) low,

@@ -95,7 +95,7 @@ it('fallo después de descontar stock revierte toda la venta y conserva el borra
   const f = fixture();
   try {
     f.db.exec(
-      "CREATE TRIGGER reject_complete BEFORE INSERT ON sale_events BEGIN SELECT RAISE(ABORT,'failure fixture'); END",
+      "CREATE TRIGGER reject_complete BEFORE INSERT ON sale_events WHEN NEW.kind='COMPLETED' BEGIN SELECT RAISE(ABORT,'failure fixture'); END",
     );
     expect(() => f.sales.complete(f.input)).toThrow();
     for (const table of ['sales', 'sale_items', 'sale_payments'])

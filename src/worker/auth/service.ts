@@ -146,7 +146,9 @@ export class AuthService {
           );
         const user = this.user(id);
         this.db
-          .prepare("UPDATE checkout_drafts SET id=?,owner_user_id=? WHERE id='main'")
+          .prepare(
+            "UPDATE drafts SET id=?,owner_user_id=? WHERE document_type='SALE' AND id='main'",
+          )
           .run(id, id);
         recordAudit(this.db, user, 'auth.bootstrap', id);
         return this.grant(user);

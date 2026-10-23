@@ -366,7 +366,7 @@ test('caja conserva faltantes/sobrantes al revisar y supervisor no obtiene agreg
       f.owner,
     ) as { id: string };
     cash.close({ shiftId: b.id, countedCashCents: 10000, operationKey: randomUUID() }, f.owner);
-    const before = f.db.prepare('SELECT * FROM register_shifts ORDER BY id').all();
+    const before = f.db.prepare('SELECT id,status,opening_cash_cents,counted_cash_cents,expected_cash_cents,difference_cents,revision FROM register_shifts ORDER BY id').all();
     const list = f.service.execute('cashDifferences', { status: 'ALL' }, f.owner) as {
       summary: { shortagesCents: number; surplusesCents: number };
     };
@@ -376,7 +376,7 @@ test('caja conserva faltantes/sobrantes al revisar y supervisor no obtiene agreg
       { shiftId: a.id, expectedRevision: 0, note: 'Revisado con operador' },
       f.owner,
     );
-    expect(f.db.prepare('SELECT * FROM register_shifts ORDER BY id').all()).toEqual(before);
+    expect(f.db.prepare('SELECT id,status,opening_cash_cents,counted_cash_cents,expected_cash_cents,difference_cents,revision FROM register_shifts ORDER BY id').all()).toEqual(before);
     expect(() =>
       f.service.execute(
         'cashReview',

@@ -34,9 +34,9 @@ export class SupplierAccountService {
     const now = new Date().toISOString();
     this.db
       .prepare(
-        "INSERT INTO supplier_payables(purchase_id,supplier_id,original_cents,balance_cents,status,created_at_utc,updated_at_utc) VALUES (?,?,?,?,'OPEN',?,?)",
+        "UPDATE purchases SET debt_party_id=?,debt_original_cents=?,debt_balance_cents=?,debt_status='OPEN',debt_created_at_utc=?,debt_updated_at_utc=? WHERE id=? AND debt_status IS NULL",
       )
-      .run(purchase.id, purchase.supplierId, purchase.totalCents, purchase.totalCents, now, now);
+      .run(purchase.supplierId, purchase.totalCents, purchase.totalCents, now, now, purchase.id);
   }
 
   pay(raw: SupplierPaymentInput, actor: User): SupplierPayment {
@@ -106,7 +106,7 @@ export class SupplierAccountService {
         const now = new Date().toISOString();
         this.db
           .prepare(
-            'INSERT INTO supplier_payments(id,operation_key,payload_hash,supplier_id,business_date,method,amount_cents,note,actor_user_id,actor_name,shift_id,created_at_utc) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',
+            "INSERT INTO account_payments(direction,id,operation_key,payload_hash,party_id,business_date,method,amount_cents,note,actor_user_id,actor_name,shift_id,register_movement_id,created_at_utc) VALUES ('OUT',?,?,?,?,?,?,?,?,?,?,?,NULL,?)",
           )
           .run(
             id,
@@ -123,10 +123,10 @@ export class SupplierAccountService {
             now,
           );
         const insert = this.db.prepare(
-          'INSERT INTO supplier_payment_allocations(payment_id,purchase_id,amount_cents) VALUES (?,?,?)',
+          'INSERT INTO account_payment_allocations(payment_id,purchase_id,amount_cents) VALUES (?,?,?)',
         );
         const update = this.db.prepare(
-          "UPDATE supplier_payables SET balance_cents=balance_cents-?,status=CASE WHEN balance_cents-?=0 THEN 'PAID' ELSE 'OPEN' END,updated_at_utc=? WHERE purchase_id=? AND status='OPEN' AND balance_cents>=?",
+          "UPDATE purchases SET debt_balance_cents=debt_balance_cents-?,debt_status=CASE WHEN debt_balance_cents-?=0 THEN 'PAID' ELSE 'OPEN' END,debt_updated_at_utc=? WHERE id=? AND debt_status='OPEN' AND debt_balance_cents>=?",
         );
         for (const allocation of allocations) {
           insert.run(id, allocation.purchaseId, allocation.amountCents);
@@ -155,7 +155,9 @@ export class SupplierAccountService {
             actor,
           );
           this.db
-            .prepare('UPDATE supplier_payments SET register_movement_id=? WHERE id=?')
+            .prepare(
+              "UPDATE account_payments SET register_movement_id=? WHERE direction='OUT' AND id=?",
+            )
             .run(movement.id, id);
         }
         recordAudit(this.db, actor, 'supplierAccounts.pay', id);
@@ -184,13 +186,13 @@ export class SupplierAccountService {
     const paid = row.original_cents - row.balance_cents;
     this.db
       .prepare(
-        "UPDATE supplier_payables SET balance_cents=0,status='VOIDED',updated_at_utc=? WHERE purchase_id=?",
+        "UPDATE purchases SET debt_balance_cents=0,debt_status='VOIDED',debt_updated_at_utc=? WHERE id=? AND debt_status IS NOT NULL",
       )
       .run(now, purchaseId);
     if (paid > 0)
       this.db
         .prepare(
-          'INSERT INTO supplier_credits(id,supplier_id,purchase_id,amount_cents,reason,created_at_utc) VALUES (?,?,?,?,?,?)',
+          'INSERT INTO account_credits(id,party_id,purchase_id,amount_cents,reason,created_at_utc) VALUES (?,?,?,?,?,?)',
         )
         .run(randomUUID(), row.supplier_id, purchaseId, paid, reason, now);
   }

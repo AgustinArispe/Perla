@@ -53,7 +53,7 @@ export class ReturnService {
           COALESCE(SUM(ri.quantity_base),0) AS returned_quantity,
           COALESCE(SUM(ri.net_cents),0) AS returned_cents,
           EXISTS(SELECT 1 FROM stock_movements sm WHERE sm.sale_item_id=i.id AND sm.kind='SALE') AS trackable
-         FROM sale_items i
+         FROM sale_order_items i
          LEFT JOIN sale_return_items ri ON ri.sale_item_id=i.id
          WHERE i.sale_id=?
          GROUP BY i.id ORDER BY i.position`,
@@ -95,7 +95,7 @@ export class ReturnService {
           r.total_cents AS totalCents,r.cost_cents AS costCents,r.actor_user_id AS actorUserId,
           r.actor_name AS actorName,r.created_at_utc AS createdAt,r.input_json AS inputJson,
           r.total_cents-f.amount_cents AS accountOffsetCents,f.method AS refundMethod,f.amount_cents AS refundCents
-         FROM sale_returns r JOIN sales s ON s.id=r.sale_id
+         FROM sale_returns r JOIN sale_orders s ON s.id=r.sale_id
          JOIN sale_return_refunds f ON f.return_id=r.id WHERE r.id=?`,
       )
       .get(id) as (Omit<SaleReturnDetail, 'items' | 'input'> & { inputJson: string }) | undefined;
@@ -106,7 +106,7 @@ export class ReturnService {
       .prepare(
         `SELECT ri.id,ri.sale_item_id AS saleItemId,ri.product_id AS productId,i.name,i.unit,
           ri.quantity_base AS quantityBase,ri.disposition,ri.net_cents AS netCents,ri.cost_cents AS costCents
-         FROM sale_return_items ri JOIN sale_items i ON i.id=ri.sale_item_id
+         FROM sale_return_items ri JOIN sale_order_items i ON i.id=ri.sale_item_id
          WHERE ri.return_id=? ORDER BY i.position`,
       )
       .all(id) as SaleReturnDetail['items'];
@@ -156,7 +156,7 @@ export class ReturnService {
         const prepared = input.items.map((request) => {
           const item = this.db
             .prepare(
-              'SELECT id,product_id,name,unit,quantity_base,gross_cents,discount_cents,net_cents,cost_cents FROM sale_items WHERE id=? AND sale_id=?',
+              'SELECT id,product_id,name,unit,quantity_base,gross_cents,discount_cents,net_cents,cost_cents FROM sale_order_items WHERE id=? AND sale_id=?',
             )
             .get(request.saleItemId, sale.id) as ItemRow | undefined;
           if (!item) throw new DomainError('VALIDATION', 'Un producto no pertenece a esta venta.');
@@ -197,8 +197,8 @@ export class ReturnService {
         const refundCents = totalCents - accountOffsetCents;
         this.db
           .prepare(
-            `INSERT INTO sale_returns(id,number,sale_id,operation_key,payload_hash,input_json,status,reason,total_cents,cost_cents,actor_user_id,actor_name,created_at_utc,business_date,local_month)
-             VALUES (?,?,?,?,?,?,'CONFIRMED',?,?,?,?,?,?,?,?)`,
+            `INSERT INTO sales(id,number,original_sale_id,operation_key,payload_hash,input_json,status,reason,total_cents,cost_cents,actor_user_id,actor_name,created_at_utc,business_date,local_month,document_type)
+             VALUES (?,?,?,?,?,?,'CONFIRMED',?,?,?,?,?,?,?,?,'RETURN')`,
           )
           .run(
             id,
@@ -220,8 +220,9 @@ export class ReturnService {
           const returnItemId = randomUUID();
           this.db
             .prepare(
-              `INSERT INTO sale_return_items(id,return_id,sale_item_id,product_id,quantity_base,gross_cents,discount_cents,net_cents,cost_cents,disposition)
-               VALUES (?,?,?,?,?,?,?,?,?,?)`,
+              `WITH input(id,sale_id,original_sale_item_id,product_id,quantity_base,gross_cents,discount_cents,net_cents,cost_cents,disposition) AS (VALUES (?,?,?,?,?,?,?,?,?,?))
+               INSERT INTO sale_items(id,sale_id,original_sale_item_id,product_id,quantity_base,gross_cents,discount_cents,net_cents,cost_cents,disposition,document_type,line_id,position,sku,barcode,name,unit,unit_price_cents)
+               SELECT v.id,v.sale_id,v.original_sale_item_id,v.product_id,v.quantity_base,v.gross_cents,v.discount_cents,v.net_cents,v.cost_cents,v.disposition,'RETURN',i.id,i.position,i.sku,i.barcode,i.name,i.unit,i.unit_price_cents FROM input v JOIN sale_order_items i ON i.id=v.original_sale_item_id AND i.document_type='SALE'`,
             )
             .run(
               returnItemId,
@@ -249,12 +250,12 @@ export class ReturnService {
         }
         this.db
           .prepare(
-            'INSERT INTO sale_return_refunds(id,return_id,method,amount_cents) VALUES (?,?,?,?)',
+            "INSERT INTO sale_payments(id,sale_id,method,amount_cents,position,change_cents,direction) VALUES (?,?,?,?,0,0,'REFUND')",
           )
           .run(randomUUID(), id, input.refundMethod, refundCents);
         this.db
           .prepare(
-            "INSERT INTO sale_return_events(id,return_id,kind,reason,actor_user_id,actor_name,created_at_utc) VALUES (?,?,'CONFIRMED',?,?,?,?)",
+            "INSERT INTO sale_events(id,sale_id,kind,reason,actor_user_id,actor_name,created_at_utc) VALUES (?,?,'CONFIRMED',?,?,?,?)",
           )
           .run(randomUUID(), id, input.reason, actor.id, actor.name, now);
         return this.detail(id);

@@ -30,11 +30,16 @@ import control28 from './migrations/028_control_agenda.sql?raw';
 import control29 from './migrations/029_control_weekly.sql?raw';
 import queryIndexes30 from './migrations/030_query_indexes.sql?raw';
 import schemaCleanup31 from './migrations/031_schema_cleanup.sql?raw';
+import entityAttributes32 from './migrations/032_entity_attributes.sql?raw';
+import salesDocuments33 from './migrations/033_sales_documents.sql?raw';
+import partiesAccounts34 from './migrations/034_parties_accounts.sql?raw';
+import sharedRecords35 from './migrations/035_shared_records.sql?raw';
 import { DomainError } from '../../shared/errors';
 
 export interface Migration {
   version: number;
   sql: string;
+  rebuild?: boolean;
 }
 export const MIGRATIONS: Migration[] = [
   {
@@ -74,58 +79,88 @@ export const MIGRATIONS: Migration[] = [
   { version: 29, sql: control29 },
   { version: 30, sql: queryIndexes30 },
   { version: 31, sql: schemaCleanup31 },
+  { version: 32, sql: entityAttributes32 },
+  { version: 33, sql: salesDocuments33, rebuild: true },
+  { version: 34, sql: partiesAccounts34, rebuild: true },
+  { version: 35, sql: sharedRecords35, rebuild: true },
 ];
 export const SCHEMA_VERSION = MIGRATIONS.at(-1)!.version;
 const rawChecksum = (sql: string) => createHash('sha256').update(sql).digest('hex');
 const checksum = (sql: string) => rawChecksum(sql.replace(/\r\n/g, '\n'));
 
 export function migrate(database: Database.Database, migrations: Migration[] = MIGRATIONS): void {
-  database
-    .transaction(() => {
-      database.exec(`CREATE TABLE IF NOT EXISTS schema_migrations (
+  const exists = database
+    .prepare("SELECT 1 FROM sqlite_master WHERE name='schema_migrations'")
+    .get();
+  const currentVersion = exists
+    ? ((
+        database.prepare('SELECT MAX(version) version FROM schema_migrations').get() as {
+          version: number | null;
+        }
+      ).version ?? 0)
+    : 0;
+  const rebuild = migrations.some((m) => m.rebuild && m.version > currentVersion);
+  const foreignKeys = database.pragma('foreign_keys', { simple: true });
+  if (rebuild) {
+    if (database.inTransaction)
+      throw new Error('La reconstrucción del esquema requiere una transacción propia.');
+    database.pragma('foreign_keys=OFF');
+  }
+  try {
+    database
+      .transaction(() => {
+        database.exec(`CREATE TABLE IF NOT EXISTS schema_migrations (
     version INTEGER PRIMARY KEY,
     applied_at TEXT NOT NULL,
     checksum TEXT
   ) STRICT;`);
-      const columns = database.pragma('table_info(schema_migrations)') as { name: string }[];
-      if (!columns.some((column) => column.name === 'checksum'))
-        database.exec('ALTER TABLE schema_migrations ADD COLUMN checksum TEXT');
-      const current = database
-        .prepare('SELECT MAX(version) AS version FROM schema_migrations')
-        .get() as { version: number | null };
-      const latest = migrations.at(-1)?.version ?? 0;
-      if ((current.version ?? 0) > latest)
-        throw new DomainError(
-          'SCHEMA_TOO_NEW',
-          'Esta base requiere una versión más reciente de Perla Negra. No se modificaron los datos.',
-        );
-      const applied = database
-        .prepare('SELECT version, checksum FROM schema_migrations ORDER BY version')
-        .all() as { version: number; checksum: string | null }[];
-      for (const row of applied) {
-        const original = migrations.find((migration) => migration.version === row.version);
-        if (
-          !original ||
-          (row.checksum &&
-            row.checksum !== checksum(original.sql) &&
-            row.checksum !== rawChecksum(original.sql.replace(/\r?\n/g, '\r\n')))
-        )
+        const columns = database.pragma('table_info(schema_migrations)') as { name: string }[];
+        if (!columns.some((column) => column.name === 'checksum'))
+          database.exec('ALTER TABLE schema_migrations ADD COLUMN checksum TEXT');
+        const current = database
+          .prepare('SELECT MAX(version) AS version FROM schema_migrations')
+          .get() as { version: number | null };
+        const latest = migrations.at(-1)?.version ?? 0;
+        if ((current.version ?? 0) > latest)
           throw new DomainError(
-            'BACKUP_INVALID',
-            'El historial de migraciones no coincide con esta aplicación.',
+            'SCHEMA_TOO_NEW',
+            'Esta base requiere una versión más reciente de Perla Negra. No se modificaron los datos.',
           );
-        if (row.checksum !== checksum(original.sql))
+        const applied = database
+          .prepare('SELECT version, checksum FROM schema_migrations ORDER BY version')
+          .all() as { version: number; checksum: string | null }[];
+        for (const row of applied) {
+          const original = migrations.find((migration) => migration.version === row.version);
+          if (
+            !original ||
+            (row.checksum &&
+              row.checksum !== checksum(original.sql) &&
+              row.checksum !== rawChecksum(original.sql.replace(/\r?\n/g, '\r\n')))
+          )
+            throw new DomainError(
+              'BACKUP_INVALID',
+              'El historial de migraciones no coincide con esta aplicación.',
+            );
+          if (row.checksum !== checksum(original.sql))
+            database
+              .prepare('UPDATE schema_migrations SET checksum=? WHERE version=?')
+              .run(checksum(original.sql), row.version);
+        }
+        for (const migration of migrations) {
+          if (migration.version <= (current.version ?? 0)) continue;
+          database.exec(migration.sql);
+          if ((database.pragma('foreign_key_check') as unknown[]).length)
+            throw new DomainError('BACKUP_INVALID', 'La migración dejó referencias inválidas.');
           database
-            .prepare('UPDATE schema_migrations SET checksum=? WHERE version=?')
-            .run(checksum(original.sql), row.version);
-      }
-      for (const migration of migrations) {
-        if (migration.version <= (current.version ?? 0)) continue;
-        database.exec(migration.sql);
-        database
-          .prepare('INSERT INTO schema_migrations (version, applied_at, checksum) VALUES (?, ?, ?)')
-          .run(migration.version, new Date().toISOString(), checksum(migration.sql));
-      }
-    })
-    .immediate();
+            .prepare(
+              'INSERT INTO schema_migrations (version, applied_at, checksum) VALUES (?, ?, ?)',
+            )
+            .run(migration.version, new Date().toISOString(), checksum(migration.sql));
+        }
+      })
+      .immediate();
+  } finally {
+    if (rebuild) database.pragma(`foreign_keys=${foreignKeys ? 'ON' : 'OFF'}`);
+    database.pragma('legacy_alter_table=OFF');
+  }
 }

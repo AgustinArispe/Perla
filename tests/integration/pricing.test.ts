@@ -27,7 +27,9 @@ describe('actualización masiva de precios', () => {
       const second = f.pricing.confirm(input, f.actor);
       expect(second).toEqual(first);
       expect(f.catalog.get(f.products[0]!.id).priceCents).toBe(110000);
-      expect(f.db.prepare('SELECT COUNT(*) n FROM price_change_batches').get()).toEqual({ n: 1 });
+      expect(
+        f.db.prepare('SELECT COUNT(*) n FROM price_change_applications').get(),
+      ).toEqual({ n: 1 });
     } finally { f.db.close(); }
   });
 

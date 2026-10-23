@@ -63,7 +63,7 @@ it('sesión vencida se rechaza y un fallo de auditoría revierte el cambio durab
   const f = fixture();
   try {
     f.db.exec(
-      "CREATE TRIGGER audit_fail BEFORE INSERT ON audit_events WHEN NEW.operation='products.save' BEGIN SELECT RAISE(ABORT,'failure fixture'); END",
+      "CREATE TRIGGER audit_fail BEFORE INSERT ON audit_events WHEN NEW.event_type='ACTION' AND NEW.operation='products.save' BEGIN SELECT RAISE(ABORT,'failure fixture'); END",
     );
     expect(() => f.app.dispatch('products.save', product, f.owner.sessionToken)).toThrow();
     expect(f.db.prepare('SELECT COUNT(*) AS n FROM products').get()).toEqual({ n: 0 });
@@ -260,7 +260,7 @@ it('borradores separados, cancelar exige revisión y ventas conservan actor sin 
       discount: { type: 'NONE' as const },
     };
     f.db
-      .prepare('INSERT INTO product_cost_states VALUES (?,?,?,?,?,?,?,?)')
+      .prepare('WITH input(id,method,rate,covered,rev,effective,actor,name) AS (VALUES(?,?,?,?,?,?,?,?)) UPDATE products SET (cost_method,cost_rate_micros_per_base,cost_covered_quantity_base,cost_revision,cost_effective_at_utc,cost_actor_user_id,cost_actor_name)=(SELECT method,rate,covered,rev,effective,actor,name FROM input) WHERE id=(SELECT id FROM input)')
       .run(
         p.id,
         'REFERENCE',
@@ -288,7 +288,7 @@ it('borradores separados, cancelar exige revisión y ventas conservan actor sin 
     ).toBe(50);
     f.app.dispatch('sales.complete', input, seller.sessionToken);
     expect(
-      f.db.prepare("SELECT COUNT(*) AS n FROM audit_events WHERE operation='sales.complete'").get(),
+      f.db.prepare("SELECT COUNT(*) AS n FROM audit_actions WHERE operation='sales.complete'").get(),
     ).toEqual({ n: 1 });
     expect(() =>
       f.app.dispatch(

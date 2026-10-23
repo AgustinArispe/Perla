@@ -57,7 +57,7 @@ try {
     db.exec(`DROP INDEX commercial_events_product_version;
     DROP INDEX commercial_events_product_time;
     DROP INDEX sales_status_business_date;
-    DROP INDEX returns_status_business_date;`);
+    DROP INDEX IF EXISTS returns_status_business_date;`);
   const auth = new AuthService(db);
   const actor = auth.bootstrap({
     username: 'benchmark',

@@ -13,15 +13,36 @@ const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(va
 
 export class LotService {
   constructor(private readonly db: Database.Database) {}
-  private defaultLocationId():string{return (this.db.prepare('SELECT id FROM locations WHERE is_default=1').get() as {id:string}).id;}
-  private changeLocal(lotId:string,delta:number,locationId?:string){const id=locationId??this.defaultLocationId();const row=this.db.prepare('SELECT quantity_base,revision FROM location_lot_balances WHERE location_id=? AND lot_id=?').get(id,lotId) as {quantity_base:number;revision:number}|undefined;const next=(row?.quantity_base??0)+delta;if(next<0)throw new DomainError('INSUFFICIENT_STOCK','No hay cantidad suficiente de ese lote en la ubicación.');this.db.prepare('INSERT INTO location_lot_balances(location_id,lot_id,quantity_base,revision) VALUES (?,?,?,?) ON CONFLICT(location_id,lot_id) DO UPDATE SET quantity_base=excluded.quantity_base,revision=excluded.revision').run(id,lotId,next,(row?.revision??0)+1);}
+  private defaultLocationId(): string {
+    return (this.db.prepare('SELECT id FROM locations WHERE is_default=1').get() as { id: string })
+      .id;
+  }
+  private changeLocal(lotId: string, delta: number, locationId?: string) {
+    const id = locationId ?? this.defaultLocationId();
+    const row = this.db
+      .prepare(
+        'SELECT quantity_base,revision FROM location_lot_balances WHERE location_id=? AND lot_id=?',
+      )
+      .get(id, lotId) as { quantity_base: number; revision: number } | undefined;
+    const next = (row?.quantity_base ?? 0) + delta;
+    if (next < 0)
+      throw new DomainError(
+        'INSUFFICIENT_STOCK',
+        'No hay cantidad suficiente de ese lote en la ubicación.',
+      );
+    this.db
+      .prepare(
+        'INSERT INTO location_lot_balances(location_id,lot_id,quantity_base,revision) VALUES (?,?,?,?) ON CONFLICT(location_id,lot_id) DO UPDATE SET quantity_base=excluded.quantity_base,revision=excluded.revision',
+      )
+      .run(id, lotId, next, (row?.revision ?? 0) + 1);
+  }
 
   enabled(productId: string): boolean {
     return Boolean(
       (
-        this.db.prepare('SELECT enabled FROM lot_product_settings WHERE product_id=?').get(productId) as
-          | { enabled: number }
-          | undefined
+        this.db
+          .prepare('SELECT enabled FROM lot_product_settings WHERE product_id=?')
+          .get(productId) as { enabled: number } | undefined
       )?.enabled,
     );
   }
@@ -51,18 +72,19 @@ export class LotService {
     if (!product) throw new DomainError('NOT_FOUND', 'El producto no existe.');
     if (!product.track_stock || !product.stock_initialized)
       throw new DomainError('VALIDATION', 'El producto necesita control y conteo de stock.');
-    const quantity = (
-      this.db.prepare('SELECT quantity_base FROM inventory_balances WHERE product_id=?').get(productId) as
-        | { quantity_base: number }
-        | undefined
-    )?.quantity_base ?? 0;
+    const quantity =
+      (
+        this.db
+          .prepare('SELECT quantity_base FROM inventory_balances WHERE product_id=?')
+          .get(productId) as { quantity_base: number } | undefined
+      )?.quantity_base ?? 0;
     const now = new Date().toISOString();
     this.db
       .prepare(
-        `INSERT INTO lot_product_settings(product_id,enabled,reconciled,revision,updated_at_utc,actor_user_id,actor_name)
-         VALUES (?,1,?,1,?,?,?) ON CONFLICT(product_id) DO UPDATE SET enabled=1,revision=revision+1,updated_at_utc=excluded.updated_at_utc,actor_user_id=excluded.actor_user_id,actor_name=excluded.actor_name`,
+        `UPDATE products SET lots_enabled=1,lots_reconciled=COALESCE(lots_reconciled,?),
+         lots_revision=COALESCE(lots_revision,0)+1,lots_updated_at_utc=?,lots_actor_user_id=?,lots_actor_name=? WHERE id=?`,
       )
-      .run(productId, Number(quantity === 0), now, actor.id, actor.name);
+      .run(Number(quantity === 0), now, actor.id, actor.name, productId);
   }
 
   get(id: string): InventoryLot {
@@ -98,10 +120,14 @@ export class LotService {
         const settings = this.db
           .prepare('SELECT enabled,reconciled FROM lot_product_settings WHERE product_id=?')
           .get(input.productId) as { enabled: number; reconciled: number } | undefined;
-        if (!settings?.enabled) throw new DomainError('VALIDATION', 'Activá lotes para este producto.');
+        if (!settings?.enabled)
+          throw new DomainError('VALIDATION', 'Activá lotes para este producto.');
         if (settings.reconciled)
           throw new DomainError('VALIDATION', 'El producto ya tiene sus lotes reconciliados.');
-        if (!normalized.length || new Set(normalized.map((lot) => lot.code)).size !== normalized.length)
+        if (
+          !normalized.length ||
+          new Set(normalized.map((lot) => lot.code)).size !== normalized.length
+        )
           throw new DomainError('VALIDATION', 'Ingresá lotes con códigos diferentes.');
         for (const lot of normalized)
           if (
@@ -113,9 +139,9 @@ export class LotService {
           )
             throw new DomainError('VALIDATION', 'Revisá los datos de los lotes actuales.');
         const expected = (
-          this.db.prepare('SELECT quantity_base FROM inventory_balances WHERE product_id=?').get(input.productId) as
-            | { quantity_base: number }
-            | undefined
+          this.db
+            .prepare('SELECT quantity_base FROM inventory_balances WHERE product_id=?')
+            .get(input.productId) as { quantity_base: number } | undefined
         )?.quantity_base;
         const total = normalized.reduce((sum, lot) => sum + lot.quantityBase, 0);
         if (expected === undefined || total !== expected)
@@ -144,15 +170,17 @@ export class LotService {
             now,
           });
           result.push(this.get(id));
-          this.changeLocal(id,lot.quantityBase);
+          this.changeLocal(id, lot.quantityBase);
         }
         this.db
           .prepare(
-            'UPDATE lot_product_settings SET reconciled=1,revision=revision+1,updated_at_utc=?,actor_user_id=?,actor_name=? WHERE product_id=?',
+            'UPDATE products SET lots_reconciled=1,lots_revision=lots_revision+1,lots_updated_at_utc=?,lots_actor_user_id=?,lots_actor_name=? WHERE id=?',
           )
           .run(now, input.actor.id, input.actor.name, input.productId);
         this.db
-          .prepare('UPDATE lot_operations SET result_json=? WHERE operation_key=?')
+          .prepare(
+            "UPDATE operation_results SET result_json=? WHERE scope='LOTS' AND operation_key=?",
+          )
           .run(JSON.stringify(result), input.operationKey);
         return result;
       })
@@ -174,7 +202,8 @@ export class LotService {
     if (!Number.isSafeInteger(input.quantityBase) || input.quantityBase <= 0)
       throw new DomainError('VALIDATION', 'La cantidad del lote debe ser positiva.');
     const code = input.code.trim().toUpperCase();
-    if (!code || code.length > 80) throw new DomainError('VALIDATION', 'El código de lote no es válido.');
+    if (!code || code.length > 80)
+      throw new DomainError('VALIDATION', 'El código de lote no es válido.');
     if (input.expiresOn && !/^\d{4}-\d{2}-\d{2}$/.test(input.expiresOn))
       throw new DomainError('VALIDATION', 'La fecha de vencimiento no es válida.');
     const payloadHash = digest({ ...input, actor: input.actor.id });
@@ -186,10 +215,15 @@ export class LotService {
           .prepare('SELECT reconciled FROM lot_product_settings WHERE product_id=? AND enabled=1')
           .get(input.productId) as { reconciled: number } | undefined;
         if (!settings?.reconciled)
-          throw new DomainError('VALIDATION', 'Distribuí primero las existencias actuales en lotes.');
+          throw new DomainError(
+            'VALIDATION',
+            'Distribuí primero las existencias actuales en lotes.',
+          );
         const now = new Date().toISOString();
         const row = this.db
-          .prepare('SELECT id,quantity_base,revision,expires_on FROM inventory_lots WHERE product_id=? AND code=?')
+          .prepare(
+            'SELECT id,quantity_base,revision,expires_on FROM inventory_lots WHERE product_id=? AND code=?',
+          )
           .get(input.productId, code) as
           | { id: string; quantity_base: number; revision: number; expires_on: string | null }
           | undefined;
@@ -201,7 +235,9 @@ export class LotService {
           throw new DomainError('VALIDATION', 'La cantidad del lote supera el límite.');
         if (row)
           this.db
-            .prepare('UPDATE inventory_lots SET quantity_base=?,revision=revision+1,updated_at_utc=? WHERE id=?')
+            .prepare(
+              'UPDATE inventory_lots SET quantity_base=?,revision=revision+1,updated_at_utc=? WHERE id=?',
+            )
             .run(next, now, id);
         else
           this.db
@@ -210,7 +246,7 @@ export class LotService {
             )
             .run(id, input.productId, code, input.expiresOn, next, now, now);
         const result = this.get(id);
-        this.changeLocal(id,input.quantityBase,input.locationId);
+        this.changeLocal(id, input.quantityBase, input.locationId);
         this.operation(input.operationKey, payloadHash, 'RECEIPT', result, now);
         this.movement({
           lotId: id,
@@ -243,20 +279,23 @@ export class LotService {
         const replay = this.replay<LotAllocation[]>(input.operationKey, payloadHash);
         if (replay) return replay;
         if (!this.enabled(input.productId)) return [];
-        const locationId=input.locationId??this.defaultLocationId();
+        const locationId = input.locationId ?? this.defaultLocationId();
         const lots = this.db
           .prepare(
             `SELECT l.id,l.code,lb.quantity_base FROM inventory_lots l JOIN location_lot_balances lb ON lb.lot_id=l.id AND lb.location_id=?
              WHERE l.product_id=? AND l.status='ACTIVE' AND lb.quantity_base>0 AND (l.expires_on IS NULL OR l.expires_on>=?)
              ORDER BY l.expires_on IS NULL,l.expires_on,l.created_at_utc,l.id`,
           )
-          .all(locationId,input.productId, input.businessDate) as {
+          .all(locationId, input.productId, input.businessDate) as {
           id: string;
           code: string;
           quantity_base: number;
         }[];
         if (lots.reduce((sum, lot) => sum + lot.quantity_base, 0) < input.quantityBase)
-          throw new DomainError('INSUFFICIENT_STOCK', 'No hay cantidad suficiente en lotes disponibles.');
+          throw new DomainError(
+            'INSUFFICIENT_STOCK',
+            'No hay cantidad suficiente en lotes disponibles.',
+          );
         let remaining = input.quantityBase;
         const result: LotAllocation[] = [];
         const now = new Date().toISOString();
@@ -264,15 +303,17 @@ export class LotService {
         for (const lot of lots) {
           if (!remaining) break;
           const quantity = Math.min(remaining, lot.quantity_base);
-          const globalNext=this.get(lot.id).quantityBase-quantity;
+          const globalNext = this.get(lot.id).quantityBase - quantity;
           this.db
-            .prepare('UPDATE inventory_lots SET quantity_base=?,revision=revision+1,updated_at_utc=? WHERE id=?')
+            .prepare(
+              'UPDATE inventory_lots SET quantity_base=?,revision=revision+1,updated_at_utc=? WHERE id=?',
+            )
             .run(globalNext, now, lot.id);
-          this.changeLocal(lot.id,-quantity,locationId);
+          this.changeLocal(lot.id, -quantity, locationId);
           this.movement({
             lotId: lot.id,
             delta: -quantity,
-            next:globalNext,
+            next: globalNext,
             kind: 'SALE',
             reason: 'Asignación automática FEFO',
             operationKey: input.operationKey,
@@ -282,13 +323,17 @@ export class LotService {
           });
           if (input.saleItemId)
             this.db
-              .prepare('INSERT INTO sale_item_lots(sale_item_id,lot_id,quantity_base) VALUES (?,?,?)')
+              .prepare(
+                'INSERT INTO sale_item_lots(sale_item_id,lot_id,quantity_base) VALUES (?,?,?)',
+              )
               .run(input.saleItemId, lot.id, quantity);
           result.push({ lotId: lot.id, code: lot.code, quantityBase: quantity });
           remaining -= quantity;
         }
         this.db
-          .prepare('UPDATE lot_operations SET result_json=? WHERE operation_key=?')
+          .prepare(
+            "UPDATE operation_results SET result_json=? WHERE scope='LOTS' AND operation_key=?",
+          )
           .run(JSON.stringify(result), input.operationKey);
         return result;
       })
@@ -324,7 +369,10 @@ export class LotService {
           )
           .all(input.saleItemId) as { id: string; code: string; available: number }[];
         if (allocations.reduce((sum, lot) => sum + lot.available, 0) < input.quantityBase)
-          throw new DomainError('VALIDATION', 'La cantidad supera la asignación original de lotes.');
+          throw new DomainError(
+            'VALIDATION',
+            'La cantidad supera la asignación original de lotes.',
+          );
         const now = new Date().toISOString();
         const result: LotAllocation[] = [];
         this.operation(input.operationKey, payloadHash, 'ALLOCATION', result, now);
@@ -335,10 +383,19 @@ export class LotService {
           const lot = this.get(allocation.id);
           const next = lot.quantityBase + quantity;
           this.db
-            .prepare('UPDATE inventory_lots SET quantity_base=?,revision=revision+1,updated_at_utc=? WHERE id=?')
+            .prepare(
+              'UPDATE inventory_lots SET quantity_base=?,revision=revision+1,updated_at_utc=? WHERE id=?',
+            )
             .run(next, now, lot.id);
-          const location=(this.db.prepare('SELECT location_id FROM stock_movements WHERE sale_item_id=? AND kind=\'SALE\' LIMIT 1').get(input.saleItemId) as {location_id:string|null}|undefined)?.location_id??undefined;
-          this.changeLocal(lot.id,quantity,location);
+          const location =
+            (
+              this.db
+                .prepare(
+                  "SELECT location_id FROM stock_movements WHERE sale_item_id=? AND kind='SALE' LIMIT 1",
+                )
+                .get(input.saleItemId) as { location_id: string | null } | undefined
+            )?.location_id ?? undefined;
+          this.changeLocal(lot.id, quantity, location);
           this.movement({
             lotId: lot.id,
             delta: quantity,
@@ -353,13 +410,17 @@ export class LotService {
           });
           if (input.returnItemId)
             this.db
-              .prepare('INSERT INTO sale_return_item_lots(return_item_id,lot_id,quantity_base) VALUES (?,?,?)')
+              .prepare(
+                'INSERT INTO sale_item_lots(sale_item_id,lot_id,quantity_base) VALUES (?,?,?)',
+              )
               .run(input.returnItemId, lot.id, quantity);
           result.push({ lotId: lot.id, code: lot.code, quantityBase: quantity });
           remaining -= quantity;
         }
         this.db
-          .prepare('UPDATE lot_operations SET result_json=? WHERE operation_key=?')
+          .prepare(
+            "UPDATE operation_results SET result_json=? WHERE scope='LOTS' AND operation_key=?",
+          )
           .run(JSON.stringify(result), input.operationKey);
         return result;
       })
@@ -368,7 +429,9 @@ export class LotService {
 
   canReversePurchaseItem(purchaseItemId: string): { reversible: boolean; reason?: string } {
     const movements = this.db
-      .prepare("SELECT sequence,lot_id FROM lot_movements WHERE purchase_item_id=? AND kind='RECEIPT'")
+      .prepare(
+        "SELECT sequence,lot_id FROM lot_movements WHERE purchase_item_id=? AND kind='RECEIPT'",
+      )
       .all(purchaseItemId) as { sequence: number; lot_id: string }[];
     for (const movement of movements) {
       const later = this.db
@@ -380,45 +443,60 @@ export class LotService {
     return { reversible: true };
   }
 
-  reversePurchaseItem(purchaseItemId: string, operationKey: string, actor: User, reason: string): void {
+  reversePurchaseItem(
+    purchaseItemId: string,
+    operationKey: string,
+    actor: User,
+    reason: string,
+  ): void {
     const payloadHash = digest({ purchaseItemId, operationKey, actor: actor.id, reason });
-    this.db.transaction(() => {
-      const existing = this.db
-        .prepare('SELECT payload_hash FROM lot_operations WHERE operation_key=?')
-        .get(operationKey) as { payload_hash: string } | undefined;
-      if (existing) {
-        if (existing.payload_hash !== payloadHash)
-          throw new DomainError('IDEMPOTENCY_CONFLICT', 'La clave corresponde a otra operación de lotes.');
-        return;
-      }
-      const check = this.canReversePurchaseItem(purchaseItemId);
-      if (!check.reversible) throw new DomainError('REVISION_CONFLICT', check.reason!);
-      const movements = this.db
-        .prepare("SELECT lot_id,delta_base FROM lot_movements WHERE purchase_item_id=? AND kind='RECEIPT'")
-        .all(purchaseItemId) as { lot_id: string; delta_base: number }[];
-      const now = new Date().toISOString();
-      this.operation(operationKey, payloadHash, 'VOID', null, now);
-      for (const movement of movements) {
-        const lot = this.get(movement.lot_id);
-        const next = lot.quantityBase - movement.delta_base;
-        if (next < 0) throw new DomainError('REVISION_CONFLICT', 'El lote no tiene existencia suficiente.');
-        this.db
-          .prepare('UPDATE inventory_lots SET quantity_base=?,revision=revision+1,updated_at_utc=? WHERE id=?')
-          .run(next, now, lot.id);
-        this.changeLocal(lot.id,-movement.delta_base);
-        this.movement({
-          lotId: lot.id,
-          delta: -movement.delta_base,
-          next,
-          kind: 'VOID',
-          reason,
-          operationKey,
-          actor,
-          now,
-          purchaseItemId,
-        });
-      }
-    }).immediate();
+    this.db
+      .transaction(() => {
+        const existing = this.db
+          .prepare('SELECT payload_hash FROM lot_operations WHERE operation_key=?')
+          .get(operationKey) as { payload_hash: string } | undefined;
+        if (existing) {
+          if (existing.payload_hash !== payloadHash)
+            throw new DomainError(
+              'IDEMPOTENCY_CONFLICT',
+              'La clave corresponde a otra operación de lotes.',
+            );
+          return;
+        }
+        const check = this.canReversePurchaseItem(purchaseItemId);
+        if (!check.reversible) throw new DomainError('REVISION_CONFLICT', check.reason!);
+        const movements = this.db
+          .prepare(
+            "SELECT lot_id,delta_base FROM lot_movements WHERE purchase_item_id=? AND kind='RECEIPT'",
+          )
+          .all(purchaseItemId) as { lot_id: string; delta_base: number }[];
+        const now = new Date().toISOString();
+        this.operation(operationKey, payloadHash, 'VOID', null, now);
+        for (const movement of movements) {
+          const lot = this.get(movement.lot_id);
+          const next = lot.quantityBase - movement.delta_base;
+          if (next < 0)
+            throw new DomainError('REVISION_CONFLICT', 'El lote no tiene existencia suficiente.');
+          this.db
+            .prepare(
+              'UPDATE inventory_lots SET quantity_base=?,revision=revision+1,updated_at_utc=? WHERE id=?',
+            )
+            .run(next, now, lot.id);
+          this.changeLocal(lot.id, -movement.delta_base);
+          this.movement({
+            lotId: lot.id,
+            delta: -movement.delta_base,
+            next,
+            kind: 'VOID',
+            reason,
+            operationKey,
+            actor,
+            now,
+            purchaseItemId,
+          });
+        }
+      })
+      .immediate();
   }
 
   private replay<T>(key: string, payloadHash: string): T | null {
@@ -427,7 +505,10 @@ export class LotService {
       .get(key) as { payload_hash: string; result_json: string } | undefined;
     if (!row) return null;
     if (row.payload_hash !== payloadHash)
-      throw new DomainError('IDEMPOTENCY_CONFLICT', 'La clave corresponde a otra operación de lotes.');
+      throw new DomainError(
+        'IDEMPOTENCY_CONFLICT',
+        'La clave corresponde a otra operación de lotes.',
+      );
     return JSON.parse(row.result_json) as T;
   }
 
@@ -439,7 +520,9 @@ export class LotService {
     now: string,
   ) {
     this.db
-      .prepare('INSERT INTO lot_operations VALUES (?,?,?,?,?)')
+      .prepare(
+        "INSERT INTO operation_results(scope,operation_key,payload_hash,kind,result_json,created_at_utc) VALUES ('LOTS',?,?,?,?,?)",
+      )
       .run(key, payloadHash, kind, JSON.stringify(result), now);
   }
 

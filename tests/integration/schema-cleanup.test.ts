@@ -15,11 +15,13 @@ const profileSql = `INSERT INTO printer_profiles VALUES
 test('migra v30 con respaldo y conserva preferencias, usuarios, sesiones y perfiles históricos', () => {
   const directory = mkdtempSync(join(tmpdir(), 'perla-schema-cleanup-'));
   const path = join(directory, 'pos.sqlite');
+  const authDb = openDatabase(':memory:');
   let db = new Database(path);
   try {
     db.pragma('foreign_keys=ON');
     migrate(db, legacyMigrations);
-    const auth = new AuthService(db);
+    // Build authentic hashes and sessions with the current auth schema, then seed v30.
+    const auth = new AuthService(authDb);
     const owner = auth.bootstrap({
       name: 'Jefe',
       username: 'jefe',
@@ -32,6 +34,17 @@ test('migra v30 con respaldo y conserva preferencias, usuarios, sesiones y perfi
       role: 'SUPERVISOR',
       active: true,
     });
+    const insertUser = db.prepare(
+      `INSERT INTO users(id,username,name,role,active,password_hash,revision,created_at_utc,updated_at_utc,system_admin)
+       VALUES (@id,@username,@name,@role,@active,@password_hash,@revision,@created_at_utc,@updated_at_utc,@system_admin)`,
+    );
+    for (const user of authDb.prepare('SELECT * FROM users').all()) insertUser.run(user);
+    const insertSession = db.prepare(
+      `INSERT INTO auth_sessions(token_hash,user_id,user_revision,expires_at_ms,last_seen_ms)
+       VALUES (@token_hash,@user_id,@user_revision,@expires_at_ms,@last_seen_ms)`,
+    );
+    for (const session of authDb.prepare('SELECT * FROM auth_sessions').all())
+      insertSession.run(session);
     db.prepare('INSERT INTO workspace_preferences VALUES (?,?)').run(owner.user.id, 'Stock');
     db.exec(profileSql);
     const originalProfile = db.prepare('SELECT * FROM printer_profiles').get();
@@ -72,7 +85,7 @@ test('migra v30 con respaldo y conserva preferencias, usuarios, sesiones y perfi
           "SELECT COUNT(*) n FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'",
         )
         .get(),
-    ).toEqual({ n: 84 });
+    ).toEqual({ n: 60 });
     expect(db.pragma('integrity_check', { simple: true })).toBe('ok');
     expect(db.pragma('foreign_key_check')).toEqual([]);
     const backups = readdirSync(join(directory, 'migration-backups'));
@@ -90,6 +103,7 @@ test('migra v30 con respaldo y conserva preferencias, usuarios, sesiones y perfi
       backup.close();
     }
   } finally {
+    authDb.close();
     if (db.open) db.close();
     rmSync(directory, { recursive: true, force: true });
   }

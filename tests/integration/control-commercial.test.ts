@@ -86,12 +86,12 @@ describe('control comercial', () => {
       expect(first.lastSale).toBe(saleDate);
       f.db
         .prepare(
-          "INSERT INTO sale_returns VALUES ('return',1,'movement','returnkey','h','{}','CONFIRMED','Devolución',100000,NULL,?,?,?,?,?)",
+          "INSERT INTO sales(id,number,original_sale_id,operation_key,payload_hash,input_json,status,reason,total_cents,cost_cents,actor_user_id,actor_name,created_at_utc,business_date,local_month,document_type) VALUES ('return',1,'movement','returnkey','h','{}','CONFIRMED','Devolución',100000,NULL,?,?,?,?,?,'RETURN')",
         )
         .run(f.actor.id, f.actor.name, saleDate + 'T18:00:00Z', saleDate, saleDate.slice(0, 7));
       f.db
         .prepare(
-          "INSERT INTO sale_return_items VALUES ('returned','return','line',?,1,100000,0,100000,NULL,'NONE')",
+          "INSERT INTO sale_items(id,sale_id,line_id,position,product_id,sku,name,unit,unit_price_cents,quantity_base,gross_cents,discount_cents,net_cents,cost_cents,document_type,original_sale_item_id,disposition) VALUES ('returned','return','line',1,?,'P1','Merluza','UNIT',100000,1,100000,0,100000,NULL,'RETURN','line','NONE')",
         )
         .run(f.p.id);
       const returned = (
@@ -162,7 +162,9 @@ describe('control comercial', () => {
     const f = fixture();
     try {
       f.db
-        .prepare('INSERT INTO audit_events VALUES (?,?,?,?,?,?)')
+        .prepare(
+          'INSERT INTO audit_events(id,operation,entity_id,actor_user_id,actor_name,created_at_utc) VALUES (?,?,?,?,?,?)',
+        )
         .run(
           crypto.randomUUID(),
           'products.save',
@@ -199,7 +201,12 @@ describe('control comercial', () => {
         .get() as { before_json: string; after_json: string };
       expect(JSON.parse(event.before_json)).toEqual({ priceCents: 100000 });
       expect(JSON.parse(event.after_json)).toEqual({ priceCents: 110000 });
-      expect(() => f.db.prepare('DELETE FROM control_audit_details').run()).toThrow();
+      expect(() =>
+        f.db.prepare("DELETE FROM audit_events WHERE event_type='DETAIL'").run(),
+      ).toThrow('El evento es inmutable');
+      expect(f.db.prepare('SELECT before_json,after_json FROM control_audit_details').get()).toEqual(
+        event,
+      );
     } finally {
       f.db.close();
     }
@@ -235,7 +242,7 @@ describe('control comercial', () => {
     const f = fixture();
     try {
       f.db
-        .prepare('INSERT INTO product_cost_states VALUES (?,?,?,?,?,?,?,?)')
+        .prepare('WITH input(id,method,rate,covered,rev,effective,actor,name) AS (VALUES(?,?,?,?,?,?,?,?)) UPDATE products SET (cost_method,cost_rate_micros_per_base,cost_covered_quantity_base,cost_revision,cost_effective_at_utc,cost_actor_user_id,cost_actor_name)=(SELECT method,rate,covered,rev,effective,actor,name FROM input) WHERE id=(SELECT id FROM input)')
         .run(
           f.p.id,
           'REFERENCE',
@@ -268,7 +275,7 @@ describe('control comercial', () => {
       );
       f.db
         .prepare(
-          'UPDATE product_cost_states SET revision=2,rate_micros_per_base=90000000000 WHERE product_id=?',
+          'UPDATE products SET cost_revision=2,cost_rate_micros_per_base=90000000000 WHERE id=?',
         )
         .run(f.p.id);
       expect((f.service.execute('prices', {}, f.actor) as { items: unknown[] }).items).toHaveLength(

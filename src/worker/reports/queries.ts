@@ -25,13 +25,13 @@ const ratio = (amount: number, base: number) =>
 const movementLines = `WITH movements AS (
   SELECT i.product_id,i.unit,i.name,i.category_name,i.quantity_base quantity,i.net_cents net,
     i.cost_cents cost,s.business_date date,s.number sale_number,i.position,i.id movement_id
-  FROM sale_items i JOIN sales s ON s.id=i.sale_id
+  FROM sale_order_items i JOIN sale_orders s ON s.id=i.sale_id
   WHERE s.status='COMPLETED' AND s.business_date BETWEEN ? AND ?
   UNION ALL
   SELECT i.product_id,i.unit,i.name,i.category_name,-ri.quantity_base,-ri.net_cents,
     -ri.cost_cents,sr.business_date,s.number,i.position,ri.id
   FROM sale_return_items ri JOIN sale_returns sr ON sr.id=ri.return_id
-  JOIN sale_items i ON i.id=ri.sale_item_id JOIN sales s ON s.id=i.sale_id
+  JOIN sale_order_items i ON i.id=ri.sale_item_id JOIN sale_orders s ON s.id=i.sale_id
   WHERE sr.status='CONFIRMED' AND sr.business_date BETWEEN ? AND ?
 )`;
 export class MonthlyReports {
@@ -44,7 +44,7 @@ export class MonthlyReports {
   }
   private totals(from: string, to: string): ReportTotals {
     const r = this.rows(
-      `SELECT COALESCE(SUM(CASE WHEN status='COMPLETED' THEN subtotal_cents ELSE 0 END),0) gross,COALESCE(SUM(CASE WHEN status='COMPLETED' THEN discount_cents ELSE 0 END),0) discount,COALESCE(SUM(CASE WHEN status='COMPLETED' THEN total_cents ELSE 0 END),0) net,COUNT(CASE WHEN status='COMPLETED' THEN 1 END) count,COUNT(CASE WHEN status='VOIDED' THEN 1 END) void_count,COALESCE(SUM(CASE WHEN status='VOIDED' THEN total_cents ELSE 0 END),0) void_net FROM sales WHERE business_date BETWEEN ? AND ?`,
+      `SELECT COALESCE(SUM(CASE WHEN status='COMPLETED' THEN subtotal_cents ELSE 0 END),0) gross,COALESCE(SUM(CASE WHEN status='COMPLETED' THEN discount_cents ELSE 0 END),0) discount,COALESCE(SUM(CASE WHEN status='COMPLETED' THEN total_cents ELSE 0 END),0) net,COUNT(CASE WHEN status='COMPLETED' THEN 1 END) count,COUNT(CASE WHEN status='VOIDED' THEN 1 END) void_count,COALESCE(SUM(CASE WHEN status='VOIDED' THEN total_cents ELSE 0 END),0) void_net FROM sale_orders WHERE business_date BETWEEN ? AND ?`,
       from,
       to,
     )[0]!;
@@ -72,7 +72,7 @@ export class MonthlyReports {
   private daily(from: string, to: string): MonthlyReport['daily'] {
     const rows = this.rows(
       `SELECT date,SUM(net) net,SUM(count) count FROM (
-        SELECT business_date date,total_cents net,1 count FROM sales
+        SELECT business_date date,total_cents net,1 count FROM sale_orders
         WHERE status='COMPLETED' AND business_date BETWEEN ? AND ?
         UNION ALL
         SELECT sr.business_date,-ri.net_cents,0 FROM sale_return_items ri
@@ -154,7 +154,7 @@ export class MonthlyReports {
         previous = this.totals(period.previousFrom, period.previousTo);
       const args = [month, period.from, period.to];
       const paymentRows = this.rows(
-        `SELECT p.method,SUM(p.amount_cents) amount,COUNT(DISTINCT p.sale_id) count FROM sale_payments p JOIN sales s ON s.id=p.sale_id WHERE s.status='COMPLETED' AND s.local_month=? AND s.business_date BETWEEN ? AND ? GROUP BY p.method`,
+        `SELECT p.method,SUM(p.amount_cents) amount,COUNT(DISTINCT p.sale_id) count FROM sale_order_payments p JOIN sale_orders s ON s.id=p.sale_id WHERE s.status='COMPLETED' AND s.local_month=? AND s.business_date BETWEEN ? AND ? GROUP BY p.method`,
         ...args,
       );
       const refundRows = this.rows(
@@ -228,7 +228,7 @@ export class MonthlyReports {
       const previousDaily = this.daily(period.previousFrom, period.previousTo);
       const changed = this.rows(
         `SELECT MAX(changed) changed FROM (
-          SELECT e.created_at_utc changed FROM sale_events e JOIN sales s ON s.id=e.sale_id
+          SELECT e.created_at_utc changed FROM sale_order_events e JOIN sale_orders s ON s.id=e.sale_id
           WHERE s.business_date BETWEEN ? AND ?
           UNION ALL
           SELECT e.created_at_utc changed FROM sale_return_events e JOIN sale_returns r ON r.id=e.return_id

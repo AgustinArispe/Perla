@@ -46,7 +46,7 @@ it('concilia descuentos, aplicado sin vuelto, KG separado y anulaciones del mes 
     });
     const costs = new CostService(db);
     costs.setReference({ productId: k.id, unitCostCents: 600000, expectedRevision: 0 }, owner);
-    db.prepare('INSERT INTO product_cost_states VALUES (?,?,?,?,?,?,?,?)').run(
+    db.prepare('WITH input(id,method,rate,covered,rev,effective,actor,name) AS (VALUES(?,?,?,?,?,?,?,?)) UPDATE products SET (cost_method,cost_rate_micros_per_base,cost_covered_quantity_base,cost_revision,cost_effective_at_utc,cost_actor_user_id,cost_actor_name)=(SELECT method,rate,covered,rev,effective,actor,name FROM input) WHERE id=(SELECT id FROM input)').run(
       p.id,
       'WEIGHTED_AVERAGE',
       400000000,
@@ -205,16 +205,15 @@ it('ubica devoluciones entre meses en el período del movimiento y conserva cost
       },
       owner,
     );
-    db.prepare('UPDATE sale_returns SET business_date=?,local_month=? WHERE id=?').run(
-      '2026-10-03',
-      '2026-10',
-      returned.id,
+    db.prepare(
+      "UPDATE sales SET business_date=?,local_month=? WHERE id=? AND document_type='RETURN'",
+    ).run('2026-10-03', '2026-10', returned.id);
+    db.prepare(
+      "UPDATE sale_events SET created_at_utc=? WHERE sale_id=? AND kind='CONFIRMED'",
+    ).run('2026-10-03T15:00:00Z', returned.id);
+    db.prepare("UPDATE sale_events SET created_at_utc=? WHERE kind<>'CONFIRMED'").run(
+      '2026-09-15T12:00:00Z',
     );
-    db.prepare('UPDATE sale_return_events SET created_at_utc=? WHERE return_id=?').run(
-      '2026-10-03T15:00:00Z',
-      returned.id,
-    );
-    db.prepare('UPDATE sale_events SET created_at_utc=?').run('2026-09-15T12:00:00Z');
     new CostService(db).setReference(
       { productId: known.id, unitCostCents: 900, expectedRevision: 1 },
       owner,

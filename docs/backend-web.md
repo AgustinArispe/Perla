@@ -107,7 +107,7 @@ El scanner USB se configura como teclado USB HID y envía Enter al finalizar. No
 
 ## Backups y recuperación
 
-Una copia DAILY por día UTC, revisada al iniciar y cada hora; se conservan las últimas 14 DAILY exitosas. Manuales y PRE_RESTORE no se eliminan con esa retención. La copia online captura un SQLite consistente; manifest y datos quedan cifrados juntos. Guardar periódicamente una descarga **fuera del servidor**. La clave debe conservarse por separado, fuera del repositorio y del servidor; sin ella no se puede recuperar una copia cifrada.
+Una copia semanal los sábados según Buenos Aires, comprobada al iniciar y cada minuto; se conservan las últimas dos copias de esta programación. `BOCHA_AUTO_BACKUP_ENABLED=false` la desactiva; `BOCHA_AUTO_BACKUP_RETENTION` y `BOCHA_AUTO_BACKUP_TIMEZONE` ajustan cantidad y zona. Si el servidor permanece apagado todo el sábado, se espera al siguiente. La interfaz muestra «Semanal · sábados»; el formato conserva DAILY con la marca WEEKLY_SATURDAY. Manuales, PRE_RESTORE y DAILY antiguas sin marca no se eliminan con esa retención. La copia online captura un SQLite consistente; manifest y datos quedan cifrados juntos. Guardar periódicamente una descarga **fuera del servidor**. La clave debe conservarse por separado, fuera del repositorio y del servidor; sin ella no se puede recuperar una copia cifrada.
 
 Los checkpoints internos previos a una migración se conservan como SQLite dentro del volumen privado (`migration-backups`); las copias descargables DAILY/MANUAL/PRE_RESTORE usan el formato cifrado. El volumen de datos del contenedor pertenece al usuario de la aplicación y su carpeta tiene permisos 700.
 

@@ -29,7 +29,7 @@ import type { PromotionService } from '../promotions/service';
 import type { CustomerService } from '../customers/service';
 import { applyPromotions, type PromotionApplication } from '../../domain/promotions';
 const hash = (v: unknown) => createHash('sha256').update(JSON.stringify(v)).digest('hex');
-const summarySql = `SELECT id,number,checkout_key AS checkoutKey,status,created_at_utc AS createdAt,business_date AS businessDate,local_month AS localMonth,subtotal_cents AS subtotalCents,discount_cents AS discountCents,total_cents AS totalCents FROM sales`;
+const summarySql = `SELECT id,number,checkout_key AS checkoutKey,status,created_at_utc AS createdAt,business_date AS businessDate,local_month AS localMonth,subtotal_cents AS subtotalCents,discount_cents AS discountCents,total_cents AS totalCents FROM sale_orders`;
 const CursorSchema = z.strictObject({ number: z.number().int().positive(), filter: z.string() });
 export class SalesService {
   private readonly ledger: StockRepository;
@@ -55,7 +55,7 @@ export class SalesService {
     const sale = this.db.prepare(`${summarySql} WHERE id=?`).get(id) as SaleSummary | undefined;
     if (!sale) throw new DomainError('NOT_FOUND', 'La venta no existe.');
     const discount = this.db
-      .prepare('SELECT discount_json,actor_user_id,actor_name FROM sales WHERE id=?')
+      .prepare('SELECT discount_json,actor_user_id,actor_name FROM sale_orders WHERE id=?')
       .get(id) as {
       discount_json: string;
       actor_user_id: string | null;
@@ -63,22 +63,34 @@ export class SalesService {
     };
     return {
       ...sale,
-      ...(this.db.prepare('SELECT customer_id AS customerId,customer_name AS customerName,on_account_cents AS onAccountCents FROM sales WHERE id=?').get(id) as {customerId:string|null;customerName:string|null;onAccountCents:number}),
+      ...(this.db
+        .prepare(
+          'SELECT customer_id AS customerId,customer_name AS customerName,on_account_cents AS onAccountCents FROM sale_orders WHERE id=?',
+        )
+        .get(id) as {
+        customerId: string | null;
+        customerName: string | null;
+        onAccountCents: number;
+      }),
       actorUserId: discount.actor_user_id,
       actorName: discount.actor_name,
       discount: DraftBodySchema.shape.discount.parse(JSON.parse(discount.discount_json)),
       promotions: JSON.parse(
-        (this.db.prepare('SELECT promotions_json AS value FROM sales WHERE id=?').get(id) as { value: string }).value,
+        (
+          this.db
+            .prepare('SELECT promotions_json AS value FROM sale_orders WHERE id=?')
+            .get(id) as { value: string }
+        ).value,
       ) as SaleQuote['promotions'],
       items: this.db
         .prepare(
-          'SELECT id,line_id AS lineId,product_id AS productId,sku,barcode,name,unit,unit_price_cents AS unitPriceCents,quantity_base AS quantityBase,gross_cents AS grossCents,discount_cents AS discountCents,promotion_discount_cents AS promotionDiscountCents,manual_discount_cents AS manualDiscountCents,net_cents AS netCents,cost_method AS costMethod,cost_rate_micros_per_base AS costRateMicrosPerBase,cost_cents AS costCents,cost_effective_at_utc AS costEffectiveAt,category_name AS categoryName FROM sale_items WHERE sale_id=? ORDER BY position',
+          'SELECT id,line_id AS lineId,product_id AS productId,sku,barcode,name,unit,unit_price_cents AS unitPriceCents,quantity_base AS quantityBase,gross_cents AS grossCents,discount_cents AS discountCents,promotion_discount_cents AS promotionDiscountCents,manual_discount_cents AS manualDiscountCents,net_cents AS netCents,cost_method AS costMethod,cost_rate_micros_per_base AS costRateMicrosPerBase,cost_cents AS costCents,cost_effective_at_utc AS costEffectiveAt,category_name AS categoryName FROM sale_order_items WHERE sale_id=? ORDER BY position',
         )
         .all(id) as SaleDetail['items'],
       payments: (
         this.db
           .prepare(
-            'SELECT method,amount_cents AS amountCents,tendered_cents AS tenderedCents,change_cents AS changeCents FROM sale_payments WHERE sale_id=? ORDER BY position',
+            'SELECT method,amount_cents AS amountCents,tendered_cents AS tenderedCents,change_cents AS changeCents FROM sale_order_payments WHERE sale_id=? ORDER BY position',
           )
           .all(id) as (SaleDetail['payments'][number] & { tenderedCents: number | null })[]
       ).map((p) =>
@@ -88,14 +100,14 @@ export class SalesService {
       ),
       events: this.db
         .prepare(
-          'SELECT kind,reason,created_at_utc AS createdAt,clock_warning AS clockWarning FROM sale_events WHERE sale_id=? ORDER BY rowid',
+          'SELECT kind,reason,created_at_utc AS createdAt,clock_warning AS clockWarning FROM sale_order_events WHERE sale_id=? ORDER BY rowid',
         )
         .all(id) as SaleDetail['events'],
     };
   }
   findByCheckoutKey(key: string): SaleDetail | null {
     const row = this.db
-      .prepare('SELECT id FROM sales WHERE checkout_key=?')
+      .prepare('SELECT id FROM sale_orders WHERE checkout_key=?')
       .get(IdSchema.parse(key)) as { id: string } | undefined;
     return row ? this.detail(row.id) : null;
   }
@@ -131,7 +143,10 @@ export class SalesService {
       input.discount.type === 'NONE' && this.isPromotionsEnabled() && this.promotions
         ? applyPromotions(
             pricingLines,
-            this.promotions.activeRules(products.map((product) => product.id), now),
+            this.promotions.activeRules(
+              products.map((product) => product.id),
+              now,
+            ),
           )
         : null;
     const calculated = promotionResult ?? calculateSale(pricingLines, input.discount);
@@ -152,7 +167,10 @@ export class SalesService {
     return {
       products,
       promotionResult,
-      quote: { quoteHash: hash({ input, ...quoteWithoutHash }), ...quoteWithoutHash } satisfies SaleQuote,
+      quote: {
+        quoteHash: hash({ input, ...quoteWithoutHash }),
+        ...quoteWithoutHash,
+      } satisfies SaleQuote,
     };
   }
   complete(raw: CheckoutInput, actor?: User): SaleDetail {
@@ -161,7 +179,7 @@ export class SalesService {
     return this.db
       .transaction(() => {
         const old = this.db
-          .prepare('SELECT id,payload_hash FROM sales WHERE checkout_key=?')
+          .prepare('SELECT id,payload_hash FROM sale_orders WHERE checkout_key=?')
           .get(input.checkoutKey) as { id: string; payload_hash: string } | undefined;
         if (old) {
           if (old.payload_hash !== payloadHash)
@@ -189,7 +207,10 @@ export class SalesService {
           );
         const now = new Date().toISOString();
         const date = new Intl.DateTimeFormat('sv-SE', {
-          timeZone: 'America/Argentina/Buenos_Aires', year: 'numeric', month: '2-digit', day: '2-digit',
+          timeZone: 'America/Argentina/Buenos_Aires',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
         }).format(new Date(now));
         const priced = this.quoteAt(body, now);
         const { products, promotionResult } = priced;
@@ -211,7 +232,9 @@ export class SalesService {
         const payments = validatePayments(input.payments, totals.totalCents - input.onAccountCents);
         const id = randomUUID();
         const number = (
-          this.db.prepare('SELECT COALESCE(MAX(number),0)+1 AS n FROM sales').get() as { n: number }
+          this.db.prepare('SELECT COALESCE(MAX(number),0)+1 AS n FROM sale_orders').get() as {
+            n: number;
+          }
         ).n;
         this.db
           .prepare(
@@ -235,7 +258,11 @@ export class SalesService {
             input.onAccountCents,
             input.locationId ?? null,
           );
-        if(input.onAccountCents>0)this.customers!.recordSale({id,customerId:customer!.id,amountCents:input.onAccountCents},this.isCustomerCreditEnabled());
+        if (input.onAccountCents > 0)
+          this.customers!.recordSale(
+            { id, customerId: customer!.id, amountCents: input.onAccountCents },
+            this.isCustomerCreditEnabled(),
+          );
         const saleItemIds = new Map<string, string>();
         for (const [i, line] of input.lines.entries()) {
           const p = products[i]!;
@@ -273,11 +300,15 @@ export class SalesService {
               cost?.effectiveAt ?? null,
               p.category,
             );
-          this.db.prepare('UPDATE sale_items SET promotion_discount_cents=?,manual_discount_cents=? WHERE id=?').run(
-            promotionResult ? amount.discountCents : 0,
-            promotionResult ? 0 : amount.discountCents,
-            itemId,
-          );
+          this.db
+            .prepare(
+              'UPDATE sale_items SET promotion_discount_cents=?,manual_discount_cents=? WHERE id=?',
+            )
+            .run(
+              promotionResult ? amount.discountCents : 0,
+              promotionResult ? 0 : amount.discountCents,
+              itemId,
+            );
           if (this.isStockControlEnabled() && p.trackStock && p.stockInitialized)
             this.move(
               p.id,
@@ -310,20 +341,37 @@ export class SalesService {
           for (const application of promotionResult.applications as PromotionApplication[]) {
             const salePromotionId = randomUUID();
             const snapshot = JSON.stringify(application);
-            this.db.prepare('INSERT INTO sale_promotions VALUES (?,?,?,?,?,?,?)').run(
-              salePromotionId, id, application.promotionId, application.name, application.revision, application.discountCents, snapshot,
-            );
-            for (const allocation of application.allocations)
-              this.db.prepare('INSERT INTO sale_promotion_allocations VALUES (?,?,?,?)').run(
-                salePromotionId, saleItemIds.get(allocation.lineId)!, allocation.quantityBase, allocation.discountCents,
+            this.db
+              .prepare('INSERT INTO sale_promotions VALUES (?,?,?,?,?,?,?)')
+              .run(
+                salePromotionId,
+                id,
+                application.promotionId,
+                application.name,
+                application.revision,
+                application.discountCents,
+                snapshot,
               );
+            for (const allocation of application.allocations)
+              this.db
+                .prepare('INSERT INTO sale_promotion_allocations VALUES (?,?,?,?)')
+                .run(
+                  salePromotionId,
+                  saleItemIds.get(allocation.lineId)!,
+                  allocation.quantityBase,
+                  allocation.discountCents,
+                );
             snapshots.push(application);
           }
-          this.db.prepare('UPDATE sales SET promotions_json=? WHERE id=?').run(JSON.stringify(snapshots), id);
+          this.db
+            .prepare('UPDATE sales SET promotions_json=? WHERE id=?')
+            .run(JSON.stringify(snapshots), id);
         }
         for (const [i, p] of payments.entries())
           this.db
-            .prepare('INSERT INTO sale_payments VALUES (?,?,?,?,?,?,?)')
+            .prepare(
+              'INSERT INTO sale_payments(id,sale_id,position,method,amount_cents,tendered_cents,change_cents) VALUES (?,?,?,?,?,?,?)',
+            )
             .run(
               randomUUID(),
               id,
@@ -341,7 +389,10 @@ export class SalesService {
           input.negativeStockOverride?.reason ?? 'Venta finalizada',
           now,
         );
-        if (draft) this.db.prepare('DELETE FROM checkout_drafts WHERE id=?').run(actor?.id ?? 'main');
+        if (draft)
+          this.db
+            .prepare("DELETE FROM drafts WHERE document_type='SALE' AND id=?")
+            .run(actor?.id ?? 'main');
         return this.detail(id);
       })
       .immediate();
@@ -358,7 +409,8 @@ export class SalesService {
     timestamp: string,
     locationId?: string,
   ) {
-    const old = this.ledger.balance(productId, locationId) ??
+    const old =
+      this.ledger.balance(productId, locationId) ??
       (locationId ? { quantity_base: 0, revision: 0 } : undefined);
     if (!old) throw new DomainError('BACKUP_INVALID', 'Falta el saldo de stock de un producto.');
     const next = nextBalance(old.quantity_base, delta, allowNegative);
@@ -395,7 +447,7 @@ export class SalesService {
   ) {
     const last = this.db
       .prepare(
-        'SELECT MAX(t) AS last FROM (SELECT MAX(created_at_utc) AS t FROM sale_events UNION ALL SELECT MAX(created_at_utc) FROM stock_movements)',
+        'SELECT MAX(t) AS last FROM (SELECT MAX(created_at_utc) AS t FROM sale_order_events UNION ALL SELECT MAX(created_at_utc) FROM stock_movements)',
       )
       .get() as { last: string | null };
     const warning =
@@ -413,7 +465,7 @@ export class SalesService {
     return {
       countedAfterSale: this.db
         .prepare(
-          `SELECT DISTINCT s.product_id AS productId,i.name FROM stock_movements s JOIN sale_items i ON i.id=s.sale_item_id WHERE s.sale_id=? AND s.kind='SALE' AND EXISTS (SELECT 1 FROM stock_movements c WHERE c.product_id=s.product_id AND c.sequence>s.sequence AND c.kind IN ('OPENING','ADJUSTMENT'))`,
+          `SELECT DISTINCT s.product_id AS productId,i.name FROM stock_movements s JOIN sale_order_items i ON i.id=s.sale_item_id WHERE s.sale_id=? AND s.kind='SALE' AND EXISTS (SELECT 1 FROM stock_movements c WHERE c.product_id=s.product_id AND c.sequence>s.sequence AND c.kind IN ('OPENING','ADJUSTMENT'))`,
         )
         .all(saleId) as VoidPreview['countedAfterSale'],
     };
@@ -424,7 +476,7 @@ export class SalesService {
     return this.db
       .transaction(() => {
         const replay = this.db
-          .prepare('SELECT sale_id,payload_hash FROM sale_events WHERE operation_key=?')
+          .prepare('SELECT sale_id,payload_hash FROM sale_order_events WHERE operation_key=?')
           .get(input.operationKey) as { sale_id: string; payload_hash: string } | undefined;
         if (replay) {
           if (replay.payload_hash !== payloadHash)
@@ -453,7 +505,12 @@ export class SalesService {
           .prepare(
             "SELECT product_id,sale_item_id,delta_base,location_id FROM stock_movements WHERE sale_id=? AND kind='SALE' ORDER BY sequence",
           )
-          .all(sale.id) as { product_id: string; sale_item_id: string; delta_base: number; location_id:string|null }[];
+          .all(sale.id) as {
+          product_id: string;
+          sale_item_id: string;
+          delta_base: number;
+          location_id: string | null;
+        }[];
         const now = new Date().toISOString();
         for (const m of movements) {
           this.move(
@@ -477,7 +534,7 @@ export class SalesService {
             });
         }
         this.db.prepare("UPDATE sales SET status='VOIDED' WHERE id=?").run(sale.id);
-        this.customers?.reverseSale(sale.id,input.reason);
+        this.customers?.reverseSale(sale.id, input.reason);
         this.event(sale.id, 'VOIDED', input.operationKey, payloadHash, input.reason, now);
         return this.detail(sale.id);
       })
@@ -512,7 +569,7 @@ export class SalesService {
       input.status,
     ];
     const total = (
-      this.db.prepare(`SELECT COUNT(*) AS n FROM sales${where}`).get(...args) as { n: number }
+      this.db.prepare(`SELECT COUNT(*) AS n FROM sale_orders${where}`).get(...args) as { n: number }
     ).n;
     const rows = this.db
       .prepare(`${summarySql}${where} AND (? IS NULL OR number<?) ORDER BY number DESC LIMIT ?`)

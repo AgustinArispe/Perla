@@ -410,7 +410,9 @@ export class OperationalControlService {
             .run(s.id);
         const result = this.get(s.id);
         this.db
-          .prepare('INSERT INTO control_operation_results VALUES (?,?,?,?)')
+          .prepare(
+            "INSERT INTO operation_results(scope,operation_key,payload_hash,result_json,created_at_utc) VALUES ('CONTROL',?,?,?,?)",
+          )
           .run(p.operationKey, payloadHash, JSON.stringify(result), now);
         recordAudit(this.db, actor, 'control.countApply', s.id);
         return result;
@@ -474,7 +476,9 @@ export class OperationalControlService {
       );
     const operationKey = `${key}:${productId}:LOTS`;
     this.db
-      .prepare("INSERT INTO lot_operations VALUES (?,?,'RECONCILIATION',?,?)")
+      .prepare(
+        "INSERT INTO operation_results(scope,operation_key,payload_hash,kind,result_json,created_at_utc) VALUES ('LOTS',?,?,'RECONCILIATION',?,?)",
+      )
       .run(operationKey, hash(lots), JSON.stringify(lots), now);
     for (const lot of lots) {
       const before = current.find((l) => l.id === lot.lotId);
@@ -610,11 +614,13 @@ export class OperationalControlService {
         const now = new Date().toISOString();
         this.db
           .prepare(
-            'INSERT INTO control_cash_reviews VALUES (?,?,?,?,?,?) ON CONFLICT(shift_id) DO UPDATE SET revision=excluded.revision,note=excluded.note,actor_user_id=excluded.actor_user_id,actor_name=excluded.actor_name,reviewed_at_utc=excluded.reviewed_at_utc',
+            'UPDATE register_shifts SET review_revision=?,review_note=?,review_actor_user_id=?,review_actor_name=?,reviewed_at_utc=? WHERE id=?',
           )
-          .run(p.shiftId, p.expectedRevision + 1, p.note, actor.id, actor.name, now);
+          .run(p.expectedRevision + 1, p.note, actor.id, actor.name, now, p.shiftId);
         this.db
-          .prepare('INSERT INTO control_cash_review_history VALUES (?,?,?,?,?,?,?)')
+          .prepare(
+            "INSERT INTO audit_events(event_type,operation,id,shift_id,revision,note,actor_user_id,actor_name,created_at_utc) VALUES ('CASH_REVIEW','control.cashReview',?,?,?,?,?,?,?)",
+          )
           .run(randomUUID(), p.shiftId, p.expectedRevision + 1, p.note, actor.id, actor.name, now);
         recordAudit(this.db, actor, 'control.cashReview', p.shiftId);
         return { revision: p.expectedRevision + 1 };
@@ -698,11 +704,15 @@ export class OperationalControlService {
         const customer = p.kind === 'CUSTOMER';
         this.db
           .prepare(
-            `UPDATE ${customer ? 'customer_receivables' : 'supplier_payables'} SET due_on=?,due_revision=due_revision+1 WHERE ${customer ? 'sale_id' : 'purchase_id'}=?`,
+            `UPDATE ${customer ? 'sales' : 'purchases'} SET due_on=?,due_revision=due_revision+1 WHERE id=? AND debt_status IS NOT NULL`,
           )
           .run(p.dueOn, p.obligationId);
         this.db
-          .prepare('INSERT INTO control_due_history VALUES (?,?,?,?,?,?,?,?,?,?)')
+          .prepare(
+            `WITH input(id,kind,obligation_id,previous_due_on,due_on,revision,reason,actor_user_id,actor_name,created_at_utc) AS (VALUES (?,?,?,?,?,?,?,?,?,?))
+            INSERT INTO audit_events(event_type,operation,id,obligation_kind,entity_id,sale_id,purchase_id,previous_due_on,due_on,revision,reason,actor_user_id,actor_name,created_at_utc)
+            SELECT 'DUE_DATE','control.agendaDate',id,kind,obligation_id,CASE WHEN kind='CUSTOMER' THEN obligation_id END,CASE WHEN kind='SUPPLIER' THEN obligation_id END,previous_due_on,due_on,revision,reason,actor_user_id,actor_name,created_at_utc FROM input`,
+          )
           .run(
             randomUUID(),
             p.kind,

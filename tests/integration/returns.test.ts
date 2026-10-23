@@ -238,7 +238,7 @@ describe('devoluciones parciales', () => {
     const f = fixture();
     try {
       f.db.exec(
-        "CREATE TRIGGER reject_return_event BEFORE INSERT ON sale_return_events BEGIN SELECT RAISE(ABORT,'failure fixture'); END",
+        "CREATE TRIGGER reject_return_event BEFORE INSERT ON sale_events WHEN NEW.kind='CONFIRMED' BEGIN SELECT RAISE(ABORT,'failure fixture'); END",
       );
       expect(() =>
         f.returns.confirm(

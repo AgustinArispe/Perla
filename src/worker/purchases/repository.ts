@@ -59,14 +59,14 @@ export class PurchaseRepository {
       const id = randomUUID();
       this.db
         .prepare(
-          'INSERT INTO suppliers (id,name,search_name,phone,contact_name,address,notes,active,revision,created_at_utc,updated_at_utc) VALUES (?,?,?,?,?,?,?,1,1,?,?)',
+          'INSERT INTO parties(is_supplier,id,name,search_name,phone,contact_name,address,notes,active,revision,created_at_utc,updated_at_utc) VALUES (1,?,?,?,?,?,?,?,1,1,?,?)',
         )
         .run(id, ...fields.slice(0, 6), now, now);
       return this.supplier(id);
     }
     const changed = this.db
       .prepare(
-        'UPDATE suppliers SET name=?,search_name=?,phone=?,contact_name=?,address=?,notes=?,revision=revision+1,updated_at_utc=? WHERE id=? AND revision=?',
+        'UPDATE parties SET name=?,search_name=?,phone=?,contact_name=?,address=?,notes=?,revision=revision+1,updated_at_utc=? WHERE is_supplier=1 AND id=? AND revision=?',
       )
       .run(...fields, input.id, input.expectedRevision).changes;
     if (!changed) {
@@ -82,7 +82,7 @@ export class PurchaseRepository {
   setSupplierActive(input: SupplierSetActiveInput): Supplier {
     const changed = this.db
       .prepare(
-        'UPDATE suppliers SET active=?,revision=revision+1,updated_at_utc=? WHERE id=? AND revision=?',
+        'UPDATE parties SET active=?,revision=revision+1,updated_at_utc=? WHERE is_supplier=1 AND id=? AND revision=?',
       )
       .run(
         Number(input.active),

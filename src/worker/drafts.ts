@@ -31,7 +31,7 @@ export class DraftRepository {
         const now = new Date().toISOString();
         this.db
           .prepare(
-            'INSERT INTO checkout_drafts (id,owner_user_id,revision,body_json,updated_at_utc) VALUES (?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET revision=excluded.revision, body_json=excluded.body_json, updated_at_utc=excluded.updated_at_utc',
+            "INSERT INTO drafts (document_type,id,owner_user_id,revision,body_json,updated_at_utc) VALUES ('SALE',?,?,?,?,?) ON CONFLICT(document_type,id) DO UPDATE SET revision=excluded.revision, body_json=excluded.body_json, updated_at_utc=excluded.updated_at_utc",
           )
           .run(
             userId ?? 'main',
@@ -53,7 +53,7 @@ export class DraftRepository {
             'REVISION_CONFLICT',
             'El borrador cambió. Recuperalo antes de cancelar.',
           );
-        this.db.prepare('DELETE FROM checkout_drafts WHERE id=?').run(userId);
+        this.db.prepare("DELETE FROM drafts WHERE document_type='SALE' AND id=?").run(userId);
         return null;
       })
       .immediate();

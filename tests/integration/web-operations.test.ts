@@ -199,7 +199,9 @@ it('seller owns shifts, audit failure rolls back, drafts prevent close, exports 
     const other = { ...seller, id: f.owner.id };
     expect(() => f.ops.execute('shifts.details', { shiftId: shift.id }, other)).toThrow();
     f.db
-      .prepare('INSERT INTO checkout_drafts VALUES (?,?,1,?,?)')
+      .prepare(
+        "INSERT INTO drafts(document_type,id,owner_user_id,revision,body_json,updated_at_utc) VALUES ('SALE',?,?,1,?,?)",
+      )
       .run(seller.id, seller.id, JSON.stringify({ lines: [{}] }), new Date().toISOString());
     expect(() =>
       f.ops.execute(
@@ -208,9 +210,9 @@ it('seller owns shifts, audit failure rolls back, drafts prevent close, exports 
         seller,
       ),
     ).toThrow('borrador');
-    f.db.prepare('DELETE FROM checkout_drafts').run();
+    f.db.prepare("DELETE FROM drafts WHERE document_type='SALE'").run();
     f.db.exec(
-      "CREATE TRIGGER audit_failure BEFORE INSERT ON audit_events WHEN NEW.operation='cash.movement' BEGIN SELECT RAISE(ABORT,'audit failed'); END",
+      "CREATE TRIGGER audit_failure BEFORE INSERT ON audit_events WHEN NEW.event_type='ACTION' AND NEW.operation='cash.movement' BEGIN SELECT RAISE(ABORT,'audit failed'); END",
     );
     expect(() =>
       f.ops.execute(
@@ -255,10 +257,14 @@ it('mixed cash reconciles applied amount, refund in next shift leaves closure in
       )
       .run(saleId, randomUUID(), new Date().toISOString(), shift.id, t.id);
     f.db
-      .prepare('INSERT INTO sale_payments VALUES (?,?,0,?,?,?,?)')
+      .prepare(
+        'INSERT INTO sale_payments(id,sale_id,position,method,amount_cents,tendered_cents,change_cents) VALUES (?,?,0,?,?,?,?)',
+      )
       .run(randomUUID(), saleId, 'CASH', 600, 1000, 400);
     f.db
-      .prepare('INSERT INTO sale_payments VALUES (?,?,1,?,?,NULL,0)')
+      .prepare(
+        'INSERT INTO sale_payments(id,sale_id,position,method,amount_cents,tendered_cents,change_cents) VALUES (?,?,1,?,?,NULL,0)',
+      )
       .run(randomUUID(), saleId, 'DEBIT', 400);
     const close = { shiftId: shift.id, countedCashCents: 1600, operationKey: randomUUID() };
     expect(f.ops.execute('cash.close', close, f.owner)).toMatchObject({ expectedCashCents: 1600 });

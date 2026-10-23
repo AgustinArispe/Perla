@@ -1,5 +1,9 @@
 # Revisión del esquema y consultas — 15/10/2026
 
+> Registro histórico de v31. El esquema implementado posteriormente es v35,
+> con **60 tablas propias**. Ver [esquema consolidado](schema-simplification.md)
+> para el inventario vigente, migración y política de respaldos.
+
 La versión 30 tenía 86 tablas propias. Se revisaron las referencias del código,
 claves foráneas, escrituras, consultas y migraciones. La versión 31 deja **84
 tablas propias**, además de `sqlite_sequence`, interna de SQLite.

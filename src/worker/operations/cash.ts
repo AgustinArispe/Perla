@@ -140,7 +140,7 @@ export class CashService {
     const sales = (
       this.db
         .prepare(
-          "SELECT COALESCE(SUM(p.amount_cents),0) AS n FROM sale_payments p JOIN sales s ON s.id=p.sale_id WHERE s.register_shift_id=? AND p.method='CASH'",
+          "SELECT COALESCE(SUM(p.amount_cents),0) AS n FROM sale_order_payments p JOIN sale_orders s ON s.id=p.sale_id WHERE s.register_shift_id=? AND p.method='CASH'",
         )
         .get(s.id) as { n: number }
     ).n;
@@ -278,7 +278,7 @@ export class CashService {
       .filter((p) => p.method === 'CASH')
       .reduce((n, p) => n + p.amountCents, 0);
     const original = this.db
-      .prepare('SELECT register_shift_id FROM sales WHERE id=?')
+      .prepare('SELECT register_shift_id FROM sale_orders WHERE id=?')
       .get(sale.id) as { register_shift_id: string | null };
     if (!original?.register_shift_id || !amount) return null;
     const existing = this.db
@@ -336,7 +336,7 @@ export class CashService {
       );
     this.db
       .prepare(
-        'UPDATE sale_return_refunds SET register_shift_id=?,register_movement_id=? WHERE return_id=?',
+        "UPDATE sale_payments SET register_shift_id=?,register_movement_id=? WHERE sale_id=? AND direction='REFUND'",
       )
       .run(shift.id, id, saleReturn.id);
     recordAudit(this.db, a, 'cash.partialRefund', id);

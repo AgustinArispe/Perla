@@ -57,6 +57,9 @@ services:
       NODE_ENV: development
       BOCHA_PUBLIC_ORIGIN: '${BOCHA_PUBLIC_ORIGIN:-http://localhost:5173}'
       BOCHA_BACKUP_KEY: '${BOCHA_BACKUP_KEY:-}'
+      BOCHA_AUTO_BACKUP_ENABLED: '${BOCHA_AUTO_BACKUP_ENABLED:-true}'
+      BOCHA_AUTO_BACKUP_RETENTION: '${BOCHA_AUTO_BACKUP_RETENTION:-2}'
+      BOCHA_AUTO_BACKUP_TIMEZONE: '${BOCHA_AUTO_BACKUP_TIMEZONE:-America/Argentina/Buenos_Aires}'
     volumes:
       - dev_api_data:/data
 

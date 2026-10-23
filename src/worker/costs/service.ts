@@ -87,7 +87,7 @@ export class CostService {
     const before = this.get(productId);
     if (!before) return;
     const now = new Date().toISOString();
-    this.db.prepare('DELETE FROM product_cost_states WHERE product_id=?').run(productId);
+    this.clear(productId);
     this.insertEvent({
       productId,
       kind: 'INVALIDATED',
@@ -164,12 +164,11 @@ export class CostService {
       );
     const now = new Date().toISOString();
     const nextRevision = current.revision + 1;
-    if (event.before_method === null)
-      this.db.prepare('DELETE FROM product_cost_states WHERE product_id=?').run(productId);
+    if (event.before_method === null) this.clear(productId);
     else
       this.db
         .prepare(
-          'UPDATE product_cost_states SET method=?,rate_micros_per_base=?,covered_quantity_base=?,revision=?,effective_at_utc=?,actor_user_id=?,actor_name=? WHERE product_id=?',
+          'UPDATE products SET cost_method=?,cost_rate_micros_per_base=?,cost_covered_quantity_base=?,cost_revision=?,cost_effective_at_utc=?,cost_actor_user_id=?,cost_actor_name=? WHERE id=?',
         )
         .run(
           event.before_method,
@@ -214,10 +213,9 @@ export class CostService {
     const revision = (input.before?.revision ?? 0) + 1;
     this.db
       .prepare(
-        `INSERT INTO product_cost_states VALUES (?,?,?,?,?,?,?,?) ON CONFLICT(product_id) DO UPDATE SET method=excluded.method,rate_micros_per_base=excluded.rate_micros_per_base,covered_quantity_base=excluded.covered_quantity_base,revision=excluded.revision,effective_at_utc=excluded.effective_at_utc,actor_user_id=excluded.actor_user_id,actor_name=excluded.actor_name`,
+        `UPDATE products SET cost_method=?,cost_rate_micros_per_base=?,cost_covered_quantity_base=?,cost_revision=?,cost_effective_at_utc=?,cost_actor_user_id=?,cost_actor_name=? WHERE id=?`,
       )
       .run(
-        input.productId,
         input.method,
         input.rate,
         input.covered,
@@ -225,6 +223,7 @@ export class CostService {
         now,
         input.actor.id,
         input.actor.name,
+        input.productId,
       );
     this.insertEvent({
       productId: input.productId,
@@ -241,6 +240,16 @@ export class CostService {
       now,
     });
     return this.get(input.productId)!;
+  }
+
+  private clear(productId: string): void {
+    this.db
+      .prepare(
+        `UPDATE products SET cost_method=NULL,cost_rate_micros_per_base=NULL,
+      cost_covered_quantity_base=NULL,cost_revision=NULL,cost_effective_at_utc=NULL,
+      cost_actor_user_id=NULL,cost_actor_name=NULL WHERE id=?`,
+      )
+      .run(productId);
   }
 
   private insertEvent(input: {

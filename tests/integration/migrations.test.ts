@@ -11,16 +11,22 @@ describe('migraciones trazables', () => {
       migrate(db);
       const tables = db
         .prepare(
-          "SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'purchase%' OR name='suppliers'",
+          "SELECT name FROM sqlite_master WHERE type='table' AND (name LIKE 'purchase%' OR name IN ('parties','drafts'))",
         )
         .all() as { name: string }[];
       expect(tables.map((row) => row.name).sort()).toEqual([
-        'purchase_drafts',
+        'drafts',
+        'parties',
         'purchase_events',
         'purchase_items',
         'purchases',
-        'suppliers',
       ]);
+      expect(
+        db.prepare("SELECT type FROM sqlite_master WHERE name='suppliers'").get(),
+      ).toEqual({ type: 'view' });
+      expect(
+        db.prepare("SELECT type FROM sqlite_master WHERE name='purchase_drafts'").get(),
+      ).toEqual({ type: 'view' });
       expect(
         db
           .prepare("SELECT enabled FROM business_features WHERE feature_key='SUPPLIERS_PURCHASES'")

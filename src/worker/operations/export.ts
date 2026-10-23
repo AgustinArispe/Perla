@@ -19,12 +19,12 @@ export function exportCsv(
       ORDER BY search_name,name,id LIMIT ? OFFSET ?`,
     'exports.sales': `SELECT number AS "Venta",business_date AS "Fecha",CASE status WHEN 'COMPLETED' THEN 'Completada' ELSE 'Anulada' END AS "Estado",
       REPLACE(printf('%.2f',subtotal_cents/100.0),'.',',') AS "Subtotal (ARS)",REPLACE(printf('%.2f',discount_cents/100.0),'.',',') AS "Descuento (ARS)",REPLACE(printf('%.2f',total_cents/100.0),'.',',') AS "Total (ARS)",
-      actor_name AS "Vendedor",terminal_id AS "Terminal",register_shift_id AS "Turno" FROM sales WHERE business_date>=? AND business_date<=? ORDER BY business_date,number LIMIT ? OFFSET ?`,
+      actor_name AS "Vendedor",terminal_id AS "Terminal",register_shift_id AS "Turno" FROM sale_orders WHERE business_date>=? AND business_date<=? ORDER BY business_date,number LIMIT ? OFFSET ?`,
     'exports.stock':
       'SELECT sequence AS "Movimiento",product_id AS "Producto",delta_base AS "Cambio",balance_after_base AS "Existencia luego",kind AS "Tipo",reason AS "Motivo",business_date AS "Fecha" FROM stock_movements WHERE business_date>=? AND business_date<=? ORDER BY sequence LIMIT ? OFFSET ?',
     'exports.sale-items': `SELECT s.number AS "Venta",s.business_date AS "Fecha",s.status AS "Estado",i.position + 1 AS "Renglón",i.sku AS "Código interno",i.barcode AS "Código de barras",i.name AS "Producto",
       CASE i.unit WHEN 'KG' THEN 'Kilogramo' ELSE 'Unidad' END AS "Venta por",i.quantity_base AS "Cantidad base",REPLACE(printf('%.2f',i.unit_price_cents/100.0),'.',',') AS "Precio unitario (ARS)",REPLACE(printf('%.2f',i.discount_cents/100.0),'.',',') AS "Descuento (ARS)",REPLACE(printf('%.2f',i.net_cents/100.0),'.',',') AS "Importe neto (ARS)"
-      FROM sale_items i JOIN sales s ON s.id=i.sale_id WHERE s.business_date>=? AND s.business_date<=? ORDER BY s.business_date,s.number,i.position LIMIT ? OFFSET ?`,
+      FROM sale_order_items i JOIN sale_orders s ON s.id=i.sale_id WHERE s.business_date>=? AND s.business_date<=? ORDER BY s.business_date,s.number,i.position LIMIT ? OFFSET ?`,
     'exports.shifts': `SELECT substr(rs.opened_at_utc,1,19) AS "Apertura",substr(rs.closed_at_utc,1,19) AS "Cierre",t.name AS "Terminal",rs.status AS "Estado",
       REPLACE(printf('%.2f',rs.opening_cash_cents/100.0),'.',',') AS "Fondo inicial (ARS)",REPLACE(printf('%.2f',COALESCE(rs.expected_cash_cents,0)/100.0),'.',',') AS "Esperado (ARS)",REPLACE(printf('%.2f',COALESCE(rs.counted_cash_cents,0)/100.0),'.',',') AS "Contado (ARS)",REPLACE(printf('%.2f',COALESCE(rs.difference_cents,0)/100.0),'.',',') AS "Diferencia (ARS)"
       FROM register_shifts rs JOIN terminals t ON t.id=rs.terminal_id WHERE substr(rs.opened_at_utc,1,10)>=? AND substr(rs.opened_at_utc,1,10)<=? ORDER BY rs.opened_at_utc,rs.id LIMIT ? OFFSET ?`,

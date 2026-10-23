@@ -58,15 +58,18 @@ export function readServerConfig(env: Record<string, string | undefined> = proce
       5,
       240,
     ),
-    sessionMaxHours = readInteger(
-      env.BOCHA_SESSION_MAX_HOURS,
-      'BOCHA_SESSION_MAX_HOURS',
-      8,
-      1,
-      24,
-    );
+    sessionMaxHours = readInteger(env.BOCHA_SESSION_MAX_HOURS, 'BOCHA_SESSION_MAX_HOURS', 8, 1, 24);
   if (sessionMaxHours * 60 < sessionIdleMinutes)
     throw new Error('La duración máxima de sesión debe ser mayor al tiempo de inactividad.');
+  const enabled = env.BOCHA_AUTO_BACKUP_ENABLED;
+  if (enabled !== undefined && enabled !== '' && enabled !== 'true' && enabled !== 'false')
+    throw new Error('BOCHA_AUTO_BACKUP_ENABLED debe ser true o false.');
+  const timezone = env.BOCHA_AUTO_BACKUP_TIMEZONE || 'America/Argentina/Buenos_Aires';
+  try {
+    new Intl.DateTimeFormat('en', { timeZone: timezone }).format();
+  } catch {
+    throw new Error('BOCHA_AUTO_BACKUP_TIMEZONE debe ser una zona horaria válida.');
+  }
   return {
     production,
     origin,
@@ -76,6 +79,17 @@ export function readServerConfig(env: Record<string, string | undefined> = proce
     databasePath: resolve(env.BOCHA_DATABASE_PATH ?? '.data/web/bocha.sqlite'),
     backupDirectory: resolve(env.BOCHA_BACKUP_DIRECTORY ?? '.data/web/backups'),
     backupKey: Buffer.from(hex, 'hex'),
+    autoBackup: {
+      enabled: enabled !== 'false',
+      retention: readInteger(
+        env.BOCHA_AUTO_BACKUP_RETENTION,
+        'BOCHA_AUTO_BACKUP_RETENTION',
+        2,
+        1,
+        104,
+      ),
+      timezone,
+    },
     sessionIdleTimeoutMs: sessionIdleMinutes * 60_000,
     sessionMaxLifetimeMs: sessionMaxHours * 60 * 60_000,
     appVersion: '0.1.0',

@@ -295,7 +295,7 @@ export class WorkspaceControlService {
             week: reports.currentTotals({ preset: 'WEEK' }, now),
             lastSaleDate: (
               this.db
-                .prepare("SELECT MAX(business_date) date FROM sales WHERE status='COMPLETED'")
+                .prepare("SELECT MAX(business_date) date FROM sale_orders WHERE status='COMPLETED'")
                 .get() as { date: string | null }
             ).date,
           }
