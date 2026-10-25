@@ -1,0 +1,88 @@
+.delivery-note-filters {
+  display: flex;
+  gap: 16px;
+  align-items: end;
+  flex-wrap: wrap;
+  padding: 16px;
+}
+.delivery-note-filters label,
+.delivery-note-form label {
+  display: grid;
+  gap: 6px;
+}
+.delivery-note-form {
+  display: grid;
+  gap: 16px;
+  border: 0;
+  padding: 0;
+  margin: 16px 0;
+  min-width: 0;
+}
+.delivery-note-form input,
+.delivery-note-form select,
+.delivery-note-form textarea {
+  width: 100%;
+  min-width: 0;
+}
+.delivery-note-dialog .delivery-note-print {
+  width: 100%;
+  max-width: none;
+  padding: 24px;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  line-height: 1.45;
+}
+.delivery-note-print table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+}
+.delivery-note-print th,
+.delivery-note-print td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #bbb;
+  text-align: left;
+}
+.delivery-note-print td:last-child {
+  white-space: nowrap;
+}
+.delivery-note-print p {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.delivery-note-print footer {
+  margin-top: 36px;
+}
+@media print {
+  .delivery-note-dialog .no-print {
+    display: none !important;
+  }
+  dialog.delivery-note-dialog {
+    max-height: none !important;
+    overflow: visible !important;
+    position: absolute !important;
+    inset: 12mm 12mm auto 12mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: calc(100% - 24mm) !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  .delivery-note-dialog .dialog-body {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  .delivery-note-dialog .delivery-note-print {
+    max-width: none;
+    padding: 0;
+    color: #000;
+  }
+  .delivery-note-print thead {
+    display: table-header-group;
+  }
+  .delivery-note-print tr {
+    break-inside: avoid;
+  }
+}

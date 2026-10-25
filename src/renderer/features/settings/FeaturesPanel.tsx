@@ -8,6 +8,11 @@ import { webValue } from '../../web-client';
 
 const featureGroups: { title: string; keys: (keyof FeatureFlags)[] }[] = [
   { title: 'Ventas', keys: ['RECEIPTS', 'RETURNS', 'PROMOTIONS', 'PRODUCT_LABELS'] },
+  { title: 'Preparación y cobro', keys: ['PREPARED_ORDERS'] },
+  {
+    title: 'Remitos',
+    keys: ['DELIVERY_NOTES_SALES', 'DELIVERY_NOTES_PURCHASES', 'DELIVERY_NOTES_INTERNAL'],
+  },
   {
     title: 'Mercadería y compras',
     keys: [
@@ -68,6 +73,14 @@ export function FeaturesPanel({
     if (key === 'CUSTOMERS' && !next.CUSTOMERS) next.CUSTOMER_CREDIT = false;
     if (key === 'LOCATIONS_TRANSFERS' && next.LOCATIONS_TRANSFERS) next.STOCK_CONTROL = true;
     if (key === 'STOCK_CONTROL' && !next.STOCK_CONTROL) next.LOCATIONS_TRANSFERS = false;
+    if (key === 'DELIVERY_NOTES_PURCHASES' && next.DELIVERY_NOTES_PURCHASES)
+      next.SUPPLIERS_PURCHASES = true;
+    if (key === 'DELIVERY_NOTES_INTERNAL' && next.DELIVERY_NOTES_INTERNAL) {
+      next.LOCATIONS_TRANSFERS = true;
+      next.STOCK_CONTROL = true;
+    }
+    if (!next.SUPPLIERS_PURCHASES) next.DELIVERY_NOTES_PURCHASES = false;
+    if (!next.LOCATIONS_TRANSFERS) next.DELIVERY_NOTES_INTERNAL = false;
     setDraft(next);
     setError('');
   }
@@ -98,9 +111,7 @@ export function FeaturesPanel({
           <p>Activá solamente las herramientas que necesitás.</p>
         </div>
       </div>
-      {query.isPending && (
-        <PerlaLoading size="compact" label="Cargando funciones…" />
-      )}
+      {query.isPending && <PerlaLoading size="compact" label="Cargando funciones…" />}
       {query.isError && (
         <div className="alert error" role="alert">
           {errorMessage(query.error)}{' '}

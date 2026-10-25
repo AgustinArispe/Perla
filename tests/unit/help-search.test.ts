@@ -19,4 +19,11 @@ describe('búsqueda de ayuda por vocabulario del comercio', () => {
     expect(matchesHelpSearch('Stock y vencimientos', '')).toBe(true);
     expect(matchesHelpSearch('Cantidad y código de barras', 'CODIGO')).toBe(true);
   });
+  it('normaliza órdenes, remitos, depósitos y copias, sin confundir OC con stock', () => {
+    expect(matchesHelpSearch('Órdenes para caja', 'orden caja')).toBe(true);
+    expect(matchesHelpSearch('Remitos internos entre depósitos', 'albarán almacén')).toBe(true);
+    expect(matchesHelpSearch('Copias semanales', 'backups')).toBe(true);
+    expect(matchesHelpSearch('Stock y productos', 'OC')).toBe(false);
+    expect(matchesHelpSearch('OC: orden de cliente', 'oc')).toBe(true);
+  });
 });

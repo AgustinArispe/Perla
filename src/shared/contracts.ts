@@ -1,10 +1,6 @@
-import { z } from "zod";
-import type {
-  ComparisonRequest,
-  MonthlyReport,
-  PeriodComparison,
-} from "./reports";
-import type { NotificationInbox, NotificationMarkRead } from "./notifications";
+import { z } from 'zod';
+import type { ComparisonRequest, MonthlyReport, PeriodComparison } from './reports';
+import type { NotificationInbox, NotificationMarkRead } from './notifications';
 import type {
   User,
   AuthStatus,
@@ -13,7 +9,7 @@ import type {
   UserSaveInput,
   ChangePasswordInput,
   UnlockUserInput,
-} from "./auth";
+} from './auth';
 import type {
   CheckoutInput,
   VoidInput,
@@ -22,7 +18,7 @@ import type {
   SalePage,
   SaleQuote,
   VoidPreview,
-} from "./sales";
+} from './sales';
 import type {
   StockBalance,
   StockCountInput,
@@ -31,7 +27,7 @@ import type {
   StockPage,
   StockMovementsInput,
   MovementPage,
-} from "./stock";
+} from './stock';
 import type {
   Product,
   ProductSaveInput,
@@ -48,8 +44,8 @@ import type {
   TaxonomyItem,
   ProductLabel,
   ProductLabelPage,
-} from "./catalog";
-import type { ReceiptCreateInput, ReceiptPage, SaleReceipt } from "./receipts";
+} from './catalog';
+import type { ReceiptCreateInput, ReceiptPage, SaleReceipt } from './receipts';
 import type {
   PurchaseDetail,
   PurchaseDraftRecord,
@@ -64,31 +60,18 @@ import type {
   SupplierSaveInput,
   SupplierSearchInput,
   SupplierSetActiveInput,
-} from "./purchases";
-import type { CostReferenceInput, ProductCost } from "./costs";
-import type {
-  ReturnConfirmInput,
-  ReturnPreview,
-  SaleReturnDetail,
-} from "./returns";
-import type {
-  InventoryLot,
-  LotProductStatus,
-  LotReconcileInput,
-  LotSetBlockedInput,
-} from "./lots";
+} from './purchases';
+import type { CostReferenceInput, ProductCost } from './costs';
+import type { ReturnConfirmInput, ReturnPreview, SaleReturnDetail } from './returns';
+import type { InventoryLot, LotProductStatus, LotReconcileInput, LotSetBlockedInput } from './lots';
 import type {
   PriceChangeBatch,
   PriceConfirmInput,
   PricePreview,
   PricePreviewInput,
-} from "./pricing";
-import type { Promotion, PromotionSaveInput } from "./promotions";
-import type {
-  SupplierAccount,
-  SupplierPayment,
-  SupplierPaymentInput,
-} from "./supplier-accounts";
+} from './pricing';
+import type { Promotion, PromotionSaveInput } from './promotions';
+import type { SupplierAccount, SupplierPayment, SupplierPaymentInput } from './supplier-accounts';
 import type {
   Customer,
   CustomerAccount,
@@ -96,7 +79,7 @@ import type {
   CustomerCollectionInput,
   CustomerPage,
   CustomerSaveInput,
-} from "./customers";
+} from './customers';
 import type {
   Location,
   LocationSaveInput,
@@ -104,40 +87,40 @@ import type {
   TransferCancelInput,
   TransferDispatchInput,
   TransferReceiveInput,
-} from "./locations";
-import type { LocationSummary } from "./location-reports";
+} from './locations';
+import type { LocationSummary } from './location-reports';
 
 export const SystemStatusSchema = z.object({
   applicationVersion: z.string(),
-  database: z.literal("ready"),
+  database: z.literal('ready'),
   schemaVersion: z.number().int().nonnegative(),
   sqliteVersion: z.string(),
-  environment: z.enum(["development", "production", "test"]),
+  environment: z.enum(['development', 'production', 'test']),
 });
 export type SystemStatus = z.infer<typeof SystemStatusSchema>;
 export const AppErrorSchema = z.object({
   code: z.enum([
-    "VALIDATION",
-    "UNAUTHENTICATED",
-    "FORBIDDEN",
-    "AUTH_THROTTLED",
-    "NOT_FOUND",
-    "INACTIVE",
-    "REVISION_CONFLICT",
-    "INSUFFICIENT_STOCK",
-    "IDEMPOTENCY_CONFLICT",
-    "DB_BUSY",
-    "DISK_FULL",
-    "BACKUP_INVALID",
-    "SCHEMA_TOO_NEW",
-    "INTERNAL",
+    'VALIDATION',
+    'UNAUTHENTICATED',
+    'FORBIDDEN',
+    'AUTH_THROTTLED',
+    'NOT_FOUND',
+    'INACTIVE',
+    'REVISION_CONFLICT',
+    'INSUFFICIENT_STOCK',
+    'IDEMPOTENCY_CONFLICT',
+    'DB_BUSY',
+    'DISK_FULL',
+    'BACKUP_INVALID',
+    'SCHEMA_TOO_NEW',
+    'INTERNAL',
   ]),
   message: z.string(),
   retryable: z.boolean(),
 });
 export type Result<T> =
   { ok: true; value: T } | { ok: false; error: z.infer<typeof AppErrorSchema> };
-export const SystemHealthResultSchema = z.discriminatedUnion("ok", [
+export const SystemHealthResultSchema = z.discriminatedUnion('ok', [
   z.object({ ok: z.literal(true), value: SystemStatusSchema }),
   z.object({ ok: z.literal(false), error: AppErrorSchema }),
 ]);
@@ -164,7 +147,7 @@ export interface BochaApi {
     unlockUser(input: UnlockUserInput): Promise<Result<null>>;
   };
   sales: {
-    quote(input: DraftRecord["body"]): Promise<Result<SaleQuote>>;
+    quote(input: DraftRecord['body']): Promise<Result<SaleQuote>>;
     complete(input: CheckoutInput): Promise<Result<SaleDetail>>;
     findByCheckoutKey(checkoutKey: string): Promise<Result<SaleDetail | null>>;
     detail(saleId: string): Promise<Result<SaleDetail>>;
@@ -184,16 +167,12 @@ export interface BochaApi {
     search(input: ProductSearchInput): Promise<Result<ProductPage>>;
     save(input: ProductSaveInput): Promise<Result<Product>>;
     setActive(input: SetActiveInput): Promise<Result<Product>>;
-    taxonomy(input: {
-      includeInactive?: boolean;
-    }): Promise<Result<ProductTaxonomy>>;
+    taxonomy(input: { includeInactive?: boolean }): Promise<Result<ProductTaxonomy>>;
     saveCategory(input: TaxonomySaveInput): Promise<Result<TaxonomyItem>>;
     saveBrand(input: TaxonomySaveInput): Promise<Result<TaxonomyItem>>;
     findByBarcode(barcode: string): Promise<Result<Product>>;
     proposeInternalBarcode(): Promise<Result<{ barcode: string }>>;
-    labels(input: {
-      status?: "PENDING" | "PRINTED";
-    }): Promise<Result<ProductLabelPage>>;
+    labels(input: { status?: 'PENDING' | 'PRINTED' }): Promise<Result<ProductLabelPage>>;
     createLabel(input: { productId: string }): Promise<Result<ProductLabel>>;
     markLabelPrinted(input: { labelId: string }): Promise<Result<ProductLabel>>;
     previewImport(): Promise<Result<ImportPreview | null>>;
@@ -220,10 +199,7 @@ export interface BochaApi {
     opening(input: StockCountInput): Promise<Result<StockBalance>>;
     count(input: StockCountInput): Promise<Result<StockBalance>>;
     record(input: StockRecordInput): Promise<Result<StockBalance>>;
-    listLow(input: {
-      limit: number;
-      cursor?: string;
-    }): Promise<Result<StockPage>>;
+    listLow(input: { limit: number; cursor?: string }): Promise<Result<StockPage>>;
     movements(input: StockMovementsInput): Promise<Result<MovementPage>>;
   };
   lots: {
@@ -232,11 +208,43 @@ export interface BochaApi {
     reconcile(input: LotReconcileInput): Promise<Result<LotProductStatus>>;
     setBlocked(input: LotSetBlockedInput): Promise<Result<InventoryLot>>;
   };
+  preparedOrders: {
+    create(
+      input: import('./prepared-orders').PreparedOrderCreate,
+    ): Promise<Result<import('./prepared-orders').PreparedOrder>>;
+    list(
+      input: import('./prepared-orders').PreparedOrderList,
+    ): Promise<Result<{ items: import('./prepared-orders').PreparedOrder[]; total: number }>>;
+    byNumber(number: number): Promise<Result<import('./prepared-orders').PreparedOrder>>;
+    cancel(
+      input: import('./prepared-orders').PreparedOrderCancel,
+    ): Promise<Result<import('./prepared-orders').PreparedOrder>>;
+  };
+  deliveryNotes: {
+    list(input: {
+      kind?: import('./delivery-notes').DeliveryNoteKind;
+      status?: 'ISSUED' | 'DELIVERED' | 'CANCELLED';
+      limit?: number;
+      offset?: number;
+    }): Promise<Result<import('./delivery-notes').DeliveryNotePage>>;
+    sources(input: {
+      kind: import('./delivery-notes').DeliveryNoteKind;
+      number?: number;
+    }): Promise<Result<import('./delivery-notes').DeliveryNoteSource[]>>;
+    detail(noteId: string): Promise<Result<import('./delivery-notes').DeliveryNote>>;
+    create(
+      input: import('./delivery-notes').DeliveryNoteCreate,
+    ): Promise<Result<import('./delivery-notes').DeliveryNote>>;
+    deliver(
+      input: import('./delivery-notes').DeliveryNoteAction,
+    ): Promise<Result<import('./delivery-notes').DeliveryNote>>;
+    cancel(
+      input: import('./delivery-notes').DeliveryNoteAction,
+    ): Promise<Result<import('./delivery-notes').DeliveryNote>>;
+  };
   receipts: {
     create(input: ReceiptCreateInput): Promise<Result<SaleReceipt>>;
-    list(input: {
-      status?: "PENDING" | "PRINTED";
-    }): Promise<Result<ReceiptPage>>;
+    list(input: { status?: 'PENDING' | 'PRINTED' }): Promise<Result<ReceiptPage>>;
     markPrinted(input: { receiptId: string }): Promise<Result<SaleReceipt>>;
   };
   suppliers: {
@@ -271,9 +279,7 @@ export interface BochaApi {
   };
   customerAccounts: {
     detail(customerId: string): Promise<Result<CustomerAccount>>;
-    collect(
-      input: CustomerCollectionInput,
-    ): Promise<Result<CustomerCollection>>;
+    collect(input: CustomerCollectionInput): Promise<Result<CustomerCollection>>;
   };
   locations: {
     inventory(input: {
@@ -281,18 +287,15 @@ export interface BochaApi {
       query?: string;
       limit?: number;
       offset?: number;
-    }): Promise<Result<import("./locations").LocationInventory>>;
+    }): Promise<Result<import('./locations').LocationInventory>>;
     list(): Promise<Result<Location[]>>;
     save(input: LocationSaveInput): Promise<Result<Location>>;
-    assignTerminal(input: {
-      terminalId: string;
-      locationId: string;
-    }): Promise<Result<Location>>;
+    assignTerminal(input: { terminalId: string; locationId: string }): Promise<Result<Location>>;
     summary(month: string): Promise<Result<LocationSummary>>;
   };
   transfers: {
     list(input: {
-      status?: "ALL" | "IN_TRANSIT" | "RECEIVED" | "CANCELLED";
+      status?: 'ALL' | 'IN_TRANSIT' | 'RECEIVED' | 'CANCELLED';
       limit?: number;
     }): Promise<Result<StockTransfer[]>>;
     detail(transferId: string): Promise<Result<StockTransfer>>;
@@ -302,14 +305,10 @@ export interface BochaApi {
   };
   purchases: {
     getDraft(): Promise<Result<PurchaseDraftRecord | null>>;
-    saveDraft(
-      input: PurchaseDraftSaveInput,
-    ): Promise<Result<PurchaseDraftRecord>>;
+    saveDraft(input: PurchaseDraftSaveInput): Promise<Result<PurchaseDraftRecord>>;
     cancelDraft(expectedRevision: number): Promise<Result<null>>;
     receive(input: PurchaseReceiveInput): Promise<Result<PurchaseDetail>>;
-    findByReceiptKey(
-      receiptKey: string,
-    ): Promise<Result<PurchaseDetail | null>>;
+    findByReceiptKey(receiptKey: string): Promise<Result<PurchaseDetail | null>>;
     detail(purchaseId: string): Promise<Result<PurchaseDetail>>;
     list(input: PurchaseSearchInput): Promise<Result<PurchasePage>>;
     previewVoid(purchaseId: string): Promise<Result<PurchaseVoidPreview>>;
@@ -328,4 +327,4 @@ export interface BochaApi {
     setReference(input: CostReferenceInput): Promise<Result<ProductCost>>;
   };
 }
-export const IPC = { systemHealth: "bocha:system-health" } as const;
+export const IPC = { systemHealth: 'bocha:system-health' } as const;

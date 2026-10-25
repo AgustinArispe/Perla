@@ -34,6 +34,8 @@ import entityAttributes32 from './migrations/032_entity_attributes.sql?raw';
 import salesDocuments33 from './migrations/033_sales_documents.sql?raw';
 import partiesAccounts34 from './migrations/034_parties_accounts.sql?raw';
 import sharedRecords35 from './migrations/035_shared_records.sql?raw';
+import deliveryNotes36 from './migrations/036_delivery_notes.sql?raw';
+import preparedOrders37 from './migrations/037_prepared_orders.sql?raw';
 import { DomainError } from '../../shared/errors';
 
 export interface Migration {
@@ -83,6 +85,8 @@ export const MIGRATIONS: Migration[] = [
   { version: 33, sql: salesDocuments33, rebuild: true },
   { version: 34, sql: partiesAccounts34, rebuild: true },
   { version: 35, sql: sharedRecords35, rebuild: true },
+  { version: 36, sql: deliveryNotes36 },
+  { version: 37, sql: preparedOrders37 },
 ];
 export const SCHEMA_VERSION = MIGRATIONS.at(-1)!.version;
 const rawChecksum = (sql: string) => createHash('sha256').update(sql).digest('hex');

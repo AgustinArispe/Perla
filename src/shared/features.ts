@@ -16,6 +16,10 @@ export const FeatureKeySchema = z.enum([
   'CUSTOMERS',
   'CUSTOMER_CREDIT',
   'LOCATIONS_TRANSFERS',
+  'DELIVERY_NOTES_SALES',
+  'DELIVERY_NOTES_PURCHASES',
+  'DELIVERY_NOTES_INTERNAL',
+  'PREPARED_ORDERS',
 ]);
 
 export type FeatureKey = z.infer<typeof FeatureKeySchema>;
@@ -45,6 +49,10 @@ export const FeatureFlagsSchema = z.object({
   CUSTOMERS: z.boolean(),
   CUSTOMER_CREDIT: z.boolean(),
   LOCATIONS_TRANSFERS: z.boolean(),
+  DELIVERY_NOTES_SALES: z.boolean().default(false),
+  DELIVERY_NOTES_PURCHASES: z.boolean().default(false),
+  DELIVERY_NOTES_INTERNAL: z.boolean().default(false),
+  PREPARED_ORDERS: z.boolean().default(false),
 });
 
 export type FeatureFlags = z.infer<typeof FeatureFlagsSchema>;
@@ -57,7 +65,12 @@ export const FeatureStatusSchema = z.object({
 
 export type FeatureStatus = z.infer<typeof FeatureStatusSchema>;
 
-export const FeatureSelectionSchema = FeatureFlagsSchema.partial();
+export const FeatureSelectionSchema = FeatureFlagsSchema.partial().extend({
+  DELIVERY_NOTES_SALES: z.boolean().optional(),
+  DELIVERY_NOTES_PURCHASES: z.boolean().optional(),
+  DELIVERY_NOTES_INTERNAL: z.boolean().optional(),
+  PREPARED_ORDERS: z.boolean().optional(),
+});
 
 export type FeatureSelection = z.infer<typeof FeatureSelectionSchema>;
 

@@ -1,6 +1,6 @@
 import { PageHeading, WorkspaceTabs } from './components/PageHeader';
 import { PerlaLoading } from './components/PerlaLoading';
-import { authorizedNavigation } from './navigation';
+import { authorizedNavigation, navigationGroups } from './navigation';
 import { StructuredActivityPanel } from './features/control/StructuredActivityPanel';
 import { controlValue } from './features/control/client';
 import { ControlHome, WorkspacePreference } from './features/control/ControlHome';
@@ -14,6 +14,7 @@ import { useCallback, useRef, useState } from 'react';
 import { api, unwrap, errorMessage } from './api';
 import { Icon } from './components/Icon';
 import { SidebarGroup } from './components/SidebarGroup';
+import { SidebarEntry } from './components/SidebarEntry';
 import { ProductList } from './features/products/ProductList';
 import { StockList } from './features/stock/StockList';
 import { Login } from './features/auth/Login';
@@ -32,6 +33,8 @@ import { BackupsPage } from './features/backups/BackupsPage';
 import { useEffect } from 'react';
 import { HelpPage } from './features/help/HelpPage';
 import { ReceiptQueue } from './features/receipts/ReceiptQueue';
+import { DeliveryNotesPage } from './features/delivery-notes/DeliveryNotesPage';
+import { PreparedOrdersPage } from './features/prepared-orders/PreparedOrdersPage';
 import { PerlaMark } from './components/PerlaBrand';
 import { ControlExportHost } from './components/ControlExportHost';
 import type { FeatureStatus } from '../shared/features';
@@ -61,6 +64,8 @@ const sections = [
   ['tag', 'Promociones'],
   ['history', 'Histórico'],
   ['cash', 'Comprobantes'],
+  ['arrow', 'Remitos'],
+  ['stock', 'Órdenes'],
   ['chart', 'Resumen mensual'],
   ['settings', 'Configuración'],
   ['users', 'Usuarios'],
@@ -265,6 +270,17 @@ function Workspace({
     queryFn: () => webValue<FeatureStatus>('/settings/features'),
     retry: false,
   });
+  const deliveryNoteHistory = useQuery({
+    queryKey: ['delivery-note-history-exists'],
+    queryFn: () => api().deliveryNotes.list({ limit: 1 }).then(unwrap),
+    enabled: user.role === 'OWNER' || user.role === 'ADMIN',
+    refetchInterval: 30000,
+  });
+  const preparedOrderHistory = useQuery({
+    queryKey: ['prepared-order-history'],
+    queryFn: () => api().preparedOrders.list({ limit: 1 }).then(unwrap),
+    refetchInterval: 30000,
+  });
   async function reconnect() {
     const result = await api().system.reconnect();
     if (result.ok) await client.invalidateQueries();
@@ -285,7 +301,7 @@ function Workspace({
     )
     .filter(([, title]) =>
       user.role === 'SELLER'
-        ? ['Caja', 'Ayuda'].includes(title)
+        ? ['Caja', 'Órdenes', 'Ayuda'].includes(title)
         : user.role === 'SUPERVISOR'
           ? [
               'Caja',
@@ -298,7 +314,10 @@ function Workspace({
               'Proveedores',
               'Clientes',
               'Ubicaciones',
+              'Remitos',
+              'Órdenes',
               'Histórico',
+              'Comprobantes',
               'Turnos',
               'Actividad',
               'Ayuda',
@@ -307,9 +326,15 @@ function Workspace({
     )
     .filter(([, title]) => {
       if (!features.data) return true;
+      if (title === 'Órdenes')
+        return features.data.enabled.PREPARED_ORDERS || Boolean(preparedOrderHistory.data?.total);
       if (title === 'Reposición') return features.data.enabled.REPLENISHMENT;
       if (title === 'Controles')
-        return features.data.enabled.STOCK_CONTROL || features.data.enabled.LOTS;
+        return (
+          features.data.enabled.STOCK_CONTROL ||
+          features.data.enabled.LOTS ||
+          (!desktop && user.role !== 'SELLER')
+        );
       if (title === 'Revisión')
         return features.data.enabled.COSTS_MARGIN || features.data.enabled.STOCK_CONTROL;
       if (title === 'Agenda')
@@ -325,6 +350,13 @@ function Workspace({
       if (title === 'Clientes') return features.data.enabled.CUSTOMERS;
       if (title === 'Ubicaciones') return features.data.enabled.LOCATIONS_TRANSFERS;
       if (title === 'Comprobantes') return features.data.enabled.RECEIPTS;
+      if (title === 'Remitos')
+        return (
+          Boolean(deliveryNoteHistory.data?.total) ||
+          features.data.enabled.DELIVERY_NOTES_SALES ||
+          features.data.enabled.DELIVERY_NOTES_PURCHASES ||
+          features.data.enabled.DELIVERY_NOTES_INTERNAL
+        );
       if (title === 'Promociones') return features.data.enabled.PROMOTIONS;
       if (title === 'Resumen mensual') return features.data.enabled.MONTHLY_DASHBOARD;
       return true;
@@ -338,18 +370,31 @@ function Workspace({
           permitted.has(target) &&
           (label !== 'Vencimientos' || !features.data || features.data.enabled.LOTS) &&
           (label !== 'Conteos' || !features.data || features.data.enabled.STOCK_CONTROL) &&
+          (label !== 'Recibir' || !features.data || features.data.enabled.SUPPLIERS_PURCHASES) &&
           (label !== 'Diferencias de caja' || (!desktop && user.role !== 'SELLER')),
       ),
     }))
     .filter((entry) => entry.areas.length > 0);
+  const effectiveArea =
+    activeArea ||
+    (section === 'Compras'
+      ? purchaseInitialView === 'history'
+        ? 'Historial'
+        : 'Recibir'
+      : section === 'Controles'
+        ? controlTarget.action === 'expiries'
+          ? 'Vencimientos'
+          : controlTarget.action === 'cashDifferences'
+            ? 'Diferencias de caja'
+            : 'Conteos'
+        : undefined);
   const currentNavigation = visibleNavigation.find((entry) =>
     entry.areas.some(
-      ([target, label]) =>
-        target === section &&
-        (activeArea
-          ? label === activeArea
-          : label !== 'Pedidos' && label !== 'Diferencias de caja' && label !== 'Vencimientos'),
+      ([target, label]) => target === section && (!effectiveArea || label === effectiveArea),
     ),
+  );
+  const currentArea = currentNavigation?.areas.find(
+    ([target, label]) => target === section && (!effectiveArea || label === effectiveArea),
   );
   async function openArea(target: Section, label: string) {
     if (!(await navigate(target))) return;
@@ -375,14 +420,7 @@ function Workspace({
         {currentNavigation.areas.map(([target, label]) => (
           <button
             key={label}
-            className={
-              target === currentSection &&
-              (activeArea
-                ? activeArea === label
-                : label === currentNavigation.areas.find(([id]) => id === currentSection)?.[1])
-                ? 'active'
-                : ''
-            }
+            className={target === currentSection && currentArea?.[1] === label ? 'active' : ''}
             onClick={() => void openArea(target, label)}
           >
             {label}
@@ -425,7 +463,18 @@ function Workspace({
           </button>
         </div>
         <nav aria-label="Módulos" id="module-navigation">
-          {(['Trabajo diario', 'Mercadería', 'Negocio', 'Administración'] as const).map((group) => {
+          {permitted.has('Inicio') && (
+            <div className="sidebar-home">
+              <SidebarEntry
+                entry={{ title: 'Inicio', icon: 'chart', areas: [['Inicio', 'Inicio']] }}
+                active={currentSection === 'Inicio'}
+                activeArea="Inicio"
+                compact={menuCollapsed && !narrow}
+                onNavigate={(target, label) => openArea(target as Section, label)}
+              />
+            </div>
+          )}
+          {navigationGroups.map((group) => {
             const entries = visibleNavigation.filter((entry) => entry.group === group);
             if (!entries.length) return null;
             return (
@@ -435,28 +484,22 @@ function Workspace({
                 compact={menuCollapsed && !narrow}
                 onCompactOpen={() => setCollapsed(false)}
                 activeTitle={
-                  currentNavigation?.group === group ? currentNavigation.title : undefined
+                  currentNavigation?.group === group
+                    ? currentArea && currentArea[1] !== currentNavigation.title
+                      ? `${currentNavigation.title} · ${currentArea[1]}`
+                      : currentNavigation.title
+                    : undefined
                 }
               >
                 {entries.map((entry) => (
-                  <button
+                  <SidebarEntry
                     key={entry.title}
-                    className={
-                      currentNavigation?.title === entry.title ? 'nav-item selected' : 'nav-item'
-                    }
-                    aria-current={currentNavigation?.title === entry.title ? 'page' : undefined}
-                    aria-label={entry.title}
-                    title={menuCollapsed ? entry.title : undefined}
-                    onClick={() => {
-                      const [target, label] = entry.areas[0]!;
-                      void openArea(target, label);
-                    }}
-                  >
-                    <span className="nav-icon" aria-hidden="true">
-                      <Icon name={entry.icon} />
-                    </span>
-                    <span>{entry.title}</span>
-                  </button>
+                    entry={entry}
+                    active={currentNavigation?.title === entry.title}
+                    activeArea={currentArea?.[1]}
+                    compact={menuCollapsed && !narrow}
+                    onNavigate={(target, label) => openArea(target as Section, label)}
+                  />
                 ))}
               </SidebarGroup>
             );
@@ -562,7 +605,7 @@ function Workspace({
               <WorkspacePreference owner={user.role === 'OWNER' || user.role === 'ADMIN'} />
             )}
             {(currentNavigation?.title === 'Stock' ||
-              (currentNavigation?.title === 'Compras' && currentSection === 'Reposición') ||
+              currentNavigation?.title === 'Reposición' ||
               (currentNavigation?.title === 'Turnos' && currentSection === 'Controles')) && (
               <PageHeading className="page-heading">
                 <h1>{currentNavigation.title}</h1>
@@ -722,6 +765,10 @@ function Workspace({
                   profitabilityEnabled={Boolean(features.data?.enabled.COSTS_MARGIN)}
                   returnsEnabled={Boolean(features.data?.enabled.RETURNS)}
                 />
+              ) : currentSection === 'Órdenes' && features.data ? (
+                <PreparedOrdersPage enabled={features.data.enabled.PREPARED_ORDERS} user={user} />
+              ) : currentSection === 'Remitos' && features.data ? (
+                <DeliveryNotesPage enabled={features.data.enabled} />
               ) : currentSection === 'Comprobantes' ? (
                 <ReceiptQueue />
               ) : currentSection === 'Resumen mensual' ? (
@@ -769,6 +816,8 @@ function Workspace({
               ) : desktop ? (
                 <Checkout
                   user={user}
+                  preparedOrdersEnabled={Boolean(features.data?.enabled.PREPARED_ORDERS)}
+                  receiptsEnabled={Boolean(features.data?.enabled.RECEIPTS)}
                   registerLeaveGuard={registerLeaveGuard}
                   customersEnabled={Boolean(features.data?.enabled.CUSTOMERS)}
                   customerCreditEnabled={Boolean(features.data?.enabled.CUSTOMER_CREDIT)}
@@ -781,6 +830,8 @@ function Workspace({
                 >
                   <Checkout
                     user={user}
+                    preparedOrdersEnabled={Boolean(features.data?.enabled.PREPARED_ORDERS)}
+                    receiptsEnabled={Boolean(features.data?.enabled.RECEIPTS)}
                     registerLeaveGuard={registerLeaveGuard}
                     customersEnabled={Boolean(features.data?.enabled.CUSTOMERS)}
                     customerCreditEnabled={Boolean(features.data?.enabled.CUSTOMER_CREDIT)}

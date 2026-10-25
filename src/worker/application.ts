@@ -50,6 +50,21 @@ import { ComparisonRequestSchema, MonthlyRequestSchema } from '../shared/reports
 import { NotificationMarkReadSchema } from '../shared/notifications';
 import { NotificationService } from './notifications/service';
 import { FeatureService } from './features/service';
+import { PreparedOrderService } from './prepared-orders/service';
+import {
+  PreparedOrderCreateSchema,
+  PreparedOrderListSchema,
+  PreparedOrderNumberSchema,
+  PreparedOrderCancelSchema,
+} from '../shared/prepared-orders';
+import { DeliveryNoteService } from './delivery-notes/service';
+import {
+  DeliveryNoteCreateSchema,
+  DeliveryNoteListSchema,
+  DeliveryNoteSourcesSchema,
+  DeliveryNoteIdSchema,
+  DeliveryNoteActionSchema,
+} from '../shared/delivery-notes';
 import { PurchaseService } from './purchases/service';
 import {
   PurchaseDraftSaveSchema,
@@ -92,6 +107,11 @@ import {
 } from '../shared/locations';
 import { LocationSummaryRequestSchema } from '../shared/location-reports';
 const mutations = new Set([
+  'preparedOrders.create',
+  'preparedOrders.cancel',
+  'deliveryNotes.create',
+  'deliveryNotes.deliver',
+  'deliveryNotes.cancel',
   'products.save',
   'products.setActive',
   'products.saveCategory',
@@ -266,8 +286,60 @@ export class Application {
     };
     const execute = (): unknown => {
       switch (operation) {
+        case 'preparedOrders.create':
+          return new PreparedOrderService(this.db, (body) => this.sales.quote(body)).create(
+            PreparedOrderCreateSchema.parse(payload),
+            actor,
+          );
+        case 'preparedOrders.list':
+          return new PreparedOrderService(this.db, (body) => this.sales.quote(body)).list(
+            PreparedOrderListSchema.parse(payload),
+            actor,
+          );
+        case 'preparedOrders.byNumber':
+          return new PreparedOrderService(this.db, (body) => this.sales.quote(body)).byNumber(
+            PreparedOrderNumberSchema.parse(payload).number,
+            actor,
+          );
+        case 'preparedOrders.cancel':
+          return new PreparedOrderService(this.db, (body) => this.sales.quote(body)).cancel(
+            PreparedOrderCancelSchema.parse(payload),
+            actor,
+          );
         case 'control.execute':
           return new ControlService(this.db).execute(payload, actor);
+        case 'deliveryNotes.list':
+          return new DeliveryNoteService(this.db).list(
+            DeliveryNoteListSchema.parse(payload),
+            actor,
+          );
+        case 'deliveryNotes.sources':
+          return new DeliveryNoteService(this.db).sources(
+            DeliveryNoteSourcesSchema.parse(payload),
+            actor,
+          );
+        case 'deliveryNotes.detail':
+          return new DeliveryNoteService(this.db).detail(
+            DeliveryNoteIdSchema.parse(payload).noteId,
+            actor,
+          );
+        case 'deliveryNotes.create':
+          return new DeliveryNoteService(this.db).create(
+            DeliveryNoteCreateSchema.parse(payload),
+            actor,
+          );
+        case 'deliveryNotes.deliver':
+          return new DeliveryNoteService(this.db).act(
+            DeliveryNoteActionSchema.parse(payload),
+            actor,
+            'deliver',
+          );
+        case 'deliveryNotes.cancel':
+          return new DeliveryNoteService(this.db).act(
+            DeliveryNoteActionSchema.parse(payload),
+            actor,
+            'cancel',
+          );
         case 'products.get': {
           const product = this.catalog.get(productIdSchema.parse(payload).productId);
           if (actor.role === 'SELLER' && !product.active)
@@ -402,7 +474,13 @@ export class Application {
               'FORBIDDEN',
               'Un supervisor debe autorizar la venta con stock negativo.',
             );
-          return redactSale(this.sales.complete(input, actor));
+          return redactSale(
+            new PreparedOrderService(this.db, (body) => this.sales.quote(body)).settle(
+              input,
+              actor,
+              (trusted) => this.sales.complete(trusted, actor),
+            ),
+          );
         }
         case 'sales.findByCheckoutKey':
           return ownSale(

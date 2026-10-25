@@ -706,10 +706,10 @@ describe('simplificación desde v31 poblada', () => {
 
   it('alcanza el contrato final de 60 tablas (requiere la migración 35)', () => {
     const db = legacy();
-    migrate(db);
+    through(db, 35);
     expect(tableNames(db)).toHaveLength(60);
     expect(db.prepare('SELECT max(version) AS version FROM schema_migrations').get()).toEqual({
-      version: SCHEMA_VERSION,
+      version: 35,
     });
   });
 

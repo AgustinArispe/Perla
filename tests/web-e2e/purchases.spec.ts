@@ -86,7 +86,7 @@ test('web real: recibe una compra y conserva su detalle histórico', async ({ pa
   await page.getByRole('dialog').getByRole('button', { name: 'Cerrar', exact: true }).click();
 
   await openModule(page, 'Compras');
-  await page.getByRole('button', { name: 'Historial' }).click();
+  await page.getByRole('button', { name: 'Historial', exact: true }).click();
   await page.getByRole('button', { name: /Puerto del Sur/ }).click();
   await expect(page.getByRole('dialog')).toContainText('Langostinos congelados');
   await expect(page.getByRole('dialog')).toContainText('$ 900,00');

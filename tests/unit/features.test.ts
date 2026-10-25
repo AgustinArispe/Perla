@@ -22,6 +22,10 @@ test('solo las funciones opcionales entregadas son visibles y las operaciones pr
     'CUSTOMERS',
     'CUSTOMER_CREDIT',
     'LOCATIONS_TRANSFERS',
+    'DELIVERY_NOTES_SALES',
+    'DELIVERY_NOTES_PURCHASES',
+    'DELIVERY_NOTES_INTERNAL',
+    'PREPARED_ORDERS',
   ]);
   expect(featureForOperation('stock.search')).toBe('STOCK_CONTROL');
   expect(featureForOperation('sales.complete')).toBeNull();

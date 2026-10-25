@@ -32,7 +32,11 @@ export class FeatureService {
       .all() as FeatureRow[];
     const persisted = new Map(rows.map((row) => [row.feature_key, Boolean(row.enabled)]));
     const enabled = Object.fromEntries(
-      availableFeatures.map((feature) => [feature.key, persisted.get(feature.key) ?? true]),
+      availableFeatures.map((feature) => [
+        feature.key,
+        persisted.get(feature.key) ??
+          !(feature.key.startsWith('DELIVERY_NOTES_') || feature.key === 'PREPARED_ORDERS'),
+      ]),
     ) as FeatureFlags;
     return {
       revision,
@@ -97,7 +101,21 @@ export class FeatureService {
           CUSTOMER_CREDIT: input.enabled.CUSTOMER_CREDIT ?? current.enabled.CUSTOMER_CREDIT,
           LOCATIONS_TRANSFERS:
             input.enabled.LOCATIONS_TRANSFERS ?? current.enabled.LOCATIONS_TRANSFERS,
+          DELIVERY_NOTES_SALES:
+            input.enabled.DELIVERY_NOTES_SALES ?? current.enabled.DELIVERY_NOTES_SALES,
+          DELIVERY_NOTES_PURCHASES:
+            input.enabled.DELIVERY_NOTES_PURCHASES ?? current.enabled.DELIVERY_NOTES_PURCHASES,
+          DELIVERY_NOTES_INTERNAL:
+            input.enabled.DELIVERY_NOTES_INTERNAL ?? current.enabled.DELIVERY_NOTES_INTERNAL,
+          PREPARED_ORDERS: input.enabled.PREPARED_ORDERS ?? current.enabled.PREPARED_ORDERS,
         };
+        if (next.DELIVERY_NOTES_PURCHASES && !next.SUPPLIERS_PURCHASES)
+          throw new DomainError(
+            'VALIDATION',
+            'Remitos de proveedores necesita Proveedores y compras.',
+          );
+        if (next.DELIVERY_NOTES_INTERNAL && !next.LOCATIONS_TRANSFERS)
+          throw new DomainError('VALIDATION', 'Remitos internos necesita Ubicaciones y traslados.');
         if (next.REPLENISHMENT && (!next.STOCK_CONTROL || !next.SUPPLIERS_PURCHASES))
           throw new DomainError(
             'VALIDATION',

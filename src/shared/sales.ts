@@ -15,6 +15,7 @@ export const CheckoutSchema = DraftBodySchema.extend({
   expectedDraftRevision: z.number().int().positive().optional(),
   negativeStockOverride: z.strictObject({ reason: z.string().trim().min(3).max(240) }).optional(),
   locationId: IdSchema.optional(),
+  preparedOrderId: IdSchema.optional(),
 }).refine(
   (v) => v.lines.length > 0 && new Set(v.lines.map((l) => l.lineId)).size === v.lines.length,
   {

@@ -1,4 +1,17 @@
 import { z } from 'zod';
+import {
+  PreparedOrderCreateSchema,
+  PreparedOrderListSchema,
+  PreparedOrderNumberSchema,
+  PreparedOrderCancelSchema,
+} from './prepared-orders';
+import {
+  DeliveryNoteCreateSchema,
+  DeliveryNoteListSchema,
+  DeliveryNoteSourcesSchema,
+  DeliveryNoteIdSchema,
+  DeliveryNoteActionSchema,
+} from './delivery-notes';
 import { ControlRequestSchema } from './control';
 import { LocationInventorySchema } from './locations';
 import {
@@ -132,6 +145,16 @@ export const RequestSchemas = {
   'lots.reconcile': LotReconcileSchema,
   'lots.setBlocked': LotSetBlockedSchema,
   'receipts.create': ReceiptCreateSchema,
+  'preparedOrders.create': PreparedOrderCreateSchema,
+  'preparedOrders.list': PreparedOrderListSchema,
+  'preparedOrders.byNumber': PreparedOrderNumberSchema,
+  'preparedOrders.cancel': PreparedOrderCancelSchema,
+  'deliveryNotes.create': DeliveryNoteCreateSchema,
+  'deliveryNotes.list': DeliveryNoteListSchema,
+  'deliveryNotes.sources': DeliveryNoteSourcesSchema,
+  'deliveryNotes.detail': DeliveryNoteIdSchema,
+  'deliveryNotes.deliver': DeliveryNoteActionSchema,
+  'deliveryNotes.cancel': DeliveryNoteActionSchema,
   'receipts.list': ReceiptListSchema,
   'receipts.markPrinted': ReceiptMarkPrintedSchema,
   'suppliers.search': SupplierSearchSchema,

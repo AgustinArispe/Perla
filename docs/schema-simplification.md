@@ -1,16 +1,21 @@
 # Esquema consolidado v35
 
+Las migraciones posteriores v36 y v37 incorporan [remitos](remitos.md) y
+[órdenes para caja](ordenes-para-caja.md), cada uno con una tabla compartida
+adicional: el esquema actual tiene **62 tablas propias**.
+Los conteos y mediciones de consolidación de este documento corresponden a v35.
+
 Las migraciones 32–35 implementan el paso de **84 a 60 tablas propias**:
 24 menos (28,6%). `sqlite_sequence` es interna de SQLite y queda fuera del conteo.
 El resultado corresponde al código y a las bases de verificación, no a una
 confirmación de despliegue en Railway.
 
-| Migración | Integración | Tablas después |
-| --- | --- | ---: |
-| 32 | Estados/configuración como atributos de producto, ubicación, compra, venta, caja y negocio | 75 |
-| 33 | Ventas y devoluciones comparten documentos, artículos, pagos, eventos y asignaciones de lotes | 70 |
-| 34 | Clientes/proveedores y sus pagos, imputaciones y créditos comparten almacenamiento | 66 |
-| 35 | Auditorías, borradores, resultados de operaciones y vistas previas de precios | 60 |
+| Migración | Integración                                                                                   | Tablas después |
+| --------- | --------------------------------------------------------------------------------------------- | -------------: |
+| 32        | Estados/configuración como atributos de producto, ubicación, compra, venta, caja y negocio    |             75 |
+| 33        | Ventas y devoluciones comparten documentos, artículos, pagos, eventos y asignaciones de lotes |             70 |
+| 34        | Clientes/proveedores y sus pagos, imputaciones y créditos comparten almacenamiento            |             66 |
+| 35        | Auditorías, borradores, resultados de operaciones y vistas previas de precios                 |             60 |
 
 ## Cómo leer y escribir
 
@@ -52,20 +57,20 @@ aplicaciones y sus artículos. El tipo del registro no se puede convertir.
 
 ## Inventario final: 60 tablas
 
-| Función | Tablas físicas |
-| --- | --- |
-| Sistema y usuarios (12) | `schema_migrations`, `app_settings`, `users`, `auth_sessions`, `auth_attempts`, `audit_events`, `business_settings`, `business_features`, `terminals`, `terminal_locations`, `saved_views`, `notification_reads` |
-| Catálogo (6) | `products`, `product_categories`, `product_brands`, `barcode_sequences`, `product_labels`, `import_batches` |
-| Ventas, devoluciones y caja (9) | `sales`, `sale_items`, `sale_payments`, `sale_events`, `register_shifts`, `register_movements`, `sale_receipts`, `sale_promotions`, `sale_promotion_allocations` |
-| Stock y ubicaciones (4) | `inventory_balances`, `stock_movements`, `locations`, `location_inventory_balances` |
-| Lotes (4) | `inventory_lots`, `lot_movements`, `sale_item_lots`, `location_lot_balances` |
-| Traslados (4) | `stock_transfers`, `stock_transfer_items`, `stock_transfer_events`, `stock_transfer_item_lots` |
-| Compras (3) | `purchases`, `purchase_items`, `purchase_events` |
-| Costos y precios (6) | `product_cost_events`, `price_change_batches`, `price_change_items`, `promotions`, `commercial_price_events`, `commercial_price_reviews` |
-| Contrapartes y cuentas (4) | `parties`, `account_payments`, `account_payment_allocations`, `account_credits` |
-| Reposición (3) | `replenishment_orders`, `replenishment_order_lines`, `replenishment_events` |
-| Conteos y resúmenes (3) | `control_count_sessions`, `control_count_lines`, `weekly_snapshots` |
-| Auxiliares compartidos (2) | `drafts`, `operation_results` |
+| Función                         | Tablas físicas                                                                                                                                                                                                   |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Sistema y usuarios (12)         | `schema_migrations`, `app_settings`, `users`, `auth_sessions`, `auth_attempts`, `audit_events`, `business_settings`, `business_features`, `terminals`, `terminal_locations`, `saved_views`, `notification_reads` |
+| Catálogo (6)                    | `products`, `product_categories`, `product_brands`, `barcode_sequences`, `product_labels`, `import_batches`                                                                                                      |
+| Ventas, devoluciones y caja (9) | `sales`, `sale_items`, `sale_payments`, `sale_events`, `register_shifts`, `register_movements`, `sale_receipts`, `sale_promotions`, `sale_promotion_allocations`                                                 |
+| Stock y ubicaciones (4)         | `inventory_balances`, `stock_movements`, `locations`, `location_inventory_balances`                                                                                                                              |
+| Lotes (4)                       | `inventory_lots`, `lot_movements`, `sale_item_lots`, `location_lot_balances`                                                                                                                                     |
+| Traslados (4)                   | `stock_transfers`, `stock_transfer_items`, `stock_transfer_events`, `stock_transfer_item_lots`                                                                                                                   |
+| Compras (3)                     | `purchases`, `purchase_items`, `purchase_events`                                                                                                                                                                 |
+| Costos y precios (6)            | `product_cost_events`, `price_change_batches`, `price_change_items`, `promotions`, `commercial_price_events`, `commercial_price_reviews`                                                                         |
+| Contrapartes y cuentas (4)      | `parties`, `account_payments`, `account_payment_allocations`, `account_credits`                                                                                                                                  |
+| Reposición (3)                  | `replenishment_orders`, `replenishment_order_lines`, `replenishment_events`                                                                                                                                      |
+| Conteos y resúmenes (3)         | `control_count_sessions`, `control_count_lines`, `weekly_snapshots`                                                                                                                                              |
+| Auxiliares compartidos (2)      | `drafts`, `operation_results`                                                                                                                                                                                    |
 
 ## Migración y recuperación
 
@@ -98,11 +103,11 @@ programación. La interfaz las muestra como «Semanal · sábados». La clasific
 interna DAILY se conserva para compatibilidad del formato, acompañada de
 `schedule='WEEKLY_SATURDAY'`.
 
-| Variable | Valor predeterminado | Uso |
-| --- | --- | --- |
-| `BOCHA_AUTO_BACKUP_ENABLED` | `true` | Usar `false` para desactivar; no crea ni poda copias |
-| `BOCHA_AUTO_BACKUP_RETENTION` | `2` | Cantidad a conservar, entre 1 y 104 |
-| `BOCHA_AUTO_BACKUP_TIMEZONE` | `America/Argentina/Buenos_Aires` | Zona horaria de la programación |
+| Variable                      | Valor predeterminado             | Uso                                                  |
+| ----------------------------- | -------------------------------- | ---------------------------------------------------- |
+| `BOCHA_AUTO_BACKUP_ENABLED`   | `true`                           | Usar `false` para desactivar; no crea ni poda copias |
+| `BOCHA_AUTO_BACKUP_RETENTION` | `2`                              | Cantidad a conservar, entre 1 y 104                  |
+| `BOCHA_AUTO_BACKUP_TIMEZONE`  | `America/Argentina/Buenos_Aires` | Zona horaria de la programación                      |
 
 La retención elimina únicamente copias autenticadas marcadas por esta
 programación y después de asegurar la copia del sábado. Conserva las manuales,
@@ -135,11 +140,11 @@ original quedó intacto; integridad y FK de la copia migrada resultaron correcta
 Medianas de cinco muestras por variante sobre los mismos datos, Node 24.19.0 y
 SQLite 3.53.4, sin red ni renderizado:
 
-| Consulta | v31 | v35 final |
-| --- | ---: | ---: |
-| Inicio | 16,79 ms | 19,70 ms |
-| Revisión de precios | 93,00 ms | 91,04 ms |
-| Reporte mensual | 118,45 ms | 127,51 ms |
+| Consulta            |       v31 | v35 final |
+| ------------------- | --------: | --------: |
+| Inicio              |  16,79 ms |  19,70 ms |
+| Revisión de precios |  93,00 ms |  91,04 ms |
+| Reporte mensual     | 118,45 ms | 127,51 ms |
 
 La lectura comercial usa directamente `products.cost_*`: conservar el antiguo
 join de costos sobre la nueva vista provocaba un autojoin. Quitarlo redujo

@@ -2,9 +2,9 @@ import { useId, useState, type ReactNode } from 'react';
 import { Icon } from './Icon';
 
 const sectionIcons = {
-  'Trabajo diario': 'cash',
+  'Ventas y caja': 'cash',
   Mercadería: 'box',
-  Negocio: 'chart',
+  Gestión: 'chart',
   Administración: 'settings',
 } as const;
 

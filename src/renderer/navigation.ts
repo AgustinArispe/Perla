@@ -1,13 +1,36 @@
+export const navigationGroups = [
+  'Ventas y caja',
+  'Mercadería',
+  'Gestión',
+  'Administración',
+] as const;
+
 export const navigation = [
-  { title: 'Inicio', icon: 'chart', group: 'Trabajo diario', areas: [['Inicio', 'Inicio']] },
-  { title: 'Caja', icon: 'cash', group: 'Trabajo diario', areas: [['Caja', 'Caja']] },
+  { title: 'Inicio', icon: 'chart', group: 'Accesos', areas: [['Inicio', 'Inicio']] },
+  { title: 'Caja', icon: 'cash', group: 'Ventas y caja', areas: [['Caja', 'Caja']] },
+  {
+    title: 'Órdenes para caja',
+    icon: 'stock',
+    group: 'Ventas y caja',
+    areas: [['Órdenes', 'Órdenes para caja']],
+  },
   {
     title: 'Ventas',
     icon: 'history',
-    group: 'Trabajo diario',
+    group: 'Ventas y caja',
     areas: [
       ['Histórico', 'Historial'],
       ['Comprobantes', 'Comprobantes'],
+    ],
+  },
+  { title: 'Remitos', icon: 'arrow', group: 'Ventas y caja', areas: [['Remitos', 'Remitos']] },
+  {
+    title: 'Turnos',
+    icon: 'clock',
+    group: 'Ventas y caja',
+    areas: [
+      ['Turnos', 'Historial'],
+      ['Controles', 'Diferencias de caja'],
     ],
   },
   {
@@ -25,9 +48,17 @@ export const navigation = [
     group: 'Mercadería',
     areas: [
       ['Stock', 'Existencias'],
-      ['Reposición', 'Reponer'],
       ['Controles', 'Conteos'],
       ['Controles', 'Vencimientos'],
+    ],
+  },
+  {
+    title: 'Reposición',
+    icon: 'stock',
+    group: 'Mercadería',
+    areas: [
+      ['Reposición', 'Sugerencias'],
+      ['Reposición', 'Pedidos'],
     ],
   },
   {
@@ -37,7 +68,6 @@ export const navigation = [
     areas: [
       ['Compras', 'Recibir'],
       ['Compras', 'Historial'],
-      ['Reposición', 'Pedidos'],
       ['Proveedores', 'Proveedores'],
     ],
   },
@@ -47,27 +77,18 @@ export const navigation = [
     group: 'Mercadería',
     areas: [['Ubicaciones', 'Ubicaciones']],
   },
-  { title: 'Clientes', icon: 'users', group: 'Negocio', areas: [['Clientes', 'Clientes']] },
+  { title: 'Clientes', icon: 'users', group: 'Gestión', areas: [['Clientes', 'Clientes']] },
   {
     title: 'Cobros y pagos',
     icon: 'clock',
-    group: 'Negocio',
+    group: 'Gestión',
     areas: [['Agenda', 'Cobros y pagos']],
   },
-  { title: 'Promociones', icon: 'tag', group: 'Negocio', areas: [['Promociones', 'Promociones']] },
-  {
-    title: 'Turnos',
-    icon: 'clock',
-    group: 'Negocio',
-    areas: [
-      ['Turnos', 'Historial'],
-      ['Controles', 'Diferencias de caja'],
-    ],
-  },
+  { title: 'Promociones', icon: 'tag', group: 'Gestión', areas: [['Promociones', 'Promociones']] },
   {
     title: 'Resultados',
     icon: 'chart',
-    group: 'Negocio',
+    group: 'Gestión',
     areas: [
       ['Resumen mensual', 'Mensual'],
       ['Resumen semanal', 'Semanal'],
@@ -77,12 +98,20 @@ export const navigation = [
     title: 'Configuración',
     icon: 'settings',
     group: 'Administración',
-    areas: [
-      ['Configuración', 'Configuración'],
-      ['Usuarios', 'Usuarios'],
-      ['Actividad', 'Actividad'],
-      ['Backups', 'Copias'],
-    ],
+    areas: [['Configuración', 'Configuración']],
+  },
+  { title: 'Usuarios', icon: 'users', group: 'Administración', areas: [['Usuarios', 'Usuarios']] },
+  {
+    title: 'Actividad',
+    icon: 'activity',
+    group: 'Administración',
+    areas: [['Actividad', 'Actividad']],
+  },
+  {
+    title: 'Copias de seguridad',
+    icon: 'upload',
+    group: 'Administración',
+    areas: [['Backups', 'Copias de seguridad']],
   },
 ] as const;
 

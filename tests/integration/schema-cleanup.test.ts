@@ -85,7 +85,7 @@ test('migra v30 con respaldo y conserva preferencias, usuarios, sesiones y perfi
           "SELECT COUNT(*) n FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'",
         )
         .get(),
-    ).toEqual({ n: 60 });
+    ).toEqual({ n: 62 });
     expect(db.pragma('integrity_check', { simple: true })).toBe('ok');
     expect(db.pragma('foreign_key_check')).toEqual([]);
     const backups = readdirSync(join(directory, 'migration-backups'));

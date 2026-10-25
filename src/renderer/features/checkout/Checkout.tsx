@@ -30,18 +30,29 @@ import type { SaleReceipt } from '../../../shared/receipts';
 import { Icon } from '../../components/Icon';
 import { ReceiptPrint } from '../receipts/ReceiptPrint';
 import { ScannerTest } from '../settings/ScannerTest';
+import { PreparedOrderCash } from '../prepared-orders/PreparedOrderCash';
 export type LeaveGuard = (() => Promise<void>) | null;
 export function Checkout({
   user,
   registerLeaveGuard,
   customersEnabled = false,
   customerCreditEnabled = false,
+  preparedOrdersEnabled = false,
+  receiptsEnabled = true,
 }: {
   user: User;
   registerLeaveGuard: (guard: LeaveGuard) => void;
   customersEnabled?: boolean;
   customerCreditEnabled?: boolean;
+  preparedOrdersEnabled?: boolean;
+  receiptsEnabled?: boolean;
 }) {
+  const [orderCashOpen, setOrderCashOpen] = useState(false);
+  const pendingOrders = useQuery({
+    queryKey: ['prepared-orders-ready'],
+    queryFn: () => api().preparedOrders.list({ status: 'READY', limit: 1 }).then(unwrap),
+    refetchInterval: 30000,
+  });
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [customerOpen, setCustomerOpen] = useState(false);
   const [createCustomerOpen, setCreateCustomerOpen] = useState(false);
@@ -169,6 +180,27 @@ export function Checkout({
   return (
     <>
       <h1 className="sr-only">Caja</h1>
+      {(preparedOrdersEnabled ||
+        Boolean(pendingOrders.data?.total) ||
+        Boolean(localStorage.getItem(`bocha.prepared-order.pending.${user.id}`))) && (
+        <button
+          className="button secondary"
+          disabled={state.mode !== 'SCAN' || state.body.lines.length > 0 || !paymentMethods}
+          onClick={() => {
+            run(controller.beforeLeave().then(() => setOrderCashOpen(true)));
+          }}
+        >
+          Cobrar orden preparada
+        </button>
+      )}
+      {orderCashOpen && paymentMethods && (
+        <PreparedOrderCash
+          user={user}
+          paymentMethods={paymentMethods}
+          receiptsEnabled={receiptsEnabled}
+          onClose={() => setOrderCashOpen(false)}
+        />
+      )}
       {state.lastSale && (
         <div className="sale-confirmed" role="status">
           <strong>Venta guardada · N.º {state.lastSale.number}</strong>

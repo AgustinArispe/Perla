@@ -78,6 +78,26 @@ export const availableFeatures: readonly FeatureDefinition[] = [
     name: 'Ubicaciones y traslados',
     description: 'Stock por local y mercadería en tránsito.',
   },
+  {
+    key: 'DELIVERY_NOTES_SALES',
+    name: 'Remitos a clientes',
+    description: 'Documentos de entrega vinculados a ventas registradas.',
+  },
+  {
+    key: 'DELIVERY_NOTES_PURCHASES',
+    name: 'Remitos de proveedores',
+    description: 'Constancias de recepciones vinculadas a compras registradas.',
+  },
+  {
+    key: 'DELIVERY_NOTES_INTERNAL',
+    name: 'Remitos internos',
+    description: 'Documentos de mercadería vinculados a traslados entre ubicaciones.',
+  },
+  {
+    key: 'PREPARED_ORDERS',
+    name: 'Órdenes para caja',
+    description: 'Preparar pedidos sin cobrar y recuperarlos por número para pagarlos en caja.',
+  },
 ];
 
 const protectedOperations: Readonly<Record<string, FeatureKey>> = {

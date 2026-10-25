@@ -1,5 +1,9 @@
 import type { Role } from '../shared/auth';
 const common = [
+  'preparedOrders.create',
+  'preparedOrders.list',
+  'preparedOrders.byNumber',
+  'preparedOrders.cancel',
   'settings.get',
   'settings.features.get',
   'terminals.active',
@@ -28,6 +32,12 @@ const common = [
   'customers.save',
 ];
 const management = [
+  'deliveryNotes.create',
+  'deliveryNotes.list',
+  'deliveryNotes.sources',
+  'deliveryNotes.detail',
+  'deliveryNotes.deliver',
+  'deliveryNotes.cancel',
   'control.execute',
   'shifts.list',
   'audit.list',

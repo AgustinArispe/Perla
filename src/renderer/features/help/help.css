@@ -1,0 +1,18 @@
+.help-search-summary {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  color: var(--muted, #596970);
+}
+.help-page article p {
+  overflow-wrap: anywhere;
+}
+@media (min-width: 901px) {
+  .help-page .help-index {
+    max-height: 72vh;
+    overflow-y: auto;
+  }
+}

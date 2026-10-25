@@ -1,6 +1,6 @@
 import { defineConfig } from '@playwright/test';
 const port = Number(process.env.BOCHA_WEB_TEST_PORT ?? '3087');
-if (!Number.isInteger(port) || port < 1024 || port > 65521)
+if (!Number.isInteger(port) || port < 1024 || port > 65517)
   throw new Error('Puerto de prueba inválido.');
 const scenarios = [
   {
@@ -27,6 +27,13 @@ const scenarios = [
   { name: 'security', port: port + 5, testMatch: '**/security-circuit.spec.ts' },
   { name: 'customer-credit', port: port + 6, testMatch: '**/customer-credit-circuit.spec.ts' },
   { name: 'qa-edge', port: port + 7, testMatch: '**/qa-edge-circuits.spec.ts' },
+  {
+    name: 'delivery-notes',
+    port: port + 16,
+    testMatch: '**/delivery-notes.spec.ts',
+  },
+  { name: 'prepared-orders', port: port + 17, testMatch: '**/prepared-orders.spec.ts' },
+  { name: 'help', port: port + 18, testMatch: '**/help.spec.ts' },
 ];
 export default defineConfig({
   testDir: './tests/web-e2e',

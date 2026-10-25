@@ -1,51 +1,50 @@
 import { expect, type Page } from '@playwright/test';
+import { navigation } from '../../src/renderer/navigation';
 
-const destinations: Record<string, [string, string?]> = {
-  'Resumen mensual': ['Resultados', 'Mensual'],
-  'Resumen semanal': ['Resultados', 'Semanal'],
-  Controles: ['Stock', 'Conteos'],
-  Reposición: ['Stock', 'Reponer'],
-  Revisión: ['Productos', 'Revisión'],
-  Proveedores: ['Compras', 'Proveedores'],
-  Histórico: ['Ventas', 'Historial'],
-  Comprobantes: ['Ventas', 'Comprobantes'],
-  Usuarios: ['Configuración', 'Usuarios'],
-  Configuración: ['Configuración', 'Configuración'],
-  Actividad: ['Configuración', 'Actividad'],
-  Backups: ['Configuración', 'Copias'],
-  Agenda: ['Cobros y pagos'],
-};
-
-/** Exercise the same visible navigation that an operator uses. */
+/** Navigate through the same authorized sidebar controls used by the operator. */
 export async function openModule(page: Page, destination: string) {
-  const [group, area] = destinations[destination] ?? [destination];
+  const preferred = destination === 'Controles' ? 'Conteos' : undefined;
+  const entry =
+    navigation.find((item) =>
+      item.areas.some(
+        ([target, label]) => target === destination && (!preferred || label === preferred),
+      ),
+    ) ?? navigation.find((item) => item.title === destination);
+  if (!entry) throw new Error('Destino sin navegación: ' + destination);
+  const area =
+    entry.areas.find(
+      ([target, label]) => target === destination && (!preferred || label === preferred),
+    ) ?? entry.areas[0]!;
   const nav = page.getByRole('navigation', { name: 'Módulos' });
   await nav.waitFor({ state: 'attached' });
   if (!(await nav.isVisible()))
     await page.getByRole('button', { name: 'Expandir menú', exact: true }).click();
-  if (!(await nav.getByRole('button', { name: group, exact: true }).isVisible())) {
-    // Collapsed groups omit their links; match the section from the destination.
-    const sectionTitle = ['Inicio', 'Caja', 'Ventas'].includes(group)
-      ? 'Trabajo diario'
-      : ['Productos', 'Stock', 'Compras', 'Ubicaciones'].includes(group)
-        ? 'Mercadería'
-        : group === 'Configuración'
-          ? 'Administración'
-          : 'Negocio';
-    const compactSection = nav.getByRole('button', {
-      name: `Abrir sección ${sectionTitle}`,
-      exact: true,
-    });
-    if (await compactSection.isVisible()) await compactSection.click();
+  const parent = nav.getByRole('button', { name: entry.title, exact: true });
+  if (!(await parent.isVisible())) {
+    const compact = nav.getByRole('button', { name: 'Abrir sección ' + entry.group, exact: true });
+    if (await compact.isVisible()) await compact.click();
     else
       await nav
-        .getByRole('button', { name: `Desplegar sección ${sectionTitle}`, exact: true })
+        .getByRole('button', { name: 'Desplegar sección ' + entry.group, exact: true })
         .click();
   }
-  await nav.getByRole('button', { name: group, exact: true }).click();
-  if (area) {
-    const tabs = page.locator(`main [aria-label="Áreas de ${group}"]`);
-    await expect(tabs).toBeVisible();
-    await tabs.getByRole('button', { name: area, exact: true }).click();
+  await parent.click();
+  const options = nav.getByRole('button', {
+    name: 'Ocultar opciones de ' + entry.title,
+    exact: true,
+  });
+  if (await options.isVisible()) {
+    const child = nav.getByRole('button', { name: entry.title + ': ' + area[1], exact: true });
+    if (await nav.isVisible()) await child.click();
+    else {
+      // Mobile closes the drawer when the parent opens its default area.
+      const tabs = page.locator('main [aria-label="Áreas de ' + entry.title + '"]');
+      await expect(tabs).toBeVisible();
+      await tabs.getByRole('button', { name: area[1], exact: true }).click();
+    }
+  } else if (entry.areas.length > 1 && area !== entry.areas[0]) {
+    const tabs = page.locator('main [aria-label="Áreas de ' + entry.title + '"]');
+    if (await tabs.isVisible())
+      await tabs.getByRole('button', { name: area[1], exact: true }).click();
   }
 }

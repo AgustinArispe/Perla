@@ -389,7 +389,7 @@ export class SalesService {
           input.negativeStockOverride?.reason ?? 'Venta finalizada',
           now,
         );
-        if (draft)
+        if (draft && !input.preparedOrderId)
           this.db
             .prepare("DELETE FROM drafts WHERE document_type='SALE' AND id=?")
             .run(actor?.id ?? 'main');

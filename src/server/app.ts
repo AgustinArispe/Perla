@@ -175,6 +175,9 @@ export async function createServer(
             'exports.shifts',
             'exports.purchases',
             'receipts.list',
+            'deliveryNotes.list',
+            'preparedOrders.list',
+            'deliveryNotes.sources',
             'suppliers.search',
             'purchases.list',
             'customers.search',
@@ -295,6 +298,32 @@ export async function createServer(
     saleId: params(r).id,
   }));
   route('GET', '/api/v1/receipts', 'receipts.list', query);
+  route('GET', '/api/v1/prepared-orders', 'preparedOrders.list', (r) => {
+    const input = query(r);
+    return {
+      ...input,
+      ...(Object.hasOwn(input, 'number') ? { number: Number(input.number) } : {}),
+    };
+  });
+  route('GET', '/api/v1/prepared-orders/by-number/:number', 'preparedOrders.byNumber', (r) => ({
+    number: Number(params(r).number),
+  }));
+  route('POST', '/api/v1/prepared-orders', 'preparedOrders.create');
+  route('POST', '/api/v1/prepared-orders/cancel', 'preparedOrders.cancel');
+  route('GET', '/api/v1/delivery-notes', 'deliveryNotes.list', query);
+  route('GET', '/api/v1/delivery-notes/sources', 'deliveryNotes.sources', (r) => {
+    const input = query(r);
+    return {
+      ...input,
+      ...(Object.hasOwn(input, 'number') ? { number: Number(input.number) } : {}),
+    };
+  });
+  route('GET', '/api/v1/delivery-notes/:id', 'deliveryNotes.detail', (r) => ({
+    noteId: params(r).id,
+  }));
+  route('POST', '/api/v1/delivery-notes', 'deliveryNotes.create');
+  route('POST', '/api/v1/delivery-notes/deliver', 'deliveryNotes.deliver');
+  route('POST', '/api/v1/delivery-notes/cancel', 'deliveryNotes.cancel');
   route('POST', '/api/v1/receipts', 'receipts.create');
   route('POST', '/api/v1/receipts/printed', 'receipts.markPrinted');
   route('GET', '/api/v1/suppliers', 'suppliers.search', (r) => ({ limit: 50, ...query(r) }));
