@@ -167,10 +167,10 @@ describe('remitos modulares', () => {
           "SELECT count(*) n FROM sqlite_schema WHERE type='table' AND name NOT LIKE 'sqlite_%'",
         )
         .get(),
-    ).toEqual({ n: 62 });
+    ).toEqual({ n: 63 });
     expect(f.db.pragma('integrity_check', { simple: true })).toBe('ok');
     expect(f.db.pragma('foreign_key_check')).toEqual([]);
-    expect(MIGRATIONS.at(-1)?.version).toBe(37);
+    expect(MIGRATIONS.at(-1)?.version).toBe(38);
     migrate(f.db);
     expect(f.db.prepare('SELECT count(*) n FROM products').get()).toEqual({ n: 1 });
   });
@@ -442,7 +442,7 @@ describe('remitos modulares', () => {
       },
     });
     const backup = await service.create();
-    expect((await service.inspect(backup.id)).info.schemaVersion).toBe(37);
+    expect((await service.inspect(backup.id)).info.schemaVersion).toBe(38);
     expect(f.service.detail(note.id, f.owner.user).snapshot.items[0]?.quantityBase).toBe(1500);
     const restoredPath = join(directory, 'restored.sqlite');
     recoverDatabaseFromBackup({

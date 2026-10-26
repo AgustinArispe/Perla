@@ -1,5 +1,6 @@
 import type { Role } from '../shared/auth';
 const common = [
+  'businessUnits.status',
   'preparedOrders.create',
   'preparedOrders.list',
   'preparedOrders.byNumber',
@@ -103,6 +104,7 @@ const management = [
   'transfers.cancel',
 ];
 const owner = [
+  'businessUnits.rename',
   'terminals.list',
   'terminals.save',
   'exports.products',

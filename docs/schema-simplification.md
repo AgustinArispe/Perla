@@ -2,7 +2,8 @@
 
 Las migraciones posteriores v36 y v37 incorporan [remitos](remitos.md) y
 [órdenes para caja](ordenes-para-caja.md), cada uno con una tabla compartida
-adicional: el esquema actual tiene **62 tablas propias**.
+adicional. La migración v38 incorpora [BiEmpresa](biempresa.md) con una tabla
+de unidades operativas: el esquema actual tiene **63 tablas propias**.
 Los conteos y mediciones de consolidación de este documento corresponden a v35.
 
 Las migraciones 32–35 implementan el paso de **84 a 60 tablas propias**:

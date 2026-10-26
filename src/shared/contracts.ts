@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import type { BusinessUnitRename, BusinessUnitStatus } from './business-units';
 import type { ComparisonRequest, MonthlyReport, PeriodComparison } from './reports';
 import type { NotificationInbox, NotificationMarkRead } from './notifications';
 import type {
@@ -125,6 +126,10 @@ export const SystemHealthResultSchema = z.discriminatedUnion('ok', [
   z.object({ ok: z.literal(false), error: AppErrorSchema }),
 ]);
 export interface BochaApi {
+  businessUnits: {
+    status(): Promise<Result<BusinessUnitStatus>>;
+    rename(input: BusinessUnitRename): Promise<Result<BusinessUnitStatus>>;
+  };
   dashboard: {
     monthly(month: string): Promise<Result<MonthlyReport>>;
     compare(input: ComparisonRequest): Promise<Result<PeriodComparison>>;

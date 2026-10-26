@@ -33,7 +33,7 @@ export const excelFilterKeys: Record<ExcelDataset, string[]> = {
   customers: ['query', 'activeOnly'],
   suppliers: ['query', 'status'],
   promotions: ['query', 'view'],
-  sales: ['fromDate', 'toDate', 'status'],
+  sales: ['fromDate', 'toDate', 'status', 'businessUnitId'],
   purchases: ['fromDate', 'toDate', 'status'],
   shifts: ['fromDate', 'toDate', 'status', 'terminalId'],
   audit: ['fromDate', 'toDate', 'operation'],
@@ -98,6 +98,7 @@ export const ExcelFiltersSchema = z.strictObject({
   customerId: z.uuid().optional(),
   supplierId: z.uuid().optional(),
   saleId: z.uuid().optional(),
+  businessUnitId: z.uuid().optional(),
   purchaseId: z.uuid().optional(),
   month: z
     .string()

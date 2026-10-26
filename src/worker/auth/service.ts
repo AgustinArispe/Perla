@@ -31,7 +31,7 @@ const MAX_LOGIN_ATTEMPTS = 1000;
 const loginBlockMs = (failures: number) =>
   failures < 5 ? 0 : Math.min(15 * 60_000, 60_000 * 2 ** (failures - 5));
 const publicColumns =
-  "id,username,name,CASE WHEN system_admin=1 THEN 'ADMIN' ELSE role END AS role,active,revision,created_at_utc AS createdAt,updated_at_utc AS updatedAt";
+  "id,username,name,CASE WHEN system_admin=1 THEN 'ADMIN' ELSE role END AS role,active,revision,created_at_utc AS createdAt,updated_at_utc AS updatedAt,business_unit_id AS businessUnitId";
 const digest = (token: string) => createHash('sha256').update(token).digest('hex');
 export class AuthService {
   private readonly dummyHash = hashPassword(randomBytes(32).toString('hex'));
@@ -232,6 +232,11 @@ export class AuthService {
       .transaction(() => {
         const actor = this.authorize(token, 'users.save'),
           current = input.id ? this.user(input.id) : null;
+        if (
+          input.businessUnitId &&
+          !this.db.prepare('SELECT 1 FROM business_units WHERE id=?').get(input.businessUnitId)
+        )
+          throw new DomainError('VALIDATION', 'La unidad seleccionada no existe.');
         if (input.role === 'ADMIN' && actor.role !== 'ADMIN')
           throw new DomainError('FORBIDDEN', 'Solo el administrador puede asignar ese perfil.');
         if (current && this.isSystemAdmin(current.id) && actor.role !== 'ADMIN')
@@ -315,6 +320,10 @@ export class AuthService {
               now,
               systemAdmin,
             );
+        if (input.businessUnitId !== undefined)
+          this.db
+            .prepare('UPDATE users SET business_unit_id=? WHERE id=?')
+            .run(input.businessUnitId, id);
         recordAudit(this.db, actor, 'users.save', id);
         return this.user(id);
       })

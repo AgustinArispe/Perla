@@ -7,6 +7,7 @@ import {
 
 test('solo las funciones opcionales entregadas son visibles y las operaciones protegidas se asignan', () => {
   expect(availableFeatures.map((feature) => feature.key)).toEqual([
+    'BUSINESS_UNITS',
     'REPLENISHMENT',
     'STOCK_CONTROL',
     'MONTHLY_DASHBOARD',

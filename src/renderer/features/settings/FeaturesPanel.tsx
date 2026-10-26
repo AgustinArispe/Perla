@@ -7,6 +7,7 @@ import { Dialog } from '../../components/Dialog';
 import { webValue } from '../../web-client';
 
 const featureGroups: { title: string; keys: (keyof FeatureFlags)[] }[] = [
+  { title: 'Unidades operativas', keys: ['BUSINESS_UNITS'] },
   { title: 'Ventas', keys: ['RECEIPTS', 'RETURNS', 'PROMOTIONS', 'PRODUCT_LABELS'] },
   { title: 'Preparación y cobro', keys: ['PREPARED_ORDERS'] },
   {
@@ -96,6 +97,7 @@ export function FeaturesPanel({
       setDraft(null);
       setReviewOpen(false);
       await client.invalidateQueries({ queryKey: ['business-features'] });
+      await client.invalidateQueries({ queryKey: ['business-units'] });
     } catch (failure) {
       setError(errorMessage(failure));
       setReviewOpen(false);

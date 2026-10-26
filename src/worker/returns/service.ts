@@ -197,8 +197,8 @@ export class ReturnService {
         const refundCents = totalCents - accountOffsetCents;
         this.db
           .prepare(
-            `INSERT INTO sales(id,number,original_sale_id,operation_key,payload_hash,input_json,status,reason,total_cents,cost_cents,actor_user_id,actor_name,created_at_utc,business_date,local_month,document_type)
-             VALUES (?,?,?,?,?,?,'CONFIRMED',?,?,?,?,?,?,?,?,'RETURN')`,
+            `INSERT INTO sales(id,number,original_sale_id,operation_key,payload_hash,input_json,status,reason,total_cents,cost_cents,actor_user_id,actor_name,created_at_utc,business_date,local_month,business_unit_id,business_unit_name,document_type)
+             VALUES (?,?,?,?,?,?,'CONFIRMED',?,?,?,?,?,?,?,?,?,?,'RETURN')`,
           )
           .run(
             id,
@@ -215,6 +215,8 @@ export class ReturnService {
             now,
             date,
             date.slice(0, 7),
+            sale.businessUnitId,
+            sale.businessUnitName,
           );
         for (const preparedItem of prepared) {
           const returnItemId = randomUUID();

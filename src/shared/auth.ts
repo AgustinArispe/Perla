@@ -43,6 +43,7 @@ export const UserSaveSchema = z
     role: RoleSchema,
     active: z.boolean(),
     password: PasswordSchema.optional(),
+    businessUnitId: z.uuid().nullable().optional(),
   })
   .refine(
     (v) => Boolean(v.id) === Boolean(v.expectedRevision) && (Boolean(v.id) || Boolean(v.password)),
@@ -59,6 +60,7 @@ export type UserSaveInput = z.infer<typeof UserSaveSchema>;
 export type ChangePasswordInput = z.infer<typeof ChangePasswordSchema>;
 export type UnlockUserInput = z.infer<typeof UnlockUserSchema>;
 export interface User {
+  businessUnitId?: string | null;
   id: string;
   username: string;
   name: string;
@@ -73,6 +75,7 @@ export interface AuthStatus {
   user: User | null;
 }
 export const UserSchema = z.strictObject({
+  businessUnitId: z.uuid().nullable().optional(),
   id: z.uuid(),
   username: z.string(),
   name: z.string(),

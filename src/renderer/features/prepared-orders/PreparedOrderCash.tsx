@@ -161,6 +161,7 @@ export function PreparedOrderCash({
   if (paying && order)
     return createPortal(
       <PaymentDialog
+        contextLabel={order.businessUnitName}
         totalCents={order.quote.totalCents}
         paymentMethods={paymentMethods}
         role={user.role}
@@ -210,6 +211,9 @@ export function PreparedOrderCash({
           <p>
             Preparó {order.preparedBy} · {order.locationName}
           </p>
+          {order.businessUnitName && (
+            <p className="business-unit-badge">Venta de {order.businessUnitName}</p>
+          )}
           {order.items.map((item, i) => (
             <p key={i}>
               {item.name} · {formatStock(item.quantityBase, item.unit)}

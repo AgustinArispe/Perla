@@ -1,5 +1,6 @@
 import { createHash, randomUUID } from 'node:crypto';
 import type Database from 'better-sqlite3';
+import { BusinessUnitService } from '../business-units/service';
 import { z } from 'zod';
 import { DraftBodySchema, IdSchema } from '../../shared/catalog';
 import { CheckoutSchema, VoidSchema, SalesSearchSchema } from '../../shared/sales';
@@ -29,7 +30,7 @@ import type { PromotionService } from '../promotions/service';
 import type { CustomerService } from '../customers/service';
 import { applyPromotions, type PromotionApplication } from '../../domain/promotions';
 const hash = (v: unknown) => createHash('sha256').update(JSON.stringify(v)).digest('hex');
-const summarySql = `SELECT id,number,checkout_key AS checkoutKey,status,created_at_utc AS createdAt,business_date AS businessDate,local_month AS localMonth,subtotal_cents AS subtotalCents,discount_cents AS discountCents,total_cents AS totalCents FROM sale_orders`;
+const summarySql = `SELECT id,number,checkout_key AS checkoutKey,status,created_at_utc AS createdAt,business_date AS businessDate,local_month AS localMonth,subtotal_cents AS subtotalCents,discount_cents AS discountCents,total_cents AS totalCents,business_unit_id AS businessUnitId,business_unit_name AS businessUnitName FROM sale_orders`;
 const CursorSchema = z.strictObject({ number: z.number().int().positive(), filter: z.string() });
 export class SalesService {
   private readonly ledger: StockRepository;
@@ -190,6 +191,14 @@ export class SalesService {
           return this.detail(old.id);
         }
         const draft = this.drafts.get(actor?.id);
+        const unit = input.preparedOrderId
+          ? (this.db
+              .prepare(
+                'SELECT business_unit_id id,business_unit_name name FROM prepared_orders WHERE id=?',
+              )
+              .get(input.preparedOrderId) as { id: string; name: string } | undefined)
+          : new BusinessUnitService(this.db).resolve(actor);
+        if (!unit) throw new DomainError('VALIDATION', 'La unidad de la operación no existe.');
         const body = DraftBodySchema.parse({
           checkoutKey: input.checkoutKey,
           lines: input.lines,
@@ -238,7 +247,7 @@ export class SalesService {
         ).n;
         this.db
           .prepare(
-            'INSERT INTO sales (id,number,checkout_key,payload_hash,status,created_at_utc,business_date,local_month,subtotal_cents,discount_cents,total_cents,discount_json,customer_id,customer_name,on_account_cents,location_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+            'INSERT INTO sales (id,number,checkout_key,payload_hash,status,created_at_utc,business_date,local_month,subtotal_cents,discount_cents,total_cents,discount_json,customer_id,customer_name,on_account_cents,location_id,business_unit_id,business_unit_name) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
           )
           .run(
             id,
@@ -257,6 +266,8 @@ export class SalesService {
             customer?.name ?? null,
             input.onAccountCents,
             input.locationId ?? null,
+            unit.id,
+            unit.name,
           );
         if (input.onAccountCents > 0)
           this.customers!.recordSale(
@@ -542,7 +553,12 @@ export class SalesService {
   }
   list(raw: SalesSearchInput): SalePage {
     const input = SalesSearchSchema.parse(raw);
-    const filter = JSON.stringify([input.fromDate ?? '', input.toDate ?? '', input.status]);
+    const filter = JSON.stringify([
+      input.fromDate ?? '',
+      input.toDate ?? '',
+      input.status,
+      input.businessUnitId ?? '',
+    ]);
     let after: number | null = null;
     if (input.cursor) {
       try {
@@ -559,7 +575,7 @@ export class SalesService {
       }
     }
     const where =
-      " WHERE (? IS NULL OR business_date>=?) AND (? IS NULL OR business_date<=?) AND (?='ALL' OR status=?)";
+      " WHERE (? IS NULL OR business_date>=?) AND (? IS NULL OR business_date<=?) AND (?='ALL' OR status=?) AND (? IS NULL OR business_unit_id=?)";
     const args = [
       input.fromDate ?? null,
       input.fromDate ?? null,
@@ -567,6 +583,8 @@ export class SalesService {
       input.toDate ?? null,
       input.status,
       input.status,
+      input.businessUnitId ?? null,
+      input.businessUnitId ?? null,
     ];
     const total = (
       this.db.prepare(`SELECT COUNT(*) AS n FROM sale_orders${where}`).get(...args) as { n: number }

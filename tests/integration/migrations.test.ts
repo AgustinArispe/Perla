@@ -21,9 +21,9 @@ describe('migraciones trazables', () => {
         'purchase_items',
         'purchases',
       ]);
-      expect(
-        db.prepare("SELECT type FROM sqlite_master WHERE name='suppliers'").get(),
-      ).toEqual({ type: 'view' });
+      expect(db.prepare("SELECT type FROM sqlite_master WHERE name='suppliers'").get()).toEqual({
+        type: 'view',
+      });
       expect(
         db.prepare("SELECT type FROM sqlite_master WHERE name='purchase_drafts'").get(),
       ).toEqual({ type: 'view' });
@@ -140,7 +140,12 @@ describe('migraciones trazables', () => {
       const users = db.prepare('SELECT * FROM users').all() as Record<string, unknown>[];
       migrate(db);
       expect(db.prepare('SELECT * FROM users').all()).toEqual(
-        users.map((user) => ({ ...user, system_admin: 0, start_module: null })),
+        users.map((user) => ({
+          ...user,
+          business_unit_id: null,
+          system_admin: 0,
+          start_module: null,
+        })),
       );
       expect(db.prepare('SELECT count(*) AS n FROM auth_sessions').get()).toEqual({ n: 0 });
       expect(db.prepare('SELECT max(version) AS version FROM schema_migrations').get()).toEqual({

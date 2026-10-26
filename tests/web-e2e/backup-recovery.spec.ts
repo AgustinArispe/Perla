@@ -14,6 +14,18 @@ test('una consulta fallida no se presenta como ausencia de copias y permite rein
   page,
 }) => {
   await login(page);
+  // This scenario needs a backup, independently of the weekly scheduler/day.
+  await page.evaluate(async () => {
+    const session = (await (await fetch('/api/v1/auth/session')).json()).value;
+    const result = await (
+      await fetch('/api/v1/backups', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'x-csrf-token': session.csrfToken },
+        body: JSON.stringify({}),
+      })
+    ).json();
+    if (!result.ok) throw new Error(result.error.message);
+  });
   await page.route('**/api/v1/backups', async (route) => {
     if (route.request().method() === 'GET')
       await route.fulfill({

@@ -220,6 +220,10 @@ export const webApi: BochaApi = {
     byNumber: (number) => get('/prepared-orders/by-number/' + number),
     cancel: (input) => post('/prepared-orders/cancel', input),
   },
+  businessUnits: {
+    status: () => get('/business-units'),
+    rename: (input) => post('/business-units/rename', input),
+  },
   deliveryNotes: {
     list: (input) => get('/delivery-notes', input),
     sources: (input) => get('/delivery-notes/sources', input),

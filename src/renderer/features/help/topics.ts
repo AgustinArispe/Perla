@@ -11,6 +11,26 @@ export type Topic = {
 const managers: Role[] = ['SUPERVISOR', 'OWNER', 'ADMIN'];
 export const helpTopics: Topic[] = [
   {
+    id: 'biempresa',
+    title: 'BiEmpresa y stock compartido',
+    keywords: 'unidades empresas unidad dorado compartido',
+    sections: [
+      {
+        title: 'Identificar la unidad',
+        text: 'Con BiEmpresa activo, cada usuario trabaja en su unidad asignada. El encabezado muestra su nombre y la segunda unidad usa colores dorados. No cambia tu rol ni oculta ventas a los responsables. El catálogo y el stock son compartidos; no se genera una segunda salida de mercadería.',
+      },
+      {
+        title: 'Órdenes e historial',
+        text: 'Al cobrar una orden se conserva la unidad de quien la preparó, aunque el cajero trabaje en otra. Revisá la unidad indicada antes de cobrar. Los nombres históricos no se modifican al renombrar una unidad. Las devoluciones pertenecen a la unidad de la venta original.',
+      },
+      {
+        title: 'Activar y configurar',
+        roles: ['OWNER', 'ADMIN'],
+        text: 'Activá BiEmpresa en Configuración → Funciones, poné los nombres en Configuración → BiEmpresa y asigná las cuentas desde Administración → Usuarios. Cambiar una cuenta cierra sus sesiones. Al pausar el módulo, las ventas nuevas normales pertenecen a la principal; las órdenes pendientes conservan su unidad. El histórico permite filtrar y exportar por unidad y los reportes generales siguen consolidados. No incluye facturación fiscal ni contabilidad o propiedad de mercadería entre empresas.',
+      },
+    ],
+  },
+  {
     id: 'primeros-pasos',
     title: 'Primeros pasos y circuitos de trabajo',
     keywords: 'inicio empezar ferretería mostrador pedido especialista',
@@ -83,11 +103,11 @@ export const helpTopics: Topic[] = [
       },
       {
         title: 'Cantidades y productos por peso',
-        text: 'Usá +, − o el campo de cantidad para cambiar unidades. Quitar elimina un renglón. Para pescado y otros productos por kilo, usá Producto por kilo (F6). Ingresá el peso o el importe de la porción; revisá la cantidad calculada antes de agregarla. 0,250 kg equivale a 250 gramos.',
+        text: 'Usá + y − para cambiar unidades o tocá la cantidad para escribirla directamente en el carrito. Enter guarda y Escape cancela la edición. Mientras editás, el escaneo y el cobro quedan suspendidos. Quitar elimina un renglón y Deshacer permite recuperarlo antes del siguiente cambio en el carrito. Para productos por kilo, usá Producto por kilo (F6). Ingresá el peso o el importe de la porción; revisá la cantidad calculada antes de agregarla. 0,250 kg equivale a 250 gramos.',
       },
       {
         title: 'Descuentos y cobro',
-        text: 'Cambiar descuento (F4) permite aplicar un porcentaje o un monto a toda la venta. Cobrar (F8) abre los medios de pago. Podés combinar, por ejemplo, efectivo y débito. En efectivo recibido escribí lo que entrega el cliente: el sistema calcula el vuelto. Confirmar venta guarda la operación y descuenta el stock si usás su control; abrir la ventana de cobro todavía no confirma nada.',
+        text: 'Cambiar descuento (F4) permite aplicar un porcentaje o un monto a toda la venta. Cobrar (F8) abre los medios de pago. En efectivo, escribí lo que entrega el cliente o usá Justo y los importes rápidos: el vuelto se destaca en pantalla. Agregar otro medio permite combinar pagos; ajustá el primer importe y usá Completar saldo aquí en el otro para cubrir lo que falta. El dinero recibido no se suma dos veces: se registra el importe aplicado y se calcula el vuelto aparte. Confirmar venta (F8) guarda la operación y descuenta stock si lo controlás. Escape vuelve al carrito sin cobrar. El mismo panel se usa al cobrar órdenes preparadas.',
       },
       {
         title: 'Cancelar y recuperar un carrito',

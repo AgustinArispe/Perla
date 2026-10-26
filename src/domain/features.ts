@@ -8,6 +8,12 @@ export interface FeatureDefinition {
 
 export const availableFeatures: readonly FeatureDefinition[] = [
   {
+    key: 'BUSINESS_UNITS',
+    name: 'BiEmpresa · unidades operativas',
+    description:
+      'Dos unidades identificadas por usuario, con ventas trazables e inventario compartido. Sin facturación fiscal.',
+  },
+  {
     key: 'REPLENISHMENT',
     name: 'Reposición y pedidos',
     description: 'Sugerencias de compra y recepción de pedidos.',

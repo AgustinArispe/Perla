@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { BusinessUnitRenameSchema } from './business-units';
 import {
   PreparedOrderCreateSchema,
   PreparedOrderListSchema,
@@ -146,6 +147,8 @@ export const RequestSchemas = {
   'lots.setBlocked': LotSetBlockedSchema,
   'receipts.create': ReceiptCreateSchema,
   'preparedOrders.create': PreparedOrderCreateSchema,
+  'businessUnits.status': z.null(),
+  'businessUnits.rename': BusinessUnitRenameSchema,
   'preparedOrders.list': PreparedOrderListSchema,
   'preparedOrders.byNumber': PreparedOrderNumberSchema,
   'preparedOrders.cancel': PreparedOrderCancelSchema,

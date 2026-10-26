@@ -31,6 +31,8 @@ import { Icon } from '../../components/Icon';
 import { ReceiptPrint } from '../receipts/ReceiptPrint';
 import { ScannerTest } from '../settings/ScannerTest';
 import { PreparedOrderCash } from '../prepared-orders/PreparedOrderCash';
+import { InlineQuantity } from './InlineQuantity';
+import './quick-checkout.css';
 export type LeaveGuard = (() => Promise<void>) | null;
 export function Checkout({
   user,
@@ -48,6 +50,11 @@ export function Checkout({
   receiptsEnabled?: boolean;
 }) {
   const [orderCashOpen, setOrderCashOpen] = useState(false);
+  const units = useQuery({
+    queryKey: ['business-units', user.id],
+    queryFn: () => api().businessUnits.status().then(unwrap),
+  });
+  const [editingQuantityId, setEditingQuantityId] = useState<string | null>(null);
   const pendingOrders = useQuery({
     queryKey: ['prepared-orders-ready'],
     queryFn: () => api().preparedOrders.list({ status: 'READY', limit: 1 }).then(unwrap),
@@ -172,7 +179,7 @@ export function Checkout({
     quoteError = errorMessage(failure);
   }
   const ready = state.mode === 'SCAN';
-  const editable = ready && !state.pendingScans;
+  const editable = ready && !state.pendingScans && !editingQuantityId;
   const stale = controller.stale();
   const editing = state.body.lines.find((l) => l.lineId === state.editingLineId);
   const paymentOpen =
@@ -270,7 +277,7 @@ export function Checkout({
                 aria-label="Escanear código"
                 value={code}
                 onChange={(event) => setCode(event.target.value)}
-                disabled={!ready}
+                disabled={!ready || Boolean(editingQuantityId)}
                 autoComplete="off"
                 spellCheck={false}
                 maxLength={128}
@@ -374,16 +381,41 @@ export function Checkout({
                               −
                             </button>
                           )}
-                          <button
-                            className="quantity-button"
-                            disabled={!editable}
-                            aria-label={`Cambiar cantidad de ${name}`}
-                            onClick={() => controller.edit(line.lineId)}
-                          >
-                            {unit === 'UNIT'
-                              ? String(line.quantityBase)
-                              : formatStock(line.quantityBase, 'KG')}
-                          </button>
+                          {unit === 'UNIT' ? (
+                            <InlineQuantity
+                              name={name}
+                              quantity={line.quantityBase}
+                              disabled={
+                                !ready ||
+                                Boolean(state.pendingScans) ||
+                                Boolean(editingQuantityId && editingQuantityId !== line.lineId)
+                              }
+                              onEditingChange={(editing) =>
+                                setEditingQuantityId((current) =>
+                                  editing ? line.lineId : current === line.lineId ? null : current,
+                                )
+                              }
+                              onChange={(quantity) => controller.setQuantity(line.lineId, quantity)}
+                              onDone={() =>
+                                requestAnimationFrame(() => {
+                                  if (
+                                    controller.getSnapshot().mode === 'SCAN' &&
+                                    scannerMayCapture(document, scanner.current)
+                                  )
+                                    scanner.current?.focus();
+                                })
+                              }
+                            />
+                          ) : (
+                            <button
+                              className="quantity-button"
+                              disabled={!editable}
+                              aria-label={`Cambiar cantidad de ${name}`}
+                              onClick={() => controller.edit(line.lineId)}
+                            >
+                              {formatStock(line.quantityBase, 'KG')}
+                            </button>
+                          )}
                           {unit === 'UNIT' && (
                             <button
                               className="button secondary small"
@@ -435,6 +467,18 @@ export function Checkout({
               <div className="cart-empty">
                 <h2>Empezá una venta</h2>
                 <p>Escaneá un producto o buscalo por nombre.</p>
+              </div>
+            )}
+            {state.undoRemoval && (
+              <div className="cart-undo" role="status">
+                <span>Quitaste {state.undoRemoval.name}.</span>
+                <button
+                  className="button quiet"
+                  disabled={!editable}
+                  onClick={() => controller.undoRemove()}
+                >
+                  Deshacer
+                </button>
               </div>
             )}
           </div>
@@ -628,6 +672,7 @@ export function Checkout({
       )}
       {paymentOpen && totals && paymentMethods && (
         <PaymentDialog
+          contextLabel={units.data?.enabled ? units.data.current.name : undefined}
           paymentMethods={paymentMethods}
           totalCents={totals.totalCents}
           role={user.role}

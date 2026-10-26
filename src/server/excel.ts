@@ -127,6 +127,7 @@ const stockColumns = [
 ];
 const saleColumns = [
   'number|Venta',
+  'businessUnitName|Unidad operativa',
   'businessDate|Fecha|date',
   'status|Estado',
   'subtotalCents|Subtotal (ARS)|money',
@@ -241,7 +242,11 @@ function collect(
       sheet(
         'Ventas',
         saleColumns,
-        pageAll(call, 'sales.list', { ...range, status: f.status ?? 'ALL' }),
+        pageAll(call, 'sales.list', {
+          ...range,
+          status: f.status ?? 'ALL',
+          ...(f.businessUnitId ? { businessUnitId: f.businessUnitId } : {}),
+        }),
       ),
     ];
   if (dataset === 'purchases')

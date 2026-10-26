@@ -10,6 +10,7 @@ import { Dialog } from '../../components/Dialog';
 import { downloadFile, webValue } from '../../web-client';
 import { FeaturesPanel } from './FeaturesPanel';
 import { ScannerTest } from './ScannerTest';
+import { BusinessUnitsPanel } from './BusinessUnitsPanel';
 
 type Method = 'CASH' | 'DEBIT' | 'CREDIT' | 'TRANSFER' | 'OTHER';
 interface Settings {
@@ -33,7 +34,7 @@ const methods: Record<Method, string> = {
   TRANSFER: 'Transferencia',
   OTHER: 'Otro',
 };
-const settingsTabs = ['Negocio', 'Funciones', 'Terminales', 'Lector', 'Exportar'];
+const baseSettingsTabs = ['Negocio', 'Funciones', 'Terminales', 'Lector', 'Exportar'];
 
 export function SettingsPage({
   onOpenPurchaseHistory,
@@ -41,6 +42,13 @@ export function SettingsPage({
   onOpenPurchaseHistory?: (() => void) | undefined;
 }) {
   const [tab, setTab] = useState('Negocio');
+  const businessUnits = useQuery({
+    queryKey: ['business-units'],
+    queryFn: () => api().businessUnits.status().then(unwrap),
+  });
+  const settingsTabs = businessUnits.data?.enabled
+    ? [...baseSettingsTabs, 'BiEmpresa']
+    : baseSettingsTabs;
   const client = useQueryClient();
   const settings = useQuery({
     queryKey: ['settings'],
@@ -140,6 +148,7 @@ export function SettingsPage({
           />
         )}
         {tab === 'Funciones' && <FeaturesPanel onOpenPurchaseHistory={onOpenPurchaseHistory} />}
+        {tab === 'BiEmpresa' && businessUnits.data?.enabled && <BusinessUnitsPanel />}
         {tab === 'Terminales' && (
           <section
             className="dashboard-panel settings-terminals"

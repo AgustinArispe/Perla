@@ -20,6 +20,38 @@ const unitProduct = (): Product => ({
   createdAt: 'now',
   updatedAt: 'now',
 });
+it('deshace una eliminación sin duplicar y descarta deshacer al cambiar el carrito', async () => {
+  const product = unitProduct();
+  const backend = {
+    products: { findByBarcode: async () => ({ ok: true, value: product }) },
+    checkout: { getDraft: async () => ({ ok: true, value: null }) },
+  } as unknown as BochaApi;
+  const controller = new CheckoutController(backend, randomUUID(), {
+    getItem: () => null,
+    setItem: () => {},
+    removeItem: () => {},
+  });
+  try {
+    await controller.initialize();
+    controller.scan(product.barcode!);
+    await new Promise<void>((resolve) => setTimeout(resolve, 0));
+    const body = controller.getSnapshot().body;
+    controller.remove(body.lines[0]!.lineId);
+    expect(controller.getSnapshot().body.lines).toHaveLength(0);
+    controller.undoRemove();
+    expect(controller.getSnapshot().body).toEqual(body);
+    controller.undoRemove();
+    expect(controller.getSnapshot().body.lines).toHaveLength(1);
+    controller.remove(body.lines[0]!.lineId);
+    controller.scan(product.barcode!);
+    await new Promise<void>((resolve) => setTimeout(resolve, 0));
+    expect(controller.getSnapshot().undoRemoval).toBeNull();
+    controller.undoRemove();
+    expect(controller.getSnapshot().body.lines[0]?.quantityBase).toBe(1);
+  } finally {
+    controller.dispose();
+  }
+});
 it('rechaza cambio de unidad al actualizar un carrito por peso', async () => {
   const p: Product = {
     id: randomUUID(),

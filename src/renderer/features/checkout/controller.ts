@@ -34,6 +34,7 @@ const empty = (): Body => ({
 const SCANNER_CACHE_MS = 2_000;
 const SCANNER_CACHE_LIMIT = 256;
 export interface CheckoutState {
+  undoRemoval: { body: Body; name: string } | null;
   body: Body;
   products: Record<string, Product>;
   mode: Mode;
@@ -53,6 +54,7 @@ export interface CheckoutState {
 }
 export class CheckoutController {
   private state: CheckoutState = {
+    undoRemoval: null,
     body: empty(),
     products: {},
     mode: 'LOADING',
@@ -137,7 +139,7 @@ export class CheckoutController {
     for (const listener of this.listeners) listener();
   }
   private change(body: Body): void {
-    this.patch({ body, error: '', quote: null });
+    this.patch({ body, error: '', quote: null, undoRemoval: null });
     this.writer.update(body);
     this.scheduleQuote();
   }
@@ -335,11 +337,26 @@ export class CheckoutController {
     this.change(body);
   }
   remove(lineId: string): void {
-    if (this.state.mode !== 'SCAN') return;
+    if (this.state.mode !== 'SCAN' || this.queue.pending) return;
+    const line = this.state.body.lines.find((item) => item.lineId === lineId);
+    if (!line) return;
+    const previous = this.state.body;
     this.change({
       ...this.state.body,
       lines: this.state.body.lines.filter((l) => l.lineId !== lineId),
     });
+    this.patch({ undoRemoval: { body: previous, name: line.nameSnapshot ?? 'Artículo' } });
+  }
+  undoRemove(): void {
+    const undo = this.state.undoRemoval;
+    if (
+      !undo ||
+      this.state.mode !== 'SCAN' ||
+      this.queue.pending ||
+      undo.body.checkoutKey !== this.state.body.checkoutKey
+    )
+      return;
+    this.change(undo.body);
   }
   applyDiscount(discount: Body['discount']): void {
     const next = DraftBodySchema.shape.discount.parse(discount);
@@ -471,6 +488,7 @@ export class CheckoutController {
       pendingSale: null,
       recovery: null,
       lastSale: sale,
+      undoRemoval: null,
       quote: null,
       quoteLoading: false,
       catalogReviewRequired: false,

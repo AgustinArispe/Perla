@@ -53,12 +53,15 @@ export const SalesSearchSchema = z
     status: z.enum(['ALL', 'COMPLETED', 'VOIDED']).default('ALL'),
     limit: z.number().int().min(1).max(100),
     cursor: z.string().max(1200).optional(),
+    businessUnitId: z.uuid().optional(),
   })
   .refine((v) => !v.fromDate || !v.toDate || v.fromDate <= v.toDate, {
     message: 'El rango de fechas no es válido.',
   });
 export type SalesSearchInput = z.input<typeof SalesSearchSchema>;
 export interface SaleSummary {
+  businessUnitId?: string;
+  businessUnitName?: string;
   id: string;
   number: number;
   checkoutKey: string;

@@ -33,6 +33,11 @@ export function SalesList({
       undefined,
     ]),
     [selected, setSelected] = useState<string | null>(null);
+  const units = useQuery({
+    queryKey: ['business-units'],
+    queryFn: () => api().businessUnits.status().then(unwrap),
+  });
+  const [businessUnitId, setBusinessUnitId] = useState('');
   const appliedDate = useRef<string | undefined>(undefined);
   useEffect(() => {
     if (!initialDate || appliedDate.current === initialDate) return;
@@ -46,6 +51,7 @@ export function SalesList({
   const input: SalesSearchInput = {
     limit: 20,
     status,
+    ...(businessUnitId ? { businessUnitId } : {}),
     ...(from ? { fromDate: from } : {}),
     ...(to ? { toDate: to } : {}),
     ...(cursor ? { cursor } : {}),
@@ -78,6 +84,25 @@ export function SalesList({
         )}
       </PageHeading>
       <div className="history-filters">
+        {(units.data?.enabled || units.data?.hasSecondaryHistory) && (
+          <label className="field">
+            Unidad operativa
+            <select
+              value={businessUnitId}
+              onChange={(event) => {
+                setBusinessUnitId(event.target.value);
+                reset();
+              }}
+            >
+              <option value="">Todas las unidades</option>
+              {units.data?.units.map((unit) => (
+                <option key={unit.id} value={unit.id}>
+                  {unit.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
         <label className="field">
           Desde
           <input
@@ -116,18 +141,29 @@ export function SalesList({
         </label>
         <SavedViews
           module="sales"
-          filters={{ status, ...(from ? { fromDate: from } : {}), ...(to ? { toDate: to } : {}) }}
+          filters={{
+            status,
+            ...(from ? { fromDate: from } : {}),
+            ...(to ? { toDate: to } : {}),
+            ...(businessUnitId ? { businessUnitId } : {}),
+          }}
           onApply={(filters) => {
             const value = scalarViewFilters(filters);
             setFrom(value.fromDate ?? '');
             setTo(value.toDate ?? '');
             setStatus((value.status ?? 'ALL') as typeof status);
+            setBusinessUnitId(value.businessUnitId ?? '');
             setCursors([undefined]);
           }}
         />
         <ExportButton
           dataset="sales"
-          filters={{ status, ...(from ? { fromDate: from } : {}), ...(to ? { toDate: to } : {}) }}
+          filters={{
+            status,
+            ...(from ? { fromDate: from } : {}),
+            ...(to ? { toDate: to } : {}),
+            ...(businessUnitId ? { businessUnitId } : {}),
+          }}
         />
       </div>
       {sales.isError && (
@@ -151,6 +187,7 @@ export function SalesList({
               <tr key={sale.id}>
                 <td>
                   <strong>N.º {sale.number}</strong>
+                  <small>{sale.businessUnitName}</small>
                 </td>
                 <td>{sale.businessDate.split('-').reverse().join('/')}</td>
                 <td>{sale.status === 'COMPLETED' ? 'Completada' : 'Anulada'}</td>

@@ -145,16 +145,14 @@ test('cliente: alta, límite, venta a cuenta, cobro parcial y saldo cancelado en
   await page.screenshot({
     path: 'output/ui-ux-implementation/2026-10-07/payment-balanced-desktop.png',
   });
-  await payment.getByRole('button', { name: 'Dividir pago', exact: true }).click();
+  await payment.getByRole('button', { name: 'Agregar otro medio', exact: true }).click();
   const firstPayment = payment.locator('.payment-row').first();
-  const fields = await firstPayment
-    .locator('input')
-    .evaluateAll((nodes) =>
-      nodes.map((node) => ({
-        width: node.getBoundingClientRect().width,
-        bottom: node.getBoundingClientRect().bottom,
-      })),
-    );
+  const fields = await firstPayment.locator('input').evaluateAll((nodes) =>
+    nodes.map((node) => ({
+      width: node.getBoundingClientRect().width,
+      bottom: node.getBoundingClientRect().bottom,
+    })),
+  );
   expect(Math.abs(fields[0]!.width - fields[1]!.width)).toBeLessThan(2);
   const removeBox = await firstPayment.getByRole('button', { name: 'Quitar pago 1' }).boundingBox();
   expect(Math.abs(fields[0]!.bottom - removeBox!.y - removeBox!.height)).toBeLessThan(2);

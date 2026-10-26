@@ -178,6 +178,11 @@ export function SaleDetailView({
                   {sale.status === 'VOIDED' ? 'Anulada' : 'Completada'}
                 </strong>
                 <p>{timestamp(sale.createdAt)}</p>
+                {sale.businessUnitName && (
+                  <p>
+                    Unidad operativa: <strong>{sale.businessUnitName}</strong>
+                  </p>
+                )}
                 <p>
                   Atendió: <strong>{sale.actorName ?? 'Usuario sin registro histórico'}</strong>
                 </p>

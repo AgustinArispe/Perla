@@ -54,7 +54,11 @@ test('migra v30 con respaldo y conserva preferencias, usuarios, sesiones y perfi
     db = openDatabase(path);
     migrate(db);
     expect(db.prepare('SELECT * FROM users ORDER BY id').all()).toEqual(
-      users.map((user) => ({ ...user, start_module: user.id === owner.user.id ? 'Stock' : null })),
+      users.map((user) => ({
+        ...user,
+        business_unit_id: null,
+        start_module: user.id === owner.user.id ? 'Stock' : null,
+      })),
     );
     expect(db.prepare('SELECT * FROM auth_sessions').all()).toEqual(sessions);
     expect(new AuthService(db).requireUser(owner.sessionToken)).toEqual(owner.user);
@@ -85,7 +89,7 @@ test('migra v30 con respaldo y conserva preferencias, usuarios, sesiones y perfi
           "SELECT COUNT(*) n FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'",
         )
         .get(),
-    ).toEqual({ n: 62 });
+    ).toEqual({ n: 63 });
     expect(db.pragma('integrity_check', { simple: true })).toBe('ok');
     expect(db.pragma('foreign_key_check')).toEqual([]);
     const backups = readdirSync(join(directory, 'migration-backups'));

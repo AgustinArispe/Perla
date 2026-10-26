@@ -1,5 +1,6 @@
 import { captureAuditState, recordMutationAudit } from './control/commercial';
 import { ControlService } from './control/service';
+import { BusinessUnitService } from './business-units/service';
 import { LocationInventorySchema } from '../shared/locations';
 import type Database from 'better-sqlite3';
 import { z } from 'zod';
@@ -107,6 +108,7 @@ import {
 } from '../shared/locations';
 import { LocationSummaryRequestSchema } from '../shared/location-reports';
 const mutations = new Set([
+  'businessUnits.rename',
   'preparedOrders.create',
   'preparedOrders.cancel',
   'deliveryNotes.create',
@@ -286,6 +288,13 @@ export class Application {
     };
     const execute = (): unknown => {
       switch (operation) {
+        case 'businessUnits.status':
+          return new BusinessUnitService(this.db).status(actor);
+        case 'businessUnits.rename':
+          return new BusinessUnitService(this.db).rename(
+            payload as import('../shared/business-units').BusinessUnitRename,
+            actor,
+          );
         case 'preparedOrders.create':
           return new PreparedOrderService(this.db, (body) => this.sales.quote(body)).create(
             PreparedOrderCreateSchema.parse(payload),

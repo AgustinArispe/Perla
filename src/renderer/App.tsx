@@ -1,5 +1,6 @@
 import { PageHeading, WorkspaceTabs } from './components/PageHeader';
 import { PerlaLoading } from './components/PerlaLoading';
+import './features/settings/business-units.css';
 import { authorizedNavigation, navigationGroups } from './navigation';
 import { StructuredActivityPanel } from './features/control/StructuredActivityPanel';
 import { controlValue } from './features/control/client';
@@ -270,6 +271,11 @@ function Workspace({
     queryFn: () => webValue<FeatureStatus>('/settings/features'),
     retry: false,
   });
+  const businessUnits = useQuery({
+    queryKey: ['business-units', user.id],
+    queryFn: () => api().businessUnits.status().then(unwrap),
+    refetchInterval: 30000,
+  });
   const deliveryNoteHistory = useQuery({
     queryKey: ['delivery-note-history-exists'],
     queryFn: () => api().deliveryNotes.list({ limit: 1 }).then(unwrap),
@@ -432,6 +438,13 @@ function Workspace({
     <div
       className={`app-shell${menuCollapsed ? ' sidebar-collapsed' : ''}`}
       data-module={currentSection}
+      data-business-unit={
+        businessUnits.data?.enabled
+          ? businessUnits.data.current.secondary
+            ? 'secondary'
+            : 'primary'
+          : undefined
+      }
     >
       {narrow && mobileMenuOpen && (
         <button
@@ -559,6 +572,11 @@ function Workspace({
       </aside>
       <div className="workspace" inert={narrow && mobileMenuOpen}>
         <header className="topbar">
+          {businessUnits.data?.enabled && (
+            <span className="business-unit-badge" aria-label="Unidad operativa activa">
+              {businessUnits.data.current.name} · Stock compartido
+            </span>
+          )}
           <span className="module-title">
             {narrow ? (
               <PerlaMark className="topbar-brand-mark" />

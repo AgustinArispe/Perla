@@ -1,0 +1,56 @@
+.payment-dialog .payment-total strong {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-variant-numeric: tabular-nums;
+}
+.payment-cash-shortcuts {
+  order: 3;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  grid-column: 1 / -1;
+}
+.payment-dialog .payment-row-main:not(:has(.payment-remove)) {
+  grid-template-columns: minmax(0, 1fr);
+}
+.payment-change-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 16px;
+  background: var(--surface-soft, #edf3ef);
+  border-radius: 12px;
+  color: var(--text, #183039);
+}
+.payment-change-hero strong {
+  font-size: 1.8rem;
+  font-variant-numeric: tabular-nums;
+}
+.payment-fill-balance {
+  align-self: start;
+  justify-self: start;
+  grid-column: 1 / -1;
+  order: 2;
+}
+.cart-inline-quantity {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  max-width: 220px;
+  gap: 4px;
+}
+.cart-inline-quantity input {
+  width: 80px;
+  min-width: 0;
+}
+.cart-inline-quantity small {
+  flex-basis: 100%;
+}
+.cart-undo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  flex-wrap: wrap;
+}

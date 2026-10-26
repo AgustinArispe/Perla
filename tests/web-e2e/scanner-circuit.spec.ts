@@ -135,13 +135,33 @@ test('lector USB simulado: ráfaga, demoras, errores, foco, borrador y cobro ún
   await page
     .getByRole('button', { name: 'Cambiar cantidad de Arroz scanner', exact: true })
     .click();
-  const quantity = page.getByRole('dialog');
-  await quantity.getByRole('textbox').fill('10');
-  await quantity.getByRole('button', { name: /Guardar|Aplicar/ }).click();
+  const quantity = page.getByRole('textbox', { name: 'Cantidad de Arroz scanner', exact: true });
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await quantity.fill('0');
+  await quantity.press('Enter');
+  await expect(page.getByRole('alert')).toContainText('mayor a cero');
+  await expect(page.getByRole('button', { name: 'Cobrar · F8', exact: true })).toBeDisabled();
+  await quantity.fill('10');
+  await quantity.press('Enter');
   await expect(scanner).toBeFocused();
   await expect(
     page.getByRole('button', { name: 'Cambiar cantidad de Arroz scanner', exact: true }),
   ).toHaveText('10');
+  await page
+    .getByRole('button', { name: 'Cambiar cantidad de Arroz scanner', exact: true })
+    .click();
+  await quantity.fill('999');
+  await quantity.press('Escape');
+  await expect(
+    page.getByRole('button', { name: 'Cambiar cantidad de Arroz scanner', exact: true }),
+  ).toHaveText('10');
+  await expect(scanner).toBeFocused();
+  await page.getByRole('button', { name: 'Quitar Arroz scanner', exact: true }).click();
+  await page.getByRole('button', { name: 'Deshacer', exact: true }).click();
+  await expect(
+    page.getByRole('button', { name: 'Cambiar cantidad de Arroz scanner', exact: true }),
+  ).toHaveText('10');
+  await expect(scanner).toBeFocused();
   await expect(page.locator('.checkout-save-state')).toHaveText('Borrador al día');
   await page.reload();
   await openModule(page, 'Caja');

@@ -1,0 +1,49 @@
+.business-unit-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  border: 1px solid var(--accent-line);
+  border-radius: 8px;
+  background: var(--accent-soft);
+  color: var(--ink);
+  font-weight: 700;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+body:has(.app-shell[data-business-unit='secondary']) {
+  --navy: #795824;
+  --navy-dark: #5f431a;
+  --navy-soft: #f5ecdc;
+  --primary: #795824;
+  --primary-hover: #5f431a;
+  --accent-action: #17313d;
+  --accent-hover: #102631;
+  --accent-soft: #e8edef;
+  --brass: #e6c68b;
+}
+.app-shell[data-business-unit='secondary'] .sidebar {
+  background: #795824;
+}
+.business-unit-card {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  margin-block: 12px;
+}
+.business-unit-editor {
+  display: flex;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.business-unit-editor label {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+.business-unit-editor input {
+  max-width: 100%;
+}
+.topbar .business-unit-badge {
+  max-width: min(45vw, 350px);
+}

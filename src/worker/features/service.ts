@@ -35,7 +35,11 @@ export class FeatureService {
       availableFeatures.map((feature) => [
         feature.key,
         persisted.get(feature.key) ??
-          !(feature.key.startsWith('DELIVERY_NOTES_') || feature.key === 'PREPARED_ORDERS'),
+          !(
+            feature.key.startsWith('DELIVERY_NOTES_') ||
+            feature.key === 'PREPARED_ORDERS' ||
+            feature.key === 'BUSINESS_UNITS'
+          ),
       ]),
     ) as FeatureFlags;
     return {
@@ -108,6 +112,7 @@ export class FeatureService {
           DELIVERY_NOTES_INTERNAL:
             input.enabled.DELIVERY_NOTES_INTERNAL ?? current.enabled.DELIVERY_NOTES_INTERNAL,
           PREPARED_ORDERS: input.enabled.PREPARED_ORDERS ?? current.enabled.PREPARED_ORDERS,
+          BUSINESS_UNITS: input.enabled.BUSINESS_UNITS ?? current.enabled.BUSINESS_UNITS,
         };
         if (next.DELIVERY_NOTES_PURCHASES && !next.SUPPLIERS_PURCHASES)
           throw new DomainError(

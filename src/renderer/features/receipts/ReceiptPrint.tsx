@@ -39,6 +39,7 @@ export function ReceiptPrint({ receipt, onClose }: { receipt: SaleReceipt; onClo
         )}
         <header>
           <strong>{receipt.snapshot.businessName}</strong>
+          {sale.businessUnitName && <span>Unidad operativa: {sale.businessUnitName}</span>}
           <span>COMPROBANTE DE VENTA — NO FISCAL</span>
         </header>
         <p>

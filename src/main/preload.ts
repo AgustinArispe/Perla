@@ -83,6 +83,10 @@ const api: BochaApi = {
     byNumber: (number) => invoke('preparedOrders.byNumber', { number }),
     cancel: (input) => invoke('preparedOrders.cancel', input),
   },
+  businessUnits: {
+    status: () => invoke('businessUnits.status', null),
+    rename: (input) => invoke('businessUnits.rename', input),
+  },
   deliveryNotes: {
     list: (input) => invoke('deliveryNotes.list', input),
     sources: (input) => invoke('deliveryNotes.sources', input),

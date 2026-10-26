@@ -12,6 +12,10 @@ import { roleLabel } from '../../../domain/permissions';
 import { api, unwrap, errorMessage } from '../../api';
 import { Dialog } from '../../components/Dialog';
 export function UserList({ currentRole }: { currentRole: Role }) {
+  const units = useQuery({
+    queryKey: ['business-units'],
+    queryFn: () => api().businessUnits.status().then(unwrap),
+  });
   const client = useQueryClient();
   const users = useQuery({
     queryKey: ['users'],
@@ -137,6 +141,12 @@ export function UserList({ currentRole }: { currentRole: Role }) {
                 <tr key={user.id}>
                   <td>
                     <strong>{user.name}</strong>
+                    {units.data?.enabled && (
+                      <small>
+                        {units.data.units.find((unit) => unit.id === user.businessUnitId)?.name ??
+                          units.data.units[0]?.name}
+                      </small>
+                    )}
                   </td>
                   <td>{user.username}</td>
                   <td>
@@ -176,9 +186,7 @@ export function UserList({ currentRole }: { currentRole: Role }) {
             </tbody>
           </table>
         </div>
-        {users.isPending && (
-          <PerlaLoading size="compact" label="Cargando usuarios…" />
-        )}
+        {users.isPending && <PerlaLoading size="compact" label="Cargando usuarios…" />}
         {!users.isPending && !users.isError && visibleUsers?.length === 0 && (
           <div className="empty-table" role="status">
             <p>No hay usuarios con estos filtros.</p>
@@ -261,6 +269,10 @@ function UserForm({
   onClose: () => void;
   onSaved: () => void;
 }) {
+  const units = useQuery({
+    queryKey: ['business-units'],
+    queryFn: () => api().businessUnits.status().then(unwrap),
+  });
   const [busy, setBusy] = useState(false),
     [error, setError] = useState(''),
     [role, setRole] = useState<Role>(user?.role ?? 'SELLER');
@@ -278,6 +290,9 @@ function UserForm({
         name: data.get('name'),
         role: data.get('role'),
         active: data.get('active') === 'on',
+        ...(units.data?.enabled
+          ? { businessUnitId: String(data.get('businessUnitId') || '') || null }
+          : {}),
         ...(password ? { password } : {}),
       });
       unwrap(await api().users.save(input));
@@ -335,6 +350,19 @@ function UserForm({
                 ? 'Vendedor: atiende ventas y las tareas habilitadas para su perfil.'
                 : 'Administrador del sistema: gestiona la configuración y los accesos autorizados.'}
         </p>
+        {units.data?.enabled && (
+          <label className="field">
+            Unidad operativa
+            <select name="businessUnitId" defaultValue={user?.businessUnitId ?? ''}>
+              <option value="">Unidad principal (predeterminada)</option>
+              {units.data.units.map((unit) => (
+                <option key={unit.id} value={unit.id}>
+                  {unit.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
         <label className="field">
           {user ? 'Nueva contraseña (opcional)' : 'Contraseña'}
           <input

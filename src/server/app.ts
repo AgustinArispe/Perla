@@ -249,6 +249,8 @@ export async function createServer(
   route('POST', '/api/v1/auth/terminal', 'auth.terminal');
   route('POST', '/api/v1/checkout/calculate-weight', 'checkout.calculateWeight');
   route('GET', '/api/v1/users', 'users.list', () => null);
+  route('GET', '/api/v1/business-units', 'businessUnits.status', () => null);
+  route('POST', '/api/v1/business-units/rename', 'businessUnits.rename');
   route('POST', '/api/v1/users', 'users.save');
   route('GET', '/api/v1/products', 'products.search', (r) => ({
     query: '',

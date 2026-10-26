@@ -161,7 +161,7 @@ test('jornada real: dos cajeros, promoción, peso, cobro incierto, devolución y
       .click();
     await expect(morning.locator('.checkout-total')).toContainText('6.500');
     await morning.keyboard.press('F8');
-    await morning.getByRole('button', { name: 'Dividir pago', exact: true }).click();
+    await morning.getByRole('button', { name: 'Agregar otro medio', exact: true }).click();
     await morning.getByLabel('Efectivo recibido 1').fill('4000');
     // The server commits, but the confirmation is lost on the way back.
     await morning.route(

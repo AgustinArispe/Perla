@@ -21,6 +21,8 @@ export const PreparedOrderCancelSchema = z.strictObject({
   reason: z.string().trim().min(3).max(240),
 });
 export interface PreparedOrder {
+  businessUnitId?: string;
+  businessUnitName?: string;
   id: string;
   number: number;
   status: 'READY' | 'PAID' | 'CANCELLED';

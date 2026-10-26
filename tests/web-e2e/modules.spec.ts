@@ -18,8 +18,7 @@ test('web real: módulos, terminal, venta escaneada y consulta', async ({ page }
   );
   await expect.poll(async () => (await sidebar.boundingBox())!.width).toBeLessThan(100);
   await page.reload();
-  await expect(page.getByRole('button', { name: 'Expandir menú', exact: true })).toBeVisible();
-  await page.getByRole('button', { name: 'Expandir menú', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Colapsar menú', exact: true })).toBeVisible();
   await expect.poll(async () => (await sidebar.boundingBox())!.width).toBeGreaterThan(200);
   const shellGeometry = await page.evaluate(() => {
     const sidebarRect = document.querySelector('.sidebar')!.getBoundingClientRect();
@@ -98,7 +97,7 @@ test('web real: módulos, terminal, venta escaneada y consulta', async ({ page }
   await expect(page.getByRole('dialog')).toBeVisible();
   await expect(page.getByRole('textbox', { name: 'Efectivo recibido 1' })).toBeFocused();
   await expect(page.locator('.payment-balance')).toHaveCount(0);
-  await page.getByRole('button', { name: 'Dividir pago' }).click();
+  await page.getByRole('button', { name: 'Agregar otro medio' }).click();
   await expect(page.getByRole('textbox', { name: 'Importe aplicado 1' })).toHaveValue('1500,00');
   await expect(page.getByRole('textbox', { name: 'Importe aplicado 2' })).toHaveValue('1500,00');
   await expect(page.locator('.payment-balance')).toContainText('Pago completo');
@@ -118,10 +117,23 @@ test('web real: módulos, terminal, venta escaneada y consulta', async ({ page }
   await page.screenshot({ path: 'tmp/frontend-cobrar-mobile.png', fullPage: false });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.getByRole('textbox', { name: 'Efectivo recibido 1' }).fill('4000');
-  await expect(page.locator('.payment-change-inline')).toContainText('Vuelto $ 1.000');
+  await expect(page.locator('.payment-change-hero')).toContainText('$ 1.000,00');
+  await page.getByRole('button', { name: 'Justo', exact: true }).click();
+  await expect(page.getByRole('textbox', { name: 'Efectivo recibido 1' })).toHaveValue('3000,00');
+  await expect(page.locator('.payment-change-hero')).toHaveCount(0);
   await expect(page.locator('.payment-balance-change')).toHaveCount(0);
   await page.getByRole('textbox', { name: 'Efectivo recibido 1' }).fill('3000');
   await page.setViewportSize({ width: 1280, height: 720 });
+  await page.getByRole('button', { name: 'Agregar otro medio', exact: true }).click();
+  await page.getByLabel('Importe aplicado 1').fill('1000');
+  await page
+    .locator('.payment-row')
+    .nth(1)
+    .getByRole('button', { name: 'Completar saldo aquí', exact: true })
+    .click();
+  await expect(page.getByLabel('Importe aplicado 2')).toHaveValue('2000,00');
+  await expect(page.locator('.payment-balance')).toContainText('Pago completo');
+  await page.getByRole('button', { name: 'Quitar pago 2' }).click();
   await page.getByRole('button', { name: /Confirmar venta/ }).click();
   await expect(page.locator('.sale-confirmed')).toBeVisible();
   const receiptDialog = page.getByRole('dialog', { name: 'Comprobante de venta' });
@@ -190,7 +202,9 @@ test('web real: módulos, terminal, venta escaneada y consulta', async ({ page }
     }
     await expect(page.locator('main')).not.toContainText('Origen no permitido');
     if (name === 'Configuración') {
-      await expect(page.locator('.workspace-tabs')).toHaveCount(1);
+      await expect(page.getByRole('tablist', { name: 'Configuración', exact: true })).toHaveCount(
+        1,
+      );
       const businessTab = page.getByRole('tab', { name: 'Negocio', exact: true });
       await businessTab.focus();
       await businessTab.press('ArrowRight');
@@ -198,7 +212,9 @@ test('web real: módulos, terminal, venta escaneada y consulta', async ({ page }
       await page.getByRole('tab', { name: 'Funciones', exact: true }).press('ArrowRight');
       await page.getByRole('tab', { name: 'Terminales', exact: true }).press('ArrowRight');
       await expect(page.getByRole('tab', { name: 'Lector', exact: true })).toBeFocused();
-      await expect(page.locator('.workspace-tabs')).toHaveCount(1);
+      await expect(page.getByRole('tablist', { name: 'Configuración', exact: true })).toHaveCount(
+        1,
+      );
       await page.getByRole('tab', { name: 'Lector', exact: true }).press('Home');
       await expect(businessTab).toBeFocused();
       await expect(businessTab).toHaveAttribute('aria-selected', 'true');
@@ -313,9 +329,11 @@ test('web: permisos de vendedor y supervisor', async ({ page }) => {
     await page.getByRole('button', { name: 'Ingresar', exact: true }).click();
     const nav = page.getByRole('navigation', { name: 'Módulos' });
     await expect(nav).toBeVisible();
-    for (const section of await nav.getByRole('button', { name: /^Desplegar sección/ }).all()) {
-      await section.click();
-    }
+    while (await nav.getByRole('button', { name: /^Desplegar sección/ }).count())
+      await nav
+        .getByRole('button', { name: /^Desplegar sección/ })
+        .first()
+        .click();
     await expect(nav.getByRole('button', { name: 'Resultados', exact: true })).toHaveCount(0);
     await expect(nav.getByRole('button', { name: 'Usuarios', exact: true })).toHaveCount(0);
     await page.locator('.sidebar').getByRole('button', { name: 'Ayuda', exact: true }).click();
@@ -323,7 +341,8 @@ test('web: permisos de vendedor y supervisor', async ({ page }) => {
     await expect(
       page.getByRole('heading', { name: 'Usuarios y configuración', exact: true }),
     ).toHaveCount(0);
-    if (username === 'vendedor') await expect(nav.locator('.nav-item')).toHaveCount(1);
+    if (username === 'vendedor')
+      await expect(nav.getByRole('button', { name: 'Caja', exact: true })).toBeVisible();
     else await expect(nav.getByRole('button', { name: 'Stock', exact: true })).toBeVisible();
     expect(
       await page.evaluate(

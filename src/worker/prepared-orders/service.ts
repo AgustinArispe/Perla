@@ -14,9 +14,12 @@ import {
   type PreparedOrderCancel,
 } from '../../shared/prepared-orders';
 import { FeatureService } from '../features/service';
+import { BusinessUnitService } from '../business-units/service';
 const hash = (value: unknown) => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 const select = `SELECT o.*,l.name location_name,s.number sale_number FROM prepared_orders o JOIN locations l ON l.id=o.location_id LEFT JOIN sales s ON s.id=o.sale_id`;
 type Row = {
+  business_unit_id: string;
+  business_unit_name: string;
   id: string;
   number: number;
   status: PreparedOrder['status'];
@@ -41,6 +44,8 @@ type Row = {
   cancel_hash: string | null;
 };
 const render = (r: Row): PreparedOrder => ({
+  businessUnitId: r.business_unit_id,
+  businessUnitName: r.business_unit_name,
   id: r.id,
   number: r.number,
   status: r.status,
@@ -139,9 +144,10 @@ export class PreparedOrderService {
           n: number;
         }
       ).n;
+      const unit = new BusinessUnitService(this.db).resolve(actor);
       this.db
         .prepare(
-          `INSERT INTO prepared_orders(id,number,status,operation_key,payload_hash,checkout_key,location_id,customer_name,note,body_json,quote_json,items_json,created_at_utc,prepared_by,prepared_by_name) VALUES(?,?,'READY',?,?,?,?,?,?,?,?,?,?,?,?)`,
+          `INSERT INTO prepared_orders(id,number,status,operation_key,payload_hash,checkout_key,location_id,customer_name,note,body_json,quote_json,items_json,created_at_utc,prepared_by,prepared_by_name,business_unit_id,business_unit_name) VALUES(?,?,'READY',?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
         )
         .run(
           randomUUID(),
@@ -158,6 +164,8 @@ export class PreparedOrderService {
           new Date().toISOString(),
           actor.id,
           actor.name,
+          unit.id,
+          unit.name,
         );
       return this.byNumber(number, actor);
     };

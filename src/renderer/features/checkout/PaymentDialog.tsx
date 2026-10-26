@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { CustomerForm } from '../customers/CustomerPage';
 import { EntityPicker } from '../../components/EntityPicker';
@@ -10,6 +10,8 @@ import { Dialog } from '../../components/Dialog';
 import { Icon } from '../../components/Icon';
 import { api, errorMessage, unwrap } from '../../api';
 import type { Customer } from '../../../shared/customers';
+import { cashSuggestions } from './quick-payment';
+import './quick-checkout.css';
 export const paymentLabels: Record<PaymentInput['method'], string> = {
   CASH: 'Efectivo',
   DEBIT: 'Débito',
@@ -29,6 +31,7 @@ export function PaymentDialog({
   onCustomerChange,
   customersEnabled = false,
   customerCreditEnabled = false,
+  contextLabel,
 }: {
   totalCents: number;
   paymentMethods: PaymentInput['method'][];
@@ -40,6 +43,7 @@ export function PaymentDialog({
   onCustomerChange?: (customer: Customer | null) => void;
   customersEnabled?: boolean;
   customerCreditEnabled?: boolean;
+  contextLabel?: string | undefined;
   onConfirm: (
     payments: PaymentInput[],
     override?: { reason: string },
@@ -66,6 +70,7 @@ export function PaymentDialog({
   const [customerSearchOpen, setCustomerSearchOpen] = useState(Boolean(initialCustomer));
   const [createCustomerOpen, setCreateCustomerOpen] = useState(false);
   const client = useQueryClient();
+  const cashInputs = useRef(new Map<string, HTMLInputElement>());
   const customerId = selectedCustomer?.id ?? '';
   function payments(): PaymentInput[] {
     if (onAccount) return [];
@@ -81,7 +86,8 @@ export function PaymentDialog({
   }
   let applied = 0,
     change = 0,
-    cashShortfall = 0;
+    cashShortfall = 0,
+    amountsValid = true;
   try {
     for (const p of payments()) {
       applied += p.amountCents;
@@ -92,10 +98,29 @@ export function PaymentDialog({
       }
     }
   } catch {
+    amountsValid = false;
     /* Form validation reports malformed amounts on confirmation. */
   }
   function update(id: string, patch: Partial<(typeof rows)[number]>) {
     setRows((current) => current.map((row) => (row.id === id ? { ...row, ...patch } : row)));
+  }
+  function chooseMethod(method: PaymentInput['method']) {
+    const first = rows[0];
+    if (!first || busy) return;
+    update(first.id, { method });
+    if (method === 'CASH') requestAnimationFrame(() => cashInputs.current.get(first.id)?.focus());
+  }
+  function completeBalance(id: string) {
+    try {
+      const remainder =
+        totalCents -
+        rows.filter((row) => row.id !== id).reduce((sum, row) => sum + parseArs(row.amount), 0);
+      if (remainder <= 0) throw new Error('Los otros pagos ya cubren el total.');
+      update(id, { amount: moneyInput(remainder), received: moneyInput(remainder) });
+      setError('');
+    } catch (failure) {
+      setError(errorMessage(failure));
+    }
   }
   function removePayment(id: string) {
     setRows((current) => {
@@ -213,6 +238,9 @@ export function PaymentDialog({
             <span>Total a cobrar</span>
             <strong>{formatMoney(totalCents)}</strong>
           </div>
+          {contextLabel && (
+            <p className="business-unit-badge">Venta de {contextLabel} · Stock compartido</p>
+          )}
           {customersEnabled && (
             <section className="payment-customer">
               {customerSearchOpen && (
@@ -303,7 +331,7 @@ export function PaymentDialog({
                           type="button"
                           className={`payment-method-option${rows[0]?.method === method ? ' selected' : ''}`}
                           aria-pressed={rows[0]?.method === method}
-                          onClick={() => update(rows[0]!.id, { method })}
+                          onClick={() => chooseMethod(method)}
                         >
                           {paymentLabels[method]}
                           {rows[0]?.method === method && <Icon name="check" size={16} />}
@@ -338,38 +366,80 @@ export function PaymentDialog({
                       </label>
                     )}
                     {rows.length > 1 && (
-                      <label className="field">
-                        Importe {index + 1}
-                        <input
-                          aria-label={`Importe aplicado ${index + 1}`}
-                          inputMode="decimal"
-                          value={row.amount}
-                          onChange={(event) => update(row.id, { amount: event.target.value })}
-                          data-dialog-focus={
-                            index === 0 && row.method !== 'CASH' ? true : undefined
-                          }
-                        />
-                      </label>
+                      <>
+                        <label className="field">
+                          Importe {index + 1}
+                          <input
+                            aria-label={`Importe aplicado ${index + 1}`}
+                            inputMode="decimal"
+                            value={row.amount}
+                            onChange={(event) =>
+                              update(row.id, {
+                                amount: event.target.value,
+                                ...(row.method === 'CASH' && row.received === row.amount
+                                  ? { received: event.target.value }
+                                  : {}),
+                              })
+                            }
+                            onFocus={(event) => event.currentTarget.select()}
+                            data-dialog-focus={
+                              index === 0 && row.method !== 'CASH' ? true : undefined
+                            }
+                          />
+                        </label>
+                        <button
+                          type="button"
+                          className="button quiet small payment-fill-balance"
+                          onClick={() => completeBalance(row.id)}
+                        >
+                          Completar saldo aquí
+                        </button>
+                      </>
                     )}
                     {row.method === 'CASH' && (
                       <label className="field">
-                        <span className="payment-field-label">
-                          Efectivo recibido
-                          {change > 0 && index === 0 && (
-                            <span className="payment-change-inline">
-                              Vuelto {formatMoney(change)}
-                            </span>
-                          )}
-                        </span>
+                        <span className="payment-field-label">El cliente entrega</span>
                         <input
                           aria-label={`Efectivo recibido ${index + 1}`}
+                          ref={(input) => {
+                            if (input) cashInputs.current.set(row.id, input);
+                            else cashInputs.current.delete(row.id);
+                          }}
                           inputMode="decimal"
                           value={row.received}
                           onChange={(event) => update(row.id, { received: event.target.value })}
+                          onFocus={(event) => event.currentTarget.select()}
                           data-dialog-focus={index === 0 ? true : undefined}
                         />
                       </label>
                     )}
+                    {row.method === 'CASH' &&
+                      (() => {
+                        let suggestions: number[] = [];
+                        try {
+                          suggestions = cashSuggestions(parseArs(row.amount));
+                        } catch {
+                          /* Invalid amount is reported at confirmation. */
+                        }
+                        return (
+                          <div
+                            className="payment-cash-shortcuts"
+                            role="group"
+                            aria-label={`Entrega de efectivo ${index + 1}`}
+                          >
+                            {suggestions.map((amount, suggestionIndex) => (
+                              <button
+                                className="button secondary small"
+                                type="button"
+                                key={amount}
+                                onClick={() => update(row.id, { received: moneyInput(amount) })}
+                              >
+                                {suggestionIndex === 0 ? 'Justo' : formatMoney(amount)}
+                              </button>
+                            ))}
+                          </div>
+                        );
+                      })()}
                     {rows.length > 1 && (
                       <button
                         className="button quiet payment-remove"
@@ -410,11 +480,6 @@ export function PaymentDialog({
                         Falta efectivo <strong>{formatMoney(cashShortfall)}</strong>
                       </span>
                     )}
-                    {change > 0 && rows.length > 1 && (
-                      <span className="payment-balance-change">
-                        Vuelto <strong>{formatMoney(change)}</strong>
-                      </span>
-                    )}
                   </div>
                 )}
                 {totalCents > 0 && (
@@ -424,11 +489,21 @@ export function PaymentDialog({
                     disabled={rows.length >= 20 || totalCents < 2}
                     onClick={splitPayment}
                   >
-                    Dividir pago
+                    Agregar otro medio
                   </button>
                 )}
               </>
             )}
+            {!onAccount &&
+              amountsValid &&
+              change > 0 &&
+              cashShortfall === 0 &&
+              applied === totalCents && (
+                <div className="payment-change-hero" role="status">
+                  <span>Vuelto para el cliente</span>
+                  <strong>{formatMoney(change)}</strong>
+                </div>
+              )}
             {onAccount && (
               <div className="notice">
                 <Icon name="check" size={18} /> La venta quedará pendiente en la cuenta del cliente.
