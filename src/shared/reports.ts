@@ -41,6 +41,7 @@ export interface ProfitabilityBreakdown {
   coverageBasisPoints: number;
 }
 export interface MonthlyReport {
+  categorySales?: { name: string; netCents: number }[];
   month: string;
   /** 2: sales and returns by movement date; absent on legacy saved reports. */
   definitionVersion?: 2;

@@ -9,6 +9,7 @@ import { api, unwrap, errorMessage } from '../../api';
 import { formatMoney } from '../../../domain/values';
 import { PaymentBreakdown } from './PaymentBreakdown';
 import { TopProducts } from './TopProducts';
+import { TopCategories } from './TopCategories';
 import { MonthlyReportPrint } from './MonthlyReportPrint';
 import { Icon } from '../../components/Icon';
 import { PeriodComparison } from './PeriodComparison';
@@ -157,9 +158,7 @@ export function DashboardPage({
           </button>
         </div>
       )}
-      {report.isPending && month && (
-        <PerlaLoading label="Consultando el mes…" />
-      )}
+      {report.isPending && month && <PerlaLoading label="Consultando el mes…" />}
       {data && (
         <>
           <div
@@ -229,6 +228,7 @@ export function DashboardPage({
           <DailySalesChart key={month} report={data} {...(onOpenDay ? { onOpenDay } : {})} />
           <div className="results-analysis-grid">
             <TopProducts report={data} />
+            <TopCategories report={data} />
             <PaymentBreakdown report={data} />
           </div>
 

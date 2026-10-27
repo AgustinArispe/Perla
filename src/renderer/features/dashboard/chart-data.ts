@@ -22,18 +22,38 @@ export function chartExtent(values: number[]) {
   return { min, max, ticks };
 }
 
+export const TOP_PRODUCTS_LIMIT = 25;
+export const TOP_CATEGORIES_LIMIT = 10;
+
+function limitedShares(rows: { id: string; name: string; value: number }[], limit: number) {
+  const ordered = [...rows].sort((a, b) => b.value - a.value || a.id.localeCompare(b.id));
+  const periodTotal = ordered.reduce((sum, row) => sum + row.value, 0);
+  const positive = ordered.filter((row) => row.value > 0);
+  const segments = positive.slice(0, limit);
+  return {
+    total: segments.reduce((sum, row) => sum + row.value, 0),
+    periodTotal,
+    omittedCount: Math.max(0, positive.length - limit),
+    drawable: segments.length > 0 && ordered.every((row) => row.value >= 0),
+    segments,
+  };
+}
+
+export function categoryShares(rows: NonNullable<MonthlyReport['categorySales']>) {
+  return limitedShares(
+    rows.map((row) => ({ id: row.name, name: row.name, value: row.netCents })),
+    TOP_CATEGORIES_LIMIT,
+  );
+}
+
 export function productShares(rows: RankedProduct[], kind: 'revenue' | 'units' | 'kilos') {
   const value = (row: RankedProduct) => (kind === 'revenue' ? row.netCents : row.quantityBase);
-  const ordered = [...rows].sort(
-    (a, b) => value(b) - value(a) || a.productId.localeCompare(b.productId),
+  return limitedShares(
+    rows.map((row) => ({
+      id: row.productId + ':' + row.unit,
+      name: row.name,
+      value: value(row),
+    })),
+    TOP_PRODUCTS_LIMIT,
   );
-  const total = ordered.reduce((sum, row) => sum + value(row), 0);
-  const segments = ordered.slice(0, 5).map((row) => ({
-    id: row.productId + ':' + row.unit,
-    name: row.name,
-    value: value(row),
-  }));
-  const other = ordered.slice(5).reduce((sum, row) => sum + value(row), 0);
-  if (other) segments.push({ id: 'other', name: 'Otros', value: other });
-  return { total, drawable: total > 0 && ordered.every((row) => value(row) >= 0), segments };
 }

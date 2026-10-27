@@ -501,7 +501,7 @@ export const helpTopics: Topic[] = [
       },
       {
         title: 'Productos y reposición',
-        text: 'El ranking ayuda a identificar los productos más vendidos. Las alertas de stock ayudan a planificar la reposición. El total vendido es facturación interna, no ganancia.',
+        text: 'El tablero muestra hasta 25 productos y 10 categorías principales. Los porcentajes de cada dona corresponden a esa selección, no a todo el período; los totales generales y las exportaciones completas conservan todas las operaciones. Las categorías son las registradas al vender y contemplan devoluciones. Si hay netos negativos se muestra el ranking sin dona. Las alertas de stock ayudan a planificar la reposición. El total vendido es facturación interna, no ganancia.',
       },
       {
         title: 'Margen bruto y cobertura',

@@ -224,15 +224,19 @@
 }
 .results-analysis-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.45fr) minmax(300px, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 20px;
   align-items: start;
   margin-bottom: 20px;
 }
 .results-products,
+.results-categories,
 .results-payments {
   min-width: 0;
   padding: 24px;
+}
+.results-payments {
+  grid-column: 1 / -1;
 }
 .results-products .dashboard-panel-heading {
   align-items: center;
@@ -275,11 +279,31 @@
   font-size: 10px;
 }
 .results-share-legend {
+  max-height: 360px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 10px;
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding-block: 0;
+  padding-left: 0;
   display: grid;
   gap: 12px;
+}
+.results-share-legend:focus-visible {
+  outline: 2px solid var(--accent-action);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+.results-category-ranking {
+  padding-left: 20px;
+}
+.results-category-ranking li {
+  padding: 10px 0;
+}
+.results-category-ranking strong {
+  float: right;
+  margin-left: 12px;
 }
 .results-share-legend li {
   display: grid;
@@ -438,6 +462,7 @@
 @media (max-width: 700px) {
   .results-daily,
   .results-products,
+  .results-categories,
   .results-payments {
     padding: 18px 14px;
   }

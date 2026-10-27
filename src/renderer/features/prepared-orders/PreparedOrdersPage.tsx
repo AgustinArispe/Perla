@@ -11,6 +11,7 @@ import { PageHeading } from '../../components/PageHeader';
 import { Dialog } from '../../components/Dialog';
 import { PerlaLoading } from '../../components/PerlaLoading';
 import { ProductSearch } from '../checkout/ProductSearch';
+import { estimateOrder } from './order-estimate';
 import '../delivery-notes/delivery-notes.css';
 
 export function PreparedOrdersPage({ enabled, user }: { enabled: boolean; user: User }) {
@@ -27,6 +28,7 @@ export function PreparedOrdersPage({ enabled, user }: { enabled: boolean; user: 
   const [error, setError] = useState('');
   const [pending, setPending] = useState<PreparedOrderCreate | null>(null);
   const [selected, setSelected] = useState<PreparedOrder | null>(null);
+  const estimate = estimateOrder(lines);
   const orders = useQuery({
     queryKey: ['prepared-orders', status, number],
     queryFn: () =>
@@ -42,7 +44,7 @@ export function PreparedOrdersPage({ enabled, user }: { enabled: boolean; user: 
     try {
       const input = pending ?? {
         operationKey,
-        customerName: name,
+        customerName: name.trim() || 'Cliente de mostrador',
         note,
         body: {
           checkoutKey,
@@ -81,7 +83,7 @@ export function PreparedOrdersPage({ enabled, user }: { enabled: boolean; user: 
     }
   }
   return (
-    <>
+    <div className="documents-workspace prepared-orders-workspace">
       <PageHeading className="page-heading">
         <div>
           <h1>Órdenes para caja</h1>
@@ -94,39 +96,73 @@ export function PreparedOrdersPage({ enabled, user }: { enabled: boolean; user: 
         </p>
       )}
       {enabled && (
-        <section className="catalog-card">
-          <form onSubmit={(e) => void create(e)} style={{ padding: 20 }}>
-            <h2>Preparar orden sin cobrar</h2>
-            <fieldset className="delivery-note-form" disabled={busy || Boolean(pending)}>
-              <label>
+        <section className="catalog-card prepared-order-compose">
+          <form
+            onSubmit={(e) => void create(e)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' && event.target instanceof HTMLInputElement)
+                event.preventDefault();
+            }}
+          >
+            <fieldset
+              className="prepared-order-content delivery-note-form"
+              disabled={busy || Boolean(pending)}
+            >
+              <div className="document-section-heading">
+                <div>
+                  <h2>Preparar orden sin cobrar</h2>
+                  <p>Elegí los artículos. El cliente paga después en caja.</p>
+                </div>
+                <span className="pill">1 · Preparación</span>
+              </div>
+              <label className="field prepared-order-customer">
                 Cliente o referencia
                 <input
-                  required
                   minLength={2}
+                  placeholder="Cliente de mostrador (opcional)"
                   maxLength={160}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
               </label>
-              <label>
-                Observaciones
-                <textarea value={note} maxLength={1000} onChange={(e) => setNote(e.target.value)} />
-              </label>
-              <button type="button" className="button secondary" onClick={() => setSearch(true)}>
-                Agregar artículo
-              </button>
+              <details className="document-extra-options">
+                <summary>Agregar observaciones</summary>
+                <label className="field">
+                  Observaciones
+                  <textarea
+                    value={note}
+                    maxLength={1000}
+                    onChange={(e) => setNote(e.target.value)}
+                  />
+                </label>
+              </details>
+              <div className="document-section-heading">
+                <h3>
+                  Artículos <span className="pill">{lines.length}</span>
+                </h3>
+                <button type="button" className="button secondary" onClick={() => setSearch(true)}>
+                  Agregar artículo
+                </button>
+              </div>
+              {!lines.length && (
+                <div className="document-composer-empty">
+                  <h3>Empezá por los artículos</h3>
+                  <p>Buscá por nombre o código y ajustá las cantidades.</p>
+                </div>
+              )}
               {lines.map((line, index) => (
-                <div className="receipt-queue-row" key={line.lineId}>
-                  <div>
+                <div className="prepared-order-line" key={line.lineId}>
+                  <div className="prepared-order-product">
                     <strong>{line.product.name}</strong>
                     <small>
                       {formatMoney(line.product.priceCents)} /{' '}
                       {line.product.saleUnit === 'KG' ? 'kg' : 'unidad'}
                     </small>
                   </div>
-                  <label>
-                    Cantidad de {line.product.name}
+                  <label className="field">
+                    {line.product.saleUnit === 'KG' ? 'Kilos' : 'Cantidad'}
                     <input
+                      aria-label={`Cantidad de ${line.product.name}`}
                       required
                       inputMode="decimal"
                       value={line.quantity}
@@ -139,9 +175,15 @@ export function PreparedOrdersPage({ enabled, user }: { enabled: boolean; user: 
                       }
                     />
                   </label>
+                  <strong className="prepared-order-line-total">
+                    {estimate?.lineTotals[index] !== undefined
+                      ? formatMoney(estimate.lineTotals[index]!)
+                      : '—'}
+                  </strong>
                   <button
                     type="button"
                     className="button secondary"
+                    aria-label={`Quitar ${line.product.name}`}
                     onClick={() => setLines((current) => current.filter((_, i) => i !== index))}
                   >
                     Quitar
@@ -149,14 +191,32 @@ export function PreparedOrdersPage({ enabled, user }: { enabled: boolean; user: 
                 </div>
               ))}
             </fieldset>
-            <button className="button primary" disabled={busy || !lines.length}>
-              {busy ? 'Preparando…' : pending ? 'Reintentar preparación' : 'Enviar orden a caja'}
-            </button>
-            {pending && (
+            <aside className="prepared-order-summary">
+              <span className="pill">2 · Cobrar en caja</span>
+              <h2>Resumen de la orden</h2>
               <p>
-                Reintentá con los mismos datos o consultá el historial antes de preparar otra orden.
+                {lines.length} {lines.length === 1 ? 'artículo' : 'artículos'}
               </p>
-            )}
+              <div className="prepared-order-estimate">
+                <span>Total estimado</span>
+                <strong>{estimate ? formatMoney(estimate.totalCents) : 'Revisá cantidades'}</strong>
+              </div>
+              <small>
+                Importes sin promociones. El total definitivo se calcula al preparar la orden.
+              </small>
+              <button className="button primary" disabled={busy || !lines.length || !estimate}>
+                {busy ? 'Preparando…' : pending ? 'Reintentar preparación' : 'Enviar orden a caja'}
+              </button>
+              <p className="document-safety-note">
+                Preparar no cobra ni reserva stock. El número de orden permite recuperarla en caja.
+              </p>
+              {pending && (
+                <p>
+                  Reintentá con los mismos datos o consultá el historial antes de preparar otra
+                  orden.
+                </p>
+              )}
+            </aside>
           </form>
         </section>
       )}
@@ -166,7 +226,11 @@ export function PreparedOrdersPage({ enabled, user }: { enabled: boolean; user: 
           cancelar.
         </p>
       )}
-      <section className="catalog-card">
+      <section className="catalog-card document-history">
+        <div className="document-section-heading">
+          <h2>Órdenes preparadas</h2>
+          <span className="pill">{orders.data?.total ?? 0} en esta consulta</span>
+        </div>
         <div className="delivery-note-filters">
           <label>
             Estado
@@ -192,18 +256,30 @@ export function PreparedOrdersPage({ enabled, user }: { enabled: boolean; user: 
         {orders.isPending && <PerlaLoading size="panel" label="Cargando órdenes…" />}
         {orders.isError && <p className="alert error">{errorMessage(orders.error)}</p>}
         {!orders.isPending && !orders.isError && !orders.data?.items.length && (
-          <p className="empty-state">No hay órdenes para estos filtros.</p>
+          <div className="document-empty-state">
+            <h3>No hay órdenes para estos filtros</h3>
+            <p>Las órdenes que prepares aparecerán acá para consultar, imprimir o cancelar.</p>
+          </div>
         )}
         {orders.data?.items.map((order) => (
-          <div className="receipt-queue-row" key={order.id}>
+          <div className="document-list-row" key={order.id}>
             <div>
               <strong>
                 Orden N.º {order.number} · {order.customerName}
               </strong>
               <small>
-                {order.preparedBy} · {formatMoney(order.quote.totalCents)}
+                {order.preparedBy}
+                {order.businessUnitName ? ` · ${order.businessUnitName}` : ''}
               </small>
             </div>
+            <span className={`document-status document-status-${order.status.toLowerCase()}`}>
+              {order.status === 'READY'
+                ? 'Pendiente de cobro'
+                : order.status === 'PAID'
+                  ? 'Cobrada'
+                  : 'Cancelada'}
+            </span>
+            <strong className="document-list-total">{formatMoney(order.quote.totalCents)}</strong>
             <button className="button secondary" onClick={() => setSelected(order)}>
               Ver orden
             </button>
@@ -240,7 +316,7 @@ export function PreparedOrdersPage({ enabled, user }: { enabled: boolean; user: 
           }}
         />
       )}
-    </>
+    </div>
   );
 }
 export function PreparedOrderPrint({

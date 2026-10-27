@@ -196,6 +196,14 @@ export class MonthlyReports {
       const productRanks = new Map(
         ranked.map((p, index) => [p.productId, { product: p, rank: index + 1 }]),
       );
+      const categorySales = this.rows(
+        `${movementLines} SELECT COALESCE(category_name,'Sin categoría') name,SUM(net) net
+         FROM movements GROUP BY COALESCE(category_name,'Sin categoría') ORDER BY net DESC,name`,
+        period.from,
+        period.to,
+        period.from,
+        period.to,
+      ).map((row) => ({ name: String(row.name), netCents: integer(row.net) }));
       const byQuantity = (unit: RankedProduct['unit']) =>
         ranked
           .filter((p) => p.unit === unit)
@@ -295,6 +303,7 @@ export class MonthlyReports {
         daily,
         previousDaily,
         rankings: { revenue: ranked, units: byQuantity('UNIT'), kilos: byQuantity('KG') },
+        categorySales,
         profitability: {
           knownCostCents,
           coveredNetCents,

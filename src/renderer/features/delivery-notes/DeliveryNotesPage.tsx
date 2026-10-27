@@ -59,7 +59,7 @@ export function DeliveryNotesPage({ enabled }: { enabled: FeatureFlags }) {
     ]);
   }
   return (
-    <>
+    <div className="documents-workspace delivery-notes-workspace">
       <PageHeading className="page-heading">
         <div>
           <h1>Remitos</h1>
@@ -81,7 +81,18 @@ export function DeliveryNotesPage({ enabled }: { enabled: FeatureFlags }) {
           La emisión está desactivada. El historial sigue disponible para el jefe.
         </p>
       )}
-      <section className="catalog-card">
+      <section className="document-guidance">
+        <strong>Un remito acompaña una operación registrada</strong>
+        <p>
+          Elegí una venta, compra o traslado. Emitir el documento no vuelve a mover mercadería ni
+          registra otro cobro.
+        </p>
+      </section>
+      <section className="catalog-card document-history">
+        <div className="document-section-heading">
+          <h2>Documentos emitidos</h2>
+          <span className="pill">{list.data?.total ?? 0} en esta consulta</span>
+        </div>
         <div className="delivery-note-filters">
           <label>
             Tipo
@@ -120,6 +131,18 @@ export function DeliveryNotesPage({ enabled }: { enabled: FeatureFlags }) {
           <button className="button secondary" onClick={() => void refresh()}>
             Actualizar
           </button>
+          {(kind || status) && (
+            <button
+              className="button quiet"
+              onClick={() => {
+                setKind('');
+                setStatus('');
+                setOffset(0);
+              }}
+            >
+              Limpiar filtros
+            </button>
+          )}
         </div>
         {(list.isError || error) && (
           <p className="alert error" role="alert">
@@ -129,22 +152,30 @@ export function DeliveryNotesPage({ enabled }: { enabled: FeatureFlags }) {
         {list.isPending ? (
           <PerlaLoading size="panel" label="Cargando remitos…" />
         ) : !list.data?.items.length && !list.isError ? (
-          <div className="empty-state">
+          <div className="document-empty-state">
             <h2>No hay remitos para estos filtros</h2>
             <p>Emití un remito a partir de una venta, compra o traslado registrado.</p>
+            {available.length > 0 && (
+              <button className="button secondary" onClick={() => setCreating(true)}>
+                Emitir desde una operación
+              </button>
+            )}
           </div>
         ) : null}
         {list.data?.items.map((note) => (
-          <div className="receipt-queue-row" key={note.id}>
+          <div className="document-list-row" key={note.id}>
             <div>
               <strong>
                 Remito N.º {note.number} · {deliveryNoteLabels[note.kind]}
               </strong>
               <small>
-                {note.snapshot.recipient} · {date(note.createdAt)} · {statuses[note.status]}
+                {note.snapshot.recipient} · {date(note.createdAt)}
               </small>
               <small>{sourceStatuses[note.sourceStatus] ?? note.sourceStatus}</small>
             </div>
+            <span className={`document-status document-status-${note.status.toLowerCase()}`}>
+              {statuses[note.status]}
+            </span>
             <button className="button secondary" onClick={() => setSelected(note.id)}>
               Ver e imprimir
             </button>
@@ -192,7 +223,7 @@ export function DeliveryNotesPage({ enabled }: { enabled: FeatureFlags }) {
           }}
         />
       )}
-    </>
+    </div>
   );
 }
 
@@ -252,9 +283,15 @@ function CreateNote({
     }
   }
   return (
-    <Dialog title="Nuevo remito" onClose={onClose} busy={busy} wide>
+    <Dialog
+      title="Nuevo remito"
+      className="document-editor-dialog"
+      onClose={onClose}
+      busy={busy}
+      wide
+    >
       <form onSubmit={(e) => void create(e)}>
-        <p>
+        <p className="document-guidance">
           Documenta todos los artículos del origen seleccionado. El movimiento de mercadería ya
           pertenece a esa operación.
         </p>
@@ -335,22 +372,31 @@ function CreateNote({
               onChange={(e) => setRecipient(e.target.value)}
             />
           </label>
-          <label>
-            Dirección de entrega / recepción
-            <input maxLength={300} value={address} onChange={(e) => setAddress(e.target.value)} />
-          </label>
-          <label>
-            {kind === 'PURCHASE' ? 'Número de remito del proveedor' : 'Referencia externa'}
-            <input
-              maxLength={80}
-              value={reference}
-              onChange={(e) => setReference(e.target.value)}
-            />
-          </label>
-          <label>
-            Observaciones
-            <textarea maxLength={1000} value={note} onChange={(e) => setNote(e.target.value)} />
-          </label>
+          <details className="document-extra-options">
+            <summary>Dirección y datos adicionales (opcional)</summary>
+            <div className="document-extra-fields">
+              <label>
+                Dirección de entrega / recepción
+                <input
+                  maxLength={300}
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </label>
+              <label>
+                {kind === 'PURCHASE' ? 'Número de remito del proveedor' : 'Referencia externa'}
+                <input
+                  maxLength={80}
+                  value={reference}
+                  onChange={(e) => setReference(e.target.value)}
+                />
+              </label>
+              <label>
+                Observaciones
+                <textarea maxLength={1000} value={note} onChange={(e) => setNote(e.target.value)} />
+              </label>
+            </div>
+          </details>
         </fieldset>
         <div className="dialog-footer">
           <button type="button" className="button secondary" onClick={onClose} disabled={busy}>

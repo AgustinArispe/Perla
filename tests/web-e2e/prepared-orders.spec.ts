@@ -83,6 +83,20 @@ test('especialista prepara sin caja y cajero cobra con remitos internos desactiv
       .getByRole('option', { name: 'Agregar Tornillos preparados', exact: true })
       .click();
     await specialist.getByLabel('Cantidad de Tornillos preparados').fill('3');
+    await expect(specialist.locator('.prepared-order-estimate')).toContainText('$ 30,00');
+    await specialist.screenshot({
+      path: testInfo.outputPath('orden-editor-desktop.png'),
+      fullPage: true,
+    });
+    await specialist.setViewportSize({ width: 390, height: 844 });
+    expect(
+      await specialist.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+    ).toBe(true);
+    await specialist.screenshot({
+      path: testInfo.outputPath('orden-editor-mobile.png'),
+      fullPage: true,
+    });
+    await specialist.setViewportSize({ width: 1280, height: 720 });
     await specialist.getByRole('button', { name: 'Enviar orden a caja', exact: true }).click();
     const orderDialog = specialist.getByRole('dialog');
     await expect(orderDialog).toContainText('PENDIENTE DE PAGO');

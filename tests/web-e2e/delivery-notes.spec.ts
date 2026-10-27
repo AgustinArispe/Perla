@@ -70,6 +70,7 @@ test('activa remitos, emite desde una venta, imprime y conserva historial al des
   const create = page.getByRole('dialog');
   await create.getByLabel('Documento de origen').selectOption(seed.saleId);
   await create.getByLabel('Destinatario', { exact: true }).fill('Cliente de prueba');
+  await create.getByText('Dirección y datos adicionales (opcional)', { exact: true }).click();
   await create.getByLabel('Dirección de entrega / recepción').fill('Puerto 123');
   await create.getByRole('button', { name: 'Emitir remito', exact: true }).click();
   const detail = page.getByRole('dialog');
@@ -102,7 +103,7 @@ test('activa remitos, emite desde una venta, imprime y conserva historial al des
   await expect(page.getByRole('dialog')).not.toBeVisible();
   await openModule(page, 'Remitos');
   await expect(page.getByRole('button', { name: 'Nuevo remito', exact: true })).toBeDisabled();
-  await expect(page.locator('.receipt-queue-row')).toContainText('Cliente de prueba');
+  await expect(page.locator('.document-list-row')).toContainText('Cliente de prueba');
   await page.getByRole('button', { name: 'Ver e imprimir', exact: true }).click();
   await expect(page.getByRole('dialog').locator('.delivery-note-print')).toContainText(
     'Recibió Lucía',

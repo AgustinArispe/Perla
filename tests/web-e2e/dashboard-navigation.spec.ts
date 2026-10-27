@@ -133,7 +133,7 @@ test('el dashboard conserva el mes elegido y permite consultar días con teclado
   await page.screenshot({ path: 'tmp/weekly-1440.png', fullPage: true });
 });
 
-test('Resultados compara meses de distinta duración y conserva negativos fuera del Top 5', async ({
+test('Resultados limita la dona a 25, compara meses y conserva negativos fuera del resumen', async ({
   page,
 }, testInfo) => {
   await page.goto('/');
@@ -168,12 +168,13 @@ test('Resultados compara meses de distinta duración y conserva negativos fuera 
       previousTo: '2026-01-31',
       open: false,
     };
-    report.rankings.revenue = Array.from({ length: 8 }, (_, i) => ({
+    const productCount = negative ? 8 : 40;
+    report.rankings.revenue = Array.from({ length: productCount }, (_, i) => ({
       productId: String(i),
       name:
         i === 7 && negative
           ? 'Devolución fuera del Top 5'
-          : [
+          : ([
               'Merluza fresca',
               'Langostino pelado',
               'Filet de salmón',
@@ -182,10 +183,14 @@ test('Resultados compara meses de distinta duración y conserva negativos fuera 
               'Cornalitos',
               'Abadejo',
               'Otros pescados',
-            ][i],
+            ][i] ?? `Artículo ${i + 1}`),
       unit: 'KG',
-      quantityBase: i === 7 && negative ? -1000 : (8 - i) * 1000,
-      netCents: i === 7 && negative ? -100000 : (8 - i) * 110000,
+      quantityBase: i === 7 && negative ? -1000 : (productCount - i) * 1000,
+      netCents: i === 7 && negative ? -100000 : (productCount - i) * 110000,
+    }));
+    report.categorySales = Array.from({ length: 14 }, (_, i) => ({
+      name: `Categoría ${i + 1}`,
+      netCents: negative && i === 13 ? -100000 : (14 - i) * 110000,
     }));
     report.totals.netCents = report.rankings.revenue.reduce(
       (sum: number, row: { netCents: number }) => sum + row.netCents,
@@ -213,8 +218,31 @@ test('Resultados compara meses de distinta duración y conserva negativos fuera 
   });
   await openModule(page, 'Resumen mensual');
   await page.getByLabel('Mes', { exact: true }).fill('2026-02');
-  await expect(page.locator('.results-donut')).toBeVisible();
-  await expect(page.locator('.results-share-legend')).toContainText('Otros');
+  const products = page.locator('.results-products');
+  const categories = page.locator('.results-categories');
+  await expect(products.locator('.results-donut')).toBeVisible();
+  await expect(products.locator('.results-share-legend li')).toHaveCount(25);
+  await expect(products.locator('.results-donut circle')).toHaveCount(26);
+  await expect(products.locator('.results-donut-center')).toContainText('Top 25');
+  await expect(products.locator('.results-share-legend li').last()).toContainText('Artículo 25');
+  await expect(products.locator('.results-share-legend')).not.toContainText('Artículo 26');
+  await expect(categories.locator('.results-share-legend li')).toHaveCount(10);
+  await expect(categories.locator('.results-donut circle')).toHaveCount(11);
+  await expect(categories.locator('.results-donut-center')).toContainText('Top 10');
+  await expect(page.locator('.results-products')).toContainText('no se incluyen en esta dona');
+  await expect(page.locator('.ranking-table tbody tr')).toHaveCount(0);
+  await page.getByText('Ver detalle de los 25 productos principales', { exact: true }).click();
+  await expect(page.locator('.ranking-table tbody tr')).toHaveCount(25);
+  await expect(page.locator('.ranking-table')).not.toContainText('Artículo 26');
+  await page.getByText('Ver detalle de los 25 productos principales', { exact: true }).click();
+  await expect(page.locator('.ranking-table tbody tr')).toHaveCount(0);
+  const legend = page.getByRole('list', { name: 'Participación de los productos principales' });
+  await legend.focus();
+  await legend.press('End');
+  await expect.poll(() => legend.evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
+  await page
+    .locator('.results-products')
+    .screenshot({ path: testInfo.outputPath('top-25-desktop.png') });
   await page.getByLabel('Comparar con el mes anterior').check();
   await expect(page.locator('.results-day')).toHaveCount(31);
   await page.locator('.results-day').last().click();
