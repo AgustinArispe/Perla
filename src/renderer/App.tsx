@@ -655,7 +655,13 @@ function Workspace({
                       ...(locationId ? { locationId } : {}),
                     });
                     if (area === 'module')
-                      void navigate(action === 'Resumen mensual' ? 'Resumen mensual' : 'Caja');
+                      void navigate(
+                        action === 'Resumen mensual'
+                          ? 'Resumen mensual'
+                          : action === 'Órdenes'
+                            ? 'Órdenes'
+                            : 'Caja',
+                      );
                     else if (area === 'operations')
                       void (action === 'agenda'
                         ? navigate('Agenda')

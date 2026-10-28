@@ -21,6 +21,14 @@ test('Inicio: resumen útil, pendientes bajo demanda y accesos correctos en escr
     const result = await response.json();
     result.value.groups = [
       {
+        key: 'qa-prices',
+        title: 'Revisar precios',
+        total: 3780,
+        area: 'commercial',
+        action: 'prices',
+        sample: [],
+      },
+      {
         key: 'qa-expiries',
         title: 'Revisar vencimientos',
         total: 12,
@@ -50,14 +58,25 @@ test('Inicio: resumen útil, pendientes bajo demanda y accesos correctos en escr
       overdueReceivableCents: 1000000,
       overduePayableCents: 0,
     };
+    result.value.preparedOrders = { enabled: true, total: 3 };
     await route.fulfill({ response, json: result });
   });
   await page.getByRole('button', { name: 'Actualizar', exact: true }).click();
   await expect(page.getByText('Te deben clientes', { exact: true })).toBeVisible();
+  await expect(page.getByLabel('Próxima acción')).toContainText('Revisar vencimientos');
+  await expect(page.getByLabel('Órdenes para cobrar')).toContainText('3 pendientes');
+  await expect(page.getByText('Revisar precios', { exact: true })).not.toBeVisible();
+  const background = await page
+    .locator('.home-day-main')
+    .evaluate((element) => getComputedStyle(element).backgroundColor);
+  expect(background).toBe('rgba(0, 0, 0, 0)');
   await expect(page.getByText('Leche entera 1 L', { exact: true })).not.toBeVisible();
-  await page.locator('.home-pending summary').click();
+  await page.locator('.home-attention > .home-pending summary').click();
   await expect(page.getByText('Leche entera 1 L', { exact: true })).toBeVisible();
   await page.screenshot({ path: testInfo.outputPath('home-desktop.png'), fullPage: true });
+  await page.getByText('Planificar el resto', { exact: true }).click();
+  await expect(page.getByText('Revisar precios', { exact: true })).toBeVisible();
+  await page.getByText('Planificar el resto', { exact: true }).click();
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(page.getByText('Vendido hoy', { exact: true })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(

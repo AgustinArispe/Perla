@@ -77,6 +77,7 @@ export interface ControlPending {
   sample: { id: string; name: string; detail: string; locationId?: string }[];
 }
 export interface ControlHome {
+  preparedOrders?: { enabled: boolean; total: number };
   groups: ControlPending[];
   generatedAt: string;
   overview: null | {

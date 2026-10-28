@@ -226,7 +226,7 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 20px;
-  align-items: start;
+  align-items: stretch;
   margin-bottom: 20px;
 }
 .results-products,
@@ -235,6 +235,76 @@
   min-width: 0;
   padding: 24px;
 }
+.results-ranking {
+  display: flex;
+  flex-direction: column;
+}
+.results-analysis-grid .results-ranking > .dashboard-panel-heading {
+  min-height: 46px;
+  align-items: start;
+  margin-bottom: 12px;
+}
+.ranking-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 120px;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.ranking-toolbar .field {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  margin: 0;
+  font-size: 12px;
+}
+.ranking-toolbar select,
+.ranking-static-order {
+  height: 44px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.ranking-static-order {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-subtle);
+  color: var(--ink-soft);
+}
+.ranking-visual {
+  flex: 1;
+  min-height: 472px;
+}
+.ranking-visual > .results-panel-context {
+  min-height: 96px;
+  height: 96px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  margin: 12px 0;
+}
+.results-ranking .results-share {
+  height: 360px;
+  margin: 12px 0;
+}
+.results-ranking .results-share-legend {
+  height: 360px;
+  box-sizing: border-box;
+  align-content: start;
+}
+.ranking-panel-footer {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.ranking-panel-footer .results-table-detail {
+  margin: 0 0 12px;
+}
+.ranking-visual .results-product-bars,
+.ranking-visual .results-category-ranking {
+  max-height: 360px;
+  overflow: auto;
+}
 .results-payments {
   grid-column: 1 / -1;
 }
@@ -242,6 +312,7 @@
   align-items: center;
 }
 .results-products h2,
+.results-categories h2,
 .results-payments h2 {
   font-size: 18px;
 }
@@ -460,6 +531,19 @@
   }
 }
 @media (max-width: 700px) {
+  .ranking-visual {
+    min-height: 0;
+  }
+  .results-ranking .results-share {
+    height: auto;
+  }
+  .results-ranking .results-share-legend {
+    height: 260px;
+  }
+  .ranking-visual > .results-panel-context {
+    min-height: 0;
+    height: auto;
+  }
   .results-daily,
   .results-products,
   .results-categories,

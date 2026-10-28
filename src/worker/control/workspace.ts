@@ -330,6 +330,14 @@ export class WorkspaceControlService {
     }
     return {
       groups: groups.slice(0, 5),
+      preparedOrders: {
+        enabled: flags.PREPARED_ORDERS,
+        total: (
+          this.db.prepare("SELECT COUNT(*) n FROM prepared_orders WHERE status='READY'").get() as {
+            n: number;
+          }
+        ).n,
+      },
       generatedAt: now.toISOString(),
       overview,
       registers,

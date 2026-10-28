@@ -3,13 +3,14 @@ import type Database from 'better-sqlite3';
 import {
   ExcelRequestSchema,
   ExcelPreviewRequestSchema,
-  excelTitles,
+  excelTitle,
   excelMultipleKeys,
   type ExcelFilters,
   type ExcelDataset,
 } from '../shared/excel';
 import { DomainError } from '../shared/errors';
 import { normalizeSearch } from '../domain/values';
+import { rankProducts, rankCategories } from '../domain/ranking';
 import { MonthlyReports } from '../worker/reports/queries';
 import { FeatureService } from '../worker/features/service';
 import { previewExportRows, selectExportRows } from './export-selection';
@@ -42,6 +43,7 @@ const labels: Record<string, string> = {
   revenue: 'Facturación neta',
   units: 'Unidades',
   kilos: 'Kilos',
+  categories: 'Categorías por importe',
   ACTIVE: 'Activo',
   INACTIVE: 'Inactivo',
   COMPLETED: 'Completada',
@@ -662,16 +664,25 @@ function collect(
         : null,
     })),
   );
-  const ranking = sheet(
-    'Más vendidos',
-    [
-      'name|Producto',
-      'unit|Unidad',
-      'quantityBase|Cantidad|quantity',
-      'netCents|Vendido neto (ARS)|money',
-    ],
-    report.rankings[f.rank ?? 'revenue'].map((row) => ({ ...row })),
-  );
+  const ranking =
+    f.rank === 'categories'
+      ? sheet(
+          'Categorías más vendidas',
+          ['name|Categoría', 'netCents|Vendido neto (ARS)|money'],
+          rankCategories(report.categorySales ?? [], f.topCount).map((row) => ({ ...row })),
+        )
+      : sheet(
+          'Más vendidos',
+          [
+            'name|Producto',
+            'unit|Unidad',
+            'quantityBase|Cantidad|quantity',
+            'netCents|Vendido neto (ARS)|money',
+          ],
+          rankProducts(report.rankings[f.rank ?? 'revenue'], f.rank ?? 'revenue', f.topCount).map(
+            (row) => ({ ...row }),
+          ),
+        );
   const low = sheet(
     'Reposición',
     stockColumns
@@ -859,7 +870,7 @@ export async function exportExcel(db: Database.Database, raw: unknown, call: Cal
   workbook.created = new Date();
   const business = (call('settings.get', {}) as { businessName: string }).businessName;
   brandWorkbook(workbook, {
-    title: excelTitles[input.dataset],
+    title: excelTitle(input.dataset, input.filters),
     business,
     scope: input.selectedIds
       ? 'Productos elegidos en el catálogo, entre búsquedas y páginas'
@@ -957,7 +968,7 @@ export async function exportExcel(db: Database.Database, raw: unknown, call: Cal
     { header: 'Valor', key: 'value', width: 70 },
   ];
   context.addRow(['Negocio', business]);
-  context.addRow(['Módulo', excelTitles[input.dataset]]);
+  context.addRow(['Módulo', excelTitle(input.dataset, input.filters)]);
   context.addRow([
     'Generado',
     new Date().toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires' }),
@@ -1042,6 +1053,7 @@ export async function exportExcel(db: Database.Database, raw: unknown, call: Cal
       purchaseId: 'Compra',
       preset: 'Período',
       rank: 'Orden',
+      topCount: 'Máximo de resultados',
       activeOnly: 'Solo activos',
       includeInactive: 'Incluir inactivos',
       operation: 'Operación',

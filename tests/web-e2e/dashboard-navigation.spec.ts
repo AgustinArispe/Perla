@@ -168,7 +168,7 @@ test('Resultados limita la dona a 25, compara meses y conserva negativos fuera d
       previousTo: '2026-01-31',
       open: false,
     };
-    const productCount = negative ? 8 : 40;
+    const productCount = negative ? 8 : 60;
     report.rankings.revenue = Array.from({ length: productCount }, (_, i) => ({
       productId: String(i),
       name:
@@ -188,9 +188,9 @@ test('Resultados limita la dona a 25, compara meses y conserva negativos fuera d
       quantityBase: i === 7 && negative ? -1000 : (productCount - i) * 1000,
       netCents: i === 7 && negative ? -100000 : (productCount - i) * 110000,
     }));
-    report.categorySales = Array.from({ length: 14 }, (_, i) => ({
+    report.categorySales = Array.from({ length: negative ? 14 : 60 }, (_, i) => ({
       name: `Categoría ${i + 1}`,
-      netCents: negative && i === 13 ? -100000 : (14 - i) * 110000,
+      netCents: negative && i === 13 ? -100000 : (60 - i) * 110000,
     }));
     report.totals.netCents = report.rankings.revenue.reduce(
       (sum: number, row: { netCents: number }) => sum + row.netCents,
@@ -229,6 +229,43 @@ test('Resultados limita la dona a 25, compara meses y conserva negativos fuera d
   await expect(categories.locator('.results-share-legend li')).toHaveCount(10);
   await expect(categories.locator('.results-donut circle')).toHaveCount(11);
   await expect(categories.locator('.results-donut-center')).toContainText('Top 10');
+  const geometry = await page.evaluate(() => {
+    const product = document.querySelector('.results-products')!.getBoundingClientRect();
+    const category = document.querySelector('.results-categories')!.getBoundingClientRect();
+    const first = document
+      .querySelector('.results-products .results-donut')!
+      .getBoundingClientRect();
+    const second = document
+      .querySelector('.results-categories .results-donut')!
+      .getBoundingClientRect();
+    return {
+      heights: Math.abs(product.height - category.height),
+      tops: Math.abs(first.top - second.top),
+      widths: Math.abs(first.width - second.width),
+    };
+  });
+  expect(geometry.heights).toBeLessThan(2);
+  expect(geometry.tops).toBeLessThan(2);
+  expect(geometry.widths).toBeLessThan(2);
+  for (const value of [5, 10, 15, 25, 50]) {
+    await products.getByLabel('Mostrar productos', { exact: true }).selectOption(String(value));
+    await categories.getByLabel('Mostrar categorías', { exact: true }).selectOption(String(value));
+    await expect(products.locator('.results-share-legend li')).toHaveCount(value);
+    await expect(categories.locator('.results-share-legend li')).toHaveCount(value);
+  }
+  await products
+    .getByRole('button', { name: 'Exportar productos más vendidos a Excel', exact: true })
+    .click();
+  await expect(page.getByRole('dialog')).toContainText('Máximo de resultados');
+  await expect(page.getByRole('dialog')).toContainText('50');
+  await page.keyboard.press('Escape');
+  await categories
+    .getByRole('button', { name: 'Exportar categorías más vendidas a Excel', exact: true })
+    .click();
+  await expect(page.getByRole('dialog')).toHaveAccessibleName('Exportar categorías más vendidas');
+  await page.keyboard.press('Escape');
+  await products.getByLabel('Mostrar productos', { exact: true }).selectOption('25');
+  await categories.getByLabel('Mostrar categorías', { exact: true }).selectOption('10');
   await expect(page.locator('.results-products')).toContainText('no se incluyen en esta dona');
   await expect(page.locator('.ranking-table tbody tr')).toHaveCount(0);
   await page.getByText('Ver detalle de los 25 productos principales', { exact: true }).click();

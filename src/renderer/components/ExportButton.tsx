@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { api, unwrap } from '../api';
 import { useState } from 'react';
 import { Dialog } from './Dialog';
+import { RANKING_LIMITS } from '../../domain/ranking';
 import { Icon } from './Icon';
 import { ExportRowPicker } from './ExportRowPicker';
 import type { ExcelPreview } from '../../shared/excel';
@@ -11,7 +12,7 @@ import { downloadExcel, webValue } from '../web-client';
 import { controlValue } from '../features/control/client';
 import { errorMessage } from '../api';
 import {
-  excelTitles,
+  excelTitle,
   excelFilterKeys,
   excelMultipleKeys,
   type ExcelDataset,
@@ -39,6 +40,7 @@ const labels: Record<string, string> = {
   SCHEDULED: 'Programadas',
   OTHER: 'Otras',
   revenue: 'Facturación neta',
+  categories: 'Categorías por importe',
   units: 'Unidades',
   kilos: 'Kilos',
   OWNER: 'Jefe',
@@ -71,7 +73,7 @@ export function ExportButton({
       <button
         type="button"
         className="button secondary export-open"
-        aria-label={`Exportar ${excelTitles[dataset].toLowerCase()} a Excel`}
+        aria-label={`Exportar ${excelTitle(dataset, filters).toLowerCase()} a Excel`}
         disabled={downloading}
         onClick={async () => {
           if (dataset !== 'products' || !selectedIds?.length) {
@@ -228,7 +230,8 @@ export function ExportDialog({
     setSelection(undefined);
     setFilters((current) => {
       const next = { ...current, [key]: value };
-      if (value === '' || (Array.isArray(value) && value.length === 0)) delete next[key];
+      if (value === undefined || value === '' || (Array.isArray(value) && value.length === 0))
+        delete next[key];
       return next;
     });
   };
@@ -256,7 +259,7 @@ export function ExportDialog({
   }
   return createPortal(
     <Dialog
-      title={`Exportar ${excelTitles[dataset].toLowerCase()}`}
+      title={`Exportar ${excelTitle(dataset, filters).toLowerCase()}`}
       onClose={onClose}
       busy={busy}
       size={selection ? 'wide' : 'regular'}
@@ -276,7 +279,7 @@ export function ExportDialog({
       >
         <div className="export-content">
           <div className="export-scope" aria-label="Alcance de la exportación">
-            <strong>{excelTitles[dataset]}</strong>
+            <strong>{excelTitle(dataset, filters)}</strong>
             <dl className="export-scope-values">
               {Object.entries(filters)
                 .filter(
@@ -304,6 +307,7 @@ export function ExportDialog({
                     terminalIds: 'Cajas',
                     roles: 'Roles',
                     rank: 'Orden',
+                    topCount: 'Máximo de resultados',
                     operation: 'Operación',
                     includeInactive: 'Inactivos',
                   };
@@ -437,6 +441,24 @@ export function ExportDialog({
                   value={filters.month ?? ''}
                   onChange={(e) => update('month', e.target.value)}
                 />
+              </label>
+            )}
+            {keys.includes('topCount') && (
+              <label className="field">
+                Cantidad de resultados
+                <select
+                  value={filters.topCount ?? ''}
+                  onChange={(event) =>
+                    update('topCount', event.target.value ? Number(event.target.value) : undefined)
+                  }
+                >
+                  <option value="">Ranking completo</option>
+                  {RANKING_LIMITS.map((value) => (
+                    <option key={value} value={value}>
+                      Top {value}
+                    </option>
+                  ))}
+                </select>
               </label>
             )}
             {statusKey && (

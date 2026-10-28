@@ -46,7 +46,7 @@ function render(data: HomeData) {
 describe('Inicio con actividad real y pendientes', () => {
   it('distingue el primer uso de un día sin ventas después de actividad previa', () => {
     expect(render(home())).toContain('registrar tu primera venta');
-    expect(render(home(0, '2026-10-09'))).toContain('Hoy todavía no se completaron ventas');
+    expect(render(home(0, '2026-10-09'))).toContain('Todavía no hubo ventas hoy');
     expect(render(home(0, '2026-10-09'))).not.toContain('registrar tu primera venta');
   });
   it('explica un neto negativo sin ventas como devoluciones y conserva el importe', () => {

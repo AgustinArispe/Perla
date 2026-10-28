@@ -41,7 +41,7 @@ export const excelFilterKeys: Record<ExcelDataset, string[]> = {
   transfers: ['status'],
   dashboard: ['month'],
   payments: ['month'],
-  ranking: ['month', 'rank'],
+  ranking: ['month', 'rank', 'topCount'],
   lowStock: ['month'],
   profitability: ['month'],
   locations: ['month'],
@@ -109,12 +109,20 @@ export const ExcelFiltersSchema = z.strictObject({
   from: z.iso.date().optional(),
   to: z.iso.date().optional(),
   preset: z.enum(['TODAY', 'WEEK', 'MONTH', 'CUSTOM']).optional(),
-  rank: z.enum(['revenue', 'units', 'kilos']).optional(),
+  rank: z.enum(['revenue', 'units', 'kilos', 'categories']).optional(),
+  topCount: z
+    .union([z.literal(5), z.literal(10), z.literal(15), z.literal(25), z.literal(50)])
+    .optional(),
   activeOnly: z.boolean().optional(),
   includeInactive: z.boolean().optional(),
   operation: z.string().max(100).optional(),
 });
 export type ExcelFilters = z.infer<typeof ExcelFiltersSchema>;
+export function excelTitle(dataset: ExcelDataset, filters: ExcelFilters = {}) {
+  return dataset === 'ranking' && filters.rank === 'categories'
+    ? 'Categorías más vendidas'
+    : excelTitles[dataset];
+}
 export const ExcelSelectionSchema = z
   .array(z.string().regex(/^[a-f0-9]{64}$/))
   .min(1)

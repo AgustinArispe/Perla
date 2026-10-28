@@ -6,21 +6,59 @@
   color: var(--ink-soft);
 }
 .home-heading {
-  margin-bottom: 24px;
+  margin-bottom: 20px;
+}
+.home-kicker {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-hover);
+  margin-bottom: 6px;
+}
+.home-next-step {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  border: 1px solid var(--accent-line);
+  border-left: 4px solid var(--accent-action);
+  border-radius: 4px 12px 12px 4px;
+  background: #fcf9f2;
+}
+.home-next-step > div {
+  flex: 1 1 320px;
+}
+.home-next-step h2 {
+  font-size: 20px;
+}
+.home-next-step p {
+  margin: 7px 0 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.home-next-step > button {
+  flex-shrink: 0;
 }
 .home-day {
   display: grid;
-  grid-template-columns: 1.65fr 1fr;
+  grid-template-columns: 1.2fr 1fr;
   overflow: hidden;
   margin-bottom: 24px;
   border-radius: 14px;
-  background: var(--surface);
+  background: #fffdf8;
+  border: 1px solid var(--line);
   box-shadow: var(--shadow-panel);
 }
 .home-day-main {
-  padding: 28px 32px;
-  background: var(--navy-dark);
-  color: #f5f3ec;
+  padding: 24px;
+  background: transparent;
+  color: var(--ink);
 }
 .home-day-label {
   display: flex;
@@ -30,16 +68,16 @@
   font-size: 14px;
 }
 .home-day-label > span {
-  color: var(--brass-light);
+  color: var(--accent-hover);
   font-weight: 700;
 }
 .home-day-label time {
-  color: #c4ced2;
+  color: var(--ink-soft);
 }
 .home-day-amount {
   display: block;
-  margin: 16px 0 24px;
-  font-size: 42px;
+  margin: 12px 0 18px;
+  font-size: 34px;
   line-height: 1.15;
   letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
@@ -52,25 +90,26 @@
   margin: 0;
 }
 .home-day-details dt {
-  color: #c4ced2;
+  color: var(--ink-soft);
   font-size: 12px;
 }
 .home-day-details dd {
   margin: 6px 0 0;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
 .home-day-main > p {
-  margin: 22px 0 0;
-  color: #c4ced2;
+  margin: 14px 0 0;
+  color: var(--ink-soft);
   font-size: 12px;
 }
 .home-week {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 28px 32px;
+  padding: 24px;
+  border-left: 1px solid var(--line);
 }
 .home-workspace h2 {
   margin: 0;
@@ -106,7 +145,7 @@
 }
 .home-columns {
   display: grid;
-  grid-template-columns: minmax(0, 1.65fr) minmax(280px, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: 24px;
   align-items: start;
 }
@@ -114,6 +153,43 @@
 .home-registers,
 .home-accounts {
   padding: 24px;
+}
+.home-orders {
+  padding: 24px;
+}
+.home-orders p {
+  color: var(--ink-soft);
+  line-height: 1.6;
+  font-size: 13px;
+}
+.home-planning {
+  border-top: 1px solid var(--line);
+  margin-top: 18px;
+}
+.home-planning > summary {
+  cursor: pointer;
+  padding: 18px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: space-between;
+}
+.home-planning > summary span {
+  display: grid;
+  gap: 6px;
+}
+.home-planning small,
+.home-planning > p {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.home-planning > p {
+  margin: 16px 0;
+}
+.home-planning .home-pending-count {
+  font-size: 18px;
+  color: var(--ink-soft);
 }
 .home-section-heading {
   display: flex;
@@ -129,8 +205,19 @@
 }
 .home-side {
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  align-items: stretch;
   gap: 20px;
   min-width: 0;
+}
+.home-side > .panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.home-side .text-button {
+  margin-top: auto;
+  padding-top: 18px;
 }
 .home-pending {
   border-top: 1px solid var(--line);
@@ -273,7 +360,7 @@
   font-size: 14px;
   line-height: 1.5;
   max-width: 60ch;
-  color: #f5f3ec;
+  color: var(--ink-soft);
 }
 .home-attention-context {
   margin: 0 0 16px;
@@ -289,8 +376,7 @@
   color: var(--ink-soft);
 }
 @media (max-width: 1100px) {
-  .home-day,
-  .home-columns {
+  .home-day {
     grid-template-columns: minmax(0, 1.4fr) minmax(260px, 1fr);
     gap: 16px;
   }
@@ -309,6 +395,19 @@
   }
 }
 @media (max-width: 760px) {
+  .home-side {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .home-week {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+  .home-next-step {
+    padding: 18px;
+  }
+  .home-next-step > button {
+    width: 100%;
+  }
   .home-day,
   .home-columns {
     grid-template-columns: minmax(0, 1fr);
@@ -318,6 +417,9 @@
   .home-attention,
   .home-registers,
   .home-accounts {
+    padding: 20px;
+  }
+  .home-orders {
     padding: 20px;
   }
   .home-day-amount {

@@ -7,7 +7,7 @@ export const shareColors = [
   '#607b94',
   '#977560',
   ...Array.from(
-    { length: 20 },
+    { length: 45 },
     (_, index) => `hsl(${Math.round((index * 137.508 + 45) % 360)} 40% ${index % 2 ? 42 : 58}%)`,
   ),
 ];

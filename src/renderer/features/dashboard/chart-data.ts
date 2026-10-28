@@ -1,5 +1,6 @@
 import type { RankedProduct } from '../../../shared/reports';
 import type { MonthlyReport } from '../../../shared/reports';
+import type { RankingLimit } from '../../../domain/ranking';
 
 export function alignDaily(current: MonthlyReport['daily'], previous: MonthlyReport['daily']) {
   return Array.from({ length: Math.max(current.length, previous.length) }, (_, index) => ({
@@ -39,14 +40,21 @@ function limitedShares(rows: { id: string; name: string; value: number }[], limi
   };
 }
 
-export function categoryShares(rows: NonNullable<MonthlyReport['categorySales']>) {
+export function categoryShares(
+  rows: NonNullable<MonthlyReport['categorySales']>,
+  limit: RankingLimit = TOP_CATEGORIES_LIMIT,
+) {
   return limitedShares(
     rows.map((row) => ({ id: row.name, name: row.name, value: row.netCents })),
-    TOP_CATEGORIES_LIMIT,
+    limit,
   );
 }
 
-export function productShares(rows: RankedProduct[], kind: 'revenue' | 'units' | 'kilos') {
+export function productShares(
+  rows: RankedProduct[],
+  kind: 'revenue' | 'units' | 'kilos',
+  limit: RankingLimit = TOP_PRODUCTS_LIMIT,
+) {
   const value = (row: RankedProduct) => (kind === 'revenue' ? row.netCents : row.quantityBase);
   return limitedShares(
     rows.map((row) => ({
@@ -54,6 +62,6 @@ export function productShares(rows: RankedProduct[], kind: 'revenue' | 'units' |
       name: row.name,
       value: value(row),
     })),
-    TOP_PRODUCTS_LIMIT,
+    limit,
   );
 }

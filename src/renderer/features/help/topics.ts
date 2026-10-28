@@ -61,7 +61,7 @@ export const helpTopics: Topic[] = [
     sections: [
       {
         title: 'Revisar el día',
-        text: 'Inicio reúne indicadores y tareas pendientes para orientar el trabajo. Abrí cada tarjeta para consultar el detalle y el período o ubicación que corresponde. Un aviso o una sugerencia no registra por sí solo una compra, ajuste, cobro ni pago.',
+        text: 'Inicio propone un próximo paso según los controles activos: primero vencimientos y diferencias de caja, después las órdenes pendientes o la atención en Caja. Las revisiones de reposición, cuentas y precios están plegadas en Planificar el resto; no significa que debas resolverlas todas hoy. También muestra ventas del día y de la semana, cajas y saldos abiertos según tus permisos. Un aviso no registra por sí solo una compra, ajuste, cobro ni pago.',
       },
       {
         title: 'Elegir dónde empezar',
@@ -501,7 +501,7 @@ export const helpTopics: Topic[] = [
       },
       {
         title: 'Productos y reposición',
-        text: 'El tablero muestra hasta 25 productos y 10 categorías principales. Los porcentajes de cada dona corresponden a esa selección, no a todo el período; los totales generales y las exportaciones completas conservan todas las operaciones. Las categorías son las registradas al vender y contemplan devoluciones. Si hay netos negativos se muestra el ranking sin dona. Las alertas de stock ayudan a planificar la reposición. El total vendido es facturación interna, no ganancia.',
+        text: 'En productos y categorías podés elegir Top 5, 10, 15, 25 o 50. El límite de cada tarjeta es independiente; productos también permite ordenar por importe, unidades o kilos. Exportar Top genera un Excel del mes, orden y cantidad elegidos. Los porcentajes de cada dona corresponden a esa selección, no a todo el período; los totales generales conservan todas las operaciones. Las categorías son las registradas al vender y contemplan devoluciones. Si hay netos negativos se muestra el ranking sin dona. El total vendido es facturación interna, no ganancia.',
       },
       {
         title: 'Margen bruto y cobertura',

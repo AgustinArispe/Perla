@@ -7,6 +7,46 @@ import { controlValue } from './client';
 import { errorMessage } from '../../api';
 import { Icon } from '../../components/Icon';
 import { formatMoney } from '../../../domain/values';
+import { homePriorities } from './home-priorities';
+
+type OpenHome = (area: string, action: string, id?: string, locationId?: string) => void;
+function PendingGroup({ group, onOpen }: { group: ControlPending; onOpen: OpenHome }) {
+  return (
+    <details className="home-pending">
+      <summary>
+        <span className="home-pending-count">{group.total.toLocaleString('es-AR')}</span>
+        <span className="home-pending-copy">
+          <strong>{group.title}</strong>
+          <small>{pendingContext(group)}</small>
+        </span>
+        <Icon name="arrow" size={18} />
+      </summary>
+      <div className="home-pending-body">
+        {group.sample.slice(0, 3).map((item) => (
+          <button
+            className="control-pending-item"
+            key={item.id + (item.locationId ?? '')}
+            onClick={() => onOpen(group.area, group.action, item.id, item.locationId)}
+          >
+            <span>
+              <strong>{item.name}</strong>
+              <small>
+                {/^\d{4}-\d{2}-\d{2}$/.test(item.detail)
+                  ? 'Vence ' + dateLabel(item.detail)
+                  : item.detail}
+              </small>
+            </span>
+            <Icon name="arrow" size={16} />
+          </button>
+        ))}
+        {!group.sample.length && <p>Abrí el listado para revisar el detalle.</p>}
+        <button className="button secondary small" onClick={() => onOpen(group.area, group.action)}>
+          Ver todos <Icon name="arrow" size={16} />
+        </button>
+      </div>
+    </details>
+  );
+}
 
 function dateLabel(value: string) {
   return new Intl.DateTimeFormat('es-AR', { day: 'numeric', month: 'short' }).format(
@@ -39,19 +79,17 @@ export function ControlHome({
   });
   const data = home.data;
   const overview = data?.overview;
-  const pending = (data?.groups.filter((group) => group.total > 0) ?? []).sort((a, b) => {
-    // Prioritize observed operational categories without inferring severity from a sample.
-    const order = (group: ControlPending) =>
-      group.action === 'expiries' ? 0 : group.action === 'cashDifferences' ? 1 : 2;
-    return order(a) - order(b);
-  });
+  const { priority, planned } = homePriorities(data?.groups ?? []);
+  const first = priority[0];
+  const orderCount = data?.preparedOrders?.total ?? 0;
   const openRegisters = data?.registers.filter((register) => register.openedAt).length ?? 0;
   return (
     <div className="home-workspace">
       <PageHeading className="page-heading home-heading">
         <div>
+          <span className="home-kicker">La libreta del negocio</span>
           <h1>Inicio</h1>
-          <p>Tu negocio, de un vistazo.</p>
+          <p>Qué atender ahora, cómo viene el día y qué podés dejar planificado.</p>
         </div>
         <div className="heading-actions">
           <button
@@ -67,9 +105,7 @@ export function ControlHome({
           </button>
         </div>
       </PageHeading>
-      {home.isPending && (
-        <PerlaLoading label="Preparando el resumen de tu negocio…" />
-      )}
+      {home.isPending && <PerlaLoading label="Preparando el resumen de tu negocio…" />}
       {home.isError && (
         <div className="alert error" role="alert">
           {errorMessage(home.error)}{' '}
@@ -77,6 +113,47 @@ export function ControlHome({
             Reintentar
           </button>
         </div>
+      )}
+      {data && (
+        <section className="home-next-step" aria-label="Próxima acción">
+          <div>
+            <span className="home-kicker">
+              {first
+                ? 'Primero lo importante'
+                : orderCount
+                  ? 'El mostrador sigue'
+                  : 'Tu próximo paso'}
+            </span>
+            <h2>
+              {first?.title ??
+                (orderCount
+                  ? `${orderCount} ${orderCount === 1 ? 'orden lista' : 'órdenes listas'} para cobrar`
+                  : openRegisters
+                    ? 'Todo listo para seguir atendiendo'
+                    : 'Prepará la caja para empezar')}
+            </h2>
+            <p>
+              {first
+                ? pendingContext(first)
+                : orderCount
+                  ? 'Pedidos preparados que todavía no registran un pago.'
+                  : openRegisters
+                    ? `${openRegisters} ${openRegisters === 1 ? 'caja abierta' : 'cajas abiertas'}. Los controles de rutina quedan más abajo.`
+                    : 'Elegí tu terminal, abrí el turno y empezá a registrar ventas.'}
+            </p>
+          </div>
+          <button
+            className="button primary"
+            onClick={() =>
+              first
+                ? onOpen(first.area, first.action)
+                : onOpen('module', orderCount ? 'Órdenes' : 'Caja')
+            }
+          >
+            {first ? 'Revisar ahora' : orderCount ? 'Abrir órdenes' : 'Atender en caja'}{' '}
+            <Icon name="arrow" size={16} />
+          </button>
+        </section>
       )}
       {overview && (
         <section className="home-day" aria-label="Ventas de hoy y de la semana">
@@ -102,7 +179,7 @@ export function ControlHome({
                 {overview.today.netCents !== 0
                   ? 'Hoy no se completaron ventas. El neto refleja devoluciones registradas hoy.'
                   : overview.lastSaleDate
-                    ? 'Hoy todavía no se completaron ventas. Podés revisar los pendientes o abrir Caja para vender.'
+                    ? 'Todavía no hubo ventas hoy. Los números se actualizan cuando registres un cobro.'
                     : 'Todavía no hay ventas registradas. Abrí Caja para registrar tu primera venta.'}
               </p>
             )}
@@ -130,66 +207,31 @@ export function ControlHome({
         <div className="home-columns">
           <section className="panel home-attention" aria-label="Pendientes del negocio">
             <div className="home-section-heading">
-              <h2>Lo que necesita atención</h2>
+              <h2>Prioridades de la jornada</h2>
               <span>
-                {pending.length
-                  ? `${pending.length} ${pending.length === 1 ? 'área' : 'áreas'}`
+                {priority.length
+                  ? `${priority.length} ${priority.length === 1 ? 'área' : 'áreas'}`
                   : 'Al día'}
               </span>
             </div>
-            {pending.length > 1 && (
+            {priority.length > 1 && (
               <p className="home-attention-context">
                 Vencimientos y diferencias de caja primero. Abrí cada área para revisar sus
                 registros.
               </p>
             )}
-            {!pending.length && (
+            {!priority.length && (
               <div className="home-clear">
                 <Icon name="check" size={24} />
-                <strong>Sin pendientes de control</strong>
+                <strong>Sin alertas prioritarias</strong>
                 <p>
-                  Los avisos de stock, vencimientos y caja aparecerán acá cuando necesiten una
-                  revisión.
+                  No hay avisos prioritarios en los controles activos. Las tareas de catálogo y
+                  reposición siguen en la planificación.
                 </p>
               </div>
             )}
-            {pending.map((group) => (
-              <details className="home-pending" key={group.key}>
-                <summary>
-                  <span className="home-pending-count">{group.total.toLocaleString('es-AR')}</span>
-                  <span className="home-pending-copy">
-                    <strong>{group.title}</strong>
-                    <small>{pendingContext(group)}</small>
-                  </span>
-                  <Icon name="arrow" size={18} />
-                </summary>
-                <div className="home-pending-body">
-                  {group.sample.slice(0, 3).map((item) => (
-                    <button
-                      className="control-pending-item"
-                      key={item.id + (item.locationId ?? '')}
-                      onClick={() => onOpen(group.area, group.action, item.id, item.locationId)}
-                    >
-                      <span>
-                        <strong>{item.name}</strong>
-                        <small>
-                          {/^\d{4}-\d{2}-\d{2}$/.test(item.detail)
-                            ? 'Vence ' + dateLabel(item.detail)
-                            : item.detail}
-                        </small>
-                      </span>
-                      <Icon name="arrow" size={16} />
-                    </button>
-                  ))}
-                  {!group.sample.length && <p>Abrí el listado para revisar el detalle.</p>}
-                  <button
-                    className="button secondary small"
-                    onClick={() => onOpen(group.area, group.action)}
-                  >
-                    Ver todos <Icon name="arrow" size={16} />
-                  </button>
-                </div>
-              </details>
+            {priority.map((group) => (
+              <PendingGroup key={group.key} group={group} onOpen={onOpen} />
             ))}
             {stockEnabled && (
               <div className="home-attention-footer">
@@ -202,8 +244,42 @@ export function ControlHome({
                 </button>
               </div>
             )}
+            {planned.length > 0 && (
+              <details className="home-planning">
+                <summary>
+                  <span>
+                    <strong>Planificar el resto</strong>
+                    <small>
+                      Reposición, cuentas y precios · {planned.length}{' '}
+                      {planned.length === 1 ? 'área' : 'áreas'}
+                    </small>
+                  </span>
+                  <Icon name="arrow" size={16} />
+                </summary>
+                <p>Son revisiones de rutina, no tareas que debas resolver todas hoy.</p>
+                {planned.map((group) => (
+                  <PendingGroup key={group.key} group={group} onOpen={onOpen} />
+                ))}
+              </details>
+            )}
           </section>
           <div className="home-side">
+            {(data.preparedOrders?.enabled || orderCount > 0) && (
+              <section className="panel home-orders" aria-label="Órdenes para cobrar">
+                <div className="home-section-heading">
+                  <h2>Del pedido al cobro</h2>
+                  <span>{orderCount} pendientes</span>
+                </div>
+                <p>
+                  {orderCount
+                    ? 'Recuperá los pedidos preparados desde Caja para registrar el pago.'
+                    : 'No hay órdenes esperando un pago. Podés preparar el próximo pedido sin ocupar la caja.'}
+                </p>
+                <button className="text-button" onClick={() => onOpen('module', 'Órdenes')}>
+                  Ver órdenes para caja <Icon name="arrow" size={16} />
+                </button>
+              </section>
+            )}
             <section className="panel home-registers" aria-label="Estado de las cajas">
               <div className="home-section-heading">
                 <h2>Tus cajas</h2>
